@@ -88,7 +88,10 @@ if $cygwin; then
     HOME=`cygpath --path --windows "$HOME"`
 fi
 
-BASEDIR=`dirname $0`
+if [ -z "$REPO" ]
+then
+  REPO=`dirname $0`/../repo
+fi
 
 exec "$JAVACMD" \
   -classpath @CLASSPATH@ \
