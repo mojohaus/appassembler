@@ -227,7 +227,7 @@ public class AssembleMojo
 
     private void addToClassPath( String classPathEntry )
     {
-        classPath += "$REPO/../repo/" + classPathEntry + ":";
+        classPath += "$REPO/" + classPathEntry + ":";
     }
 
     // ----------------------------------------------------------------------
