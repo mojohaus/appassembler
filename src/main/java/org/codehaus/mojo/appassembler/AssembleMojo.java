@@ -33,10 +33,11 @@ import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
 
-import java.io.File;
-import java.util.Iterator;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 /**
  *
@@ -105,11 +106,29 @@ public class AssembleMojo
 
     private ArtifactRepository artifactRepository;
 
+    /**
+     * @parameter
+     */
+    private Set mainClasses;
+
+    /**
+     *
+     */
+    private String classPath = "";
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        // ----------------------------------------------------------------------
+        // Create new repository for dependencies
+        // ----------------------------------------------------------------------
+
         artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
             "appassembler", "file://" + assembleDirectory + "/repo", new DefaultRepositoryLayout(), false );
+
+        // ----------------------------------------------------------------------
+        // Install dependencies in the new repository
+        // ----------------------------------------------------------------------
 
         for ( Iterator it = artifacts.iterator(); it.hasNext(); )
         {
@@ -123,7 +142,65 @@ public class AssembleMojo
         File projectArtifactFile = new File( artifactFinalName );
 
         installArtifact( projectArtifact, projectArtifactFile );
+
+        // ----------------------------------------------------------------------
+        // Setup
+        // ----------------------------------------------------------------------
+
+        setUp();
+
+        // ----------------------------------------------------------------------
+        // Generate bin files for main classes
+        // ----------------------------------------------------------------------
+
+        for ( Iterator it = mainClasses.iterator(); it.hasNext(); )
+        {
+            String mainClass = (String) it.next();
+
+            try
+            {
+                InputStream in = this.getClass().getResourceAsStream( "/binTemplate" );
+
+                InputStreamReader reader = new InputStreamReader( in );
+
+                Map context = new HashMap();
+                context.put( "MAINCLASS", mainClass );
+                context.put( "CLASSPATH", classPath );
+
+                InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context, "@", "@" );
+
+                // Get class name and use it as the filename
+                String binFileName = "";
+                StringTokenizer tokenizer = new StringTokenizer( mainClass, "." );
+                while ( tokenizer.hasMoreElements() )
+                {
+                    binFileName = tokenizer.nextToken();
+                }
+
+                binFileName = binFileName.toLowerCase();
+
+                File binFile = new File( assembleDirectory + "/bin", binFileName );
+                FileWriter out = new FileWriter( binFile );
+
+                IOUtil.copy( interpolationFilterReader, out );
+
+                interpolationFilterReader.close();
+                out.close();
+            }
+            catch ( FileNotFoundException e )
+            {
+                  throw new MojoExecutionException( "Failed to get template for bin file.", e );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "Failed to write bin file.", e );
+            }
+        }
     }
+
+    // ----------------------------------------------------------------------
+    // Install artifacts into the assemble repository
+    // ----------------------------------------------------------------------
 
     private void installArtifact( Artifact artifact, File artifactFile )
         throws MojoExecutionException
@@ -133,6 +210,8 @@ public class AssembleMojo
             try
             {
                 artifactInstaller.install( artifactFile, artifact, artifactRepository );
+
+                addToClassPath( localRepository.pathOf( artifact ));
             }
             catch ( ArtifactInstallationException e )
             {
@@ -140,5 +219,29 @@ public class AssembleMojo
             }
         }
 
+    }
+
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    private void addToClassPath( String classPathEntry )
+    {
+        classPath += "$BASEDIR/../repo/" + classPathEntry + ":";
+    }
+
+    // ----------------------------------------------------------------------
+    // Set up the assemble environment
+    // ----------------------------------------------------------------------
+
+    private void setUp()
+        throws MojoFailureException
+    {
+        boolean success = new File( assembleDirectory, "bin" ).mkdir();
+
+        if ( !success )
+        {
+            throw new MojoFailureException( "Failed to create directory for bin files." );
+        }
     }
 }
