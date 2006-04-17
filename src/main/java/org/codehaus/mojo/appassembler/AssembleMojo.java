@@ -76,7 +76,7 @@ public class AssembleMojo
      *
      * @parameter expression="${project.build.directory}/${project.artifactId}-${project.version}"
      */
-    private String assembleDirectory;
+    private File assembleDirectory;
 
     /**
      *
@@ -131,7 +131,7 @@ public class AssembleMojo
         // ----------------------------------------------------------------------
 
         artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
-            "appassembler", "file://" + assembleDirectory + "/repo", new DefaultRepositoryLayout(), false );
+            "appassembler", "file://" + assembleDirectory.getAbsolutePath() + "/repo", new DefaultRepositoryLayout(), false );
 
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
@@ -193,7 +193,7 @@ public class AssembleMojo
                     binFileName = binPrefix.trim() + binFileName.toLowerCase();
                 }
 
-                File binFile = new File( assembleDirectory + "/bin", binFileName );
+                File binFile = new File( assembleDirectory.getAbsolutePath() + "/bin", binFileName );
                 FileWriter out = new FileWriter( binFile );
 
                 IOUtil.copy( interpolationFilterReader, out );
@@ -252,11 +252,11 @@ public class AssembleMojo
         throws MojoFailureException
     {
         // create (if necessary) directory for bin files
-        File binDir = new File( assembleDirectory, "bin" );
+        File binDir = new File( assembleDirectory.getAbsolutePath(), "bin" );
 
         if ( !binDir.exists() )
         {
-            boolean success = new File( assembleDirectory, "bin" ).mkdir();
+            boolean success = new File( assembleDirectory.getAbsolutePath() , "bin" ).mkdir();
 
             if ( !success )
             {
