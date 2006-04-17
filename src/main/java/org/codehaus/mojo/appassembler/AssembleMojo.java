@@ -112,6 +112,13 @@ public class AssembleMojo
     private Set mainClasses;
 
     /**
+     * Prefix generated bin files with this
+     *
+     * @parameter
+     */
+    private String binPrefix;
+
+    /**
      *
      */
     private String classPath = "";
@@ -177,7 +184,14 @@ public class AssembleMojo
                     binFileName = tokenizer.nextToken();
                 }
 
-                binFileName = binFileName.toLowerCase();
+                if ( binPrefix == null )
+                {
+                    binFileName = binFileName.toLowerCase();
+                }
+                else
+                {
+                    binFileName = binPrefix.trim() + binFileName.toLowerCase();
+                }
 
                 File binFile = new File( assembleDirectory + "/bin", binFileName );
                 FileWriter out = new FileWriter( binFile );
@@ -237,11 +251,17 @@ public class AssembleMojo
     private void setUp()
         throws MojoFailureException
     {
-        boolean success = new File( assembleDirectory, "bin" ).mkdir();
+        // create (if necessary) directory for bin files
+        File binDir = new File( assembleDirectory, "bin" );
 
-        if ( !success )
+        if ( !binDir.exists() )
         {
-            throw new MojoFailureException( "Failed to create directory for bin files." );
+            boolean success = new File( assembleDirectory, "bin" ).mkdir();
+
+            if ( !success )
+            {
+                throw new MojoFailureException( "Failed to create directory for bin files." );
+            }
         }
     }
 }

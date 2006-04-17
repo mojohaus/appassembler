@@ -93,6 +93,9 @@ then
   REPO=`dirname $0`/../repo
 fi
 
+BINNAME=`basename $0`
+
 exec "$JAVACMD" \
   -classpath @CLASSPATH@ \
+  -Dapp.bin="$BINNAME" \
   @MAINCLASS@ $QUOTED_ARGS
