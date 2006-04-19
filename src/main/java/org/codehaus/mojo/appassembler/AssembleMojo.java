@@ -46,7 +46,7 @@ import java.util.*;
  * @description
  *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
- * @version $Id$
+ * @version $Id:$
  */
 public class AssembleMojo
     extends AbstractMojo
@@ -102,7 +102,7 @@ public class AssembleMojo
     private String binPrefix;
 
     /**
-     * @parameter defalut-value="true"
+     * @parameter default-value="true"
      */
     private boolean includeConfigurationDirectoryInClasspath;
 

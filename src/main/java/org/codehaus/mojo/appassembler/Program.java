@@ -24,6 +24,10 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
+/**
+ * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
+ * @version $Id:$
+ */
 public class Program
 {
     private String name;
