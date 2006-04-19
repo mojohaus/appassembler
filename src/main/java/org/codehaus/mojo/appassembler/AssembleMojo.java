@@ -92,7 +92,7 @@ public class AssembleMojo
     /**
      * @parameter
      */
-    private Set mainClasses;
+    private Set programs;
 
     /**
      * Prefix generated bin files with this.
@@ -172,9 +172,9 @@ public class AssembleMojo
         // Generate bin files for main classes
         // ----------------------------------------------------------------------
 
-        for ( Iterator it = mainClasses.iterator(); it.hasNext(); )
+        for ( Iterator it = programs.iterator(); it.hasNext(); )
         {
-            String mainClass = (String) it.next();
+            Program program = (Program) it.next();
 
             try
             {
@@ -183,26 +183,34 @@ public class AssembleMojo
                 InputStreamReader reader = new InputStreamReader( in );
 
                 Map context = new HashMap();
-                context.put( "MAINCLASS", mainClass );
+                context.put( "MAINCLASS", program.getMainClass() );
                 context.put( "CLASSPATH", classPath );
 
                 InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context, "@", "@" );
 
-                // Get class name and use it as the filename
+                // Set the name of the bin file
                 String binFileName = "";
-                StringTokenizer tokenizer = new StringTokenizer( mainClass, "." );
-                while ( tokenizer.hasMoreElements() )
-                {
-                    binFileName = tokenizer.nextToken();
-                }
 
-                if ( binPrefix == null )
+                if ( program.getName() == null || program.getName().trim().equals( "" ) )
                 {
-                    binFileName = binFileName.toLowerCase();
+                    // Get class name and use it as the filename
+                    StringTokenizer tokenizer = new StringTokenizer( program.getMainClass(), "." );
+                    while ( tokenizer.hasMoreElements() )
+                    {
+                        binFileName = tokenizer.nextToken();
+                    }
+
+                    binFileName.toLowerCase();
                 }
                 else
                 {
-                    binFileName = binPrefix.trim() + binFileName.toLowerCase();
+                    binFileName = program.getName();
+                }
+
+                // Set bin prefix
+                if ( binPrefix != null )
+                {
+                    binFileName = binPrefix.trim() + binFileName;
                 }
 
                 File binFile = new File( assembleDirectory.getAbsolutePath() + "/bin", binFileName );
