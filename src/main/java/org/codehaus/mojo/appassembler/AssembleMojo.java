@@ -40,71 +40,54 @@ import java.io.*;
 import java.util.*;
 
 /**
- *
- *
  * @goal assemble
  * @requiresDependencyResolution runtime
  * @phase package
  * @description
+ *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
+ * @version $Id$
  */
 public class AssembleMojo
     extends AbstractMojo
 {
+    // -----------------------------------------------------------------------
+    // Configuration
+    // -----------------------------------------------------------------------
+
     /**
-     *
-     *
      * @parameter expression="${project.build.directory}"
      * @required
      */
     private String buildDirectory;
 
     /**
-     *
      * @parameter expression="${project.build.directory}/${project.build.finalName}.${project.packaging}"
-      */
+     */
     private String artifactFinalName;
 
     /**
-     *
      * @parameter expression="${project.artifacts}"
      * @required
      */
     private Set artifacts;
 
     /**
-     *
      * @parameter expression="${project.build.directory}/${project.artifactId}-${project.version}"
      */
     private File assembleDirectory;
 
     /**
-     *
      * @parameter expression="${project.artifact}"
      */
     private Artifact projectArtifact;
 
     /**
-     *
-     * @component org.apache.maven.artifact.repository.ArtifactRepositoryFactory
-     */
-    private ArtifactRepositoryFactory artifactRepositoryFactory;
-
-    /**
-     *
-     * @component org.apache.maven.artifact.installer.ArtifactInstaller
-     */
-    private ArtifactInstaller artifactInstaller;
-
-    /**
-     *
      * @parameter expression="${localRepository}"
      * @required
      * @readonly
      */
     private ArtifactRepository localRepository;
-
-    private ArtifactRepository artifactRepository;
 
     /**
      * @parameter
@@ -112,16 +95,38 @@ public class AssembleMojo
     private Set mainClasses;
 
     /**
-     * Prefix generated bin files with this
+     * Prefix generated bin files with this.
      *
      * @parameter
      */
     private String binPrefix;
 
     /**
-     *
+     * @parameter defalut-value="true"
      */
+    private boolean includeConfigurationDirectoryInClasspath;
+
+    // -----------------------------------------------------------------------
+    // Components
+    // -----------------------------------------------------------------------
+
+    /**
+     * @component org.apache.maven.artifact.repository.ArtifactRepositoryFactory
+     */
+    private ArtifactRepositoryFactory artifactRepositoryFactory;
+
+    /**
+     * @component org.apache.maven.artifact.installer.ArtifactInstaller
+     */
+    private ArtifactInstaller artifactInstaller;
+
+    // -----------------------------------------------------------------------
+    //
+    // -----------------------------------------------------------------------
+
     private String classPath = "";
+
+    private ArtifactRepository artifactRepository;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -154,7 +159,14 @@ public class AssembleMojo
         // Setup
         // ----------------------------------------------------------------------
 
-        setUp();
+        setUpWorkingArea();
+
+        if ( includeConfigurationDirectoryInClasspath )
+        {
+            // TODO: This is UNIX-specific
+            // TODO: make "etc" configurable
+            classPath = "\"$BASEDIR\"/etc:" + classPath;
+        }
 
         // ----------------------------------------------------------------------
         // Generate bin files for main classes
@@ -232,7 +244,6 @@ public class AssembleMojo
                 throw new MojoExecutionException( "Failed to copy artifact.", e );
             }
         }
-
     }
 
     // ----------------------------------------------------------------------
@@ -248,7 +259,7 @@ public class AssembleMojo
     // Set up the assemble environment
     // ----------------------------------------------------------------------
 
-    private void setUp()
+    private void setUpWorkingArea()
         throws MojoFailureException
     {
         // create (if necessary) directory for bin files
