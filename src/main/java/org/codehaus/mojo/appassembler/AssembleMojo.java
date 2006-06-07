@@ -30,6 +30,8 @@ import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
+import org.apache.maven.artifact.repository.layout.LegacyRepositoryLayout;
+import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -106,6 +108,11 @@ public class AssembleMojo
      */
     private boolean includeConfigurationDirectoryInClasspath;
 
+    /**
+     * @parameter default="default'
+     */
+    private String repositoryLayout;
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -126,7 +133,15 @@ public class AssembleMojo
 
     private String classPath = "";
 
+    /**
+     * The repo where the jar files will be installed
+     */
     private ArtifactRepository artifactRepository;
+
+    /**
+     * The layout of the repository.
+     */
+    ArtifactRepositoryLayout artifactRepositoryLayout;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -135,8 +150,22 @@ public class AssembleMojo
         // Create new repository for dependencies
         // ----------------------------------------------------------------------
 
-        artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
-            "appassembler", "file://" + assembleDirectory.getAbsolutePath() + "/repo", new DefaultRepositoryLayout(), false );
+
+        if ( repositoryLayout == null || repositoryLayout.equals("default") )
+        {
+            artifactRepositoryLayout = new DefaultRepositoryLayout();
+        }
+        else if ( repositoryLayout.equals("legacy") )
+        {
+            artifactRepositoryLayout = new LegacyRepositoryLayout();
+        }
+        else
+        {
+            throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
+        }
+
+        artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler",
+            "file://" + assembleDirectory.getAbsolutePath() + "/repo", artifactRepositoryLayout, false );
 
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
@@ -245,7 +274,7 @@ public class AssembleMojo
             {
                 artifactInstaller.install( artifactFile, artifact, artifactRepository );
 
-                addToClassPath( localRepository.pathOf( artifact ));
+                addToClassPath( artifactRepositoryLayout.pathOf( artifact ));
             }
             catch ( ArtifactInstallationException e )
             {

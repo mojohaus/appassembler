@@ -36,9 +36,14 @@ case "`uname`" in
 esac
 
 if [ -z "$JAVA_HOME" ] ; then
-  if [ -e /etc/gentoo-release ] ; then
+  if [ -r /etc/gentoo-release ] ; then
     JAVA_HOME=`java-config --jre-home`
   fi
+fi
+
+# If a specific java binary isn't specified search for the standard 'java' binary
+if [ -z "$JAVACMD" ] ; then
+  JAVACMD=`which java`
 fi
 
 # For Cygwin, ensure paths are in UNIX format before anything is touched
@@ -68,10 +73,6 @@ if [ ! -x "$JAVACMD" ] ; then
   exit 1
 fi
 
-if [ -z "$JAVA_HOME" ] ; then
-  echo "Warning: JAVA_HOME environment variable is not set."
-fi
-
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
   [ -n "$JAVA_HOME" ] &&
@@ -82,6 +83,7 @@ fi
 
 BINNAME=`basename $0`
 BASEDIR=`dirname $0`/..
+BASEDIR=`(cd "$BASEDIR"; pwd)`
 
 if [ -z "$REPO" ]
 then
@@ -90,9 +92,10 @@ fi
 
 CLASSPATH=@CLASSPATH@
 
-exec "$JAVACMD" \
+exec "$JAVACMD" $JAVA_OPTS \
   -classpath $CLASSPATH_PREFIX:$CLASSPATH \
   -Dapp.bin="$BINNAME" \
+  -Dapp.pid="$$" \
   -Dbasedir="$BASEDIR" \
   @MAINCLASS@ \
   $@
