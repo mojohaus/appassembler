@@ -75,7 +75,7 @@ public class AssembleMojo
     private Set artifacts;
 
     /**
-     * @parameter expression="${project.build.directory}/${project.artifactId}-${project.version}"
+     * @parameter expression="${project.build.directory}/appassembler"
      */
     private File assembleDirectory;
 
@@ -113,6 +113,13 @@ public class AssembleMojo
      */
     private String repositoryLayout;
 
+    /**
+     * Extra arguments that will be given to the JVM verbatim.
+     *
+     * @parameter
+     */
+    private String extraJvmArguments;
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -149,7 +156,6 @@ public class AssembleMojo
         // ----------------------------------------------------------------------
         // Create new repository for dependencies
         // ----------------------------------------------------------------------
-
 
         if ( repositoryLayout == null || repositoryLayout.equals("default") )
         {
@@ -214,6 +220,8 @@ public class AssembleMojo
                 Map context = new HashMap();
                 context.put( "MAINCLASS", program.getMainClass() );
                 context.put( "CLASSPATH", classPath );
+                context.put( "EXTRA_JVM_ARGUMENTS", extraJvmArguments );
+                context.put( "APP_NAME", program.getName() );
 
                 InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context, "@", "@" );
 
@@ -229,7 +237,7 @@ public class AssembleMojo
                         binFileName = tokenizer.nextToken();
                     }
 
-                    binFileName.toLowerCase();
+                    binFileName = binFileName.toLowerCase();
                 }
                 else
                 {
@@ -252,7 +260,7 @@ public class AssembleMojo
             }
             catch ( FileNotFoundException e )
             {
-                  throw new MojoExecutionException( "Failed to get template for bin file.", e );
+                throw new MojoExecutionException( "Failed to get template for bin file.", e );
             }
             catch ( IOException e )
             {
@@ -304,7 +312,7 @@ public class AssembleMojo
 
         if ( !binDir.exists() )
         {
-            boolean success = new File( assembleDirectory.getAbsolutePath() , "bin" ).mkdir();
+            boolean success = new File( assembleDirectory.getAbsolutePath(), "bin" ).mkdir();
 
             if ( !success )
             {

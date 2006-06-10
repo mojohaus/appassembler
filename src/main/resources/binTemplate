@@ -81,9 +81,13 @@ if $cygwin; then
     HOME=`cygpath --path --windows "$HOME"`
 fi
 
-BINNAME=`basename $0`
 BASEDIR=`dirname $0`/..
 BASEDIR=`(cd "$BASEDIR"; pwd)`
+
+BASEDIR=`cd "$BASEDIR" && pwd`
+
+# Change directory to the basedir
+cd "$BASEDIR"
 
 if [ -z "$REPO" ]
 then
@@ -91,10 +95,12 @@ then
 fi
 
 CLASSPATH=@CLASSPATH@
+EXTRA_JVM_ARGUMENTS=@EXTRA_JVM_ARGUMENTS@
 
 exec "$JAVACMD" $JAVA_OPTS \
+  $EXTRA_JVM_ARGUMENTS \
   -classpath $CLASSPATH_PREFIX:$CLASSPATH \
-  -Dapp.bin="$BINNAME" \
+  -Dapp.name="@APP_NAME@" \
   -Dapp.pid="$$" \
   -Dbasedir="$BASEDIR" \
   @MAINCLASS@ \
