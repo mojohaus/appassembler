@@ -1,6 +1,6 @@
 #!/bin/sh
 # ----------------------------------------------------------------------------
-#  Copyright 2001-2004 The Apache Software Foundation.
+#  Copyright 2001-2006 The Apache Software Foundation.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -41,11 +41,6 @@ if [ -z "$JAVA_HOME" ] ; then
   fi
 fi
 
-# If a specific java binary isn't specified search for the standard 'java' binary
-if [ -z "$JAVACMD" ] ; then
-  JAVACMD=`which java`
-fi
-
 # For Cygwin, ensure paths are in UNIX format before anything is touched
 if $cygwin ; then
   [ -n "$JAVA_HOME" ] &&
@@ -54,6 +49,7 @@ if $cygwin ; then
     CLASSPATH=`cygpath --path --unix "$CLASSPATH"`
 fi
 
+# If a specific java binary isn't specified search for the standard 'java' binary
 if [ -z "$JAVACMD" ] ; then
   if [ -n "$JAVA_HOME"  ] ; then
     if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
