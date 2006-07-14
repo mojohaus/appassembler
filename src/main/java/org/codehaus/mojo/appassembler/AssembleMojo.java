@@ -37,6 +37,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.*;
 import java.util.*;
@@ -220,7 +221,7 @@ public class AssembleMojo
                 Map context = new HashMap();
                 context.put( "MAINCLASS", program.getMainClass() );
                 context.put( "CLASSPATH", classPath );
-                context.put( "EXTRA_JVM_ARGUMENTS", extraJvmArguments );
+                context.put( "EXTRA_JVM_ARGUMENTS", StringUtils.clean( extraJvmArguments ) );
                 context.put( "APP_NAME", program.getName() );
 
                 InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context, "@", "@" );
