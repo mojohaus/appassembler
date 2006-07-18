@@ -49,7 +49,7 @@ import java.util.*;
  * @description
  *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class AssembleMojo
     extends AbstractMojo
