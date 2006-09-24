@@ -121,6 +121,15 @@ public class AssembleMojo
      */
     private String extraJvmArguments;
 
+    /**
+     * The default platforms the plugin will generate bin files for.
+     *
+     * Configure with string values - "all"(default/empty) | "windows" | "unix"
+     *
+     * @parameter
+     */
+    private Set platforms;
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -139,8 +148,6 @@ public class AssembleMojo
     //
     // -----------------------------------------------------------------------
 
-    private String classPath = "";
-
     /**
      * The repo where the jar files will be installed
      */
@@ -149,10 +156,26 @@ public class AssembleMojo
     /**
      * The layout of the repository.
      */
-    ArtifactRepositoryLayout artifactRepositoryLayout;
+    private ArtifactRepositoryLayout artifactRepositoryLayout;
 
-    public void execute()
-        throws MojoExecutionException, MojoFailureException
+    // ----------------------------------------------------------------------
+    //
+    // ----------------------------------------------------------------------
+
+    private PlatformUtil windowsPlatformUtil = new PlatformUtil(true);
+
+    private PlatformUtil unixPlatformUtil = new PlatformUtil(false);
+
+    private boolean defaultPlatformWindows = true;
+
+    private boolean defaultPlatformUnix = true;
+
+    // ----------------------------------------------------------------------
+    // Validate
+    // ----------------------------------------------------------------------
+
+    public void validate()
+        throws MojoFailureException
     {
         // ----------------------------------------------------------------------
         // Create new repository for dependencies
@@ -171,6 +194,76 @@ public class AssembleMojo
             throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
         }
 
+        // ----------------------------------------------------------------------
+        // Validate default platform configuration
+        // ----------------------------------------------------------------------
+
+        Set validPlatforms = new HashSet();
+        validPlatforms.add( "all" );
+        validPlatforms.add( "windows" );
+        validPlatforms.add( "unix" );
+
+        if ( platforms != null ) {
+            if ( !validPlatforms.containsAll( platforms ) )
+            {
+                throw new MojoFailureException(
+                        "Non-valid default platform declared, supported types are: 'all', 'windows' and 'unix'" );
+            }
+
+            defaultPlatformWindows = false;
+            defaultPlatformUnix = false;
+
+            if ( platforms.contains( "all" ) )
+            {
+                defaultPlatformWindows = true;
+                defaultPlatformUnix = true;                
+            }
+
+            if ( platforms.contains( "windows" ) )
+            {
+                defaultPlatformWindows = true;
+            }
+            if ( platforms.contains( "unix" ) )
+            {
+                defaultPlatformUnix = true;
+            }
+        }
+
+        // ----------------------------------------------------------------------
+        // Validate Programs
+        // ----------------------------------------------------------------------
+
+        for (Iterator i = programs.iterator(); i.hasNext();)
+        {
+            Program program = (Program) i.next();
+
+            if ( program.getMainClass() == null || program.getMainClass().trim().equals( "" ) )
+            {
+                throw new MojoFailureException( "Missing main class in Program configuration" );
+            }
+
+            // platforms
+            if ( program.getPlatforms() != null )
+            {
+                if ( !validPlatforms.containsAll( program.getPlatforms() ) )
+                {
+                    throw new MojoFailureException(
+                        "Non-valid platform for program declared, supported types are: 'all', 'windows' and 'unix'" );
+                }
+            }
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Execute
+    // ----------------------------------------------------------------------
+
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
+    {
+        // validate input and set defaults
+        validate();
+
         artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler",
             "file://" + assembleDirectory.getAbsolutePath() + "/repo", artifactRepositoryLayout, false );
 
@@ -187,6 +280,7 @@ public class AssembleMojo
             installArtifact( artifact, artifactFile );
         }
 
+        // install the project's artifact in the new repository
         File projectArtifactFile = new File( artifactFinalName );
 
         installArtifact( projectArtifact, projectArtifactFile );
@@ -197,75 +291,43 @@ public class AssembleMojo
 
         setUpWorkingArea();
 
-        if ( includeConfigurationDirectoryInClasspath )
-        {
-            // TODO: This is UNIX-specific
-            // TODO: make "etc" configurable
-            classPath = "\"$BASEDIR\"/etc:" + classPath;
-        }
-
         // ----------------------------------------------------------------------
-        // Generate bin files for main classes
+        // Create bin files
         // ----------------------------------------------------------------------
 
         for ( Iterator it = programs.iterator(); it.hasNext(); )
         {
             Program program = (Program) it.next();
 
-            try
+            if ( program.getPlatforms() == null )
             {
-                InputStream in = this.getClass().getResourceAsStream( "/binTemplate" );
-
-                InputStreamReader reader = new InputStreamReader( in );
-
-                Map context = new HashMap();
-                context.put( "MAINCLASS", program.getMainClass() );
-                context.put( "CLASSPATH", classPath );
-                context.put( "EXTRA_JVM_ARGUMENTS", StringUtils.clean( extraJvmArguments ) );
-                context.put( "APP_NAME", program.getName() );
-
-                InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context, "@", "@" );
-
-                // Set the name of the bin file
-                String binFileName = "";
-
-                if ( program.getName() == null || program.getName().trim().equals( "" ) )
+                if ( defaultPlatformWindows )
                 {
-                    // Get class name and use it as the filename
-                    StringTokenizer tokenizer = new StringTokenizer( program.getMainClass(), "." );
-                    while ( tokenizer.hasMoreElements() )
-                    {
-                        binFileName = tokenizer.nextToken();
-                    }
-
-                    binFileName = binFileName.toLowerCase();
+                    createBinScript( program, windowsPlatformUtil );
                 }
-                else
+                if ( defaultPlatformUnix )
                 {
-                    binFileName = program.getName();
+                    createBinScript( program, unixPlatformUtil );
                 }
-
-                // Set bin prefix
-                if ( binPrefix != null )
-                {
-                    binFileName = binPrefix.trim() + binFileName;
-                }
-
-                File binFile = new File( assembleDirectory.getAbsolutePath() + "/bin", binFileName );
-                FileWriter out = new FileWriter( binFile );
-
-                IOUtil.copy( interpolationFilterReader, out );
-
-                interpolationFilterReader.close();
-                out.close();
             }
-            catch ( FileNotFoundException e )
+            else
             {
-                throw new MojoExecutionException( "Failed to get template for bin file.", e );
-            }
-            catch ( IOException e )
-            {
-                throw new MojoExecutionException( "Failed to write bin file.", e );
+                if ( program.getPlatforms().contains( "all" ) )
+                {
+                    createBinScript( program, windowsPlatformUtil );
+                    createBinScript( program, unixPlatformUtil );
+                    break;
+                }
+
+                if ( program.getPlatforms().contains( "windows" ) )
+                {
+                    createBinScript( program, windowsPlatformUtil );
+                }
+
+                if ( program.getPlatforms().contains( "unix" ) )
+                {
+                    createBinScript( program, unixPlatformUtil );
+                }
             }
         }
     }
@@ -282,8 +344,6 @@ public class AssembleMojo
             try
             {
                 artifactInstaller.install( artifactFile, artifact, artifactRepository );
-
-                addToClassPath( artifactRepositoryLayout.pathOf( artifact ));
             }
             catch ( ArtifactInstallationException e )
             {
@@ -293,12 +353,70 @@ public class AssembleMojo
     }
 
     // ----------------------------------------------------------------------
-    //
+    // Create bin file
     // ----------------------------------------------------------------------
 
-    private void addToClassPath( String classPathEntry )
+    private void createBinScript(Program program, PlatformUtil platformUtil )
+            throws MojoExecutionException
     {
-        classPath += "$REPO/" + classPathEntry + ":";
+        try
+        {
+            InputStream in = this.getClass().getResourceAsStream( platformUtil.getBinTemplate() );
+
+            InputStreamReader reader = new InputStreamReader( in );
+
+            Map context = new HashMap();
+            context.put( "MAINCLASS", program.getMainClass() );
+            context.put( "CLASSPATH", platformUtil.getClassPath() );
+            context.put( "EXTRA_JVM_ARGUMENTS", StringUtils.clean( extraJvmArguments ) );
+            context.put( "APP_NAME", program.getName() );
+
+            InterpolationFilterReader interpolationFilterReader =
+                    new InterpolationFilterReader( reader, context, platformUtil.getInterpolationToken(), platformUtil.getInterpolationToken() );
+
+            // Set the name of the bin file
+            String programName = "";
+
+            if ( program.getName() == null || program.getName().trim().equals( "" ) )
+            {
+                // Get class name and use it as the filename
+                StringTokenizer tokenizer = new StringTokenizer( program.getMainClass(), "." );
+                while ( tokenizer.hasMoreElements() )
+                {
+                    programName = tokenizer.nextToken();
+                }
+
+                programName = programName.toLowerCase();
+            }
+            else
+            {
+                programName = program.getName();
+            }
+
+            // Set bin prefix
+            if ( binPrefix != null )
+            {
+                programName = binPrefix.trim() + programName;
+            }
+
+            String binFileName = programName + platformUtil.getBinFileExtension();
+
+            File binFile = new File( assembleDirectory.getAbsolutePath() + "/bin", binFileName );
+            FileWriter out = new FileWriter( binFile );
+
+            IOUtil.copy( interpolationFilterReader, out );
+
+            interpolationFilterReader.close();
+            out.close();
+        }
+        catch ( FileNotFoundException e )
+        {
+            throw new MojoExecutionException( "Failed to get template for bin file.", e );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Failed to write bin file.", e );
+        }
     }
 
     // ----------------------------------------------------------------------
@@ -318,6 +436,96 @@ public class AssembleMojo
             if ( !success )
             {
                 throw new MojoFailureException( "Failed to create directory for bin files." );
+            }
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // ClassPathUtil
+    // ----------------------------------------------------------------------
+
+    private class PlatformUtil
+    {
+
+        boolean isWindows;
+
+        public PlatformUtil( boolean isWindows )
+        {
+            this.isWindows = isWindows;
+        }
+
+        public String getClassPath()
+        {
+            String classPath = "";
+
+            // include the project's own artifact in the classpath
+            Set classPathArtifacts = new HashSet(artifacts);
+            classPathArtifacts.add(projectArtifact);
+
+            if ( includeConfigurationDirectoryInClasspath )
+            {
+                if ( isWindows )
+                {
+                    classPath += "\"%BASEDIR%\"\\etc;";
+                }
+                else
+                {
+                    classPath += "\"$BASEDIR\"/etc:";
+                }
+            }
+
+            for (Iterator it = classPathArtifacts.iterator(); it.hasNext();)
+            {
+                Artifact artifact = (Artifact) it.next();
+
+                if (isWindows)
+                {
+                    String path = artifactRepositoryLayout.pathOf( artifact );
+                    path = path.replace("/", "\\");
+                    classPath += "%REPO%\\" + path + ";";
+                }
+                else
+                {
+                    classPath += "$REPO/" + artifactRepositoryLayout.pathOf( artifact ) + ":";
+                }
+            }
+
+            return classPath;
+        }
+
+        public String getBinTemplate()
+        {
+            if ( isWindows )
+            {
+                return "/windowsBinTemplate";
+            }
+            else
+            {
+                return "/unixBinTemplate";
+            }
+        }
+
+        public String getInterpolationToken()
+        {
+            if ( isWindows )
+            {
+                return "#";
+            }
+            else
+            {
+                return "@";
+            }
+        }
+
+        public String getBinFileExtension()
+        {
+            if ( isWindows )
+            {
+                return ".bat";
+            }
+            else
+            {
+                return "";
             }
         }
     }

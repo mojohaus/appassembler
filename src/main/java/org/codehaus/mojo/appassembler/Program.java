@@ -1,5 +1,7 @@
 package org.codehaus.mojo.appassembler;
 
+import java.util.Set;
+
 /**
  * The MIT License
  *
@@ -26,13 +28,15 @@ package org.codehaus.mojo.appassembler;
 
 /**
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
- * @version $Id:$
+ * @version $Id$
  */
 public class Program
 {
     private String name;
 
     private String mainClass;
+
+    private Set platforms;
 
     public Program()
     {
@@ -62,5 +66,15 @@ public class Program
     public void setMainClass( String mainClass )
     {
         this.mainClass = mainClass;
+    }
+
+    public Set getPlatforms()
+    {
+        return platforms;
+    }
+
+    public void setPlatforms( Set platforms ) 
+    {
+        this.platforms = platforms;
     }
 }
