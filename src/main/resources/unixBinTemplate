@@ -100,4 +100,4 @@ exec "$JAVACMD" $JAVA_OPTS \
   -Dapp.pid="$$" \
   -Dbasedir="$BASEDIR" \
   @MAINCLASS@ \
-  $@
+  "$@"
