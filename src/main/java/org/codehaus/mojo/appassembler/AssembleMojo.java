@@ -59,40 +59,45 @@ public class AssembleMojo
     // -----------------------------------------------------------------------
 
     /**
+     * @readonly
      * @parameter expression="${project.build.directory}"
-     * @required
      */
     private String buildDirectory;
 
     /**
+     * @readonly
      * @parameter expression="${project.build.directory}/${project.build.finalName}.${project.packaging}"
      */
     private String artifactFinalName;
 
     /**
+     * @readonly
      * @parameter expression="${project.artifacts}"
-     * @required
      */
     private Set artifacts;
 
     /**
+     * @required
      * @parameter expression="${project.build.directory}/appassembler"
      */
     private File assembleDirectory;
 
     /**
+     * @readonly
      * @parameter expression="${project.artifact}"
      */
     private Artifact projectArtifact;
 
     /**
-     * @parameter expression="${localRepository}"
-     * @required
      * @readonly
+     * @parameter expression="${localRepository}"
      */
     private ArtifactRepository localRepository;
 
     /**
+     * The set of Programs that bin files will be generated for.
+     *
+     * @required
      * @parameter
      */
     private Set programs;
@@ -105,11 +110,16 @@ public class AssembleMojo
     private String binPrefix;
 
     /**
+     * Include /etc in the beginning of the classpath in the generated bin files
+     *
      * @parameter default-value="true"
      */
     private boolean includeConfigurationDirectoryInClasspath;
 
     /**
+     * The layout of the generated Maven repository.
+     * Supported types - "default" (Maven2) | "legacy" (Maven1)
+     *
      * @parameter default="default'
      */
     private String repositoryLayout;
@@ -123,7 +133,6 @@ public class AssembleMojo
 
     /**
      * The default platforms the plugin will generate bin files for.
-     *
      * Configure with string values - "all"(default/empty) | "windows" | "unix"
      *
      * @parameter
