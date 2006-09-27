@@ -1,0 +1,123 @@
+				------
+				Using the Application Assembler Plugin
+				------
+				------
+				September 27, 2006
+
+Using the Application Assembler Plugin
+	
+	The Application Assembler plugin is a maven plugin for generating bin scripts for java applications.
+	All dependencies and the artifact of the project itself is placed in a generated maven repository
+	in the assemble directory. Bin scripts are created with all the artifacts (dependencies + the artifact
+	from the project) in the classpath.
+
+Usage
+
+	Based on a project generated with:
+
++--------------------------
+mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app
++--------------------------
+
+	Minimal configuration:
+
+	<<pom.xml>>
+
++--------------------------
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <configuration>
+          <programs>
+            <program>
+              <mainClass>com.mycompany.app.App</mainClass>
+              <name>app</name>
+            </program>
+          </programs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++--------------------------
+
+	Usage:
+
++--------------------------
+$ mvn package appassembler:assemble
+...
+$ sh target/appassembler/bin/app
+Hello World!
++--------------------------
+
+	Configuration:
+
+	<<pom.xml>>
+
++--------------------------
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <configuration>
+          <!-- Include etc/ in the beginning of the classpath declaration in the bin scripts -->
+          <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+          <!-- prefix all bin files with "mycompany" -->
+          <binPrefix>mycompany</binPrefix>
+          <!-- set alternative assemble directory -->
+          <assembleDirectory>${project.build.directory}/mycompany-assemble</assembleDirectory>
+          <!-- Extra JVM arguments that will be included in the bin scripts -->
+          <extraJvmArguments>-Xms128m</extraJvmArguments> 
+          <!-- Generate bin scripts for windows and unix pr default -->
+          <platforms>
+            <platform>windows</platform>
+            <platform>unix</platform>
+          </platforms>
+          <programs>
+            <program>
+              <mainClass>com.mycompany.app.WindowsApp1</mainClass>
+              <name>app1</name>
+              <!-- Only generate windows bat script for this application -->
+              <platforms>
+                <platform>windows</platform>
+              </platforms>
+            </program>
+            <program>
+              <mainClass>com.mycompany.app.UnixApp2</mainClass>
+              <name>app2</name>
+              <!-- Only generate unix shell script for this application -->
+              <platforms>
+                <platform>unix</platform>
+              </platforms>
+            </program>
+            <program>
+              <mainClass>com.mycompany.app.App3</mainClass>
+              <name>app3</name>
+            </program>
+            <program>
+              <mainClass>com.mycompany.app.App4</mainClass>
+              <name>app4</name>
+            </program>
+          </programs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++--------------------------
+
+	Usage:
+
++--------------------------
+$ mvn package appassembler:assemble
+...
+$ sh target/mycompany-assemble/bin/mycompanyapp2
+Hello World!
++--------------------------
