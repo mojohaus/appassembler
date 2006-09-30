@@ -43,10 +43,11 @@ import java.io.*;
 import java.util.*;
 
 /**
+ * Assembles the artifacts and generates bin scripts for the configured applications
+ *
  * @goal assemble
  * @requiresDependencyResolution runtime
  * @phase package
- * @description
  *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
  * @version $Id$
@@ -77,6 +78,9 @@ public class AssembleMojo
     private Set artifacts;
 
     /**
+     * The directory that will be used to assemble the artifacts in
+     * and place the bin scripts.
+     *
      * @required
      * @parameter expression="${project.build.directory}/appassembler"
      */

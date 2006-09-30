@@ -1,0 +1,23 @@
+  ------
+  Introduction
+  ------
+  Kristian Nordal
+  ------
+  30 September 2006
+  ------
+
+
+Maven 2 Application Assembler Plugin
+
+  The Application Assembler plugin is a maven plugin for generating bin scripts for java applications.
+  All dependencies and the artifact of the project itself is placed in a generated maven repository
+  in the assemble directory. All artifact (dependencies + the artifact from the project) is added to
+  the classpath in the generated bin scripts.
+
+* Goals Overview
+
+  * {{{assemble-mojo.html}appassembler:assemble}} Assembles the artifacts and generates bin scripts for the configured applications
+
+* Usage
+
+  Instructions on how to use the Application Assembler Plugin can be found {{{usage.html}here}}.

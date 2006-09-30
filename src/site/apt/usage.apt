@@ -1,25 +1,22 @@
-				------
-				Using the Application Assembler Plugin
-				------
-				------
-				September 27, 2006
-
-Using the Application Assembler Plugin
-	
-	The Application Assembler plugin is a maven plugin for generating bin scripts for java applications.
-	All dependencies and the artifact of the project itself is placed in a generated maven repository
-	in the assemble directory. Bin scripts are created with all the artifacts (dependencies + the artifact
-	from the project) in the classpath.
+  ------
+  Using the Application Assembler Plugin
+  ------
+  ------
+  September 27, 2006
+  ------
 
 Usage
 
-	Based on a project generated with:
+  This document is intended to provide a brief introduction for using the appassembler-maven-plugin.
+	
+* Configuring the plugin in pom.xml
+
+  The following is a basic configuration of the plugin, and an example of usage based on a project
+  generated with:
 
 +--------------------------
 mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app
 +--------------------------
-
-	Minimal configuration:
 
 	<<pom.xml>>
 
@@ -45,16 +42,14 @@ mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app
 </project>
 +--------------------------
 
-	Usage:
-
 +--------------------------
 $ mvn package appassembler:assemble
 ...
 $ sh target/appassembler/bin/app
 Hello World!
 +--------------------------
-
-	Configuration:
+  
+  The following is a configuration example with more of the available options set.
 
 	<<pom.xml>>
 

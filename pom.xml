@@ -13,6 +13,32 @@
   <version>1.0-SNAPSHOT</version>
   <name>Maven Application Assembler Plugin</name>
   <description>A Mojo for generating bin scripts for Java applications.</description>
+  <url>http://mojo.codehaus.org/appassembler-maven-plugin/</url>
+  <prerequisites>
+    <maven>2.0.4</maven>
+  </prerequisites>
+  <inceptionYear>2006</inceptionYear>
+  <developers>
+    <developer>
+      <name>Kristian Nordal</name>
+      <email>kristian.nordal@gmail.com</email>
+    </developer>
+    <developer>
+      <name>Trygve Laugstoel</name>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Philip Oliver-Paull</name>
+    </contributor>
+  </contributors>
+  <licenses>
+    <license>
+      <name>The MIT License</name>
+      <url>LICENSE.txt</url>
+      <distribution>manual</distribution>
+    </license>
+  </licenses>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
