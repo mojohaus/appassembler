@@ -22,9 +22,11 @@
     </menu>
   
     <menu name="Overview">
-      <item name="Introduction" href="index.html"/>
-      <item name="Goals" href="plugin-info.html"/>
-      <item name="Usage" href="usage.html"/>
+      <!-- <item name="Plugin Goals" href="index.html"/> -->
+      <item name="Introduction" href="introduction.html"/>
+      <item name="Goals" href="assemble-mojo.html"/>
+      <item name="How to Use" href="usage.html"/>
+      <item name="Javadoc" href="apidocs/index.html"/>
     </menu>
   
     ${reports}
