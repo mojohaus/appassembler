@@ -69,14 +69,6 @@ if [ ! -x "$JAVACMD" ] ; then
   exit 1
 fi
 
-# For Cygwin, switch paths to Windows format before running java
-if $cygwin; then
-  [ -n "$JAVA_HOME" ] &&
-    JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
-  [ -n "$HOME" ] &&
-    HOME=`cygpath --path --windows "$HOME"`
-fi
-
 BASEDIR=`dirname $0`/..
 BASEDIR=`(cd "$BASEDIR"; pwd)`
 
@@ -90,12 +82,22 @@ then
   REPO="$BASEDIR"/repo
 fi
 
-CLASSPATH=@CLASSPATH@
+CLASSPATH=$CLASSPATH_PREFIX:@CLASSPATH@
 EXTRA_JVM_ARGUMENTS=@EXTRA_JVM_ARGUMENTS@
+
+# For Cygwin, switch paths to Windows format before running java
+if $cygwin; then
+  [ -n "$CLASSPATH" ] &&
+    CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
+  [ -n "$JAVA_HOME" ] &&
+    JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
+  [ -n "$HOME" ] &&
+    HOME=`cygpath --path --windows "$HOME"`
+fi
 
 exec "$JAVACMD" $JAVA_OPTS \
   $EXTRA_JVM_ARGUMENTS \
-  -classpath $CLASSPATH_PREFIX:$CLASSPATH \
+  -classpath $CLASSPATH \
   -Dapp.name="@APP_NAME@" \
   -Dapp.pid="$$" \
   -Dbasedir="$BASEDIR" \
