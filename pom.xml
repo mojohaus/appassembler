@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>mojo</artifactId>
+    <groupId>org.codehaus.mojo</groupId>
+    <version>12</version>
+  </parent>
+  <artifactId>appassembler</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-alpha-1</version>
+  <name>Maven Application Assembler</name>
+  <url>http://mojo.codehaus.org/appassembler/</url>
+  <inceptionYear>2006</inceptionYear>
+  <developers>
+    <developer>
+      <id>kristian</id>
+      <name>Kristian Nordal</name>
+      <email>kristian.nordal@gmail.com</email>
+    </developer>
+    <developer>
+      <id>trygvis</id>
+      <name>Trygve Laugstoel</name>
+      <email>trygvis@inamo.no</email>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>The MIT License</name>
+      <url>LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <organization>
+    <name>Codehaus</name>
+    <url>http://mojo.codehaus.org</url>
+  </organization>
+
+  <modules>
+    <module>appassembler-maven-plugin</module>
+  </modules>
+</project>

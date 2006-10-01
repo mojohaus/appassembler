@@ -1,0 +1,22 @@
+<document>
+  <properties>
+    <title>Changes appassembler-maven-plugin</title>
+    <author email="kristian.nordal@gmail.com">Kristian Nordal</author>
+  </properties>
+  <body>
+    <release version="1.0-alpha-1" date="2006-10-01" description="Initial release">
+      <action dev="kristian" type="add">
+        Initial version of the plugin
+      </action>
+      <action dev="trygvis" type="add">
+        Initial version of the plugin
+      </action>
+      <action dev="kristian" type="add" due-to="Philip Oliver-Paull" issue="MOJO-471">
+        Added template for bat script.
+      </action>
+      <action dev="kristian" type="fix" due-to="Mathieu Champlon" issue="MOJO-519">
+        Setting the classpath format properly when using Cygwin.
+      </action>
+    </release>
+  </body>
+</document>
