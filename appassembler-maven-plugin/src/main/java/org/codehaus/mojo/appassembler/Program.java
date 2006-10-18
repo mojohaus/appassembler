@@ -1,7 +1,5 @@
 package org.codehaus.mojo.appassembler;
 
-import java.util.Set;
-
 /**
  * The MIT License
  *
@@ -25,6 +23,8 @@ import java.util.Set;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import java.util.Set;
 
 /**
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
@@ -73,7 +73,7 @@ public class Program
         return platforms;
     }
 
-    public void setPlatforms( Set platforms ) 
+    public void setPlatforms( Set platforms )
     {
         this.platforms = platforms;
     }

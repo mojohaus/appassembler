@@ -1,0 +1,3 @@
+<daemon>
+  <mainClass>com.westerngeco.example.App</mainClass>
+</daemon>

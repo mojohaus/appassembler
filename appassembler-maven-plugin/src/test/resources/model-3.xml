@@ -1,0 +1,4 @@
+<!-- this is valid. id is missing and should be generated -->
+<daemon>
+  <mainClass>foo.Bar</mainClass>
+</daemon>

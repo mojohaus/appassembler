@@ -1,0 +1,4 @@
+<daemon>
+  <mainClass>foo.Bar</mainClass>
+  <id>jezloius</id>
+</daemon>
