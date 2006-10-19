@@ -39,5 +39,6 @@
 
   <modules>
     <module>appassembler-maven-plugin</module>
+    <module>appassembler-generic-model</module>
   </modules>
 </project>
