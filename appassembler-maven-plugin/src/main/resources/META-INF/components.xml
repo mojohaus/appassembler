@@ -1,0 +1,27 @@
+<component-set>
+  <components>
+    <component>
+      <role>org.codehaus.mojo.appassembler.daemon.DaemonGenerator</role>
+      <role-hint>jsw</role-hint>
+      <implementation>org.codehaus.mojo.appassembler.daemon.JavaServiceWrapperDaemonGenerator</implementation>
+      <description></description>
+    </component>
+    <component>
+      <role>org.codehaus.mojo.appassembler.daemon.DaemonGenerator</role>
+      <role-hint>generic</role-hint>
+      <implementation>org.codehaus.mojo.appassembler.daemon.GenericDaemonGenerator</implementation>
+      <description></description>
+    </component>
+    <component>
+      <role>org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService</role>
+      <implementation>org.codehaus.mojo.appassembler.daemon.DefaultDaemonGeneratorService</implementation>
+      <description></description>
+      <requirements>
+        <requirement>
+          <role>org.codehaus.mojo.appassembler.daemon.DaemonGenerator</role>
+          <field-name>generators</field-name>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</component-set>
