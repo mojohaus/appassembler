@@ -83,7 +83,7 @@ then
 fi
 
 CLASSPATH=$CLASSPATH_PREFIX:@CLASSPATH@
-EXTRA_JVM_ARGUMENTS=@EXTRA_JVM_ARGUMENTS@
+EXTRA_JVM_ARGUMENTS="@EXTRA_JVM_ARGUMENTS@"
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
