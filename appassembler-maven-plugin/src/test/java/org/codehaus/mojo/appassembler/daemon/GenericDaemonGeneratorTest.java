@@ -16,41 +16,26 @@ import org.codehaus.mojo.appassembler.model.generic.Daemon;
  * @version $Id$
  */
 public class GenericDaemonGeneratorTest
-    extends PlexusTestCase
+    extends AbstractDaemonGeneratorTest
+
 {
-    public void testBasic()
-        throws Exception
+    protected String getGeneratorId()
     {
-        GenericDaemonGenerator generator = (GenericDaemonGenerator) lookup( DaemonGenerator.ROLE, "generic" );
+        return "generic";
+    }
 
-        // -----------------------------------------------------------------------
-        // Build the MavenProject instance
-        // -----------------------------------------------------------------------
+    protected String getPOM()
+    {
+        return "src/test/resources/project-1/pom.xml";
+    }
 
-        MavenProjectBuilder projectBuilder = (MavenProjectBuilder) lookup( MavenProjectBuilder.ROLE );
+    protected String getDescriptor()
+    {
+        return "src/test/resources/project-1/descriptor.xml";
+    }
 
-        ArtifactRepositoryFactory artifactRepositoryFactory =
-            (ArtifactRepositoryFactory) lookup( ArtifactRepositoryFactory.ROLE );
-
-        ArtifactRepositoryPolicy policy = new ArtifactRepositoryPolicy( true, "never", "never" );
-
-        String localRepoUrl = "file://" + System.getProperty( "user.home" ) + "/.m2/repository";
-
-        ArtifactRepository localRepository = artifactRepositoryFactory.createArtifactRepository( "local", localRepoUrl, new DefaultRepositoryLayout(), policy, policy );
-
-        ProfileManager profileManager = new DefaultProfileManager( getContainer() );
-
-        MavenProject project = projectBuilder.buildWithDependencies(
-            getTestFile( "src/test/resources/project-1/pom.xml" ), localRepository, profileManager );
-
-        // -----------------------------------------------------------------------
-        //
-        // -----------------------------------------------------------------------
-
-        DaemonGeneratorService daemonGeneratorService = (DaemonGeneratorService) lookup( DaemonGeneratorService.ROLE );
-
-        Daemon model = daemonGeneratorService.loadModel( getTestFile( "src/test/resources/project-1/descriptor.xml" ) );
-
-        generator.generate( model, project, localRepository, getTestFile( "target/output-1" ) );
+    protected String getOutputDir()
+    {
+        return "target/output-1-generic";
     }
 }

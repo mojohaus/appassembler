@@ -1,6 +1,6 @@
 package org.codehaus.mojo.appassembler;
 
-/**
+/** 
  * The MIT License
  *
  * Copyright 2005-2006 The Codehaus.
@@ -74,12 +74,6 @@ public class AssembleMojo
      * @parameter expression="${project.build.directory}"
      */
     private String buildDirectory;
-
-    /**
-     * @readonly
-     * @parameter expression="${project.build.directory}/${project.build.finalName}.${project.packaging}"
-     */
-    private String artifactFinalName;
 
     /**
      * @readonly
@@ -298,15 +292,11 @@ public class AssembleMojo
         {
             Artifact artifact = (Artifact) it.next();
 
-            File artifactFile = new File( localRepository.getBasedir(), localRepository.pathOf( artifact ) );
-
-            installArtifact( artifact, artifactFile );
+            installArtifact( artifact );
         }
 
         // install the project's artifact in the new repository
-        File projectArtifactFile = new File( artifactFinalName );
-
-        installArtifact( projectArtifact, projectArtifactFile );
+        installArtifact( projectArtifact );
 
         // ----------------------------------------------------------------------
         // Setup
@@ -359,19 +349,20 @@ public class AssembleMojo
     // Install artifacts into the assemble repository
     // ----------------------------------------------------------------------
 
-    private void installArtifact( Artifact artifact, File artifactFile )
+    private void installArtifact( Artifact artifact )
         throws MojoExecutionException
     {
-        if ( artifactFile.exists() )
+        try
         {
-            try
-            {
-                artifactInstaller.install( artifactFile, artifact, artifactRepository );
-            }
-            catch ( ArtifactInstallationException e )
-            {
-                throw new MojoExecutionException( "Failed to copy artifact.", e );
-            }
+            // Necessary for the artifact's baseVersion to be set correctly
+            // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
+            artifact.isSnapshot();
+            
+            artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
+        }
+        catch ( ArtifactInstallationException e )
+        {
+            throw new MojoExecutionException( "Failed to copy artifact.", e );
         }
     }
 
@@ -508,6 +499,7 @@ public class AssembleMojo
                 if (isWindows)
                 {
                     String path = artifactRepositoryLayout.pathOf( artifact );
+
                     path = path.replace("/", "\\");
                     classPath += "%REPO%\\" + path + ";";
                 }

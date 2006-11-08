@@ -23,7 +23,7 @@ wrapper.java.mainclass=org.tanukisoftware.wrapper.WrapperSimpleApp
 wrapper.java.library.path.1=lib
 
 # Java Additional Parameters
-wrapper.java.additional.1=-d64
+#wrapper.java.additional.1=-d64
 #wrapper.java.additional.2=-Dcom.sun.management.jmxremote
 #wrapper.java.additional.3=-Dorg.tanukisoftware.wrapper.WrapperManager.mbean=true
 @ADDITIONAL@

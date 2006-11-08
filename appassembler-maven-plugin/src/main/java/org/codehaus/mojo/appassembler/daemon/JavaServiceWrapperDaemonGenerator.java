@@ -52,7 +52,7 @@ public class JavaServiceWrapperDaemonGenerator
         InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context, "@", "@" );
 
         outputDirectory = new File( outputDirectory, "etc" );
-        File outputFile = new File( outputDirectory, "wrapper.conf" );
+        File outputFile = new File( outputDirectory, stubDaemon.getId() + "-wrapper.conf" );
         FileWriter out = null;
 
         try
