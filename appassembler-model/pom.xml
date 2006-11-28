@@ -32,7 +32,7 @@
           </execution>
         </executions>
         <configuration>
-          <model>src/main/modello/generic-model.xml</model>
+          <model>src/main/modello/model.xml</model>
           <version>1.0.0</version>
         </configuration>
       </plugin>
