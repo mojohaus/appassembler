@@ -1,12 +1,15 @@
-package org.codehaus.mojo.appassembler.daemon;
+package org.codehaus.mojo.appassembler.daemon.generic;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.appassembler.model.generic.Daemon;
-import org.codehaus.mojo.appassembler.model.generic.Dependency;
-import org.codehaus.mojo.appassembler.model.generic.JvmSettings;
-import org.codehaus.mojo.appassembler.model.generic.io.xpp3.GenericApplicationModelXpp3Writer;
+import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.model.Dependency;
+import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.mojo.appassembler.model.io.xpp3.AppassemblerModelXpp3Writer;
+import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
+import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
+import org.codehaus.mojo.appassembler.daemon.Util;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
@@ -34,9 +37,9 @@ public class GenericDaemonGenerator
                           File outputDirectory )
         throws DaemonGeneratorException
     {
-        Daemon mergedDaemon = mergeDaemon( stubDaemon, project, localRepository, new JvmSettings() );
+        Daemon mergedDaemon = mergeDaemon( stubDaemon, project, new JvmSettings() );
 
-        GenericApplicationModelXpp3Writer writer = new GenericApplicationModelXpp3Writer();
+        AppassemblerModelXpp3Writer writer = new AppassemblerModelXpp3Writer();
 
         try
         {
@@ -56,15 +59,17 @@ public class GenericDaemonGenerator
     // Private
     // -----------------------------------------------------------------------
 
-    private Daemon mergeDaemon( Daemon stub, MavenProject project, ArtifactRepository localRepository, JvmSettings defaultJvmSettings )
+    private Daemon mergeDaemon( Daemon stub, MavenProject project, JvmSettings defaultJvmSettings )
     {
         Daemon complete = new Daemon();
 
         complete.setId( stub.getId() );
 
+        complete.setMainClass( stub.getMainClass() );
+
         complete.setJvmSettings( mergeJvmSettings( stub.getJvmSettings(), defaultJvmSettings ) );
 
-        complete.setMainClass( stub.getMainClass() );
+        complete.setCommandLineArguments( stub.getCommandLineArguments() );
 
         // -----------------------------------------------------------------------
         // Add the project itself as a dependency.

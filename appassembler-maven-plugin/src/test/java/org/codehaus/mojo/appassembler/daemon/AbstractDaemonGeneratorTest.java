@@ -1,7 +1,8 @@
 package org.codehaus.mojo.appassembler.daemon;
 
 import org.codehaus.plexus.PlexusTestCase;
-import org.codehaus.mojo.appassembler.model.generic.Daemon;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.mojo.appassembler.model.Daemon;
 import org.apache.maven.project.MavenProjectBuilder;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
@@ -11,6 +12,8 @@ import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.profiles.ProfileManager;
 import org.apache.maven.profiles.DefaultProfileManager;
 
+import java.io.File;
+
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -18,18 +21,12 @@ import org.apache.maven.profiles.DefaultProfileManager;
 public abstract class AbstractDaemonGeneratorTest
     extends PlexusTestCase
 {
-    protected abstract String getGeneratorId();
-
-    protected abstract String getPOM();
-
-    protected abstract String getDescriptor();
-
-    protected abstract String getOutputDir();
-
-    public void testBasic()
+    public void runTest( String generatorId, String pom, String descriptor, String outputPath )
         throws Exception
     {
-        DaemonGenerator generator = (DaemonGenerator) lookup( DaemonGenerator.ROLE, getGeneratorId() );
+        File outputDir = getTestFile( outputPath );
+
+        DaemonGenerator generator = (DaemonGenerator) lookup( DaemonGenerator.ROLE, generatorId );
 
         // -----------------------------------------------------------------------
         // Build the MavenProject instance
@@ -48,10 +45,15 @@ public abstract class AbstractDaemonGeneratorTest
 
         ProfileManager profileManager = new DefaultProfileManager( getContainer() );
 
-        MavenProject project = projectBuilder.buildWithDependencies(
-            getTestFile( getPOM()), localRepository, profileManager );
+        MavenProject project = projectBuilder.buildWithDependencies( getTestFile( pom ),
+                                                                     localRepository, profileManager );
 
-        // "src/test/resources/project-1/pom.xml"
+        // -----------------------------------------------------------------------
+        // Clean the output directory
+        // -----------------------------------------------------------------------
+
+        FileUtils.deleteDirectory( outputDir );
+        FileUtils.forceMkdir( outputDir );
 
         // -----------------------------------------------------------------------
         //
@@ -59,11 +61,8 @@ public abstract class AbstractDaemonGeneratorTest
 
         DaemonGeneratorService daemonGeneratorService = (DaemonGeneratorService) lookup( DaemonGeneratorService.ROLE );
 
-        Daemon model = daemonGeneratorService.loadModel( getTestFile( getDescriptor() ) );
+        Daemon model = daemonGeneratorService.loadModel( getTestFile( descriptor ) );
 
-        // "src/test/resources/project-1/descriptor.xml"
-
-        generator.generate( model, project, localRepository, getTestFile( getOutputDir() ) );
-        //"target/output-1"
+        generator.generate( model, project, localRepository, outputDir );
     }
 }

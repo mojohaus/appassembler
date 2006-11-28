@@ -3,13 +3,13 @@
     <component>
       <role>org.codehaus.mojo.appassembler.daemon.DaemonGenerator</role>
       <role-hint>jsw</role-hint>
-      <implementation>org.codehaus.mojo.appassembler.daemon.JavaServiceWrapperDaemonGenerator</implementation>
+      <implementation>org.codehaus.mojo.appassembler.daemon.jsw.JavaServiceWrapperDaemonGenerator</implementation>
       <description></description>
     </component>
     <component>
       <role>org.codehaus.mojo.appassembler.daemon.DaemonGenerator</role>
       <role-hint>generic</role-hint>
-      <implementation>org.codehaus.mojo.appassembler.daemon.GenericDaemonGenerator</implementation>
+      <implementation>org.codehaus.mojo.appassembler.daemon.generic.GenericDaemonGenerator</implementation>
       <description></description>
     </component>
     <component>

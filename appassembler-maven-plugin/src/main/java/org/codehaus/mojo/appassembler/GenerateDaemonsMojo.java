@@ -7,6 +7,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.util.Iterator;
@@ -74,27 +75,53 @@ public class GenerateDaemonsMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        for ( Iterator it = daemons.iterator(); it.hasNext(); )
+        try
         {
-            Daemon daemon = (Daemon) it.next();
-
-            File descriptor = new File( basedir, daemon.getDescriptor( ) );
-
-            try
+            for ( Iterator it = daemons.iterator(); it.hasNext(); )
             {
+                Daemon daemon = (Daemon) it.next();
+
+                // -----------------------------------------------------------------------
+                // Load the optional template daemon descriptor
+                // -----------------------------------------------------------------------
+
+                File descriptor = null;
+
+                if ( !StringUtils.isEmpty( daemon.getDescriptor() ) )
+                {
+                    descriptor = new File( basedir, daemon.getDescriptor() );
+                }
+
+                // -----------------------------------------------------------------------
+                // Create a daemon object from the POM configuration
+                // -----------------------------------------------------------------------
+
+                org.codehaus.mojo.appassembler.model.Daemon modelDaemon;
+
+                modelDaemon = new org.codehaus.mojo.appassembler.model.Daemon();
+
+                modelDaemon.setId( daemon.getId() );
+                modelDaemon.setMainClass( daemon.getMainClass() );
+                System.out.println( "daemon.getCommandLineArguments() = " + daemon.getCommandLineArguments() );
+                modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
+
+                // -----------------------------------------------------------------------
+                //
+                // -----------------------------------------------------------------------
+
                 for ( Iterator it2 = daemon.getPlatforms().iterator(); it2.hasNext(); )
                 {
                     String platform = (String) it2.next();
 
                     File output = new File( new File( target, "generated-resources" ), platform );
 
-                    daemonGeneratorService.generateDaemon( platform, descriptor, output , project, localRepository);
+                    daemonGeneratorService.generateDaemon( platform, descriptor, modelDaemon, output, project, localRepository );
                 }
             }
-            catch ( DaemonGeneratorException e )
-            {
-                throw new MojoExecutionException( "Error while generating daemon.", e );
-            }
+        }
+        catch ( DaemonGeneratorException e )
+        {
+            throw new MojoExecutionException( "Error while generating daemon.", e );
         }
     }
 }

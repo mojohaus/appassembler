@@ -10,6 +10,10 @@ import java.util.Properties;
  */
 public class Daemon
 {
+    private String id;
+
+    private String mainClass;
+
     private String descriptor;
 
     private List platforms;
@@ -26,10 +30,19 @@ public class Daemon
     // TODO:
     private String longDescription;
 
-    // TODO:
     private List commandLineArguments;
 
     private Properties properties;
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public String getMainClass()
+    {
+        return mainClass;
+    }
 
     public String getDescriptor()
     {
@@ -54,5 +67,10 @@ public class Daemon
         }
 
         return properties;
+    }
+
+    public List getCommandLineArguments()
+    {
+        return commandLineArguments;
     }
 }

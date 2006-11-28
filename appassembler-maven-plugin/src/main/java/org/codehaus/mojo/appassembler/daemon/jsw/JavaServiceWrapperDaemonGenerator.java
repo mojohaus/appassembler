@@ -1,9 +1,12 @@
-package org.codehaus.mojo.appassembler.daemon;
+package org.codehaus.mojo.appassembler.daemon.jsw;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.appassembler.model.generic.Daemon;
+import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
+import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
+import org.codehaus.mojo.appassembler.daemon.Util;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
@@ -38,6 +41,11 @@ public class JavaServiceWrapperDaemonGenerator
         throws DaemonGeneratorException
     {
         InputStream in = this.getClass().getResourceAsStream( "wrapper.conf.template" );
+
+        if ( in == null )
+        {
+            throw new DaemonGeneratorException( "Could not load template." );
+        }
 
         InputStreamReader reader = new InputStreamReader( in );
 
