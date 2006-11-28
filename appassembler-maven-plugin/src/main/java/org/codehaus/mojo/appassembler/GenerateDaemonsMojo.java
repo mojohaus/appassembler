@@ -102,7 +102,6 @@ public class GenerateDaemonsMojo
 
                 modelDaemon.setId( daemon.getId() );
                 modelDaemon.setMainClass( daemon.getMainClass() );
-                System.out.println( "daemon.getCommandLineArguments() = " + daemon.getCommandLineArguments() );
                 modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
 
                 // -----------------------------------------------------------------------

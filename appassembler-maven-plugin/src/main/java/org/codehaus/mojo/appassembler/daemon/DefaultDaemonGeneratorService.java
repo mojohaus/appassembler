@@ -67,21 +67,13 @@ public class DefaultDaemonGeneratorService
             getLogger().debug( "Loading daemon descriptor: " + stubDescriptor.getAbsolutePath() );
 
             fileDaemon = loadModel( stubDescriptor );
-
-            System.out.println( "fileDaemon.getCommandLineArguments() = " + fileDaemon.getCommandLineArguments() );
-        }
-        else
-        {
-            System.out.println( "fileDaemon = null" );
         }
 
         // -----------------------------------------------------------------------
         // Merge the given stub daemon
         // -----------------------------------------------------------------------
 
-        System.out.println( "stubDaemon.getCommandLineArguments() = " + stubDaemon.getCommandLineArguments() );
         Daemon mergedDaemon = mergeDaemons( stubDaemon, fileDaemon );
-        System.out.println( "mergedDaemon.getCommandLineArguments() = " + mergedDaemon.getCommandLineArguments() );
 
         // -----------------------------------------------------------------------
         //
@@ -111,7 +103,6 @@ public class DefaultDaemonGeneratorService
 
         Daemon result = new Daemon();
 
-        System.out.println( "dominant.getCommandLineArguments() = " + dominant.getCommandLineArguments() );
         result.setId( select( dominant.getId(), recessive.getId() ) );
         result.setMainClass( select( dominant.getMainClass(), recessive.getMainClass() ) );
         result.setDependencies( select( dominant.getDependencies(), recessive.getDependencies() ));
