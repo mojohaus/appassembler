@@ -2,7 +2,6 @@ package org.codehaus.mojo.appassembler;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Properties;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -32,7 +31,9 @@ public class Daemon
 
     private List commandLineArguments;
 
-    private Properties properties;
+    private JvmSettings jvmSettings;
+
+//    private Properties properties;
 
     public String getId()
     {
@@ -59,18 +60,13 @@ public class Daemon
         return platforms;
     }
 
-    public Properties getProperties()
-    {
-        if ( properties == null )
-        {
-            properties = new Properties();
-        }
-
-        return properties;
-    }
-
     public List getCommandLineArguments()
     {
         return commandLineArguments;
+    }
+
+    public JvmSettings getJvmSettings()
+    {
+        return jvmSettings;
     }
 }

@@ -7,6 +7,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
+import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
@@ -35,17 +36,25 @@ public class GenerateDaemonsMojo
     private Set daemons;
 
     /**
+     * @parameter
+     */
+    private JvmSettings defaultJvmSettings;
+
+    /**
      * @parameter expression="${basedir}"
+     * @required
      */
     private File basedir;
 
     /**
      * @parameter expression="${project.build.directory}"
+     * @required
      */
     private File target;
 
     /**
      * @parameter expression="${project}"
+     * @required
      */
     private MavenProject project;
 
@@ -93,6 +102,21 @@ public class GenerateDaemonsMojo
                 }
 
                 // -----------------------------------------------------------------------
+                //
+                // -----------------------------------------------------------------------
+
+                org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings = null;
+
+                if ( defaultJvmSettings != null )
+                {
+                    modelJvmSettings = new JvmSettings();
+
+                    modelJvmSettings.setInitialMemorySize( defaultJvmSettings.getInitialMemorySize() );
+                    modelJvmSettings.setMaxMemorySize( defaultJvmSettings.getMaxMemorySize() );
+                    modelJvmSettings.setMaxStackSize( defaultJvmSettings.getMaxStackSize() );
+                }
+
+                // -----------------------------------------------------------------------
                 // Create a daemon object from the POM configuration
                 // -----------------------------------------------------------------------
 
@@ -103,6 +127,7 @@ public class GenerateDaemonsMojo
                 modelDaemon.setId( daemon.getId() );
                 modelDaemon.setMainClass( daemon.getMainClass() );
                 modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
+                modelDaemon.setJvmSettings( modelJvmSettings );
 
                 // -----------------------------------------------------------------------
                 //
@@ -114,7 +139,8 @@ public class GenerateDaemonsMojo
 
                     File output = new File( new File( target, "generated-resources" ), platform );
 
-                    daemonGeneratorService.generateDaemon( platform, descriptor, modelDaemon, output, project, localRepository );
+                    daemonGeneratorService.generateDaemon( platform, descriptor, modelDaemon, output, project,
+                                                           localRepository );
                 }
             }
         }

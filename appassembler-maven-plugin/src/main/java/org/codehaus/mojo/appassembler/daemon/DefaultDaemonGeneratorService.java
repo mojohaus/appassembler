@@ -13,8 +13,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
@@ -41,8 +41,8 @@ public class DefaultDaemonGeneratorService
         generateDaemon( platform, stubDescriptor, null, outputDirectory, mavenProject, localRepository );
     }
 
-    public void generateDaemon( String platform, File stubDescriptor, Daemon stubDaemon, File outputDirectory,
-                                MavenProject mavenProject, ArtifactRepository localRepository )
+    public void generateDaemon( String platform, File stubDescriptor, Daemon stubDaemon,
+                                File outputDirectory, MavenProject mavenProject, ArtifactRepository localRepository )
         throws DaemonGeneratorException
     {
         // -----------------------------------------------------------------------
@@ -105,10 +105,10 @@ public class DefaultDaemonGeneratorService
 
         result.setId( select( dominant.getId(), recessive.getId() ) );
         result.setMainClass( select( dominant.getMainClass(), recessive.getMainClass() ) );
-        result.setDependencies( select( dominant.getDependencies(), recessive.getDependencies() ));
-        result.setCommandLineArguments( select( dominant.getCommandLineArguments(), recessive.getCommandLineArguments() ));
+        result.setDependencies( select( dominant.getDependencies(), recessive.getDependencies() ) );
+        result.setCommandLineArguments( select( dominant.getCommandLineArguments(), recessive.getCommandLineArguments() ) );
         // This should probably be improved
-        result.setJvmSettings( (JvmSettings) select( dominant.getJvmSettings(), recessive.getJvmSettings() ));
+        result.setJvmSettings( (JvmSettings) select( dominant.getJvmSettings(), recessive.getJvmSettings() ) );
 
         return result;
     }

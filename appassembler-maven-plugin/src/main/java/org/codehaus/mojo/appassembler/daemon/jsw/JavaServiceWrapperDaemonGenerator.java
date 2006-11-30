@@ -11,6 +11,7 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -36,7 +37,7 @@ public class JavaServiceWrapperDaemonGenerator
     // DaemonGenerator Implementation
     // -----------------------------------------------------------------------
 
-    public void generate( Daemon stubDaemon, MavenProject project, ArtifactRepository localRepository,
+    public void generate( Daemon daemon, MavenProject project, ArtifactRepository localRepository,
                           File outputDirectory )
         throws DaemonGeneratorException
     {
@@ -50,17 +51,17 @@ public class JavaServiceWrapperDaemonGenerator
         InputStreamReader reader = new InputStreamReader( in );
 
         Map context = new HashMap();
-        context.put( "MAINCLASS", stubDaemon.getMainClass() );
+        context.put( "MAINCLASS", daemon.getMainClass() );
         context.put( "CLASSPATH", constructClasspath( project ) );
         context.put( "ADDITIONAL", "" );
-        context.put( "INITIAL_MEMORY", "" );
-        context.put( "MAX_MEMORY", "" );
-        context.put( "PARAMETERS", createParameters( stubDaemon, project ) );
+        context.put( "INITIAL_MEMORY", getInitialMemorySize( daemon ) );
+        context.put( "MAX_MEMORY", getMaxMemorySize( daemon ) );
+        context.put( "PARAMETERS", createParameters( daemon, project ) );
 
         InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context, "@", "@" );
 
         outputDirectory = new File( outputDirectory, "etc" );
-        File outputFile = new File( outputDirectory, stubDaemon.getId() + "-wrapper.conf" );
+        File outputFile = new File( outputDirectory, daemon.getId() + "-wrapper.conf" );
         FileWriter out = null;
 
         try
@@ -90,6 +91,28 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
+    private String getInitialMemorySize( Daemon daemon )
+    {
+        if ( daemon.getJvmSettings() == null ||
+            StringUtils.isNotEmpty( daemon.getJvmSettings().getInitialMemorySize() ) )
+        {
+            return null;
+        }
+
+        return daemon.getJvmSettings().getInitialMemorySize();
+    }
+
+    private String getMaxMemorySize( Daemon daemon )
+    {
+        if ( daemon.getJvmSettings() == null ||
+            StringUtils.isNotEmpty( daemon.getJvmSettings().getMaxMemorySize() ) )
+        {
+            return null;
+        }
+
+        return daemon.getJvmSettings().getMaxMemorySize();
+    }
+
     // -----------------------------------------------------------------------
     // Private
     // -----------------------------------------------------------------------
@@ -115,8 +138,20 @@ public class JavaServiceWrapperDaemonGenerator
         return string.toString();
     }
 
-    private String createParameters( Daemon stubDaemon, MavenProject project )
+    private String createParameters( Daemon daemon, MavenProject project )
     {
-        return "wrapper.app.parameter.1=" + stubDaemon.getMainClass();
+        StringWriter buffer = new StringWriter();
+        PrintWriter writer = new PrintWriter( buffer );
+
+        writer.println( "wrapper.app.parameter.1=" + daemon.getMainClass() );
+        int i = 2;
+        for ( Iterator it = daemon.getCommandLineArguments().iterator(); it.hasNext(); i++ )
+        {
+            String argument = (String) it.next();
+
+            writer.println( "wrapper.app.parameter." + i + "=" + argument );
+        }
+
+        return buffer.toString();
     }
 }
