@@ -14,12 +14,11 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
+ * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
+ * @version $Id$
  * @goal generate-daemons
  * @requiresDependencyResolution runtime
  * @phase generate-resources
- *
- * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public class GenerateDaemonsMojo
     extends AbstractMojo
@@ -35,17 +34,25 @@ public class GenerateDaemonsMojo
     private Set daemons;
 
     /**
+     * @parameter
+     */
+    private JvmSettings defaultJvmSettings;
+
+    /**
      * @parameter expression="${basedir}"
+     * @required
      */
     private File basedir;
 
     /**
      * @parameter expression="${project.build.directory}"
+     * @required
      */
     private File target;
 
     /**
      * @parameter expression="${project}"
+     * @required
      */
     private MavenProject project;
 
@@ -93,6 +100,17 @@ public class GenerateDaemonsMojo
                 }
 
                 // -----------------------------------------------------------------------
+                //
+                // -----------------------------------------------------------------------
+
+                org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings = null;
+
+                if ( defaultJvmSettings != null )
+                {
+                    modelJvmSettings = convertJvmSettings( defaultJvmSettings );
+                }
+
+                // -----------------------------------------------------------------------
                 // Create a daemon object from the POM configuration
                 // -----------------------------------------------------------------------
 
@@ -104,6 +122,15 @@ public class GenerateDaemonsMojo
                 modelDaemon.setMainClass( daemon.getMainClass() );
                 modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
 
+                if ( daemon.getJvmSettings() != null )
+                {
+                    modelDaemon.setJvmSettings( convertJvmSettings( daemon.getJvmSettings() ) );
+                }
+                else
+                {
+                    modelDaemon.setJvmSettings( modelJvmSettings );
+                }
+
                 // -----------------------------------------------------------------------
                 //
                 // -----------------------------------------------------------------------
@@ -114,7 +141,8 @@ public class GenerateDaemonsMojo
 
                     File output = new File( new File( target, "generated-resources" ), platform );
 
-                    daemonGeneratorService.generateDaemon( platform, descriptor, modelDaemon, output, project, localRepository );
+                    daemonGeneratorService.generateDaemon( platform, descriptor, modelDaemon, output, project,
+                                                           localRepository );
                 }
             }
         }
@@ -122,5 +150,17 @@ public class GenerateDaemonsMojo
         {
             throw new MojoExecutionException( "Error while generating daemon.", e );
         }
+    }
+
+    private org.codehaus.mojo.appassembler.model.JvmSettings convertJvmSettings( JvmSettings jvmSettings )
+    {
+        org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings =
+            new org.codehaus.mojo.appassembler.model.JvmSettings();
+
+        modelJvmSettings.setInitialMemorySize( jvmSettings.getInitialMemorySize() );
+        modelJvmSettings.setMaxMemorySize( jvmSettings.getMaxMemorySize() );
+        modelJvmSettings.setMaxStackSize( jvmSettings.getMaxStackSize() );
+
+        return modelJvmSettings;
     }
 }

@@ -1,8 +1,9 @@
 package org.codehaus.mojo.appassembler.daemon;
 
-import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.model.JvmSettings;
 
 import java.io.File;
 
@@ -18,8 +19,8 @@ public interface DaemonGeneratorService
                          ArtifactRepository localRepository )
         throws DaemonGeneratorException;
 
-    void generateDaemon( String platform, File stubDescriptor, Daemon stubDaemon, File outputDirectory, MavenProject mavenProject,
-                         ArtifactRepository localRepository )
+    void generateDaemon( String platform, File stubDescriptor, Daemon stubDaemon, File outputDirectory,
+                         MavenProject mavenProject, ArtifactRepository localRepository )
         throws DaemonGeneratorException;
 
     Daemon mergeDaemons( Daemon dominant, Daemon recessive )

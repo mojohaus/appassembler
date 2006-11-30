@@ -76,17 +76,12 @@
       <version>1.0.0+</version>
       <fields>
         <field>
-          <name>minMemorySize</name>
+          <name>initialMemorySize</name>
           <version>1.0.0+</version>
           <type>String</type>
         </field>
         <field>
           <name>maxMemorySize</name>
-          <version>1.0.0+</version>
-          <type>String</type>
-        </field>
-        <field>
-          <name>minStackSize</name>
           <version>1.0.0+</version>
           <type>String</type>
         </field>

@@ -1,3 +1,8 @@
 <daemon>
   <mainClass>com.westerngeco.example.App</mainClass>
+  <jvmSettings>
+    <initialMemorySize>345</initialMemorySize>
+    <maxMemorySize>234</maxMemorySize>
+    <maxStackSize>321</maxStackSize>
+  </jvmSettings>
 </daemon>

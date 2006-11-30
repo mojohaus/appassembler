@@ -115,12 +115,11 @@ public class GenericDaemonGenerator
 
         JvmSettings complete = new JvmSettings();
 
-        complete.setMinMemorySize( mergeString( stubJvmSettings.getMinMemorySize(), defaultJvmSettings.getMinMemorySize() ));
+        complete.setInitialMemorySize( mergeString( stubJvmSettings.getInitialMemorySize(), defaultJvmSettings.getInitialMemorySize() ));
         complete.setMaxMemorySize( mergeString( stubJvmSettings.getMaxMemorySize(), defaultJvmSettings.getMaxMemorySize() ));
-        complete.setMinStackSize( mergeString( stubJvmSettings.getMinStackSize(), defaultJvmSettings.getMinStackSize() ));
         complete.setMaxStackSize( mergeString( stubJvmSettings.getMaxStackSize(), defaultJvmSettings.getMaxStackSize() ));
 
-        return defaultJvmSettings;
+        return complete;
     }
 
     private String mergeString( String stub, String defaultString )
