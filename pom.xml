@@ -5,7 +5,7 @@
   <parent>
     <artifactId>mojo</artifactId>
     <groupId>org.codehaus.mojo</groupId>
-    <version>13-SNAPSHOT</version>
+    <version>12</version>
   </parent>
   <artifactId>appassembler</artifactId>
   <packaging>pom</packaging>
