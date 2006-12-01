@@ -6,7 +6,7 @@ import org.codehaus.plexus.util.FileUtils;
 import java.io.File;
 
 /**
- * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class GenericDaemonGeneratorTest

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  * @plexus.component role-hint="generic"
  */

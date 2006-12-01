@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  * @goal generate-daemons
  * @requiresDependencyResolution runtime

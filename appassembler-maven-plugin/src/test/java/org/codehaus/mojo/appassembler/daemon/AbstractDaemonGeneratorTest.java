@@ -15,7 +15,7 @@ import org.apache.maven.profiles.DefaultProfileManager;
 import java.io.File;
 
 /**
- * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public abstract class AbstractDaemonGeneratorTest

@@ -4,7 +4,7 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.mojo.appassembler.model.Daemon;
 
 /**
- * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
+ * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class DaemonGeneratorServiceTest
