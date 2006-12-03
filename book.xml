@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<book>
+  <title>Appassembler User Manual</title>
+
+  <bookinfo>
+    <author>
+      <firstname>Kristian</firstname>
+
+      <surname>Nordal</surname>
+
+      <email>kristian.nordal@gmail.com</email>
+    </author>
+
+    <author>
+      <firstname>Trygve</firstname>
+
+      <surname>Laugstol</surname>
+
+      <email>trygvis@inamo.no</email>
+    </author>
+
+    <date>December 2006</date>
+
+    <copyright>
+      <year>2006</year>
+
+      <holder>The Codehaus</holder>
+    </copyright>
+  </bookinfo>
+
+  <preface>
+    <title>Preface</title>
+
+    <para>Writing good and end-to-end portable applications in java has always
+    been a pain because of the missing OS abstractions. The main goal of the
+    Appassembler Maven plug-in is to try to remove some of this pain through
+    an application descriptor and a set of Maven mojos.</para>
+  </preface>
+
+  <chapter>
+    <title>Overview</title>
+
+    <section>
+      <title>Goals</title>
+
+      <para>The Application Assembler plugin is a maven plugin for generating
+      launcher scripts for java applications. It supports creating scripts for
+      both normal applications that are launched from the command line and
+      daemons that can be controlled by the normal ways of the operating
+      system.</para>
+
+      <para>The plugin can be configured to include dependencies and the
+      artifact of the project itself. This makes it very easy to make
+      standalone packages if combined with the assembly plugin. The scripts
+      will include references to the repository automatically so no user
+      configuration is required.</para>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Usage</title>
+
+    <para>This chapter is intended to provide a brief introduction for using
+    the appassembler-maven-plugin.</para>
+
+    <section>
+      <title>Creating Application Wrappers</title>
+
+      <para>The following is a basic configuration of the plugin, and an
+      example of usage based on a project generated with:</para>
+
+      <programlisting>mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app</programlisting>
+
+      <figure>
+        <title>archetype example</title>
+
+        <programlisting>&lt;project&gt;
+  ...
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+        &lt;artifactId&gt;appassembler-maven-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;programs&gt;
+            &lt;program&gt;
+              &lt;mainClass&gt;com.mycompany.app.App&lt;/mainClass&gt;
+              &lt;name&gt;app&lt;/name&gt;
+            &lt;/program&gt;
+          &lt;/programs&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</programlisting>
+      </figure>
+
+      <para>Now build the binary</para>
+
+      <programlisting>$ mvn package appassembler:assemble
+...
+$ sh target/appassembler/bin/app
+Hello World!</programlisting>
+
+      <itemizedlist>
+        <listitem>
+          <para>All dependencies and the artifact itself are placed in the
+          defined assemble directory (defaults to
+          <literal>${project.build.directory/appassembler}</literal>).</para>
+        </listitem>
+
+        <listitem>
+          <para>A <literal>bin/</literal> directory is created in the assemble
+          directory and the generated bin scripts are placed in that directory
+          (defaults to both unix shell scripts and Windows bat files).</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The following is a configuration example with more of the
+      available options set.</para>
+
+      <programlisting><?db-font-size 75% ?>&lt;project&gt;
+...
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+        &lt;artifactId&gt;appassembler-maven-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;!-- Include etc/ in the beginning of the classpath declaration in the bin scripts --&gt;
+          &lt;includeConfigurationDirectoryInClasspath&gt;true&lt;/includeConfigurationDirectoryInClasspath&gt;
+          &lt;!-- prefix all bin files with "mycompany" --&gt;
+          &lt;binPrefix&gt;mycompany&lt;/binPrefix&gt;
+          &lt;!-- set alternative assemble directory --&gt;
+          &lt;assembleDirectory&gt;${project.build.directory}/mycompany-assemble&lt;/assembleDirectory&gt;
+          &lt;!-- Extra JVM arguments that will be included in the bin scripts --&gt;
+          &lt;extraJvmArguments&gt;-Xms128m&lt;/extraJvmArguments&gt; 
+          &lt;!-- Generate bin scripts for windows and unix pr default --&gt;
+          &lt;platforms&gt;
+            &lt;platform&gt;windows&lt;/platform&gt;
+            &lt;platform&gt;unix&lt;/platform&gt;
+          &lt;/platforms&gt;
+          &lt;programs&gt;
+            &lt;program&gt;
+              &lt;mainClass&gt;com.mycompany.app.WindowsApp1&lt;/mainClass&gt;
+              &lt;name&gt;app1&lt;/name&gt;
+              &lt;!-- Only generate windows bat script for this application --&gt;
+              &lt;platforms&gt;
+                &lt;platform&gt;windows&lt;/platform&gt;
+              &lt;/platforms&gt;
+            &lt;/program&gt;
+            &lt;program&gt;
+              &lt;mainClass&gt;com.mycompany.app.UnixApp2&lt;/mainClass&gt;
+              &lt;name&gt;app2&lt;/name&gt;
+              &lt;!-- Only generate unix shell script for this application --&gt;
+              &lt;platforms&gt;
+                &lt;platform&gt;unix&lt;/platform&gt;
+              &lt;/platforms&gt;
+            &lt;/program&gt;
+            &lt;program&gt;
+              &lt;mainClass&gt;com.mycompany.app.App3&lt;/mainClass&gt;
+              &lt;name&gt;app3&lt;/name&gt;
+            &lt;/program&gt;
+            &lt;program&gt;
+              &lt;mainClass&gt;com.mycompany.app.App4&lt;/mainClass&gt;
+              &lt;name&gt;app4&lt;/name&gt;
+            &lt;/program&gt;
+          &lt;/programs&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</programlisting>
+
+      <para>Usage:</para>
+
+      <programlisting>$ mvn package appassembler:assemble
+...
+$ sh target/mycompany-assemble/bin/mycompanyapp2
+Hello World!</programlisting>
+    </section>
+
+    <section>
+      <title>Generating Daemon Wrappers</title>
+
+      <para>Writing scripts for running Java servers as daemons has always
+      been a pain, in particular when a large set of platforms has to be
+      supported. The appassembler plugin has some support in generating this
+      kind of scripts for you.</para>
+
+      <section>
+        <title>Daemon Type Overview</title>
+
+        <para>The plugin support a diverse set of wrappers and methods.</para>
+
+        <para></para>
+
+        <section>
+          <title>The <literal>generic</literal> Wrapper</title>
+
+          <para></para>
+        </section>
+
+        <section>
+          <title>The <literal>jsw</literal> (Java Service Wrapper)
+          Wrapper</title>
+
+          <para></para>
+        </section>
+
+        <section>
+          <title>The <literal>shell</literal> Wrapper</title>
+
+          <note>
+            <para>This daemon is currently not implemented</para>
+          </note>
+
+          <para>The <literal>shell</literal> daemon type generates traditional
+          UNIX shell scripts that are installed under
+          <literal>/etc/init.d</literal>.</para>
+        </section>
+
+        <section>
+          <title>The <literal>smf</literal> (Service Management Facility)
+          Wrapper</title>
+
+          <note>
+            <para>This daemon is currently not implemented</para>
+          </note>
+
+          <para>Solaris 10 has a new mechanism for launching and controlling
+          daemons called SMF. Instead of relying on normal
+          <literal>/etc/init.d</literal> scripts it uses an XML file to
+          describe how to start, stop, restart and refresh the
+          configuration.</para>
+        </section>
+      </section>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>The Runtime Contract</title>
+
+    <para>The behaviour of the generated wrappers can be changed at
+    runtime</para>
+
+    <note>
+      <para>Not all wrappers obey all parts of this contract</para>
+    </note>
+
+    <section>
+      <title>Environment Variables</title>
+
+      <section>
+        <title><literal>PATH</literal></title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title><literal>UID</literal> and <literal>GID</literal></title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title><literal>JAVA_HOME</literal></title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Java System Properties</title>
+
+      <section>
+        <title><literal>basedir</literal></title>
+
+        <para>The basedir property will be set to the installation directory
+        of the program, i.e. the directory above the binary.</para>
+
+        <para>If the application is installed under
+        <literal>/opt/my-app</literal> and is started as
+        <literal>/opt/my-app/bin/domniate-world</literal> the basedir property
+        will be set to <literal>/opt/my-app</literal>.</para>
+      </section>
+
+      <section>
+        <title><literal>app.pid</literal></title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>app.name</title>
+
+        <note>
+          <para>This should be renamed to app.id</para>
+        </note>
+      </section>
+    </section>
+
+    <section>
+      <title>Other files</title>
+
+      <section>
+        <title>etc/environment</title>
+
+        <note>
+          <para>This file is not used on windows. Need to figure out a clever
+          way to do the same on windows</para>
+        </note>
+
+        <para>This file will be sourced by the bash scripts if present. As it
+        is sourced early in the generated scripts, any settings in the
+        <literal>environment</literal> file will override the settings from
+        the environment. This file is very useful for administrators that want
+        to customize the runtime settings of an application.</para>
+      </section>
+    </section>
+  </chapter>
+</book>

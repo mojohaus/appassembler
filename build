@@ -1,0 +1,5 @@
+java -jar /export/home/trygvis/tmp/xalan-j_2_7_0/xalan.jar \
+  -XSL extra-styles.xsl \
+  -IN book.xml \
+  -OUT book.fo
+/export/home/trygvis/tmp/fop-0.92beta/fop book.fo -pdf book.pdf
