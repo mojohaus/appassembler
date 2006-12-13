@@ -2,6 +2,9 @@ package org.codehaus.mojo.appassembler.daemon;
 
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.model.JvmSettings;
+
+import java.io.File;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -15,9 +18,12 @@ public class DaemonGeneratorServiceTest
     {
         DaemonGeneratorService generatorService = (DaemonGeneratorService) lookup( DaemonGeneratorService.ROLE );
 
+        File stubDescriptor = getTestFile( "src/test/resources/model-1.xml" );
+        assertTrue( stubDescriptor.canRead() );
+
         try
         {
-            generatorService.loadModel( getTestFile( "src/test/resources/model-1.xml" ) );
+            generatorService.loadModel( stubDescriptor );
 
             fail( "Expected exception." );
         }
@@ -92,5 +98,43 @@ public class DaemonGeneratorServiceTest
         dominant.getCommandLineArguments().add( "1" );
         dominant.getCommandLineArguments().add( "2" );
         assertEquals( 2, generatorService.mergeDaemons( dominant, recessive ).getCommandLineArguments().size() );
+
+        // -----------------------------------------------------------------------
+        // System properties
+        // -----------------------------------------------------------------------
+
+        dominant = new Daemon();
+        recessive = new Daemon();
+        assertNull( generatorService.mergeDaemons( dominant, recessive ).getJvmSettings() );
+
+        JvmSettings settings = new JvmSettings();
+        dominant.setJvmSettings( settings );
+        assertEquals( settings, generatorService.mergeDaemons( dominant, recessive ).getJvmSettings() );
+        recessive.setJvmSettings( settings );
+        assertEquals( settings, generatorService.mergeDaemons( dominant, recessive ).getJvmSettings() );
+
+        dominant = new Daemon();
+        recessive = new Daemon();
+        dominant.setJvmSettings( new JvmSettings() );
+        recessive.setJvmSettings( new JvmSettings() );
+        dominant.getJvmSettings().addSystemProperty( "1" );
+        dominant.getJvmSettings().addSystemProperty( "2" );
+        JvmSettings mergedSettings = generatorService.mergeDaemons( dominant, recessive ).getJvmSettings();
+        assertEquals( 2, mergedSettings.getSystemProperties().size() );
+
+        dominant = new Daemon();
+        recessive = new Daemon();
+        dominant.setJvmSettings( new JvmSettings() );
+        recessive.setJvmSettings( new JvmSettings() );
+        dominant.getJvmSettings().addSystemProperty( "1" );
+        dominant.getJvmSettings().addSystemProperty( "2" );
+        dominant.getJvmSettings().addSystemProperty( "3" );
+        recessive.getJvmSettings().addSystemProperty( "a" );
+        recessive.getJvmSettings().addSystemProperty( "b" );
+        mergedSettings = generatorService.mergeDaemons( dominant, recessive ).getJvmSettings();
+        assertEquals( 3, mergedSettings.getSystemProperties().size() );
+        assertEquals( "1", mergedSettings.getSystemProperties().get( 0 ) );
+        assertEquals( "2", mergedSettings.getSystemProperties().get( 1 ) );
+        assertEquals( "3", mergedSettings.getSystemProperties().get( 2 ) );
     }
 }

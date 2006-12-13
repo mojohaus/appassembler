@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.IOException;
+import java.io.CharArrayWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class JavaServiceWrapperDaemonGenerator
         Map context = new HashMap();
         context.put( "MAINCLASS", daemon.getMainClass() );
         context.put( "CLASSPATH", constructClasspath( project ) );
-        context.put( "ADDITIONAL", "" );
+        context.put( "ADDITIONAL", constructAdditional( daemon ) );
         context.put( "INITIAL_MEMORY", getInitialMemorySize( daemon ) );
         context.put( "MAX_MEMORY", getMaxMemorySize( daemon ) );
         context.put( "PARAMETERS", createParameters( daemon, project ) );
@@ -91,26 +92,44 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
+    private String constructAdditional( Daemon daemon )
+    {
+        if ( daemon.getJvmSettings() == null )
+        {
+            return "";
+        }
+
+        int i = 1;
+        CharArrayWriter output = new CharArrayWriter();
+        PrintWriter writer = new PrintWriter( output );
+        for ( Iterator it = daemon.getJvmSettings().getSystemProperties().iterator(); it.hasNext(); i++ )
+        {
+            String systemProperty = (String) it.next();
+            writer.println( "wrapper.java.additional." + i + "=" + systemProperty );
+        }
+        return output.toString();
+    }
+
     private String getInitialMemorySize( Daemon daemon )
     {
         if ( daemon.getJvmSettings() == null ||
-            StringUtils.isNotEmpty( daemon.getJvmSettings().getInitialMemorySize() ) )
+            StringUtils.isEmpty( daemon.getJvmSettings().getInitialMemorySize() ) )
         {
-            return null;
+            return "";
         }
 
-        return daemon.getJvmSettings().getInitialMemorySize();
+        return "wrapper.java.initmemory=" + daemon.getJvmSettings().getInitialMemorySize();
     }
 
     private String getMaxMemorySize( Daemon daemon )
     {
         if ( daemon.getJvmSettings() == null ||
-            StringUtils.isNotEmpty( daemon.getJvmSettings().getMaxMemorySize() ) )
+            StringUtils.isEmpty( daemon.getJvmSettings().getMaxMemorySize() ) )
         {
-            return null;
+            return "";
         }
 
-        return daemon.getJvmSettings().getMaxMemorySize();
+        return "wrapper.java.maxmemory=" + daemon.getJvmSettings().getMaxMemorySize();
     }
 
     // -----------------------------------------------------------------------

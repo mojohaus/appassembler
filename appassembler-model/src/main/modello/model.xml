@@ -90,6 +90,14 @@
           <version>1.0.0+</version>
           <type>String</type>
         </field>
+        <field>
+          <name>systemProperties</name>
+          <version>1.0.0+</version>
+          <association>
+            <multiplicity>*</multiplicity>
+            <type>String</type>
+          </association>
+        </field>
       </fields>
     </class>
     <class>

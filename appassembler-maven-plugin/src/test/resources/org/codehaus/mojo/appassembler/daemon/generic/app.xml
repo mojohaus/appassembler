@@ -19,5 +19,9 @@
     <initialMemorySize>345</initialMemorySize>
     <maxMemorySize>234</maxMemorySize>
     <maxStackSize>321</maxStackSize>
+    <systemProperties>
+      <systemProperty>-Dfoo=bar</systemProperty>
+      <systemProperty>-Dtrygve=cool</systemProperty>
+    </systemProperties>
   </jvmSettings>
 </daemon>

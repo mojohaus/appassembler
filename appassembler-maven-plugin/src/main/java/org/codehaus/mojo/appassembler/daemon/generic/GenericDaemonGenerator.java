@@ -5,14 +5,13 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
-import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.mojo.appassembler.model.io.xpp3.AppassemblerModelXpp3Writer;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.Util;
+import org.codehaus.mojo.appassembler.daemon.merge.DaemonMerger;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -29,6 +28,11 @@ public class GenericDaemonGenerator
     extends AbstractLogEnabled
     implements DaemonGenerator
 {
+    /**
+     * @plexus.requirement
+     */
+    private DaemonMerger daemonMerger;
+
     // -----------------------------------------------------------------------
     // DaemonGenerator Implementation
     // -----------------------------------------------------------------------
@@ -37,9 +41,21 @@ public class GenericDaemonGenerator
                           File outputDirectory )
         throws DaemonGeneratorException
     {
-        Daemon mergedDaemon = mergeDaemon( stubDaemon, project, new JvmSettings() );
+        // -----------------------------------------------------------------------
+        // Create the daemon from the Maven project
+        // -----------------------------------------------------------------------
 
-        AppassemblerModelXpp3Writer writer = new AppassemblerModelXpp3Writer();
+        Daemon createdDaemon = createDaemon( project );
+
+        // -----------------------------------------------------------------------
+        // Merge the given stub daemon and the generated
+        // -----------------------------------------------------------------------
+
+        Daemon mergedDaemon = daemonMerger.mergeDaemons( stubDaemon, createdDaemon );
+
+        // -----------------------------------------------------------------------
+        // Write out the project
+        // -----------------------------------------------------------------------
 
         try
         {
@@ -47,7 +63,7 @@ public class GenericDaemonGenerator
 
             File outputFile = new File( outputDirectory, mergedDaemon.getId() + ".xml" );
 
-            writer.write( new FileWriter( outputFile ), mergedDaemon );
+            new AppassemblerModelXpp3Writer().write( new FileWriter( outputFile ), mergedDaemon );
         }
         catch ( IOException e )
         {
@@ -59,17 +75,17 @@ public class GenericDaemonGenerator
     // Private
     // -----------------------------------------------------------------------
 
-    private Daemon mergeDaemon( Daemon stub, MavenProject project, JvmSettings defaultJvmSettings )
+    private Daemon createDaemon( MavenProject project )
     {
         Daemon complete = new Daemon();
 
-        complete.setId( stub.getId() );
-
-        complete.setMainClass( stub.getMainClass() );
-
-        complete.setJvmSettings( mergeJvmSettings( stub.getJvmSettings(), defaultJvmSettings ) );
-
-        complete.setCommandLineArguments( stub.getCommandLineArguments() );
+//        complete.setId( stub.getId() );
+//
+//        complete.setMainClass( stub.getMainClass() );
+//
+//        complete.setJvmSettings( mergeJvmSettings( stub.getJvmSettings(), defaultJvmSettings ) );
+//
+//        complete.setCommandLineArguments( stub.getCommandLineArguments() );
 
         // -----------------------------------------------------------------------
         // Add the project itself as a dependency.
@@ -106,29 +122,29 @@ public class GenericDaemonGenerator
         return complete;
     }
 
-    private JvmSettings mergeJvmSettings( JvmSettings stubJvmSettings, JvmSettings defaultJvmSettings )
-    {
-        if ( stubJvmSettings == null )
-        {
-            return defaultJvmSettings;
-        }
-
-        JvmSettings complete = new JvmSettings();
-
-        complete.setInitialMemorySize( mergeString( stubJvmSettings.getInitialMemorySize(), defaultJvmSettings.getInitialMemorySize() ));
-        complete.setMaxMemorySize( mergeString( stubJvmSettings.getMaxMemorySize(), defaultJvmSettings.getMaxMemorySize() ));
-        complete.setMaxStackSize( mergeString( stubJvmSettings.getMaxStackSize(), defaultJvmSettings.getMaxStackSize() ));
-
-        return complete;
-    }
-
-    private String mergeString( String stub, String defaultString )
-    {
-        if ( StringUtils.isEmpty( stub ) )
-        {
-            return defaultString;
-        }
-
-        return stub;
-    }
+//    private JvmSettings mergeJvmSettings( JvmSettings stubJvmSettings, JvmSettings defaultJvmSettings )
+//    {
+//        if ( stubJvmSettings == null )
+//        {
+//            return defaultJvmSettings;
+//        }
+//
+//        JvmSettings complete = new JvmSettings();
+//
+//        complete.setInitialMemorySize( mergeString( stubJvmSettings.getInitialMemorySize(), defaultJvmSettings.getInitialMemorySize() ));
+//        complete.setMaxMemorySize( mergeString( stubJvmSettings.getMaxMemorySize(), defaultJvmSettings.getMaxMemorySize() ));
+//        complete.setMaxStackSize( mergeString( stubJvmSettings.getMaxStackSize(), defaultJvmSettings.getMaxStackSize() ));
+//
+//        return complete;
+//    }
+//
+//    private String mergeString( String stub, String defaultString )
+//    {
+//        if ( StringUtils.isEmpty( stub ) )
+//        {
+//            return defaultString;
+//        }
+//
+//        return stub;
+//    }
 }

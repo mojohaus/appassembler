@@ -29,6 +29,11 @@ public interface DaemonGeneratorService
     Daemon loadModel( File stubDescriptor )
         throws DaemonGeneratorException;
 
+    /**
+     * @param daemon The daemon to validate
+     * @param descriptor An optional file reference that will be used in the exception messages.
+     * @throws DaemonGeneratorException
+     */
     void validateDaemon( Daemon daemon, File descriptor )
         throws DaemonGeneratorException;
 }
