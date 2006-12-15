@@ -72,11 +72,6 @@ fi
 BASEDIR=`dirname $0`/..
 BASEDIR=`(cd "$BASEDIR"; pwd)`
 
-BASEDIR=`cd "$BASEDIR" && pwd`
-
-# Change directory to the basedir
-cd "$BASEDIR"
-
 if [ -z "$REPO" ]
 then
   REPO="$BASEDIR"/repo
