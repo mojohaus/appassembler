@@ -2,9 +2,11 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <book>
-  <title>Appassembler User Manual</title>
-
   <bookinfo>
+    <title>Appassembler User Manual</title>
+
+    <titleabbrev>Appassembler title</titleabbrev>
+
     <author>
       <firstname>Kristian</firstname>
 
@@ -16,7 +18,7 @@
     <author>
       <firstname>Trygve</firstname>
 
-      <surname>Laugstol</surname>
+      <surname>Laugstøl</surname>
 
       <email>trygvis@inamo.no</email>
     </author>
@@ -33,10 +35,10 @@
   <preface>
     <title>Preface</title>
 
-    <para>Writing good and end-to-end portable applications in java has always
+    <para>Writing good an end to end portable applications in Java has always
     been a pain because of the missing OS abstractions. The main goal of the
     Appassembler Maven plug-in is to try to remove some of this pain through
-    an application descriptor and a set of Maven mojos.</para>
+    an application descriptor and a set of Maven Mojos.</para>
   </preface>
 
   <chapter>
@@ -46,7 +48,7 @@
       <title>Goals</title>
 
       <para>The Application Assembler plugin is a maven plugin for generating
-      launcher scripts for java applications. It supports creating scripts for
+      launcher scripts for Java applications. It supports creating scripts for
       both normal applications that are launched from the command line and
       daemons that can be controlled by the normal ways of the operating
       system.</para>
@@ -121,7 +123,7 @@ Hello World!</programlisting>
       <para>The following is a configuration example with more of the
       available options set.</para>
 
-      <programlisting><?db-font-size 75% ?>&lt;project&gt;
+      <programlisting><?db-font-size 75%?>&lt;project&gt;
 ...
   &lt;build&gt;
     &lt;plugins&gt;
