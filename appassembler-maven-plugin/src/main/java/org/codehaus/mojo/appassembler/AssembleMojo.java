@@ -500,7 +500,7 @@ public class AssembleMojo
                 {
                     String path = artifactRepositoryLayout.pathOf( artifact );
 
-                    path = path.replace("/", "\\");
+                    path = path.replace('/', '\\');
                     classPath += "%REPO%\\" + path + ";";
                 }
                 else
