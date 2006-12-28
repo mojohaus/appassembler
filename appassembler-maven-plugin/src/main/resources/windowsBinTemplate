@@ -1,19 +1,19 @@
 @REM ----------------------------------------------------------------------------
 @REM Copyright 2001-2004 The Apache Software Foundation.
-@REM 
+@REM
 @REM Licensed under the Apache License, Version 2.0 (the "License");
 @REM you may not use this file except in compliance with the License.
 @REM You may obtain a copy of the License at
-@REM 
+@REM
 @REM      http://www.apache.org/licenses/LICENSE-2.0
-@REM 
+@REM
 @REM Unless required by applicable law or agreed to in writing, software
 @REM distributed under the License is distributed on an "AS IS" BASIS,
 @REM WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 @REM See the License for the specific language governing permissions and
 @REM limitations under the License.
 @REM ----------------------------------------------------------------------------
-@REM 
+@REM
 
 @echo off
 
@@ -52,11 +52,11 @@ goto Win9xApp
 
 :Win9xGetScriptDir
 %0\
-cd %0\..\.. 
+cd %0\..\..
 goto setPaths
 
 :WinNTGetScriptDir
-cd /d %0\..\.. 
+cd /d %0\..\..
 goto setPaths
 
 :setPaths
@@ -71,7 +71,7 @@ goto endInit
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-java %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="#APP_NAME#" -Dbasedir="%BASEDIR%" #MAINCLASS# %CMD_LINE_ARGS%
+java %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="#APP_NAME#" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" #MAINCLASS# %CMD_LINE_ARGS%
 
 :error
 if "%OS%"=="Windows_NT" @endlocal

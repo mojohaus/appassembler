@@ -95,6 +95,7 @@ exec "$JAVACMD" $JAVA_OPTS \
   -classpath "$CLASSPATH" \
   -Dapp.name="@APP_NAME@" \
   -Dapp.pid="$$" \
+  -Dapp.repo="$REPO" \
   -Dbasedir="$BASEDIR" \
   @MAINCLASS@ \
   "$@"
