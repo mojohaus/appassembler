@@ -1,6 +1,6 @@
 package org.codehaus.mojo.appassembler;
 
-/** 
+/**
  * The MIT License
  *
  * Copyright 2005-2006 The Codehaus.
@@ -179,9 +179,9 @@ public class AssembleMojo
     //
     // ----------------------------------------------------------------------
 
-    private PlatformUtil windowsPlatformUtil = new PlatformUtil(true);
+    private PlatformUtil windowsPlatformUtil = new PlatformUtil( true );
 
-    private PlatformUtil unixPlatformUtil = new PlatformUtil(false);
+    private PlatformUtil unixPlatformUtil = new PlatformUtil( false );
 
     private boolean defaultPlatformWindows = true;
 
@@ -198,11 +198,11 @@ public class AssembleMojo
         // Create new repository for dependencies
         // ----------------------------------------------------------------------
 
-        if ( repositoryLayout == null || repositoryLayout.equals("default") )
+        if ( repositoryLayout == null || repositoryLayout.equals( "default" ) )
         {
             artifactRepositoryLayout = new DefaultRepositoryLayout();
         }
-        else if ( repositoryLayout.equals("legacy") )
+        else if ( repositoryLayout.equals( "legacy" ) )
         {
             artifactRepositoryLayout = new LegacyRepositoryLayout();
         }
@@ -220,11 +220,12 @@ public class AssembleMojo
         validPlatforms.add( "windows" );
         validPlatforms.add( "unix" );
 
-        if ( platforms != null ) {
+        if ( platforms != null )
+        {
             if ( !validPlatforms.containsAll( platforms ) )
             {
                 throw new MojoFailureException(
-                        "Non-valid default platform declared, supported types are: 'all', 'windows' and 'unix'" );
+                    "Non-valid default platform declared, supported types are: 'all', 'windows' and 'unix'" );
             }
 
             defaultPlatformWindows = false;
@@ -250,7 +251,7 @@ public class AssembleMojo
         // Validate Programs
         // ----------------------------------------------------------------------
 
-        for (Iterator i = programs.iterator(); i.hasNext();)
+        for ( Iterator i = programs.iterator(); i.hasNext(); )
         {
             Program program = (Program) i.next();
 
@@ -281,8 +282,8 @@ public class AssembleMojo
         // validate input and set defaults
         validate();
 
-        artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler",
-            "file://" + assembleDirectory.getAbsolutePath() + "/repo", artifactRepositoryLayout, false );
+        artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://" +
+            assembleDirectory.getAbsolutePath() + "/repo", artifactRepositoryLayout, false );
 
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
@@ -357,7 +358,7 @@ public class AssembleMojo
             // Necessary for the artifact's baseVersion to be set correctly
             // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
             artifact.isSnapshot();
-            
+
             artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
         }
         catch ( ArtifactInstallationException e )
@@ -370,8 +371,8 @@ public class AssembleMojo
     // Create bin file
     // ----------------------------------------------------------------------
 
-    private void createBinScript(Program program, PlatformUtil platformUtil )
-            throws MojoExecutionException
+    private void createBinScript( Program program, PlatformUtil platformUtil )
+        throws MojoExecutionException
     {
         try
         {
@@ -382,11 +383,14 @@ public class AssembleMojo
             Map context = new HashMap();
             context.put( "MAINCLASS", program.getMainClass() );
             context.put( "CLASSPATH", platformUtil.getClassPath() );
-            context.put( "EXTRA_JVM_ARGUMENTS", StringUtils.clean( extraJvmArguments ) );
+            context.put( "EXTRA_JVM_ARGUMENTS", platformUtil.getExtraJvmArguments() );
             context.put( "APP_NAME", program.getName() );
 
             InterpolationFilterReader interpolationFilterReader =
-                    new InterpolationFilterReader( reader, context, platformUtil.getInterpolationToken(), platformUtil.getInterpolationToken() );
+                new InterpolationFilterReader( reader,
+                                               context,
+                                               platformUtil.getInterpolationToken(),
+                                               platformUtil.getInterpolationToken() );
 
             // Set the name of the bin file
             String programName = "";
@@ -424,8 +428,8 @@ public class AssembleMojo
             }
             finally
             {
-                IOUtil.close(interpolationFilterReader);
-                IOUtil.close(out);
+                IOUtil.close( interpolationFilterReader );
+                IOUtil.close( out );
             }
         }
         catch ( FileNotFoundException e )
@@ -460,7 +464,7 @@ public class AssembleMojo
     }
 
     // ----------------------------------------------------------------------
-    // ClassPathUtil
+    // PlatformUtil
     // ----------------------------------------------------------------------
 
     private class PlatformUtil
@@ -477,8 +481,8 @@ public class AssembleMojo
             String classPath = "";
 
             // include the project's own artifact in the classpath
-            Set classPathArtifacts = new HashSet(artifacts);
-            classPathArtifacts.add(projectArtifact);
+            Set classPathArtifacts = new HashSet( artifacts );
+            classPathArtifacts.add( projectArtifact );
 
             if ( includeConfigurationDirectoryInClasspath )
             {
@@ -492,15 +496,15 @@ public class AssembleMojo
                 }
             }
 
-            for (Iterator it = classPathArtifacts.iterator(); it.hasNext();)
+            for ( Iterator it = classPathArtifacts.iterator(); it.hasNext(); )
             {
                 Artifact artifact = (Artifact) it.next();
 
-                if (isWindows)
+                if ( isWindows )
                 {
                     String path = artifactRepositoryLayout.pathOf( artifact );
 
-                    path = path.replace('/', '\\');
+                    path = path.replace( '/', '\\' );
                     classPath += "%REPO%\\" + path + ";";
                 }
                 else
@@ -546,6 +550,24 @@ public class AssembleMojo
             {
                 return "";
             }
+        }
+
+        public String getExtraJvmArguments()
+        {
+            extraJvmArguments = StringUtils.clean( extraJvmArguments );
+
+            String repo;
+
+            if ( isWindows )
+            {
+                repo = "%REPO%";
+            }
+            else
+            {
+                repo = "\"\\$REPO\"";
+            }
+
+            return extraJvmArguments.replaceAll( "#REPO#", repo );
         }
     }
 }
