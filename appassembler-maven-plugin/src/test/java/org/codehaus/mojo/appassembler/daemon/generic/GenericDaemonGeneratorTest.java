@@ -2,7 +2,10 @@ package org.codehaus.mojo.appassembler.daemon.generic;
 
 import org.codehaus.mojo.appassembler.daemon.AbstractDaemonGeneratorTest;
 import org.codehaus.plexus.util.FileUtils;
+import org.w3c.dom.Document;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
 import java.io.File;
 
 /**
@@ -17,10 +20,22 @@ public class GenericDaemonGeneratorTest
     {
         runTest( "generic", "src/test/resources/project-1/pom.xml", "src/test/resources/project-1/descriptor.xml", "target/output-1-generic" );
 
-        File appXml = new File( getTestFile( "target/output-1-generic" ), "app.xml" );
+        File actualAppXml = new File( getTestFile( "target/output-1-generic" ), "app.xml" );
 
-        assertTrue( "config file is missing: " + appXml.getAbsolutePath(), appXml.isFile());
+        assertTrue( "config file is missing: " + actualAppXml.getAbsolutePath(), actualAppXml.isFile());
 
-        assertTrue( FileUtils.contentEquals( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/generic/app.xml" ), appXml ));
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+
+        File expectedAppXml = getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/generic/app.xml" );
+
+        builderFactory.setIgnoringComments( true );
+        builderFactory.setIgnoringElementContentWhitespace( true );
+        DocumentBuilder builder = builderFactory.newDocumentBuilder();
+
+        Document expected = builder.parse( expectedAppXml );
+        Document actual = builder.parse( actualAppXml );
+
+        boolean equal = expected.isEqualNode( actual );
+        assertTrue( "XML documents are not equal.", equal );
     }
 }

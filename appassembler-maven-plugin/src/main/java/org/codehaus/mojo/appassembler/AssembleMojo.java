@@ -77,7 +77,7 @@ public class AssembleMojo
 
     /**
      * @readonly
-     * @parameter expression="${project.artifacts}"
+     * @parameter expression="${project.runtimeArtifacts}"
      */
     private Set artifacts;
 

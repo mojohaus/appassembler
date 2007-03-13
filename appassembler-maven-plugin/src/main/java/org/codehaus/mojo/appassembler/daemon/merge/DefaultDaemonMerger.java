@@ -38,7 +38,7 @@ public class DefaultDaemonMerger
 
         result.setId( select( dominant.getId(), recessive.getId() ) );
         result.setMainClass( select( dominant.getMainClass(), recessive.getMainClass() ) );
-        result.setDependencies( select( dominant.getDependencies(), recessive.getDependencies() ) );
+        result.setClasspath( select( dominant.getClasspath(), recessive.getClasspath() ) );
         result.setCommandLineArguments(
             select( dominant.getCommandLineArguments(), recessive.getCommandLineArguments() ) );
         // This should probably be improved

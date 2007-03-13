@@ -2,16 +2,13 @@ package org.codehaus.mojo.appassembler.daemon;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.mojo.appassembler.model.io.xpp3.AppassemblerModelXpp3Reader;
 import org.codehaus.mojo.appassembler.daemon.merge.DaemonMerger;
+import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.model.io.DaemonModelUtil;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.StringUtils;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
 
@@ -101,30 +98,18 @@ public class DefaultDaemonGeneratorService
     public Daemon loadModel( File stubDescriptor )
         throws DaemonGeneratorException
     {
-        AppassemblerModelXpp3Reader reader = new AppassemblerModelXpp3Reader();
-
-        Daemon stubDaemon;
-
         try
         {
-            stubDaemon = reader.read( new FileReader( stubDescriptor ) );
-        }
-        catch ( XmlPullParserException e )
-        {
-            throw new DaemonGeneratorException( "Error parsing " + stubDescriptor.getAbsolutePath(), e );
-        }
-        catch ( FileNotFoundException e )
-        {
-            throw new DaemonGeneratorException( "No such file: " + stubDescriptor.getAbsolutePath() );
+            Daemon stubDaemon = DaemonModelUtil.loadModel( stubDescriptor );
+
+            validateDaemon( stubDaemon, stubDescriptor );
+
+            return stubDaemon;
         }
         catch ( IOException e )
         {
-            throw new DaemonGeneratorException( "Error while reading: " + stubDescriptor.getAbsolutePath() );
+            throw new DaemonGeneratorException( "Error while loading daemon descriptor from '" + stubDescriptor.getAbsolutePath() + "'.", e );
         }
-
-        validateDaemon( stubDaemon, stubDescriptor );
-
-        return stubDaemon;
     }
 
     public void validateDaemon( Daemon daemon, File descriptor )

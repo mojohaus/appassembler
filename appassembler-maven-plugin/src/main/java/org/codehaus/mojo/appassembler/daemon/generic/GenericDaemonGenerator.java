@@ -5,13 +5,14 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
-import org.codehaus.mojo.appassembler.model.io.xpp3.AppassemblerModelXpp3Writer;
+import org.codehaus.mojo.appassembler.model.io.DaemonModelUtil;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.Util;
 import org.codehaus.mojo.appassembler.daemon.merge.DaemonMerger;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -57,17 +58,25 @@ public class GenericDaemonGenerator
         // Write out the project
         // -----------------------------------------------------------------------
 
+        FileWriter writer = null;
+
         try
         {
             FileUtils.forceMkdir( outputDirectory );
 
             File outputFile = new File( outputDirectory, mergedDaemon.getId() + ".xml" );
 
-            new AppassemblerModelXpp3Writer().write( new FileWriter( outputFile ), mergedDaemon );
+            writer = new FileWriter( outputFile );
+
+            DaemonModelUtil.storeModel( mergedDaemon, outputFile );
         }
         catch ( IOException e )
         {
             throw new DaemonGeneratorException( "Error while writing output file: " + outputDirectory, e );
+        }
+        finally
+        {
+            IOUtil.close( writer );
         }
     }
 
@@ -91,7 +100,7 @@ public class GenericDaemonGenerator
         // Add the project itself as a dependency.
         // -----------------------------------------------------------------------
 
-        complete.setDependencies( new ArrayList() );
+        complete.setClasspath( new ArrayList() );
         Dependency projectDependency = new Dependency();
         Artifact projectArtifact = project.getArtifact();
         projectDependency.setGroupId( projectArtifact.getGroupId() );
@@ -99,7 +108,7 @@ public class GenericDaemonGenerator
         projectDependency.setVersion( projectArtifact.getVersion() );
         projectDependency.setClassifier( projectArtifact.getClassifier() );
         projectDependency.setRelativePath( Util.getRelativePath( projectArtifact ));
-        complete.getDependencies().add( projectDependency );
+        complete.getClasspath().add( projectDependency );
 
         // -----------------------------------------------------------------------
         // Add all the dependencies from the project.
@@ -116,7 +125,7 @@ public class GenericDaemonGenerator
             dependency.setClassifier( artifact.getClassifier() );
             dependency.setRelativePath( Util.getRelativePath( artifact ));
 
-            complete.getDependencies().add( dependency );
+            complete.getClasspath().add( dependency );
         }
 
         return complete;
