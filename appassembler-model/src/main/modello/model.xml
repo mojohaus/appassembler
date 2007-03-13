@@ -79,6 +79,13 @@
     <class>
       <name>ClasspathElement</name>
       <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>relativePath</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+      </fields>
     </class>
     <class>
       <name>Dependency</name>
@@ -105,24 +112,12 @@
           <version>1.0.0+</version>
           <type>String</type>
         </field>
-        <field>
-          <name>relativePath</name>
-          <version>1.0.0+</version>
-          <type>String</type>
-        </field>
       </fields>
     </class>
     <class>
       <name>Directory</name>
       <superClass>ClasspathElement</superClass>
       <version>1.0.0+</version>
-      <fields>
-        <field>
-          <name>relativePath</name>
-          <version>1.0.0+</version>
-          <type>String</type>
-        </field>
-      </fields>
     </class>
   </classes>
 </model>

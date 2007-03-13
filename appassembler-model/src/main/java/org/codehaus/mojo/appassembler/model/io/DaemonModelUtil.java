@@ -57,8 +57,6 @@ public class DaemonModelUtil
 
             Transformer transformer = transformerFactory.newTransformer();
 
-            transformer.transform( new DOMSource( dom ), new StreamResult( System.out ) );
-
             outputStream = new FileOutputStream( outputFile );
 
             transformer.transform( new DOMSource( dom ), new StreamResult( outputStream ) );
