@@ -338,6 +338,8 @@ public class DaemonModelUtil
                     }
                 }
             }
+
+            text = null;
         }
 
         // -----------------------------------------------------------------------
@@ -361,7 +363,10 @@ public class DaemonModelUtil
         addSimpleElement( daemon, "id", d.getId() );
         addSimpleElement( daemon, "mainClass", d.getMainClass() );
         daemon.appendChild( createClasspath( document.createElement( "classpath" ), d.getClasspath() ) );
-        daemon.appendChild( createJvmSettings( document.createElement( "jvmSettings" ), d.getJvmSettings() ) );
+        if ( d.getJvmSettings() != null )
+        {
+            daemon.appendChild( createJvmSettings( document.createElement( "jvmSettings" ), d.getJvmSettings() ) );
+        }
 
         return document;
     }
@@ -439,6 +444,11 @@ public class DaemonModelUtil
 
     private static void addSimpleElement( Element parent, String elementName, String value )
     {
+        if ( value == null || value.trim().length() == 0 )
+        {
+            return;
+        }
+
         Element element = parent.getOwnerDocument().createElement( elementName );
 
         parent.appendChild( element );

@@ -18,12 +18,12 @@ public class DaemonModelUtilTest
 {
     private static final String PREFIX = "src/test/resources/org/codehaus/mojo/appassembler/model/io";
 
-    public void testParsing()
+    public void testParsingModel1()
         throws Exception
     {
         Daemon daemon = DaemonModelUtil.loadModel( PlexusTestCase.getTestFile( PREFIX + "/model-1.xml" ) );
 
-        doAsserts( daemon );
+        doAsserts1( daemon );
 
         // -----------------------------------------------------------------------
         // Write out the model to a file
@@ -39,10 +39,34 @@ public class DaemonModelUtilTest
 
         daemon = DaemonModelUtil.loadModel( outputFile );
 
-        doAsserts( daemon );
+        doAsserts1( daemon );
     }
 
-    private void doAsserts( Daemon daemon )
+    public void testParsingModel2()
+        throws Exception
+    {
+        Daemon daemon = DaemonModelUtil.loadModel( PlexusTestCase.getTestFile( PREFIX + "/model-2.xml" ) );
+
+        doAsserts2( daemon );
+
+        // -----------------------------------------------------------------------
+        // Write out the model to a file
+        // -----------------------------------------------------------------------
+
+        File outputFile = PlexusTestCase.getTestFile( "target/model-2.xml" );
+
+        DaemonModelUtil.storeModel( daemon, outputFile );
+
+        // -----------------------------------------------------------------------
+        // And load it again and make sure that the serializer does the job too
+        // -----------------------------------------------------------------------
+
+        daemon = DaemonModelUtil.loadModel( outputFile );
+
+        doAsserts2( daemon );
+    }
+
+    private void doAsserts1( Daemon daemon )
     {
         assertNotNull( daemon );
         assertEquals( "app", daemon.getId() );
@@ -70,5 +94,28 @@ public class DaemonModelUtilTest
         assertNotNull( jvmSettings.getSystemProperties() );
         assertEquals( "-Dfoo=bar", jvmSettings.getSystemProperties().get( 0 ) );
         assertEquals( "-Dtrygve=cool", jvmSettings.getSystemProperties().get( 1 ) );
+    }
+
+    private void doAsserts2( Daemon daemon )
+    {
+        assertNotNull( daemon );
+        assertEquals( "app", daemon.getId() );
+        assertEquals( "com.westerngeco.example.App", daemon.getMainClass() );
+        assertNotNull( daemon.getClasspath() );
+        assertEquals( 3, daemon.getClasspath().size() );
+        assertEquals( Dependency.class, daemon.getClasspath().get( 0 ).getClass() );
+        Dependency dependency = (Dependency) daemon.getClasspath().get( 0 );
+        assertEquals( "org.codehaus.mojo.appassembler", dependency.getGroupId() );
+        assertEquals( "project-1", dependency.getArtifactId() );
+        assertEquals( "1.0-SNAPSHOT", dependency.getVersion() );
+        assertEquals( "org/codehaus/mojo/appassembler/project-1/1.0-SNAPSHOT/project-1-1.0-SNAPSHOT.jar", dependency.getRelativePath() );
+        dependency = (Dependency) daemon.getClasspath().get( 1 );
+        assertEquals( "org.codehaus.plexus", dependency.getGroupId() );
+        assertEquals( "plexus-utils", dependency.getArtifactId() );
+        assertEquals( "1.1", dependency.getVersion() );
+        assertEquals( "org/codehaus/plexus/plexus-utils/1.1/plexus-utils-1.1.jar", dependency.getRelativePath() );
+        Directory directory = (Directory) daemon.getClasspath().get( 2 );
+        assertEquals( "etc", directory.getRelativePath() );
+        assertNull( daemon.getJvmSettings() );
     }
 }
