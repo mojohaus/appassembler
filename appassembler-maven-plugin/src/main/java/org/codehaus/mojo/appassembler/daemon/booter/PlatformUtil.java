@@ -125,9 +125,10 @@ public class PlatformUtil
             return "";
         }
         String vmArgs = "";
-        vmArgs = addJvmSetting( "-Xms" + extraJvmArguments.getInitialMemorySize(), vmArgs );
-        vmArgs = addJvmSetting( "-Xmx" + extraJvmArguments.getMaxMemorySize(), vmArgs );
-        vmArgs = addJvmSetting( "-Xss" + extraJvmArguments.getMaxStackSize(), vmArgs );
+
+        vmArgs = addJvmSetting( "-Xms", extraJvmArguments.getInitialMemorySize(), vmArgs );
+        vmArgs = addJvmSetting( "-Xmx", extraJvmArguments.getMaxMemorySize(), vmArgs );
+        vmArgs = addJvmSetting( "-Xss", extraJvmArguments.getMaxStackSize(), vmArgs );
         if ( null != extraJvmArguments.getSystemProperties() )
         {
             for ( Iterator it = extraJvmArguments.getSystemProperties().iterator(); it.hasNext(); )
@@ -183,16 +184,16 @@ public class PlatformUtil
         return vmArgs;
     }
 
-    private static String addJvmSetting( String extraJvmArgument, String vmArgs )
+    private static String addJvmSetting( String argType, String extraJvmArgument, String vmArgs )
     {
         if ( !"".equals( vmArgs.trim() ) )
         {
             vmArgs += " ";
         }
 
-        if ( extraJvmArgument.length() > 3 )
+        if ( !StringUtils.isEmpty( extraJvmArgument) )
         {
-            vmArgs += extraJvmArgument;
+            vmArgs += argType+extraJvmArgument;
         }
         return vmArgs;
     }
