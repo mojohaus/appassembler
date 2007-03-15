@@ -14,8 +14,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import jj2000.j2k.util.ArrayUtil;
-
 import org.codehaus.mojo.appassembler.model.ClasspathElement;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
