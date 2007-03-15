@@ -105,7 +105,7 @@ public class JavaServiceWrapperDaemonGenerator
         for ( Iterator it = daemon.getJvmSettings().getSystemProperties().iterator(); it.hasNext(); i++ )
         {
             String systemProperty = (String) it.next();
-            writer.println( "wrapper.java.additional." + i + "=" + systemProperty );
+            writer.println( "wrapper.java.additional." + i + "=-D" + systemProperty );
         }
         return output.toString();
     }

@@ -1,5 +1,12 @@
 package org.codehaus.mojo.appassembler;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -9,10 +16,6 @@ import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.io.File;
-import java.util.Iterator;
-import java.util.Set;
-
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
@@ -20,8 +23,7 @@ import java.util.Set;
  * @requiresDependencyResolution runtime
  * @phase generate-resources
  */
-public class GenerateDaemonsMojo
-    extends AbstractMojo
+public class GenerateDaemonsMojo extends AbstractMojo
 {
     // -----------------------------------------------------------------------
     // Parameters
@@ -79,8 +81,7 @@ public class GenerateDaemonsMojo
     // AbstractMojo Implementation
     // -----------------------------------------------------------------------
 
-    public void execute()
-        throws MojoExecutionException, MojoFailureException
+    public void execute() throws MojoExecutionException, MojoFailureException
     {
         try
         {
@@ -160,6 +161,10 @@ public class GenerateDaemonsMojo
         modelJvmSettings.setInitialMemorySize( jvmSettings.getInitialMemorySize() );
         modelJvmSettings.setMaxMemorySize( jvmSettings.getMaxMemorySize() );
         modelJvmSettings.setMaxStackSize( jvmSettings.getMaxStackSize() );
+        List systemProperties =
+            null == jvmSettings.getSystemProperties() ? new ArrayList()
+                            : Arrays.asList( jvmSettings.getSystemProperties() );
+        modelJvmSettings.setSystemProperties( systemProperties );
 
         return modelJvmSettings;
     }

@@ -8,6 +8,8 @@ public class JvmSettings
 
     private String maxStackSize;
 
+    private String[] systemProperties;
+
     public String getInitialMemorySize()
     {
         return initialMemorySize;
@@ -22,4 +24,10 @@ public class JvmSettings
     {
         return maxStackSize;
     }
+
+    public String[] getSystemProperties()
+    {
+        return systemProperties;
+    }
+
 }

@@ -37,5 +37,6 @@
   <modules>
     <module>appassembler-maven-plugin</module>
     <module>appassembler-model</module>
+    <module>appassembler-booter</module>
   </modules>
 </project>

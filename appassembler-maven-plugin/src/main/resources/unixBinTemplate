@@ -95,4 +95,5 @@ exec "$JAVACMD" $JAVA_OPTS \
   -Dapp.repo="$REPO" \
   -Dbasedir="$BASEDIR" \
   @MAINCLASS@ \
+  @APP_ARGUMENTS@ \
   "$@"

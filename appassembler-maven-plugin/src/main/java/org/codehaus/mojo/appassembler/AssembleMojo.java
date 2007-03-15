@@ -48,6 +48,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -79,7 +80,7 @@ public class AssembleMojo
      * @readonly
      * @parameter expression="${project.runtimeArtifacts}"
      */
-    private Set artifacts;
+    private List artifacts;
 
     /**
      * The directory that will be used to assemble the artifacts in
