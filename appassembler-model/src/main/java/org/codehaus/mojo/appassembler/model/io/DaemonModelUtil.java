@@ -4,34 +4,33 @@ import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.FileOutputStream;
-import java.io.Closeable;
+import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
@@ -40,6 +39,8 @@ import java.util.Iterator;
  */
 public class DaemonModelUtil
 {
+    private static SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+
     // -----------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------
@@ -84,14 +85,9 @@ public class DaemonModelUtil
         {
             fileInputStream = new FileInputStream( file );
 
-            XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-            DaemonContentHandler daemonContentHandler = new DaemonContentHandler();
-            xmlReader.setContentHandler( daemonContentHandler );
-            xmlReader.parse( new InputSource( fileInputStream ) );
-
-            return daemonContentHandler.getDaemon();
+            return load( fileInputStream );
         }
-        catch ( final SAXException e )
+        catch ( SAXException e )
         {
             throw new DaemonModelUtilException( "Error while parsing '" + file + "'", e );
         }
@@ -99,9 +95,34 @@ public class DaemonModelUtil
         {
             throw new DaemonModelUtilException( "Could not find file: '" + file + "'" );
         }
+        catch ( ParserConfigurationException e )
+        {
+            throw new DaemonModelUtilException( "Error while parsing '" + file + "'", e );
+        }
         finally
         {
             close( fileInputStream );
+        }
+    }
+
+    public static Daemon loadModel( InputStream inputStream  )
+        throws IOException
+    {
+        try
+        {
+            return load( inputStream );
+        }
+        catch ( SAXException e )
+        {
+            throw new DaemonModelUtilException( "Error while parsing input stream.", e );
+        }
+        catch ( ParserConfigurationException e )
+        {
+            throw new DaemonModelUtilException( "Error while parsing input stream.", e );
+        }
+        finally
+        {
+            close( inputStream );
         }
     }
 
@@ -165,14 +186,14 @@ public class DaemonModelUtil
         public void startElement( String uri, String localName, String qName, Attributes attributes )
             throws SAXException
         {
-            if ( first && !localName.equals( "daemon" ) )
+            if ( first && !qName.equals( "daemon" ) )
             {
-                throw new SAXException( "Illegal start tag '" + localName + "', expected 'daemon'." );
+                throw new SAXException( "Illegal start tag '" + qName + "', expected 'daemon'." );
             }
 
             first = false;
 
-            if ( localName.equals( "daemon" ) )
+            if ( qName.equals( "daemon" ) )
             {
                 daemon = new Daemon();
 
@@ -180,13 +201,13 @@ public class DaemonModelUtil
             }
             else if ( insideDaemon )
             {
-                if ( localName.equals( "classpath" ) )
+                if ( qName.equals( "classpath" ) )
                 {
                     insideClasspath = true;
 
                     classpathElements = new ArrayList();
                 }
-                else if ( localName.equals( "jvmSettings" ) )
+                else if ( qName.equals( "jvmSettings" ) )
                 {
                     insideJvmSettings = true;
 
@@ -194,13 +215,13 @@ public class DaemonModelUtil
                 }
                 else if ( insideClasspath )
                 {
-                    if ( localName.equals( "dependency" ) )
+                    if ( qName.equals( "dependency" ) )
                     {
                         insideDependency = true;
 
                         dependency = new Dependency();
                     }
-                    else if ( localName.equals( "directory" ) )
+                    else if ( qName.equals( "directory" ) )
                     {
                         insideDirectory = true;
 
@@ -209,7 +230,7 @@ public class DaemonModelUtil
                 }
                 else if ( insideJvmSettings )
                 {
-                    if ( localName.equals( "systemProperties" ) )
+                    if ( qName.equals( "systemProperties" ) )
                     {
                         insideSystemProperties = true;
 
@@ -217,7 +238,7 @@ public class DaemonModelUtil
                     }
                     else if ( insideSystemProperties )
                     {
-                        if ( localName.equals( "systemProperty" ) )
+                        if ( qName.equals( "systemProperty" ) )
                         {
                             insideSystemProperty = true;
                         }
@@ -235,22 +256,22 @@ public class DaemonModelUtil
         public void endElement( String uri, String localName, String qName )
             throws SAXException
         {
-            if ( localName.equals( "daemon" ) )
+            if ( qName.equals( "daemon" ) )
             {
                 insideDaemon = false;
             }
 
             if ( insideDaemon )
             {
-                if ( localName.equals( "id" ) )
+                if ( qName.equals( "id" ) )
                 {
                     daemon.setId( text );
                 }
-                else if ( localName.equals( "mainClass" ) )
+                else if ( qName.equals( "mainClass" ) )
                 {
                     daemon.setMainClass( text );
                 }
-                else if ( localName.equals( "classpath" ) )
+                else if ( qName.equals( "classpath" ) )
                 {
                     insideClasspath = false;
 
@@ -258,7 +279,7 @@ public class DaemonModelUtil
                 }
                 else if ( insideClasspath )
                 {
-                    if ( localName.equals( "dependency" ) )
+                    if ( qName.equals( "dependency" ) )
                     {
                         insideDependency = false;
 
@@ -266,7 +287,7 @@ public class DaemonModelUtil
 
                         dependency = null;
                     }
-                    else if ( localName.equals( "directory" ) )
+                    else if ( qName.equals( "directory" ) )
                     {
                         insideDirectory = false;
 
@@ -276,26 +297,26 @@ public class DaemonModelUtil
                     }
                     else if ( insideDependency )
                     {
-                        if ( localName.equals( "groupId" ) )
+                        if ( qName.equals( "groupId" ) )
                         {
                             dependency.setGroupId( text );
                         }
-                        else if ( localName.equals( "artifactId" ) )
+                        else if ( qName.equals( "artifactId" ) )
                         {
                             dependency.setArtifactId( text );
                         }
-                        else if ( localName.equals( "version" ) )
+                        else if ( qName.equals( "version" ) )
                         {
                             dependency.setVersion( text );
                         }
-                        else if ( localName.equals( "relativePath" ) )
+                        else if ( qName.equals( "relativePath" ) )
                         {
                             dependency.setRelativePath( text );
                         }
                     }
                     else if ( insideDirectory )
                     {
-                        if ( localName.equals( "relativePath" ) )
+                        if ( qName.equals( "relativePath" ) )
                         {
                             directory.setRelativePath( text );
                         }
@@ -303,7 +324,7 @@ public class DaemonModelUtil
                 }
                 else if ( insideJvmSettings )
                 {
-                    if ( localName.equals( "jvmSettings" ) )
+                    if ( qName.equals( "jvmSettings" ) )
                     {
                         daemon.setJvmSettings( jvmSettings );
 
@@ -311,19 +332,19 @@ public class DaemonModelUtil
                     }
                     else if ( insideJvmSettings )
                     {
-                        if ( localName.equals( "initialMemorySize" ) )
+                        if ( qName.equals( "initialMemorySize" ) )
                         {
                             jvmSettings.setInitialMemorySize( text );
                         }
-                        else if ( localName.equals( "maxMemorySize" ) )
+                        else if ( qName.equals( "maxMemorySize" ) )
                         {
                             jvmSettings.setMaxMemorySize( text );
                         }
-                        else if ( localName.equals( "maxStackSize" ) )
+                        else if ( qName.equals( "maxStackSize" ) )
                         {
                             jvmSettings.setMaxStackSize( text );
                         }
-                        else if ( localName.equals( "systemProperties" ) )
+                        else if ( qName.equals( "systemProperties" ) )
                         {
                             insideSystemProperties = false;
 
@@ -449,11 +470,10 @@ public class DaemonModelUtil
             return;
         }
 
-        Element element = parent.getOwnerDocument().createElement( elementName );
-
+        Document document = parent.getOwnerDocument();
+        Element element = document.createElement( elementName );
+        element.appendChild( document.createTextNode( value ) );
         parent.appendChild( element );
-
-        element.setTextContent( value );
     }
 
     private static Document createEmptyDocument()
@@ -471,7 +491,7 @@ public class DaemonModelUtil
         }
     }
 
-    private static void close( Closeable closeable )
+    private static void close( InputStream closeable )
     {
         try
             {
@@ -484,5 +504,32 @@ public class DaemonModelUtil
         {
             // ignore
         }
+    }
+
+    private static void close( OutputStream closeable )
+    {
+        try
+            {
+                if ( closeable != null )
+            {
+                closeable.close();
+            }
+        }
+        catch ( IOException e )
+        {
+            // ignore
+        }
+    }
+
+    private static Daemon load( InputStream inputStream )
+        throws SAXException, IOException, ParserConfigurationException
+    {
+        SAXParser saxParser = parserFactory.newSAXParser();
+
+        DaemonContentHandler daemonContentHandler = new DaemonContentHandler();
+
+        saxParser.parse( inputStream, daemonContentHandler );
+
+        return daemonContentHandler.getDaemon();
     }
 }

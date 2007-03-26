@@ -1,45 +1,65 @@
 package org.codehaus.mojo.appassembler.booter;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-
-import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.mojo.appassembler.model.JvmSettings;
-import org.codehaus.mojo.appassembler.model.io.DaemonModelUtil;
-
 import junit.framework.TestCase;
-import junit.framework.TestResult;
 
-public class AppassemblerBooterTest extends TestCase
+import java.io.File;
+import java.net.URLClassLoader;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+
+public class AppassemblerBooterTest
+    extends TestCase
 {
-    public void testSystemProperties() throws Exception
+    protected void setUp()
+        throws Exception
     {
-        Daemon config = getConfig();
-        AppassemblerBooter.setSystemProperties( config );
-        assertEquals( "System property bar is not set", "foo", System.getProperty( "bar" ) );
-        assertEquals( "System property foo is not set", "bar", System.getProperty( "foo" ) );
+        super.setUp();
 
-        config.setJvmSettings( null );
+//        System.setProperty( "app.booter.debug", "true" );
+    }
+
+    public void testSystemProperties()
+        throws Exception
+    {
+        System.setProperty( "app.name", "org/codehaus/mojo/appassembler/booter/app" );
+
+        // When running from Maven this property will be set
+        if ( System.getProperty( "basedir" ) == null )
+        {
+            System.setProperty( "basedir", new File( "" ).getAbsolutePath() );
+        }
+
+        AppassemblerBooter.setup();
+
+        assertEquals( "System property bar is not set", "foo", System.getProperty( "bar" ) );
+
+        assertEquals( "System property foo is not set", "bar", System.getProperty( "foo" ) );
+    }
+
+    public void testRun()
+        throws Throwable
+    {
+        System.setProperty( "app.name", "org/codehaus/mojo/appassembler/booter/app" );
+
+        URLClassLoader classLoader = AppassemblerBooter.setup();
+
+        System.out.println( "classLoader = " + classLoader );
 
         try
         {
-            AppassemblerBooter.setSystemProperties( config );
+            AppassemblerBooter.executeMain( classLoader );
         }
-        catch ( Throwable e )
+        catch ( InvocationTargetException e )
         {
-            fail( "Was not able to call with null vmargs" );
+            throw e.getTargetException();
         }
-    }
 
-    private Daemon getConfig() throws IOException, URISyntaxException
-    {
-        return DaemonModelUtil.loadModel( new File( this.getClass().getResource( "app.xml" ).toURI() ) );
-    }
+        Class klass = classLoader.loadClass( "org.codehaus.mojo.appassembler.booter.DummyMain" );
 
-    public void testRun() throws Exception
-    {
-        System.setProperty( "app.name", "org/codehaus/mojo/appassembler/booter/app" );
-      //  AppassemblerBooter.main( new String[0] );
+        System.out.println( "klass = " + klass );
+
+        Field field = klass.getField( "kickAss" );
+
+        assertTrue( field.getBoolean( klass ) );
     }
 }

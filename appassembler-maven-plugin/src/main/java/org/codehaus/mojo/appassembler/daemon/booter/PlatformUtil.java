@@ -15,7 +15,6 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class PlatformUtil
 {
-
     public static String getClassPath( boolean useBooter, boolean includeConfigurationDirectoryInClasspath,
                                        boolean isWindows, MavenProject project,
                                        ArtifactRepository artifactRepositoryLayout )
@@ -197,5 +196,4 @@ public class PlatformUtil
         }
         return vmArgs;
     }
-
 }

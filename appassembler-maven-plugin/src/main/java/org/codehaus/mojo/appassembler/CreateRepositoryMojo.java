@@ -1,20 +1,19 @@
 package org.codehaus.mojo.appassembler;
 
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.handler.DefaultArtifactHandler;
+import org.apache.maven.artifact.installer.ArtifactInstallationException;
+import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.LegacyRepositoryLayout;
-import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException;
 import org.apache.maven.artifact.versioning.VersionRange;
-import org.apache.maven.artifact.handler.DefaultArtifactHandler;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
-import org.apache.maven.artifact.installer.ArtifactInstaller;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.codehaus.mojo.appassembler.repository.FlatRepositoryLayout;
 
 import java.io.File;
@@ -24,14 +23,15 @@ import java.util.Set;
 
 /**
  * Creates an appassembler repository.
- * 
+ *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
  * @version $Id$
  * @goal create-repository
  * @requiresDependencyResolution runtime
  * @phase package
  */
-public class CreateRepositoryMojo extends AbstractMojo
+public class CreateRepositoryMojo
+    extends AbstractMojo
 {
     // -----------------------------------------------------------------------
     // parameters
@@ -39,7 +39,7 @@ public class CreateRepositoryMojo extends AbstractMojo
 
     /**
      * The directory that will be used to assemble the artifacts in and place the bin scripts.
-     * 
+     *
      * @required
      * @parameter expression="${project.build.directory}/appassembler"
      */
@@ -47,7 +47,7 @@ public class CreateRepositoryMojo extends AbstractMojo
 
     /**
      * The directory that will be used for the dependencies, relative to assembleDirectory.
-     * 
+     *
      * @required
      * @parameter expression="repo"
      */
@@ -56,7 +56,7 @@ public class CreateRepositoryMojo extends AbstractMojo
     /**
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
      * (flat lib/ style)
-     * 
+     *
      * @parameter default="default'
      */
     private String repositoryLayout;
@@ -70,7 +70,7 @@ public class CreateRepositoryMojo extends AbstractMojo
      * @parameter expression="${project.artifacts}"
      */
     private Set artifacts;
-    
+
     /**
      * @readonly
      * @parameter expression="${plugin.artifacts}"
@@ -127,7 +127,8 @@ public class CreateRepositoryMojo extends AbstractMojo
     // AbstractMojo Implementation
     // -----------------------------------------------------------------------
 
-    public void execute() throws MojoExecutionException, MojoFailureException
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
     {
         // ----------------------------------------------------------------------
         // Create new repository for dependencies
@@ -154,9 +155,12 @@ public class CreateRepositoryMojo extends AbstractMojo
         // Initialize
         // -----------------------------------------------------------------------
 
-        artifactRepository =
-            artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://"
-                            + assembleDirectory.getAbsolutePath() + "/" + repoPath, artifactRepositoryLayout, false );
+        String path = "file://" + assembleDirectory.getAbsolutePath() + "/" + repoPath;
+
+        artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler",
+                                                                                           path,
+                                                                                           artifactRepositoryLayout,
+                                                                                           false );
 
         // -----------------------------------------------------------------------
         // Install the project's artifact in the new repository
@@ -174,7 +178,7 @@ public class CreateRepositoryMojo extends AbstractMojo
 
             installArtifact( artifact );
         }
-        
+
         for ( Iterator it = pluginArtifacts.iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
@@ -189,7 +193,8 @@ public class CreateRepositoryMojo extends AbstractMojo
         //installArtifact( booter );
     }
 
-    private void installArtifact( Artifact artifact ) throws MojoExecutionException
+    private void installArtifact( Artifact artifact )
+        throws MojoExecutionException
     {
         try
         {
@@ -205,13 +210,13 @@ public class CreateRepositoryMojo extends AbstractMojo
         }
     }
 
-    protected Artifact resolveBooterArtifact() throws MojoExecutionException
+    protected Artifact resolveBooterArtifact()
+        throws MojoExecutionException
     {
         Artifact booter;
-        booter =
-            new DefaultArtifact( "org.codehaus.mojo", "appassembler-booter",
-                                 VersionRange.createFromVersion( "1.0-SNAPSHOT" ), "compile", "jar", "",
-                                 new DefaultArtifactHandler( "" ) );
+        booter = new DefaultArtifact( "org.codehaus.mojo", "appassembler-booter",
+                                      VersionRange.createFromVersion( "1.0-SNAPSHOT" ), "compile", "jar", "",
+                                      new DefaultArtifactHandler( "" ) );
 
         return booter;
     }

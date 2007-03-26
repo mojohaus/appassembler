@@ -23,6 +23,9 @@ public interface DaemonGeneratorService
                          MavenProject mavenProject, ArtifactRepository localRepository )
         throws DaemonGeneratorException;
 
+    void generateDaemon( DaemonGenerationRequest generationRequest )
+        throws DaemonGeneratorException;
+
     Daemon mergeDaemons( Daemon dominant, Daemon recessive )
         throws DaemonGeneratorException;
 

@@ -1,5 +1,13 @@
 package org.codehaus.mojo.appassembler.daemon.booter;
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
+import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -9,14 +17,6 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
-import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.InterpolationFilterReader;
 
 public class ScriptUtils
 {
@@ -33,13 +33,15 @@ public class ScriptUtils
             Map context = new HashMap();
             context.put( "MAINCLASS", "org.codehaus.mojo.appassembler.booter.AppassemblerBooter" );
             context.put( "CLASSPATH", PlatformUtil.getClassPath( true, true, isWindows, project, localRepository ) );
-            context.put( "EXTRA_JVM_ARGUMENTS", PlatformUtil.getExtraJvmArgumentsForCli( descriptor.getJvmSettings() ) );
+            context.put( "EXTRA_JVM_ARGUMENTS",
+                         PlatformUtil.getExtraJvmArgumentsForCli( descriptor.getJvmSettings() ) );
             context.put( "APP_NAME", descriptor.getId() );
             context.put( "APP_ARGUMENTS", PlatformUtil.getAppArguments( descriptor ) );
 
-            InterpolationFilterReader interpolationFilterReader =
-                new InterpolationFilterReader( reader, context, PlatformUtil.getInterpolationToken( isWindows ),
-                                               PlatformUtil.getInterpolationToken( isWindows ) );
+            String interpolationToken = PlatformUtil.getInterpolationToken( isWindows );
+            InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context,
+                                                                                                 interpolationToken,
+                                                                                                 interpolationToken );
 
             // Set the name of the bin file
             String programName = "";
@@ -86,12 +88,12 @@ public class ScriptUtils
         }
     }
 
-    private static File createBinFile( File outputDirectory, String binFileName ) throws IOException
+    private static File createBinFile( File outputDirectory, String binFileName )
+        throws IOException
     {
         FileUtils.forceMkdir( outputDirectory );
         File binDir = new File( outputDirectory, "bin" );
         FileUtils.forceMkdir( binDir );
         return new File( binDir, binFileName );
     }
-
 }

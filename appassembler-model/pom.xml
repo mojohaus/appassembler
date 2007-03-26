@@ -7,7 +7,7 @@
   </parent>
   <artifactId>appassembler-model</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>Daemon Descriptor Model</name>
+  <name>Appassembler :: Model</name>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>

@@ -63,6 +63,6 @@ public abstract class AbstractDaemonGeneratorTest
 
         Daemon model = daemonGeneratorService.loadModel( getTestFile( descriptor ) );
 
-        generator.generate( model, project, localRepository, outputDir );
+        generator.generate( new DaemonGenerationRequest( model, project, localRepository, outputDir ) );
     }
 }

@@ -1,147 +1,203 @@
 package org.codehaus.mojo.appassembler.booter;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import org.codehaus.mojo.appassembler.model.ClasspathElement;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.mojo.appassembler.model.io.DaemonModelUtil;
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Reads the appassembler manifest file from the repo, and executes the specified main class.
- * 
+ *
  * @author <a href="mailto:kaare.nilsen@gmail.com">Kaare Nilsen</a>
- * 
  */
 public class AppassemblerBooter
 {
+    private static String appName;
+
+    private static boolean debug;
+
+    private static File basedir;
+
+    private static Daemon config;
+
+    private static String mainClassName;
+
     public static void main( String[] args )
+        throws Exception
     {
-        Daemon config = loadConfig();
-        setSystemProperties( config );
-        setClassPath( config );
-        executeMain( config );
+        URLClassLoader classLoader = setup();
 
+        executeMain( classLoader );
     }
 
-    private static void executeMain( Daemon config )
+    public static URLClassLoader setup()
+        throws Exception
     {
-        String mainClass = config.getMainClass();
-        List arguments = config.getCommandLineArguments();
+        // -----------------------------------------------------------------------
+        // Load and validate environmental settings
+        // -----------------------------------------------------------------------
 
-        try
+        appName = System.getProperty( "app.name" );
+
+        if ( appName == null )
         {
-            Method main =
-                Thread.currentThread().getContextClassLoader().loadClass( mainClass ).getMethod(
-                                                                                                 "main",
-                                                                                                 new Class[] { String[].class } );
-            if ( !main.isAccessible() )
+            throw new InternalErrorException( "Missing required system property 'app.name'." );
+        }
+
+        debug = Boolean.getBoolean( "app.booter.debug" );
+
+        String b = System.getProperty( "basedir" );
+
+        if ( b == null )
+        {
+            throw new InternalErrorException( "Missing required system property 'basedir'." );
+        }
+
+        basedir = new File( b );
+
+        // -----------------------------------------------------------------------
+        // Load and validate the configuration
+        // -----------------------------------------------------------------------
+
+        config = loadConfig();
+
+        mainClassName = config.getMainClass();
+
+        if ( isEmpty( mainClassName ) )
+        {
+            throw new InternalErrorException( "Missing required property from configuration: 'mainClass'." );
+        }
+
+        setSystemProperties();
+
+        return createClassLoader();
+    }
+
+    public static URLClassLoader createClassLoader()
+        throws Exception
+    {
+        List classpathUrls = new ArrayList();
+        List classPathElements = config.getClasspath();
+        Iterator iter = classPathElements.iterator();
+
+        while ( iter.hasNext() )
+        {
+            ClasspathElement element = (ClasspathElement) iter.next();
+            File artifact = new File( basedir, element.getRelativePath() );
+
+            if ( debug )
             {
-                main.setAccessible( true );
-            }
-            String[] args = (String[]) ( arguments == null ? new String[0] : arguments.toArray( new String[0] ) );
-            main.invoke( main, new Object[] { args } );
-        }
-        catch ( Exception e )
-        {
-            System.out.println( "Could not execute Main method" );
-            e.printStackTrace();
-            System.exit( -1 );
-        }
-    }
-
-    private static void setClassPath( Daemon config )
-    {
-        try
-        {
-            List classpathUrls = new ArrayList();
-            List classPathElements = config.getClasspath();
-            Iterator iter = classPathElements.iterator();
-            String repoLocation = getRepoLocation();
-            while ( iter.hasNext() )
-            {
-                ClasspathElement element = (ClasspathElement) iter.next();
-                File artifact = new File(repoLocation + "/" + element.getRelativePath());
-                classpathUrls.add( artifact.toURL() );
+                System.err.println( "Adding file to classpath: " + artifact.getAbsolutePath() );
             }
 
-            Thread.currentThread().setContextClassLoader(
-                                                          new URLClassLoader(
-                                                                              (URL[]) classpathUrls.toArray( new URL[classpathUrls.size()] ) ) );
+            classpathUrls.add( artifact.toURL() );
         }
-        catch ( MalformedURLException e )
-        {
-            System.out.println( "Could not set classpath" );
-            e.printStackTrace();
-            System.exit( -1 );
-        }
-    }
 
-    private static Daemon loadConfig()
-    {
-        Daemon config = null;
-        try
-        {
-            config =
-                DaemonModelUtil.loadModel( new File(
-                                                     AppassemblerBooter.class.getResource( "/" + getAppName() + ".xml" ).toURI() ) );
-        }
-        catch ( IOException e )
-        {
-            System.out.println( "Unable to launch app" );
-            e.printStackTrace();
-            System.exit( -1 );
-        }
-        catch ( URISyntaxException e )
-        {
-            System.out.println( "Could not load app descriptor" );
-            e.printStackTrace();
-            System.exit( -1 );
-        }
-        return config;
+        URL[] urls = (URL[]) classpathUrls.toArray( new URL[classpathUrls.size()] );
+
+        return new URLClassLoader( urls, ClassLoader.getSystemClassLoader() );
     }
 
     /**
      * Pass any given system properties to the java system properties.
      */
-    protected static void setSystemProperties( Daemon config )
+    public static void setSystemProperties()
     {
-        if ( null == config.getJvmSettings() || null == config.getJvmSettings().getSystemProperties() )
+        if ( config.getJvmSettings() == null || config.getJvmSettings().getSystemProperties() == null )
         {
             return;
         }
+
         JvmSettings jvmSettings = config.getJvmSettings();
         List systemProperties = jvmSettings.getSystemProperties();
         Iterator iter = systemProperties.iterator();
         while ( iter.hasNext() )
         {
             String line = (String) iter.next();
-            String key = line.split( "=" )[0];
-            String value = line.split( "=" )[1];
+            String[] strings = line.split( "=" );
+            String key = strings[0];
+            String value = strings[1];
+
+            if ( debug )
+            {
+                System.err.println( "Setting system property '" + key + "' to '" + value + "'." );
+            }
+
             System.setProperty( key, value );
         }
     }
 
-    private static String getAppName()
+    private static Daemon loadConfig()
+        throws Exception
     {
-        return System.getProperty( "app.name" );
+        String resourceName = "/" + appName + ".xml";
+
+        URL resource = AppassemblerBooter.class.getResource( resourceName );
+
+        if ( debug )
+        {
+            System.err.println( "Loading configuration file from: " + resource.toExternalForm() );
+        }
+
+        if ( resource == null )
+        {
+            throw new InternalErrorException( "Could not load configuration resource: '" + resourceName + "'." );
+        }
+
+        return DaemonModelUtil.loadModel( resource.openStream() );
     }
 
-    private static String getRepoLocation()
+    public static void executeMain( URLClassLoader classLoader )
+        throws Exception
     {
-        return System.getProperty( "app.repo" );
+        List arguments = config.getCommandLineArguments();
+
+        // -----------------------------------------------------------------------
+        // Load the class and main() method
+        // -----------------------------------------------------------------------
+
+        // This will always return an instance or throw an exception
+        Class mainClass = classLoader.loadClass( mainClassName );
+
+        Method main = mainClass.getMethod( "main", new Class[]{String[].class} );
+
+        String[] args;
+        if ( arguments == null )
+        {
+            args = new String[0];
+        }
+        else
+        {
+            args = (String[]) arguments.toArray( new String[0] );
+        }
+
+        // -----------------------------------------------------------------------
+        // Setup environment
+        // -----------------------------------------------------------------------
+
+        Thread.currentThread().setContextClassLoader( classLoader );
+
+        // -----------------------------------------------------------------------
+        //
+        // -----------------------------------------------------------------------
+
+        main.invoke( null, new Object[]{args} );
     }
 
+    // -----------------------------------------------------------------------
+    // Utils
+    // -----------------------------------------------------------------------
+
+    private static boolean isEmpty( String mainClass )
+    {
+        return mainClass == null || mainClass.trim().length() == 0;
+    }
 }

@@ -1,15 +1,15 @@
 package org.codehaus.mojo.appassembler.daemon.generic;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.mojo.appassembler.model.Dependency;
-import org.codehaus.mojo.appassembler.model.io.DaemonModelUtil;
+import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.Util;
 import org.codehaus.mojo.appassembler.daemon.merge.DaemonMerger;
+import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.model.Dependency;
+import org.codehaus.mojo.appassembler.model.io.DaemonModelUtil;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
@@ -38,21 +38,20 @@ public class GenericDaemonGenerator
     // DaemonGenerator Implementation
     // -----------------------------------------------------------------------
 
-    public void generate( Daemon stubDaemon, MavenProject project, ArtifactRepository localRepository,
-                          File outputDirectory )
+    public void generate( DaemonGenerationRequest request )
         throws DaemonGeneratorException
     {
         // -----------------------------------------------------------------------
         // Create the daemon from the Maven project
         // -----------------------------------------------------------------------
 
-        Daemon createdDaemon = createDaemon( project );
+        Daemon createdDaemon = createDaemon( request.getMavenProject(), request.getRepositoryPath() );
 
         // -----------------------------------------------------------------------
         // Merge the given stub daemon and the generated
         // -----------------------------------------------------------------------
 
-        Daemon mergedDaemon = daemonMerger.mergeDaemons( stubDaemon, createdDaemon );
+        Daemon mergedDaemon = daemonMerger.mergeDaemons( request.getDaemon(), createdDaemon );
 
         // -----------------------------------------------------------------------
         // Write out the project
@@ -62,9 +61,9 @@ public class GenericDaemonGenerator
 
         try
         {
-            FileUtils.forceMkdir( outputDirectory );
+            FileUtils.forceMkdir( request.getOutputDirectory() );
 
-            File outputFile = new File( outputDirectory, mergedDaemon.getId() + ".xml" );
+            File outputFile = new File( request.getOutputDirectory(), mergedDaemon.getId() + ".xml" );
 
             writer = new FileWriter( outputFile );
 
@@ -72,7 +71,7 @@ public class GenericDaemonGenerator
         }
         catch ( IOException e )
         {
-            throw new DaemonGeneratorException( "Error while writing output file: " + outputDirectory, e );
+            throw new DaemonGeneratorException( "Error while writing output file: " + request.getOutputDirectory(), e );
         }
         finally
         {
@@ -84,17 +83,9 @@ public class GenericDaemonGenerator
     // Private
     // -----------------------------------------------------------------------
 
-    private Daemon createDaemon( MavenProject project )
+    private Daemon createDaemon( MavenProject project, String repositoryPath )
     {
         Daemon complete = new Daemon();
-
-//        complete.setId( stub.getId() );
-//
-//        complete.setMainClass( stub.getMainClass() );
-//
-//        complete.setJvmSettings( mergeJvmSettings( stub.getJvmSettings(), defaultJvmSettings ) );
-//
-//        complete.setCommandLineArguments( stub.getCommandLineArguments() );
 
         // -----------------------------------------------------------------------
         // Add the project itself as a dependency.
@@ -123,37 +114,19 @@ public class GenericDaemonGenerator
             dependency.setArtifactId( artifact.getArtifactId() );
             dependency.setVersion( artifact.getVersion() );
             dependency.setClassifier( artifact.getClassifier() );
-            dependency.setRelativePath( Util.getRelativePath( artifact ));
+
+            if ( repositoryPath != null )
+            {
+                dependency.setRelativePath( Util.getRelativePath( artifact ));
+            }
+            else
+            {
+                dependency.setRelativePath( repositoryPath + "/" + Util.getRelativePath( artifact ) );
+            }
 
             complete.getClasspath().add( dependency );
         }
 
         return complete;
     }
-
-//    private JvmSettings mergeJvmSettings( JvmSettings stubJvmSettings, JvmSettings defaultJvmSettings )
-//    {
-//        if ( stubJvmSettings == null )
-//        {
-//            return defaultJvmSettings;
-//        }
-//
-//        JvmSettings complete = new JvmSettings();
-//
-//        complete.setInitialMemorySize( mergeString( stubJvmSettings.getInitialMemorySize(), defaultJvmSettings.getInitialMemorySize() ));
-//        complete.setMaxMemorySize( mergeString( stubJvmSettings.getMaxMemorySize(), defaultJvmSettings.getMaxMemorySize() ));
-//        complete.setMaxStackSize( mergeString( stubJvmSettings.getMaxStackSize(), defaultJvmSettings.getMaxStackSize() ));
-//
-//        return complete;
-//    }
-//
-//    private String mergeString( String stub, String defaultString )
-//    {
-//        if ( StringUtils.isEmpty( stub ) )
-//        {
-//            return defaultString;
-//        }
-//
-//        return stub;
-//    }
 }

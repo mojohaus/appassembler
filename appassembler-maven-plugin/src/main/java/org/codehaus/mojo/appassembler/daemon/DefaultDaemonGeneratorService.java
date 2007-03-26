@@ -46,6 +46,28 @@ public class DefaultDaemonGeneratorService
                                 File outputDirectory, MavenProject mavenProject, ArtifactRepository localRepository )
         throws DaemonGeneratorException
     {
+        DaemonGenerationRequest request = new DaemonGenerationRequest();
+
+        request.setPlatform( platform );
+        request.setStubDescriptor( stubDescriptor );
+        request.setStubDaemon( stubDaemon );
+        request.setOutputDirectory( outputDirectory );
+        request.setMavenProject( mavenProject );
+        request.setLocalRepository( localRepository );
+
+        generateDaemon( request );
+    }
+
+    public void generateDaemon( DaemonGenerationRequest request )
+        throws DaemonGeneratorException
+    {
+        String platform = request.getPlatform();
+
+        if ( platform == null || StringUtils.isEmpty( platform ) )
+        {
+            throw new DaemonGeneratorException( "Missing required property in request: platform." );
+        }
+
         // -----------------------------------------------------------------------
         // Get the generator
         // -----------------------------------------------------------------------
@@ -63,6 +85,8 @@ public class DefaultDaemonGeneratorService
 
         Daemon fileDaemon = null;
 
+        File stubDescriptor = request.getStubDescriptor();
+
         if ( stubDescriptor != null )
         {
             getLogger().debug( "Loading daemon descriptor: " + stubDescriptor.getAbsolutePath() );
@@ -74,7 +98,7 @@ public class DefaultDaemonGeneratorService
         // Merge the given stub daemon
         // -----------------------------------------------------------------------
 
-        Daemon mergedDaemon = mergeDaemons( stubDaemon, fileDaemon );
+        Daemon mergedDaemon = mergeDaemons( request.getStubDaemon(), fileDaemon );
 
         // -----------------------------------------------------------------------
         //
@@ -86,7 +110,9 @@ public class DefaultDaemonGeneratorService
         // Generate!
         // -----------------------------------------------------------------------
 
-        generator.generate( mergedDaemon, mavenProject, localRepository, outputDirectory );
+        request.setDaemon( mergedDaemon );
+
+        generator.generate( request );
     }
 
     public Daemon mergeDaemons( Daemon dominant, Daemon recessive )

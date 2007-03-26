@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>appassembler-booter</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>Launcher bootstrapper</name>
+	<name>Appassembler :: Generic Bootstrapper</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.codehaus.mojo</groupId>

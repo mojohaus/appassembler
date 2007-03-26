@@ -1,26 +1,26 @@
 package org.codehaus.mojo.appassembler.daemon.jsw;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.Util;
+import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
+import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.IOException;
-import java.io.CharArrayWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,10 +38,16 @@ public class JavaServiceWrapperDaemonGenerator
     // DaemonGenerator Implementation
     // -----------------------------------------------------------------------
 
-    public void generate( Daemon daemon, MavenProject project, ArtifactRepository localRepository,
-                          File outputDirectory )
+    public void generate( DaemonGenerationRequest request )
         throws DaemonGeneratorException
     {
+        Daemon daemon = request.getDaemon();
+        MavenProject project = request.getMavenProject();
+
+        // -----------------------------------------------------------------------
+        //
+        // -----------------------------------------------------------------------
+
         InputStream in = this.getClass().getResourceAsStream( "wrapper.conf.template" );
 
         if ( in == null )
@@ -57,11 +63,11 @@ public class JavaServiceWrapperDaemonGenerator
         context.put( "ADDITIONAL", constructAdditional( daemon ) );
         context.put( "INITIAL_MEMORY", getInitialMemorySize( daemon ) );
         context.put( "MAX_MEMORY", getMaxMemorySize( daemon ) );
-        context.put( "PARAMETERS", createParameters( daemon, project ) );
+        context.put( "PARAMETERS", createParameters( daemon ) );
 
         InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context, "@", "@" );
 
-        outputDirectory = new File( outputDirectory, "etc" );
+        File outputDirectory = new File( request.getOutputDirectory(), "etc" );
         File outputFile = new File( outputDirectory, daemon.getId() + "-wrapper.conf" );
         FileWriter out = null;
 
@@ -157,7 +163,7 @@ public class JavaServiceWrapperDaemonGenerator
         return string.toString();
     }
 
-    private String createParameters( Daemon daemon, MavenProject project )
+    private String createParameters( Daemon daemon )
     {
         StringWriter buffer = new StringWriter();
         PrintWriter writer = new PrintWriter( buffer );

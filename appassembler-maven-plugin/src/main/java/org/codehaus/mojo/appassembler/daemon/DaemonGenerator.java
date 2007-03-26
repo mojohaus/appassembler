@@ -14,6 +14,6 @@ public interface DaemonGenerator
 {
     String ROLE = DaemonGenerator.class.getName();
 
-    void generate( Daemon descriptor, MavenProject project, ArtifactRepository localRepository, File outputDirectory )
+    void generate( DaemonGenerationRequest generationRequest )
         throws DaemonGeneratorException;
 }
