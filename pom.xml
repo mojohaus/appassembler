@@ -3,7 +3,7 @@
   <parent>
     <artifactId>mojo</artifactId>
     <groupId>org.codehaus.mojo</groupId>
-    <version>12</version>
+    <version>14</version>
   </parent>
   <artifactId>appassembler</artifactId>
   <packaging>pom</packaging>
