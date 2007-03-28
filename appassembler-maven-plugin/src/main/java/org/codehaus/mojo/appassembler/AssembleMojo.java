@@ -224,10 +224,7 @@ public class AssembleMojo
         // Validate default platform configuration
         // ----------------------------------------------------------------------
 
-        if ( platforms != null )
-        {
-            defaultPlatforms = validatePlatforms( platforms, VALID_PLATFORMS );
-        }
+        defaultPlatforms = validatePlatforms( platforms, VALID_PLATFORMS );
 
         // ----------------------------------------------------------------------
         // Validate Programs
@@ -290,7 +287,9 @@ public class AssembleMojo
         {
             Program program = (Program) it.next();
 
-            for ( Iterator platformIt = defaultPlatforms.iterator(); it.hasNext(); )
+            Set platforms = validatePlatforms( program.getPlatforms(), defaultPlatforms );
+
+            for ( Iterator platformIt = platforms.iterator(); platformIt.hasNext(); )
             {
                 String platform = (String) platformIt.next();
 
@@ -471,7 +470,7 @@ public class AssembleMojo
             return defaultPlatforms;
         }
 
-        if ( platforms.equals( "all" ) )
+        if ( platforms.size() == 1 && platforms.iterator().next().equals( "all" ) )
         {
             return VALID_PLATFORMS;
         }
