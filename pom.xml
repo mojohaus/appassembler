@@ -21,6 +21,11 @@
       <name>Trygve Laugstoel</name>
       <email>trygvis@inamo.no</email>
     </developer>
+    <developer>
+      <id>kaare</id>
+      <name>Kaare Nilsen</name>
+      <email>kaare.nilsen@gmail.com</email>
+    </developer>
   </developers>
   <licenses>
     <license>
@@ -33,7 +38,6 @@
     <name>Codehaus</name>
     <url>http://mojo.codehaus.org</url>
   </organization>
-
   <modules>
     <module>appassembler-maven-plugin</module>
     <module>appassembler-model</module>

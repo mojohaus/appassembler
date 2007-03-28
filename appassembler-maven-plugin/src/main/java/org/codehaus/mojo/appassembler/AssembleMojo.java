@@ -35,23 +35,19 @@ import org.apache.maven.artifact.repository.layout.LegacyRepositoryLayout;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
+import org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator;
+import org.codehaus.mojo.appassembler.model.Dependency;
+import org.codehaus.mojo.appassembler.model.Directory;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 /**
  * Assembles the artifacts and generates bin scripts for the configured applications
@@ -69,6 +65,12 @@ public class AssembleMojo
     // -----------------------------------------------------------------------
     // Configuration
     // -----------------------------------------------------------------------
+
+    /**
+     * @readonly
+     * @parameter expression="${project}"
+     */
+    private MavenProject mavenProject;
 
     /**
      * @readonly
@@ -162,14 +164,14 @@ public class AssembleMojo
      */
     private ArtifactInstaller artifactInstaller;
 
+    /**
+     * @component org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator
+     */
+    private ScriptGenerator scriptGenerator;
+
     // -----------------------------------------------------------------------
     //
     // -----------------------------------------------------------------------
-
-    /**
-     * The repo where the jar files will be installed
-     */
-    private ArtifactRepository artifactRepository;
 
     /**
      * The layout of the repository.
@@ -180,13 +182,19 @@ public class AssembleMojo
     //
     // ----------------------------------------------------------------------
 
-    private PlatformUtil windowsPlatformUtil = new PlatformUtil( true );
+    // This set will be used unless the program descriptor has a set of platforms
+    private Set defaultPlatforms;
 
-    private PlatformUtil unixPlatformUtil = new PlatformUtil( false );
+    private final static Set VALID_PLATFORMS;
 
-    private boolean defaultPlatformWindows = true;
+    static
+    {
+        Set set = new HashSet();
+        set.add( "unix" );
+        set.add( "windows" );
 
-    private boolean defaultPlatformUnix = true;
+        VALID_PLATFORMS = Collections.unmodifiableSet( set );
+    }
 
     // ----------------------------------------------------------------------
     // Validate
@@ -216,36 +224,9 @@ public class AssembleMojo
         // Validate default platform configuration
         // ----------------------------------------------------------------------
 
-        Set validPlatforms = new HashSet();
-        validPlatforms.add( "all" );
-        validPlatforms.add( "windows" );
-        validPlatforms.add( "unix" );
-
         if ( platforms != null )
         {
-            if ( !validPlatforms.containsAll( platforms ) )
-            {
-                throw new MojoFailureException(
-                    "Non-valid default platform declared, supported types are: 'all', 'windows' and 'unix'" );
-            }
-
-            defaultPlatformWindows = false;
-            defaultPlatformUnix = false;
-
-            if ( platforms.contains( "all" ) )
-            {
-                defaultPlatformWindows = true;
-                defaultPlatformUnix = true;
-            }
-
-            if ( platforms.contains( "windows" ) )
-            {
-                defaultPlatformWindows = true;
-            }
-            if ( platforms.contains( "unix" ) )
-            {
-                defaultPlatformUnix = true;
-            }
+            defaultPlatforms = validatePlatforms( platforms, VALID_PLATFORMS );
         }
 
         // ----------------------------------------------------------------------
@@ -262,14 +243,7 @@ public class AssembleMojo
             }
 
             // platforms
-            if ( program.getPlatforms() != null )
-            {
-                if ( !validPlatforms.containsAll( program.getPlatforms() ) )
-                {
-                    throw new MojoFailureException(
-                        "Non-valid platform for program declared, supported types are: 'all', 'windows' and 'unix'" );
-                }
-            }
+            program.setPlatforms( validatePlatforms( program.getPlatforms(), defaultPlatforms ) );
         }
     }
 
@@ -283,22 +257,24 @@ public class AssembleMojo
         // validate input and set defaults
         validate();
 
-        artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://" +
-            assembleDirectory.getAbsolutePath() + "/repo", artifactRepositoryLayout, false );
-
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
         // ----------------------------------------------------------------------
+
+        // The repo where the jar files will be installed
+        ArtifactRepository artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
+            "appassembler", "file://" + assembleDirectory.getAbsolutePath() + "/repo", artifactRepositoryLayout,
+            false );
 
         for ( Iterator it = artifacts.iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
 
-            installArtifact( artifact );
+            installArtifact( artifactRepository, artifact );
         }
 
         // install the project's artifact in the new repository
-        installArtifact( projectArtifact );
+        installArtifact( artifactRepository, projectArtifact );
 
         // ----------------------------------------------------------------------
         // Setup
@@ -314,44 +290,65 @@ public class AssembleMojo
         {
             Program program = (Program) it.next();
 
-            if ( program.getPlatforms() == null )
+            for ( Iterator platformIt = defaultPlatforms.iterator(); it.hasNext(); )
             {
-                if ( defaultPlatformWindows )
-                {
-                    createBinScript( program, windowsPlatformUtil );
-                }
-                if ( defaultPlatformUnix )
-                {
-                    createBinScript( program, unixPlatformUtil );
-                }
-            }
-            else
-            {
-                if ( program.getPlatforms().contains( "all" ) )
-                {
-                    createBinScript( program, windowsPlatformUtil );
-                    createBinScript( program, unixPlatformUtil );
-                    break;
-                }
+                String platform = (String) platformIt.next();
 
-                if ( program.getPlatforms().contains( "windows" ) )
+                try
                 {
-                    createBinScript( program, windowsPlatformUtil );
+                    scriptGenerator.createBinScript( platform,
+                                                     programToDaemon( program ),
+                                                     assembleDirectory );
                 }
-
-                if ( program.getPlatforms().contains( "unix" ) )
+                catch ( DaemonGeneratorException e )
                 {
-                    createBinScript( program, unixPlatformUtil );
+                    throw new MojoExecutionException( "Error while generating script for the program '" +
+                        program.getName() + "' for the platform '" + platform + "'." );
                 }
             }
         }
+    }
+
+    private org.codehaus.mojo.appassembler.model.Daemon programToDaemon( Program program )
+    {
+        org.codehaus.mojo.appassembler.model.Daemon daemon = new org.codehaus.mojo.appassembler.model.Daemon();
+
+        daemon.setId( program.getName() );
+        daemon.setMainClass( program.getMainClass() );
+
+        List classpath = new ArrayList();
+
+        if ( includeConfigurationDirectoryInClasspath )
+        {
+            Directory directory = new Directory();
+            directory.setRelativePath( "etc" );
+            classpath.add( directory  );
+        }
+
+        Set classPathArtifacts = new HashSet( artifacts );
+        classPathArtifacts.add( projectArtifact );
+
+        for ( Iterator it = classPathArtifacts.iterator(); it.hasNext(); )
+        {
+            Artifact artifact = (Artifact) it.next();
+            Dependency dependency = new Dependency();
+            dependency.setGroupId( artifact.getGroupId() );
+            dependency.setArtifactId( artifact.getArtifactId() );
+            dependency.setVersion( artifact.getVersion() );
+            dependency.setRelativePath( artifactRepositoryLayout.pathOf( artifact ) );
+            classpath.add( dependency );
+        }
+
+        daemon.setClasspath( classpath );
+
+        return daemon;
     }
 
     // ----------------------------------------------------------------------
     // Install artifacts into the assemble repository
     // ----------------------------------------------------------------------
 
-    private void installArtifact( Artifact artifact )
+    private void installArtifact( ArtifactRepository artifactRepository, Artifact artifact )
         throws MojoExecutionException
     {
         try
@@ -372,7 +369,8 @@ public class AssembleMojo
     // Create bin file
     // ----------------------------------------------------------------------
 
-    private void createBinScript( Program program, PlatformUtil platformUtil )
+/*
+    private void createBinScript( Program program, Platform platformUtil )
         throws MojoExecutionException
     {
         try
@@ -442,6 +440,7 @@ public class AssembleMojo
             throw new MojoExecutionException( "Failed to write bin file.", e );
         }
     }
+*/
 
     // ----------------------------------------------------------------------
     // Set up the assemble environment
@@ -464,15 +463,37 @@ public class AssembleMojo
         }
     }
 
+    private Set validatePlatforms( Set platforms, Set defaultPlatforms )
+        throws MojoFailureException
+    {
+        if ( platforms == null )
+        {
+            return defaultPlatforms;
+        }
+
+        if ( platforms.equals( "all" ) )
+        {
+            return VALID_PLATFORMS;
+        }
+
+        if ( !VALID_PLATFORMS.containsAll( platforms ) )
+        {
+            throw new MojoFailureException( "Non-valid default platform declared, supported types are: " + VALID_PLATFORMS );
+        }
+
+        return platforms;
+    }
+
     // ----------------------------------------------------------------------
-    // PlatformUtil
+    // Platform
     // ----------------------------------------------------------------------
 
-    private class PlatformUtil
+/*
+    private class Platform
     {
         boolean isWindows;
 
-        public PlatformUtil( boolean isWindows )
+        public Platform( boolean isWindows )
         {
             this.isWindows = isWindows;
         }
@@ -571,4 +592,5 @@ public class AssembleMojo
             return extraJvmArguments.replaceAll( "#REPO#", repo );
         }
     }
+*/
 }

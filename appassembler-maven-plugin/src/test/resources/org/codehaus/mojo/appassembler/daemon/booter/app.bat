@@ -64,14 +64,14 @@ set BASEDIR=%CD%
 
 if "%REPO%"=="" set REPO="%BASEDIR%\repo"
 
-set CLASSPATH="%BASEDIR%"\etc;"%REPO%/org/codehaus/mojo/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar";"%REPO%/org/codehaus/mojo/appassembler-model/1.0-SNAPSHOT/appassembler-model-1.0-SNAPSHOT.jar"
-set EXTRA_JVM_ARGUMENTS=-Xms345 -Xmx234 -Xss321 -Dfoo=bar -Dbar=foo
+set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org/codehaus/mojo/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar;"%REPO%"\org/codehaus/mojo/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar
+set EXTRA_JVM_ARGUMENTS=-Xms345 -Xmx234 -Xss321 "-Dfoo=bar" "-Dbar=foo"
 goto endInit
 
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-java %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="app" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.booter.AppassemblerBooter  %CMD_LINE_ARGS%
+java %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="app" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.booter.AppassemblerBooter %CMD_LINE_ARGS%
 
 :error
 if "%OS%"=="Windows_NT" @endlocal
