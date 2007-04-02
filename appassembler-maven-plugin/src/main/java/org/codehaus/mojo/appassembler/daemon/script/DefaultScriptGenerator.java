@@ -47,7 +47,7 @@ public class DefaultScriptGenerator
 
             if ( in == null )
             {
-                throw new DaemonGeneratorException( "Internal error, could not find template for platform '" + platformName + "'." );
+                throw new DaemonGeneratorException( "Internal error: could not find template for platform '" + platformName + "'." );
             }
 
             InputStreamReader reader = new InputStreamReader( in );

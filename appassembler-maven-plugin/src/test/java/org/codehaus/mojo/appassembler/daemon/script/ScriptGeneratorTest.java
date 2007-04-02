@@ -1,6 +1,7 @@
 package org.codehaus.mojo.appassembler.daemon.script;
 
 import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.Iterator;
+import java.util.Arrays;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
@@ -49,6 +51,8 @@ public class ScriptGeneratorTest
 
         daemon.setId( "test" );
         daemon.setMainClass( "foo.Bar" );
+        daemon.setJvmSettings( new JvmSettings() );
+        daemon.getJvmSettings().setExtraArguments( Arrays.asList( new String[] { "Yo", "dude"} ));
 
         File outputDirectory = getTestFile( "target/test-output/normal-shell/" + platform.getName() );
 

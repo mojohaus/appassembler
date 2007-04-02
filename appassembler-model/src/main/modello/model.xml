@@ -74,6 +74,14 @@
             <type>String</type>
           </association>
         </field>
+        <field>
+          <name>extraArguments</name>
+          <version>1.0.0+</version>
+          <association>
+            <multiplicity>*</multiplicity>
+            <type>String</type>
+          </association>
+        </field>
       </fields>
     </class>
     <class>

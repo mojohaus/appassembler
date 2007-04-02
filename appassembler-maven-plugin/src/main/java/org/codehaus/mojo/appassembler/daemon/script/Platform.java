@@ -213,31 +213,49 @@ public class Platform
         return classpathBuffer.toString();
     }
 
-    public String getExtraJvmArguments( JvmSettings extraJvmArguments )
+    public String getExtraJvmArguments( JvmSettings jvmSettings )
     {
-        if ( extraJvmArguments == null )
+        if ( jvmSettings == null )
         {
             return "";
         }
 
         String vmArgs = "";
 
-        vmArgs = addJvmSetting( "-Xms", extraJvmArguments.getInitialMemorySize(), vmArgs );
-        vmArgs = addJvmSetting( "-Xmx", extraJvmArguments.getMaxMemorySize(), vmArgs );
-        vmArgs = addJvmSetting( "-Xss", extraJvmArguments.getMaxStackSize(), vmArgs );
+        vmArgs = addJvmSetting( "-Xms", jvmSettings.getInitialMemorySize(), vmArgs );
+        vmArgs = addJvmSetting( "-Xmx", jvmSettings.getMaxMemorySize(), vmArgs );
+        vmArgs = addJvmSetting( "-Xss", jvmSettings.getMaxStackSize(), vmArgs );
 
-        List systemProperties = extraJvmArguments.getSystemProperties();
-        if ( systemProperties != null )
+        vmArgs += arrayToString( jvmSettings.getExtraArguments(), "" );
+        vmArgs += arrayToString( jvmSettings.getSystemProperties(), "-D" );
+
+        return vmArgs.trim();
+    }
+
+    private String arrayToString( List strings, String separator )
+    {
+        String string = "";
+
+        if ( strings != null )
         {
-            Iterator it = systemProperties.iterator();
+            Iterator it = strings.iterator();
 
             while ( it.hasNext() )
             {
-                vmArgs += " \"-D" + it.next() + "\"";
+                String s = (String) it.next();
+
+                if ( s.indexOf( ' ' ) == -1 )
+                {
+                    string += " " + separator + s;
+                }
+                else
+                {
+                    string += " \"" + separator + s + "\"";
+                }
             }
         }
 
-        return vmArgs.trim();
+        return string;
     }
 
     public String getAppArguments( Daemon descriptor )

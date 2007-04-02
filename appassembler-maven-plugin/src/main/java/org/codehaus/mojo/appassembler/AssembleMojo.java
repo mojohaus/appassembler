@@ -38,8 +38,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator;
-import org.codehaus.mojo.appassembler.model.Dependency;
-import org.codehaus.mojo.appassembler.model.Directory;
+import org.codehaus.mojo.appassembler.model.*;
+import org.codehaus.mojo.appassembler.model.JvmSettings;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,6 +48,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * Assembles the artifacts and generates bin scripts for the configured applications
@@ -340,6 +341,14 @@ public class AssembleMojo
 
         daemon.setClasspath( classpath );
 
+        // -----------------------------------------------------------------------
+        // This is a bit of a clusterfuck
+        // -----------------------------------------------------------------------
+
+        JvmSettings jvmSettings = new JvmSettings();
+        jvmSettings.setExtraArguments( parseTokens( this.extraJvmArguments ) );
+        daemon.setJvmSettings( jvmSettings );
+
         return daemon;
     }
 
@@ -363,83 +372,6 @@ public class AssembleMojo
             throw new MojoExecutionException( "Failed to copy artifact.", e );
         }
     }
-
-    // ----------------------------------------------------------------------
-    // Create bin file
-    // ----------------------------------------------------------------------
-
-/*
-    private void createBinScript( Program program, Platform platformUtil )
-        throws MojoExecutionException
-    {
-        try
-        {
-            InputStream in = this.getClass().getResourceAsStream( platformUtil.getBinTemplate() );
-
-            InputStreamReader reader = new InputStreamReader( in );
-
-            Map context = new HashMap();
-            context.put( "MAINCLASS", program.getMainClass() );
-            context.put( "CLASSPATH", platformUtil.getClassPath() );
-            context.put( "EXTRA_JVM_ARGUMENTS", platformUtil.getExtraJvmArguments() );
-            context.put( "APP_NAME", program.getName() );
-
-            InterpolationFilterReader interpolationFilterReader =
-                new InterpolationFilterReader( reader,
-                                               context,
-                                               platformUtil.getInterpolationToken(),
-                                               platformUtil.getInterpolationToken() );
-
-            // Set the name of the bin file
-            String programName = "";
-
-            if ( program.getName() == null || program.getName().trim().equals( "" ) )
-            {
-                // Get class name and use it as the filename
-                StringTokenizer tokenizer = new StringTokenizer( program.getMainClass(), "." );
-                while ( tokenizer.hasMoreElements() )
-                {
-                    programName = tokenizer.nextToken();
-                }
-
-                programName = programName.toLowerCase();
-            }
-            else
-            {
-                programName = program.getName();
-            }
-
-            // Set bin prefix
-            if ( binPrefix != null )
-            {
-                programName = binPrefix.trim() + programName;
-            }
-
-            String binFileName = programName + platformUtil.getBinFileExtension();
-
-            File binFile = new File( assembleDirectory.getAbsolutePath() + "/bin", binFileName );
-            FileWriter out = new FileWriter( binFile );
-
-            try
-            {
-                IOUtil.copy( interpolationFilterReader, out );
-            }
-            finally
-            {
-                IOUtil.close( interpolationFilterReader );
-                IOUtil.close( out );
-            }
-        }
-        catch ( FileNotFoundException e )
-        {
-            throw new MojoExecutionException( "Failed to get template for bin file.", e );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "Failed to write bin file.", e );
-        }
-    }
-*/
 
     // ----------------------------------------------------------------------
     // Set up the assemble environment
@@ -483,113 +415,52 @@ public class AssembleMojo
         return platforms;
     }
 
-    // ----------------------------------------------------------------------
-    // Platform
-    // ----------------------------------------------------------------------
-
-/*
-    private class Platform
+    public static List parseTokens( String arg )
     {
-        boolean isWindows;
+        List extraJvmArguments = new ArrayList();
 
-        public Platform( boolean isWindows )
+        StringTokenizer tokenizer = new StringTokenizer( arg );
+
+        String argument = null;
+
+        while( tokenizer.hasMoreTokens() )
         {
-            this.isWindows = isWindows;
-        }
+            String token = tokenizer.nextToken();
 
-        public String getClassPath()
-        {
-            String classPath = "";
-
-            // include the project's own artifact in the classpath
-            Set classPathArtifacts = new HashSet( artifacts );
-            classPathArtifacts.add( projectArtifact );
-
-            if ( includeConfigurationDirectoryInClasspath )
+            if ( argument != null )
             {
-                if ( isWindows )
+                if ( token.length() == 0 )
                 {
-                    classPath += "\"%BASEDIR%\"\\etc;";
+                    // ignore it
+                    continue;
+                }
+
+                int length = token.length();
+
+                if ( token.charAt( length - 1 ) == '\"' )
+                {
+                    extraJvmArguments.add( argument + " " + token.substring( 0, length - 1 ) );
+                    argument = null;
                 }
                 else
                 {
-                    classPath += "\"$BASEDIR\"/etc:";
+                    argument += " " + token;
                 }
             }
-
-            for ( Iterator it = classPathArtifacts.iterator(); it.hasNext(); )
+            else
             {
-                Artifact artifact = (Artifact) it.next();
-
-                if ( isWindows )
+                // If the token starts with a ", save it
+                if ( token.charAt( 0 ) == '\"' )
                 {
-                    String path = artifactRepositoryLayout.pathOf( artifact );
-
-                    path = path.replace( '/', '\\' );
-                    classPath += "%REPO%\\" + path + ";";
+                    argument = token.substring( 1 ) ;
                 }
                 else
                 {
-                    classPath += "$REPO/" + artifactRepositoryLayout.pathOf( artifact ) + ":";
+                    extraJvmArguments.add( token );
                 }
             }
-
-            return classPath;
         }
 
-        public String getBinTemplate()
-        {
-            if ( isWindows )
-            {
-                return "/windowsBinTemplate";
-            }
-            else
-            {
-                return "/unixBinTemplate";
-            }
-        }
-
-        public String getInterpolationToken()
-        {
-            if ( isWindows )
-            {
-                return "#";
-            }
-            else
-            {
-                return "@";
-            }
-        }
-
-        public String getBinFileExtension()
-        {
-            if ( isWindows )
-            {
-                return ".bat";
-            }
-            else
-            {
-                return "";
-            }
-        }
-
-        public String getExtraJvmArguments()
-        {
-            extraJvmArguments = StringUtils.clean( extraJvmArguments );
-
-            String repo;
-
-            if ( isWindows )
-            {
-                repo = "%REPO%";
-            }
-            else
-            {
-                repo = "\"\\$REPO\"";
-            }
-
-            return extraJvmArguments.replaceAll( "#REPO#", repo );
-        }
+        return extraJvmArguments;
     }
-*/
 }

@@ -65,7 +65,7 @@ set BASEDIR=%CD%
 if "%REPO%"=="" set REPO="%BASEDIR%\repo"
 
 set CLASSPATH=
-set EXTRA_JVM_ARGUMENTS=
+set EXTRA_JVM_ARGUMENTS=Yo dude
 goto endInit
 
 @REM Reaching here means variables are defined and arguments have been captured
