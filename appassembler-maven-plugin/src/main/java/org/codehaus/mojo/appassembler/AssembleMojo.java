@@ -40,6 +40,7 @@ import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator;
 import org.codehaus.mojo.appassembler.model.*;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -418,6 +419,11 @@ public class AssembleMojo
     public static List parseTokens( String arg )
     {
         List extraJvmArguments = new ArrayList();
+
+        if ( StringUtils.isEmpty( arg ) )
+        {
+            return extraJvmArguments;
+        }
 
         StringTokenizer tokenizer = new StringTokenizer( arg );
 

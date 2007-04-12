@@ -16,6 +16,9 @@ public class AssembleMojoTest
         List tokens = AssembleMojo.parseTokens( "" );
         assertEquals( 0, tokens.size() );
 
+        tokens = AssembleMojo.parseTokens( null );
+        assertEquals( 0, tokens.size() );
+
         tokens = AssembleMojo.parseTokens( "a b" );
         assertEquals( 2, tokens.size() );
         assertEquals( "a", tokens.get( 0 ) );
