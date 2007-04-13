@@ -72,6 +72,8 @@ goto endInit
 :endInit
 
 java %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="app" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.booter.AppassemblerBooter %CMD_LINE_ARGS%
+if ERRORLEVEL 1 goto error
+goto end
 
 :error
 if "%OS%"=="Windows_NT" @endlocal
@@ -90,4 +92,9 @@ goto postExec
 @endlocal
 
 :postExec
+
+if "%FORCE_EXIT_ON_ERROR%" == "on" (
+  if %ERROR_CODE% NEQ 0 exit %ERROR_CODE%
+)
+
 exit /B %ERROR_CODE%

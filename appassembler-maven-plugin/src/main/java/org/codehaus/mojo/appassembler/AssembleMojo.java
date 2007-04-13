@@ -91,7 +91,7 @@ public class AssembleMojo
      * and place the bin scripts.
      *
      * @required
-     * @parameter expression="${project.build.directory}/appassembler"
+     * @parameter expression="${assembleDirectory}" default-value="${project.build.directory}/appassembler"
      */
     private File assembleDirectory;
 
@@ -133,14 +133,14 @@ public class AssembleMojo
      * The layout of the generated Maven repository.
      * Supported types - "default" (Maven2) | "legacy" (Maven1)
      *
-     * @parameter default="default'
+     * @parameter default-value="default"
      */
     private String repositoryLayout;
 
     /**
      * Extra arguments that will be given to the JVM verbatim.
      *
-     * @parameter
+     * @parameter 
      */
     private String extraJvmArguments;
 
@@ -347,7 +347,12 @@ public class AssembleMojo
         // -----------------------------------------------------------------------
 
         JvmSettings jvmSettings = new JvmSettings();
-        jvmSettings.setExtraArguments( parseTokens( this.extraJvmArguments ) );
+        
+        if ( extraJvmArguments != null )
+        {
+            jvmSettings.setExtraArguments( parseTokens( this.extraJvmArguments ) );
+        }
+        
         daemon.setJvmSettings( jvmSettings );
 
         return daemon;
