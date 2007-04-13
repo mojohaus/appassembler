@@ -348,10 +348,7 @@ public class AssembleMojo
 
         JvmSettings jvmSettings = new JvmSettings();
         
-        if ( extraJvmArguments != null )
-        {
-            jvmSettings.setExtraArguments( parseTokens( this.extraJvmArguments ) );
-        }
+        jvmSettings.setExtraArguments( parseTokens( this.extraJvmArguments ) );
         
         daemon.setJvmSettings( jvmSettings );
 
