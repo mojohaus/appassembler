@@ -51,17 +51,18 @@ shift
 goto Win9xApp
 
 :Win9xGetScriptDir
+set SAVEDIR=%CD%
 %0\
-cd %0\..\..
-goto setPaths
-
-:WinNTGetScriptDir
-cd /d %0\..\..
-goto setPaths
-
-:setPaths
+cd %0\..\.. 
 set BASEDIR=%CD%
-
+cd %SAVEDIR%
+set SAVE_DIR=
+goto setRepo
+ 
+:WinNTGetScriptDir
+set BASEDIR=%~dp0\..
+ 
+:setRepo
 if "%REPO%"=="" set REPO="%BASEDIR%\repo"
 
 set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org/codehaus/mojo/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar;"%REPO%"\org/codehaus/mojo/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar
