@@ -294,6 +294,30 @@ public class Platform
         return vmArgs + " " + argType + extraJvmArgument;
     }
 
+    public String getEnvSetup( Daemon daemon )
+    {
+    	String envSetup = "";
+    	
+    	String envSetupFileName = daemon.getEnvironmentSetupFileName();
+    	
+    	if ( envSetupFileName != null  )
+    	{
+    		if ( isWindows ) 
+    		{
+    			String envScriptPath = "%BASEDIR%\\bin\\" + envSetupFileName + ".bat" ;
+
+    			envSetup = "if exist " + envScriptPath + " call " + envScriptPath ; 
+    		}
+    		else
+    		{
+    			String envScriptPath = "$BASEDIR/bin/" + envSetupFileName;
+    			envSetup = "if [ -f " + envScriptPath + " ]; then . " + envScriptPath + " fi" ;
+    		}
+    	}
+    	
+    	return envSetup;
+    }
+    
     // -----------------------------------------------------------------------
     // Object overrides
     // -----------------------------------------------------------------------
@@ -324,4 +348,5 @@ public class Platform
     {
         return name;
     }
+    
 }

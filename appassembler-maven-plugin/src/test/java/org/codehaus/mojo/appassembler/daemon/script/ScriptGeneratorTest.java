@@ -49,10 +49,12 @@ public class ScriptGeneratorTest
 
         Daemon daemon = new Daemon();
 
+        
         daemon.setId( "test" );
         daemon.setMainClass( "foo.Bar" );
         daemon.setJvmSettings( new JvmSettings() );
         daemon.getJvmSettings().setExtraArguments( Arrays.asList( new String[] { "Yo", "dude"} ));
+        daemon.setEnvironmentSetupFileName( "setup" );
 
         File outputDirectory = getTestFile( "target/test-output/normal-shell/" + platform.getName() );
 

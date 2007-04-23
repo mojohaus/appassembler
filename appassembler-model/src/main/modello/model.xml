@@ -45,6 +45,11 @@
             <type>JvmSettings</type>
           </association>
         </field>
+        <field>
+          <name>environmentSetupFileName</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
       </fields>
     </class>
     <class>

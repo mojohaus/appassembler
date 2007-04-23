@@ -9,4 +9,5 @@
       <systemProperty>bar=foo</systemProperty>
     </systemProperties>
   </jvmSettings>
+  <setupName>app-env</setupName>
 </daemon>

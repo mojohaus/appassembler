@@ -40,6 +40,7 @@ import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator;
 import org.codehaus.mojo.appassembler.model.*;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.mojo.appassembler.repository.FlatRepositoryLayout;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
@@ -129,9 +130,10 @@ public class AssembleMojo
      */
     private boolean includeConfigurationDirectoryInClasspath;
 
+    
     /**
-     * The layout of the generated Maven repository.
-     * Supported types - "default" (Maven2) | "legacy" (Maven1)
+     * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
+     * (flat lib/ style)
      *
      * @parameter default-value="default"
      */
@@ -151,6 +153,13 @@ public class AssembleMojo
      * @parameter
      */
     private Set platforms;
+    
+    /**
+     * Setup file in $BASEDIR/bin to be called prior to execution.
+     *
+     * @parameter  
+     */
+    private String environmentSetupFileName;    
 
     // -----------------------------------------------------------------------
     // Components
@@ -216,6 +225,10 @@ public class AssembleMojo
         else if ( repositoryLayout.equals( "legacy" ) )
         {
             artifactRepositoryLayout = new LegacyRepositoryLayout();
+        }
+        else if ( repositoryLayout.equals( "flat" ) )
+        {
+            artifactRepositoryLayout = new FlatRepositoryLayout();
         }
         else
         {
@@ -351,7 +364,9 @@ public class AssembleMojo
         jvmSettings.setExtraArguments( parseTokens( this.extraJvmArguments ) );
         
         daemon.setJvmSettings( jvmSettings );
-
+        
+        daemon.setEnvironmentSetupFileName( this.environmentSetupFileName );
+        
         return daemon;
     }
 

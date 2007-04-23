@@ -57,12 +57,14 @@ cd %0\..\..
 set BASEDIR=%CD%
 cd %SAVEDIR%
 set SAVE_DIR=
-goto setRepo
+goto repoSetup
  
 :WinNTGetScriptDir
 set BASEDIR=%~dp0\..
  
-:setRepo
+:repoSetup
+if exist %BASEDIR%\bin\setup.bat call %BASEDIR%\bin\setup.bat
+
 if "%REPO%"=="" set REPO="%BASEDIR%\repo"
 
 set CLASSPATH=

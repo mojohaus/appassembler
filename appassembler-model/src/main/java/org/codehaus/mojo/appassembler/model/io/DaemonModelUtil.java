@@ -271,6 +271,10 @@ public class DaemonModelUtil
                 {
                     daemon.setMainClass( text );
                 }
+                else if ( qName.equals( "setupName" ) )
+                {
+                    daemon.setEnvironmentSetupFileName( text );
+                }
                 else if ( qName.equals( "classpath" ) )
                 {
                     insideClasspath = false;

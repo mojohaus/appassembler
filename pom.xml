@@ -26,6 +26,11 @@
       <name>Kaare Nilsen</name>
       <email>kaare.nilsen@gmail.com</email>
     </developer>
+    <developer>
+      <id>dantran</id>
+      <name>Dan Tran</name>
+      <email>dantran@gmail.com</email>
+    </developer>
   </developers>
   <licenses>
     <license>

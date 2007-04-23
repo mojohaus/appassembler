@@ -57,12 +57,14 @@ cd %0\..\..
 set BASEDIR=%CD%
 cd %SAVEDIR%
 set SAVE_DIR=
-goto setRepo
+goto repoSetup
  
 :WinNTGetScriptDir
 set BASEDIR=%~dp0\..
  
-:setRepo
+:repoSetup
+if exist %BASEDIR%\bin\app-env.bat call %BASEDIR%\bin\app-env.bat
+
 if "%REPO%"=="" set REPO="%BASEDIR%\repo"
 
 set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org/codehaus/mojo/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar;"%REPO%"\org/codehaus/mojo/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar

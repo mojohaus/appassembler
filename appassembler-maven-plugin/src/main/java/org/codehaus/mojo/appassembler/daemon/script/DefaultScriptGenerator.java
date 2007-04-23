@@ -57,6 +57,7 @@ public class DefaultScriptGenerator
             context.put( "CLASSPATH", platform.getClassPath( daemon ) );
             context.put( "EXTRA_JVM_ARGUMENTS", platform.getExtraJvmArguments( daemon.getJvmSettings() ) );
             context.put( "APP_NAME", daemon.getId() );
+            context.put( "ENV_SETUP", platform.getEnvSetup( daemon ) );
 
             String appArguments = platform.getAppArguments( daemon );
             if ( appArguments != null )

@@ -18,6 +18,11 @@
 #   Copyright (c) 2001-2002 The Apache Software Foundation.  All rights
 #   reserved.
 
+BASEDIR=`dirname $0`/..
+BASEDIR=`(cd "$BASEDIR"; pwd)`
+
+if [ -f $BASEDIR/bin/setup ]; then . $BASEDIR/bin/setup fi
+
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false;
 darwin=false;
@@ -66,9 +71,6 @@ if [ ! -x "$JAVACMD" ] ; then
   echo "  We cannot execute $JAVACMD"
   exit 1
 fi
-
-BASEDIR=`dirname $0`/..
-BASEDIR=`(cd "$BASEDIR"; pwd)`
 
 if [ -z "$REPO" ]
 then
