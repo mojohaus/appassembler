@@ -311,7 +311,7 @@ public class Platform
     		else
     		{
     			String envScriptPath = "$BASEDIR/bin/" + envSetupFileName;
-    			envSetup = "if [ -f " + envScriptPath + " ]; then . " + envScriptPath + " fi" ;
+    			envSetup = "[ -f " + envScriptPath + " ] && . " + envScriptPath;
     		}
     	}
     	

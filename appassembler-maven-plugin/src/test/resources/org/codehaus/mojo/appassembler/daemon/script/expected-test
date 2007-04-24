@@ -21,7 +21,7 @@
 BASEDIR=`dirname $0`/..
 BASEDIR=`(cd "$BASEDIR"; pwd)`
 
-if [ -f $BASEDIR/bin/setup ]; then . $BASEDIR/bin/setup fi
+[ -f $BASEDIR/bin/setup ] && . $BASEDIR/bin/setup
 
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false;
