@@ -271,7 +271,7 @@ public class DaemonModelUtil
                 {
                     daemon.setMainClass( text );
                 }
-                else if ( qName.equals( "setupName" ) )
+                else if ( qName.equals( "environmentSetupFileName" ) )
                 {
                     daemon.setEnvironmentSetupFileName( text );
                 }

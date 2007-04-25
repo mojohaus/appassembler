@@ -310,7 +310,7 @@ public class Platform
     		}
     		else
     		{
-    			String envScriptPath = "$BASEDIR/bin/" + envSetupFileName;
+    			String envScriptPath = "\"$BASEDIR\"/bin/" + envSetupFileName;
     			envSetup = "[ -f " + envScriptPath + " ] && . " + envScriptPath;
     		}
     	}
