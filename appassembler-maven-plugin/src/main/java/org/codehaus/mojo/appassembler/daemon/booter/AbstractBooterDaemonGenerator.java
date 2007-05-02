@@ -97,8 +97,11 @@ public abstract class AbstractBooterDaemonGenerator
         }
 
         String versionNumber = artifact.getVersion();
-
-        String relativePath = "org/codehaus/mojo/appassembler-booter/" + versionNumber + "/appassembler-booter-" +
+        
+        String groupIdPart = id.substring( 0,id.indexOf( ":") ).replace( '.', '/');
+        String artifactIdPart = id.substring(id.indexOf( ":") + 1, id.length() );
+        
+        String relativePath = groupIdPart + "/" + artifactIdPart + "/" + versionNumber + "/" + artifactIdPart + "-" +
             versionNumber + ".jar";
 
         Dependency dependency = new Dependency();
