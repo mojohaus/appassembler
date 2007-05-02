@@ -160,6 +160,8 @@ public class DaemonModelUtil
         private JvmSettings jvmSettings;
 
         private List systemProperties;
+        
+        private List commandLineArguments;
 
         private boolean first = true;
 
@@ -176,6 +178,10 @@ public class DaemonModelUtil
         private boolean insideSystemProperties;
 
         private boolean insideSystemProperty;
+        
+        private boolean insideCommandLineArguments;
+        
+        private boolean insideCommandLineArgument;
 
         private String text;
 
@@ -213,6 +219,11 @@ public class DaemonModelUtil
 
                     jvmSettings = new JvmSettings();
                 }
+                else if ( qName.equals( "commandLineArguments" ) )
+                {
+                    insideCommandLineArguments = true;
+                    commandLineArguments = new ArrayList();
+                }
                 else if ( insideClasspath )
                 {
                     if ( qName.equals( "dependency" ) )
@@ -244,13 +255,26 @@ public class DaemonModelUtil
                         }
                     }
                 }
+                else if ( insideCommandLineArguments )
+                {
+                    if ( qName.equals( "commandLineArgument" ) )
+                    {
+                        insideCommandLineArgument = true;
+                    }
+                }
             }
         }
 
         public void characters( char ch[], int start, int length )
             throws SAXException
         {
-            text = new String( ch, start, length );
+            String tempText = new String( ch, start, length );
+            tempText = tempText.replace( '\n', ' ' );
+            tempText = tempText.replace( '\t', ' ' );
+            tempText = tempText.trim();
+            if ( tempText != null && !tempText.equals( "" ) ) {
+                text = tempText;
+            }
         }
 
         public void endElement( String uri, String localName, String qName )
@@ -362,6 +386,20 @@ public class DaemonModelUtil
                         }
                     }
                 }
+                else if (insideCommandLineArguments) 
+                {
+                    if ( qName.equals( "commandLineArguments" ) )
+                    {
+                        daemon.setCommandLineArguments( commandLineArguments );
+
+                        insideCommandLineArguments = false;
+                    }
+                    if ( insideCommandLineArgument )
+                    {
+                        commandLineArguments.add( text );
+                        insideCommandLineArgument = false;
+                    }
+                }                
             }
 
             text = null;
@@ -392,7 +430,10 @@ public class DaemonModelUtil
         {
             daemon.appendChild( createJvmSettings( document.createElement( "jvmSettings" ), d.getJvmSettings() ) );
         }
-
+        if ( d.getCommandLineArguments() != null )
+        {
+            daemon.appendChild( createCommandLineArguments( document.createElement( "commandLineArguments" ), d.getCommandLineArguments() ) );
+        }
         return document;
     }
 
@@ -466,6 +507,27 @@ public class DaemonModelUtil
 
         return element;
     }
+    
+    private static Node createCommandLineArguments( Element element, List commandLineArguments )
+        throws DaemonModelUtilException
+    {
+        for ( Iterator it = commandLineArguments.iterator(); it.hasNext(); )
+        {
+            Object o = it.next();
+    
+            if ( o instanceof String )
+            {
+                addSimpleElement( element, "commandLineArgument", o.toString() );
+            }
+            else
+            {
+                throw new DaemonModelUtilException( "Unknonwn system property element type '" + o.getClass().getName() + "'." );
+            }
+        }
+    
+        return element;
+    }
+    
 
     private static void addSimpleElement( Element parent, String elementName, String value )
     {

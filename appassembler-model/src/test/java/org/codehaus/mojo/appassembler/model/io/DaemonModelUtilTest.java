@@ -92,8 +92,11 @@ public class DaemonModelUtilTest
         assertEquals( "234", jvmSettings.getMaxMemorySize());
         assertEquals( "321", jvmSettings.getMaxStackSize());
         assertNotNull( jvmSettings.getSystemProperties() );
-        assertEquals( "-Dfoo=bar", jvmSettings.getSystemProperties().get( 0 ) );
-        assertEquals( "-Dtrygve=cool", jvmSettings.getSystemProperties().get( 1 ) );
+        assertEquals( "foo=bar", jvmSettings.getSystemProperties().get( 0 ) );
+        assertEquals( "trygve=cool", jvmSettings.getSystemProperties().get( 1 ) );
+        assertNotNull( daemon.getCommandLineArguments() ) ;
+        assertEquals( "arg1=arg1-value", daemon.getCommandLineArguments().get( 0 ) );
+            
     }
 
     private void doAsserts2( Daemon daemon )

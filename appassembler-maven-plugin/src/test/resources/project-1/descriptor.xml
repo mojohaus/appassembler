@@ -10,4 +10,7 @@
     </systemProperties>
   </jvmSettings>
   <environmentSetupFileName>app-env</environmentSetupFileName>
+  <commandLineArguments>
+    <commandLineArgument>arg=arg1-value</commandLineArgument>
+  </commandLineArguments>
 </daemon>

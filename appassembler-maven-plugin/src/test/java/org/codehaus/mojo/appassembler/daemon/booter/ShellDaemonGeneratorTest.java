@@ -29,4 +29,22 @@ public class ShellDaemonGeneratorTest
 
         assertTrue( "Manifest file is mising: " + manifest.getAbsolutePath(), manifest.isFile());
     }
+    
+    public void testGenerateUnixShellDaemon()
+        throws Exception
+    {
+        runTest( "booter-unix", "src/test/resources/project-3/pom.xml", "src/test/resources/project-1/descriptor.xml", "target/output-3-sh" );
+    
+        File wrapper = new File( getTestFile( "target/output-3-sh" ), "bin/app" );
+    
+        assertTrue( "Windows batch file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile());
+    
+        assertTrue( "Generated batch file does not match template", FileUtils.contentEquals(
+            getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/booter/app" ),
+            wrapper ));
+    
+        File manifest = new File( getTestFile( "target/output-3-bat" ), "etc/app.xml" );
+    
+        assertTrue( "Manifest file is mising: " + manifest.getAbsolutePath(), manifest.isFile());
+    }
 }
