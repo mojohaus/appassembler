@@ -128,16 +128,24 @@ public class AppassemblerBooter
         while ( iter.hasNext() )
         {
             String line = (String) iter.next();
-            String[] strings = line.split( "=" );
-            String key = strings[0];
-            String value = strings[1];
-
-            if ( debug )
+            try
             {
-                System.err.println( "Setting system property '" + key + "' to '" + value + "'." );
+                String[] strings = line.split( "=" );
+                String key = strings[0];
+                String value = strings[1];
+    
+                if ( debug )
+                {
+                    System.err.println( "Setting system property '" + key + "' to '" + value + "'." );
+                }
+    
+                System.setProperty( key, value );
+            } catch (Throwable e) {
+                if ( debug )
+                {
+                    System.err.println( "Error Setting system property with value '" + line + "'." );
+                }
             }
-
-            System.setProperty( key, value );
         }
     }
 
