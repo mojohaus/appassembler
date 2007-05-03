@@ -149,13 +149,13 @@ public class JavaServiceWrapperDaemonGenerator
         PrintWriter writer = new PrintWriter( string );
 
         writer.println( "wrapper.java.classpath.1=lib/wrapper.jar" );
-        writer.println( "wrapper.java.classpath.2=../../repo/" + Util.getRelativePath( project.getArtifact() ) );
+        writer.println( "wrapper.java.classpath.2=../../repo/" + Util.getAbsolutePath( project.getArtifact() ) );
         int i = 3;
         for ( Iterator it = project.getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
 
-            String path = Util.getRelativePath( artifact );
+            String path = Util.getAbsolutePath( artifact );
             writer.println( "wrapper.java.classpath." + i + "=../../repo/" + path );
             i++;
         }

@@ -90,7 +90,6 @@ public class GenericDaemonGenerator
         // -----------------------------------------------------------------------
         // Add the project itself as a dependency.
         // -----------------------------------------------------------------------
-
         complete.setClasspath( new ArrayList() );
         Dependency projectDependency = new Dependency();
         Artifact projectArtifact = project.getArtifact();
@@ -104,7 +103,6 @@ public class GenericDaemonGenerator
         // -----------------------------------------------------------------------
         // Add all the dependencies from the project.
         // -----------------------------------------------------------------------
-
         for ( Iterator it = project.getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
@@ -115,13 +113,13 @@ public class GenericDaemonGenerator
             dependency.setVersion( artifact.getVersion() );
             dependency.setClassifier( artifact.getClassifier() );
 
-            if ( repositoryPath != null )
+            if ( repositoryPath == null )
             {
-                dependency.setRelativePath( Util.getRelativePath( artifact ));
+                dependency.setRelativePath( Util.getAbsolutePath( artifact ));
             }
             else
             {
-                dependency.setRelativePath( repositoryPath + "/" + Util.getRelativePath( artifact ) );
+                dependency.setRelativePath( Util.getRelativePath( artifact ) );
             }
 
             complete.getClasspath().add( dependency );
