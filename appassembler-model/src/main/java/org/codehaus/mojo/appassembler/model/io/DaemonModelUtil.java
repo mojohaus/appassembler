@@ -183,7 +183,7 @@ public class DaemonModelUtil
         
         private boolean insideCommandLineArgument;
 
-        private String text;
+        private StringBuffer text;
 
         // -----------------------------------------------------------------------
         // ContentHandler Implementation
@@ -268,18 +268,18 @@ public class DaemonModelUtil
         public void characters( char ch[], int start, int length )
             throws SAXException
         {
-            String tempText = new String( ch, start, length );
-            tempText = tempText.replace( '\n', ' ' );
-            tempText = tempText.replace( '\t', ' ' );
-            tempText = tempText.trim();
-            if ( tempText != null && !tempText.equals( "" ) ) {
-                text = tempText;
+            if ( text == null )
+            {
+                text = new StringBuffer(  );
             }
+            text.append(ch, start, length  ); 
         }
 
         public void endElement( String uri, String localName, String qName )
             throws SAXException
         {
+            String text = trimText();
+            
             if ( qName.equals( "daemon" ) )
             {
                 insideDaemon = false;
@@ -403,6 +403,21 @@ public class DaemonModelUtil
             }
 
             text = null;
+        }
+
+        private String trimText()
+        {
+            if ( text == null )
+            {
+                return null;
+            }
+            
+            String temp = text.toString();
+            temp = temp.replace( '\n', ' ' );
+            temp = temp.replace( '\t', ' ' );
+            temp = temp.trim();
+            text = null;
+            return temp;
         }
 
         // -----------------------------------------------------------------------

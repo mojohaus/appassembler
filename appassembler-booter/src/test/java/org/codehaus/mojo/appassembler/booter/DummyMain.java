@@ -23,7 +23,7 @@ public class DummyMain
             throw new Exception( "System propertyp 'bar' was expected to be 'foo', was: " + bar );
         }
 
-        URL resource = DummyMain.class.getResource( "/booter/app.xml" );
+        URL resource = DummyMain.class.getResource( "/org/codehaus/mojo/appassembler/booter/app.xml" );
 
         if ( resource.toExternalForm().indexOf( "org/codehaus/mojo/appassembler" ) == -1 )
         {
