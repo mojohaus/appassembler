@@ -3,9 +3,9 @@ package org.codehaus.mojo.appassembler.booter;
 import junit.framework.TestCase;
 
 import java.io.File;
-import java.net.URLClassLoader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URLClassLoader;
 
 public class AppassemblerBooterTest
     extends TestCase

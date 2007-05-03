@@ -1,8 +1,8 @@
 package org.codehaus.mojo.appassembler.daemon;
 
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.plexus.PlexusTestCase;
 
 import java.io.File;
 

@@ -1,8 +1,6 @@
 package org.codehaus.mojo.appassembler.daemon.generic;
 
 import org.codehaus.mojo.appassembler.daemon.AbstractDaemonGeneratorTest;
-import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
-import org.codehaus.mojo.appassembler.model.Daemon;
 
 import java.io.File;
 

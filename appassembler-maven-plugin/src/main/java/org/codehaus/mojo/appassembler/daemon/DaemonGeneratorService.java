@@ -3,7 +3,6 @@ package org.codehaus.mojo.appassembler.daemon;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.mojo.appassembler.model.JvmSettings;
 
 import java.io.File;
 

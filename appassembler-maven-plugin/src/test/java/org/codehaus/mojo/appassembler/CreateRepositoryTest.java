@@ -1,6 +1,7 @@
 package org.codehaus.mojo.appassembler;
 
 import junit.framework.TestCase;
+
 import org.apache.maven.artifact.Artifact;
 
 public class CreateRepositoryTest

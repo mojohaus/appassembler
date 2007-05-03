@@ -1,6 +1,7 @@
 package org.codehaus.mojo.appassembler.daemon.script;
 
 import junit.framework.TestCase;
+
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;

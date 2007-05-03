@@ -1,7 +1,7 @@
 package org.codehaus.mojo.appassembler.daemon.merge;
 
-import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
+import org.codehaus.mojo.appassembler.model.Daemon;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>

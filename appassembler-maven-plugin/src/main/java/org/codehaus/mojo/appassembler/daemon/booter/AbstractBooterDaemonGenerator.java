@@ -1,19 +1,19 @@
 package org.codehaus.mojo.appassembler.daemon.booter;
 
-import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
-import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
-import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
-import org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator;
-import org.codehaus.mojo.appassembler.daemon.script.Platform;
-import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.mojo.appassembler.model.Directory;
-import org.codehaus.mojo.appassembler.model.Dependency;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
+import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
+import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
+import org.codehaus.mojo.appassembler.daemon.script.Platform;
+import org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator;
+import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.model.Dependency;
+import org.codehaus.mojo.appassembler.model.Directory;
 
 import java.io.File;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>

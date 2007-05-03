@@ -1,9 +1,7 @@
 package org.codehaus.mojo.appassembler.daemon.script;
 
-import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.codehaus.mojo.appassembler.model.Daemon;
 
 import java.io.File;
 
