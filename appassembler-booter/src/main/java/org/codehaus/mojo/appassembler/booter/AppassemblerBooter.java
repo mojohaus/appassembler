@@ -24,6 +24,8 @@ public class AppassemblerBooter
 
     private static boolean debug;
 
+    private static File repoDir;
+    
     private static File basedir;
 
     private static Daemon config;
@@ -62,6 +64,10 @@ public class AppassemblerBooter
         }
 
         basedir = new File( b );
+        
+        String r = System.getProperty( "app.repo", b );
+        
+        repoDir = new File ( r );
 
         // -----------------------------------------------------------------------
         // Load and validate the configuration
@@ -91,7 +97,7 @@ public class AppassemblerBooter
         while ( iter.hasNext() )
         {
             ClasspathElement element = (ClasspathElement) iter.next();
-            File artifact = new File( basedir, element.getRelativePath() );
+            File artifact = new File( repoDir, element.getRelativePath() );
 
             if ( debug )
             {

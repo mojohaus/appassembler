@@ -12,8 +12,22 @@ public class Util
 {
     private static ArtifactRepositoryLayout layout = new DefaultRepositoryLayout();
 
-    public static String getRelativePath( Artifact artifact )
+    public static String getAbsolutePath( Artifact artifact )
     {
         return layout.pathOf( artifact );
     }
+    
+    public static String getRelativePath( Artifact artifact )
+    {
+        String versionNumber = artifact.getVersion();
+        
+        String groupIdPart = artifact.getGroupId().replace( '.', '/');
+        String artifactIdPart = artifact.getArtifactId();
+        
+        String relativePath = groupIdPart + "/" + artifactIdPart + "/" + versionNumber + "/" + artifactIdPart + "-" +
+            versionNumber + ".jar";
+
+        return relativePath;
+    }
+    
 }

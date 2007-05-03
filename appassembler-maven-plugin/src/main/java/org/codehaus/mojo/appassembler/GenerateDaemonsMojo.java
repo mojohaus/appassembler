@@ -8,6 +8,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
+import org.codehaus.mojo.appassembler.model.ClasspathElement;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
@@ -16,6 +17,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import javax.media.DeallocateEvent;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -46,7 +49,7 @@ public class GenerateDaemonsMojo
      * The directory that will be used for the dependencies, relative to assembleDirectory.
      *
      * @required
-     * @parameter default-value="repo"
+     * @parameter expression="${project.build.directory}/appassembler/repo"
      */
     private String repoPath;
 
