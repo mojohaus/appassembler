@@ -1,13 +1,11 @@
 package org.codehaus.mojo.appassembler.booter;
 
-import java.util.Arrays;
 
 public class DummyMainWithArgs
 {
 
     public static void main( String[] args ) throws Exception
     {
-        System.out.println(Arrays.toString( args ));
         if ( args.length != 2 )
             throw new Exception( "Expected two arguments, but got " + args.length );
 
