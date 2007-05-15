@@ -1,17 +1,18 @@
 package org.codehaus.mojo.appassembler.booter;
 
-import org.codehaus.mojo.appassembler.model.ClasspathElement;
-import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.mojo.appassembler.model.JvmSettings;
-import org.codehaus.mojo.appassembler.model.io.DaemonModelUtil;
-
 import java.io.File;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import org.codehaus.mojo.appassembler.model.ClasspathElement;
+import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.mojo.appassembler.model.io.DaemonModelUtil;
 
 /**
  * Reads the appassembler manifest file from the repo, and executes the specified main class.
@@ -37,7 +38,7 @@ public class AppassemblerBooter
     {
         URLClassLoader classLoader = setup();
 
-        executeMain( classLoader );
+        executeMain( classLoader, args );
     }
 
     public static URLClassLoader setup()
@@ -169,7 +170,7 @@ public class AppassemblerBooter
         return DaemonModelUtil.loadModel( resource.openStream() );
     }
 
-    public static void executeMain( URLClassLoader classLoader )
+    public static void executeMain( URLClassLoader classLoader, String[] args )
         throws Exception
     {
         List arguments = config.getCommandLineArguments();
@@ -183,15 +184,16 @@ public class AppassemblerBooter
 
         Method main = mainClass.getMethod( "main", new Class[]{String[].class} );
 
-        String[] args;
         if ( arguments == null )
         {
-            args = new String[0];
+            arguments = Arrays.asList( args );
         }
         else
         {
-            args = (String[]) arguments.toArray( new String[0] );
+            arguments.addAll( Arrays.asList( args ) );
         }
+
+        String[] commandLineArgs = (String[]) arguments.toArray( new String[0] );
 
         // -----------------------------------------------------------------------
         // Setup environment
@@ -203,7 +205,7 @@ public class AppassemblerBooter
         //
         // -----------------------------------------------------------------------
 
-        main.invoke( null, new Object[]{args} );
+        main.invoke( null, new Object[]{commandLineArgs} );
     }
 
     // -----------------------------------------------------------------------

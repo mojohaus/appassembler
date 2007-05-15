@@ -47,7 +47,7 @@ public class AppassemblerBooterTest extends TestCase
 
         try
         {
-            AppassemblerBooter.executeMain( classLoader );
+            AppassemblerBooter.executeMain( classLoader, new String[0] );
         }
         catch ( InvocationTargetException e )
         {
@@ -77,6 +77,36 @@ public class AppassemblerBooterTest extends TestCase
             {
                 fail( "Broken path" );
             }
+        }
+
+    }
+    
+    public void testMainWithArgs() throws Throwable
+    {
+        System.setProperty( "app.name", "org/codehaus/mojo/appassembler/booter/appWithArgs" );
+
+        URLClassLoader classLoader = AppassemblerBooter.setup();
+
+        try
+        {
+            AppassemblerBooter.executeMain( classLoader, new String[] { "second argument" } );
+        }
+        catch ( InvocationTargetException e )
+        {
+            fail( "Unexpected failure: " + e );
+        }
+
+        classLoader = AppassemblerBooter.setup();
+
+        try
+        {
+            AppassemblerBooter.executeMain( classLoader, new String[0] );
+            fail( "Should have thrown exception" );
+        }
+        catch ( InvocationTargetException e )
+        {
+            assertTrue( "Unexpected exception " + e.getCause(),
+                        e.getCause().getMessage().startsWith( "Expected two arguments" ) );
         }
 
     }
