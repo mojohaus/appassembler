@@ -73,7 +73,7 @@ public class AppassemblerBooterTest extends TestCase
         while ( iter.hasNext() )
         {
             String url = ( (URL) iter.next() ).getPath();
-            if ( url.contains( "appassembler-booter/adgenerator-api-1.0-I11-SNAPSHOT.jar" ) )
+            if ( url.indexOf( "appassembler-booter/adgenerator-api-1.0-I11-SNAPSHOT.jar" ) >= 0)
             {
                 fail( "Broken path" );
             }
