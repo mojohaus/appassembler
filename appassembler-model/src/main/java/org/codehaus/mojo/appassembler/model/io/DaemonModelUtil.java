@@ -163,6 +163,8 @@ public class DaemonModelUtil
         
         private List commandLineArguments;
 
+        private List extraArguments;
+
         private boolean first = true;
 
         private boolean insideDaemon;
@@ -184,6 +186,10 @@ public class DaemonModelUtil
         private boolean insideCommandLineArgument;
 
         private StringBuffer text;
+
+        private boolean insideExtraArguments;
+
+        private boolean insideExtraArgument;
 
         // -----------------------------------------------------------------------
         // ContentHandler Implementation
@@ -252,6 +258,18 @@ public class DaemonModelUtil
                         if ( qName.equals( "systemProperty" ) )
                         {
                             insideSystemProperty = true;
+                        }
+                    }
+                    else if ( qName.equals( "extraArguments" ) )
+                    {
+                        insideExtraArguments = true;
+                        extraArguments = new ArrayList();
+                    }
+                    else if ( insideExtraArguments )
+                    {
+                        if ( qName.equals( "extraArgument" ) )
+                        {
+                            insideExtraArgument = true;
                         }
                     }
                 }
@@ -384,6 +402,18 @@ public class DaemonModelUtil
 
                             insideSystemProperty = false;
                         }
+                        else if ( qName.equals( "extraArguments" ) )
+                        {
+                            insideExtraArguments = false;
+                            
+                            jvmSettings.setExtraArguments( extraArguments );
+                        }
+                        else if ( insideExtraArgument )
+                        {
+                            extraArguments.add( text );
+                            
+                            insideExtraArgument = false;
+                        }
                     }
                 }
                 else if (insideCommandLineArguments) 
@@ -497,26 +527,29 @@ public class DaemonModelUtil
         addSimpleElement( element, "initialMemorySize", jvmSettings.getInitialMemorySize() );
         addSimpleElement( element, "maxMemorySize", jvmSettings.getMaxMemorySize() );
         addSimpleElement( element, "maxStackSize", jvmSettings.getMaxStackSize() );
-        element.appendChild( createSystemProperties( element.getOwnerDocument().createElement( "systemProperties" ),
-                                                     jvmSettings.getSystemProperties() ) );
+        element.appendChild( createChildElements( element.getOwnerDocument().createElement( "systemProperties" ),
+                                                     "systemProperty", jvmSettings.getSystemProperties() ) );
+
+        element.appendChild( createChildElements( element.getOwnerDocument().createElement( "extraArguments" ),
+                                                  "extraArgument", jvmSettings.getExtraArguments() ) );
 
         return element;
     }
 
-    private static Node createSystemProperties( Element element, List systemProperties )
+    private static Node createChildElements( Element element, String childElementName, List childElementValues )
         throws DaemonModelUtilException
     {
-        for ( Iterator it = systemProperties.iterator(); it.hasNext(); )
+        for ( Iterator it = childElementValues.iterator(); it.hasNext(); )
         {
             Object o = it.next();
 
             if ( o instanceof String )
             {
-                addSimpleElement( element, "systemProperty", o.toString() );
+                addSimpleElement( element, childElementName, o.toString() );
             }
             else
             {
-                throw new DaemonModelUtilException( "Unknonwn system property element type '" + o.getClass().getName() + "'." );
+                throw new DaemonModelUtilException( "Unknown " + childElementName + " element type '" + o.getClass().getName() + "'." );
             }
         }
 

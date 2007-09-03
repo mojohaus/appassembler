@@ -8,6 +8,9 @@
       <systemProperty>foo=bar</systemProperty>
       <systemProperty>bar=foo</systemProperty>
     </systemProperties>
+    <extraArguments>
+      <extraArgument>-splash:niceImage.png</extraArgument>
+    </extraArguments>
   </jvmSettings>
   <environmentSetupFileName>app-env</environmentSetupFileName>
   <commandLineArguments>

@@ -31,6 +31,10 @@
 			<systemProperty>foo=bar</systemProperty>
 			<systemProperty>trygve=cool</systemProperty>
 		</systemProperties>
+		<extraArguments>
+		    <extraArgument>-da</extraArgument>
+		    <extraArgument>-splash:imageOfKaare.png</extraArgument>
+		</extraArguments>
 	</jvmSettings>
 	<commandLineArguments>
 		<commandLineArgument>arg1=arg1-value</commandLineArgument>

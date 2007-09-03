@@ -181,9 +181,14 @@ public class GenerateDaemonsMojo
         modelJvmSettings.setInitialMemorySize( jvmSettings.getInitialMemorySize() );
         modelJvmSettings.setMaxMemorySize( jvmSettings.getMaxMemorySize() );
         modelJvmSettings.setMaxStackSize( jvmSettings.getMaxStackSize() );
-        List systemProperties = null == jvmSettings.getSystemProperties() ? new ArrayList()
-            : Arrays.asList( jvmSettings.getSystemProperties() );
-        modelJvmSettings.setSystemProperties( systemProperties );
+        if ( jvmSettings.getSystemProperties() == null )
+            modelJvmSettings.setSystemProperties( new ArrayList() );
+        else
+            modelJvmSettings.setSystemProperties( Arrays.asList( jvmSettings.getSystemProperties() ) );
+        if ( jvmSettings.getExtraArguments() == null )
+            modelJvmSettings.setExtraArguments( new ArrayList() );
+        else
+            modelJvmSettings.setExtraArguments( Arrays.asList( jvmSettings.getExtraArguments() ) );
 
         return modelJvmSettings;
     }

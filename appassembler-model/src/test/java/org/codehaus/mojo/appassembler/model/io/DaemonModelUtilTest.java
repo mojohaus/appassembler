@@ -96,7 +96,9 @@ public class DaemonModelUtilTest
         assertEquals( "trygve=cool", jvmSettings.getSystemProperties().get( 1 ) );
         assertNotNull( daemon.getCommandLineArguments() ) ;
         assertEquals( "arg1=arg1-value", daemon.getCommandLineArguments().get( 0 ) );
-            
+        assertNotNull( jvmSettings.getExtraArguments() );
+        assertEquals( "-da", jvmSettings.getExtraArguments().get( 0 ) );
+        assertEquals( "-splash:imageOfKaare.png", jvmSettings.getExtraArguments().get( 1 ) );
     }
 
     private void doAsserts2( Daemon daemon )
