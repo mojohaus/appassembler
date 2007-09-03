@@ -97,4 +97,4 @@ exec "$JAVACMD" $JAVA_OPTS \
   -Dapp.repo="$REPO" \
   -Dbasedir="$BASEDIR" \
   org.codehaus.mojo.appassembler.booter.AppassemblerBooter \
-  arg=arg1-value "$@"
+  "$@"

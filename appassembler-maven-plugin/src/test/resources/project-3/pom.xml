@@ -1,7 +1,7 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.mojo.appassembler</groupId>
-  <artifactId>project-2</artifactId>
+  <artifactId>project-3</artifactId>
   <version>1.0-SNAPSHOT</version>
   <dependencies>
     <dependency>

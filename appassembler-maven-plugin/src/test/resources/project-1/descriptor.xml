@@ -11,6 +11,6 @@
   </jvmSettings>
   <environmentSetupFileName>app-env</environmentSetupFileName>
   <commandLineArguments>
-    <commandLineArgument>arg=arg1-value</commandLineArgument>
+    <commandLineArgument>arg1=arg1-value</commandLineArgument>
   </commandLineArguments>
 </daemon>
