@@ -68,6 +68,14 @@ public class GenerateDaemonsMojo
      */
     private MavenProject project;
 
+    /**
+     * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
+     * (flat lib/ style)
+     *
+     * @parameter default="default'
+     */
+    private String repositoryLayout;
+
     // -----------------------------------------------------------------------
     // Read-only parameters
     // -----------------------------------------------------------------------
@@ -161,6 +169,7 @@ public class GenerateDaemonsMojo
                     request.setOutputDirectory( output );
                     request.setMavenProject( project );
                     request.setLocalRepository( localRepository );
+                    request.setRepositoryLayout( Util.getRepositoryLayout( repositoryLayout ) );
                     request.setRepositoryPath( repoPath );
 
                     daemonGeneratorService.generateDaemon( request );

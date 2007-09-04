@@ -1,11 +1,12 @@
 package org.codehaus.mojo.appassembler.daemon.jsw;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.mojo.appassembler.Util;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
-import org.codehaus.mojo.appassembler.daemon.Util;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
@@ -59,7 +60,7 @@ public class JavaServiceWrapperDaemonGenerator
 
         Map context = new HashMap();
         context.put( "MAINCLASS", daemon.getMainClass() );
-        context.put( "CLASSPATH", constructClasspath( project ) );
+        context.put( "CLASSPATH", constructClasspath( project, request.getRepositoryLayout() ) );
         context.put( "ADDITIONAL", constructAdditional( daemon ) );
         context.put( "INITIAL_MEMORY", getInitialMemorySize( daemon ) );
         context.put( "MAX_MEMORY", getMaxMemorySize( daemon ) );
@@ -142,20 +143,20 @@ public class JavaServiceWrapperDaemonGenerator
     // Private
     // -----------------------------------------------------------------------
 
-    private String constructClasspath( MavenProject project )
+    private String constructClasspath( MavenProject project, ArtifactRepositoryLayout layout )
     {
         StringWriter string = new StringWriter();
 
         PrintWriter writer = new PrintWriter( string );
 
         writer.println( "wrapper.java.classpath.1=lib/wrapper.jar" );
-        writer.println( "wrapper.java.classpath.2=../../repo/" + Util.getAbsolutePath( project.getArtifact() ) );
+        writer.println( "wrapper.java.classpath.2=../../repo/" + Util.getRelativePath( project.getArtifact(), layout ) );
         int i = 3;
         for ( Iterator it = project.getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
 
-            String path = Util.getAbsolutePath( artifact );
+            String path = Util.getRelativePath( artifact, layout );
             writer.println( "wrapper.java.classpath." + i + "=../../repo/" + path );
             i++;
         }

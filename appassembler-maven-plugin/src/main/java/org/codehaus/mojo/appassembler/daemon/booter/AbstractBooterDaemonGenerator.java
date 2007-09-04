@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
@@ -15,6 +16,7 @@ import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.mojo.appassembler.Util;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
@@ -72,26 +74,26 @@ public abstract class AbstractBooterDaemonGenerator
         // Generate the shell script
         // -----------------------------------------------------------------------
 
-        daemon.setMainClass( "org.codehaus.mojo.appassembler.booter.AppassemblerBooter" );
+        Daemon booterDaemon = new Daemon();
+        booterDaemon.setId( daemon.getId() );
+        booterDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
+        booterDaemon.setModelEncoding( daemon.getModelEncoding() );
+        booterDaemon.setMainClass( "org.codehaus.mojo.appassembler.booter.AppassemblerBooter" );
 
         MavenProject project = request.getMavenProject();
 
         List classpath = new ArrayList( 2 );
 
-        // TODO: Transitively resulve the dependencies of the booter.
+        // TODO: Transitively resolve the dependencies of the booter.
         addDirectory( classpath, "etc" );
-        addArtifact( classpath, project, "org.codehaus.mojo:appassembler-booter" );
-        addArtifact( classpath, project, "org.codehaus.mojo:appassembler-model" );
+        addArtifact( classpath, project, "org.codehaus.mojo:appassembler-booter", request.getRepositoryLayout() );
+        addArtifact( classpath, project, "org.codehaus.mojo:appassembler-model", request.getRepositoryLayout() );
 
-        daemon.setClasspath( classpath );
-        daemon.setJvmSettings( jvmSettings );
-        
-        /* The command line arguments are written to the XML file above, and do not
-         * need to go into the script. */
-        daemon.setCommandLineArguments( null );
+        booterDaemon.setClasspath( classpath );
+        booterDaemon.setJvmSettings( jvmSettings );
 
         scriptGenerator.createBinScript( platformName,
-                                         daemon,
+                                         booterDaemon,
                                          outputDirectory );
     }
 
@@ -99,7 +101,7 @@ public abstract class AbstractBooterDaemonGenerator
     // Private
     // -----------------------------------------------------------------------
 
-    private void addArtifact( List classpath, MavenProject project, String id )
+    private void addArtifact( List classpath, MavenProject project, String id, ArtifactRepositoryLayout artifactRepositoryLayout )
         throws DaemonGeneratorException
     {
         Artifact artifact = (Artifact) project.getArtifactMap().get( id );
@@ -109,16 +111,10 @@ public abstract class AbstractBooterDaemonGenerator
             throw new DaemonGeneratorException( "The project has to have a dependency on '" + id + "'." );
         }
 
-        String versionNumber = artifact.getVersion();
-        
-        String groupIdPart = id.substring( 0,id.indexOf( ":") ).replace( '.', '/');
-        String artifactIdPart = id.substring(id.indexOf( ":") + 1, id.length() );
-        
-        String relativePath = groupIdPart + "/" + artifactIdPart + "/" + versionNumber + "/" + artifactIdPart + "-" +
-            versionNumber + ".jar";
-
         Dependency dependency = new Dependency();
-        dependency.setRelativePath( relativePath );
+
+        dependency.setRelativePath( Util.getRelativePath( artifact, artifactRepositoryLayout) );
+
         classpath.add( dependency );
     }
 
