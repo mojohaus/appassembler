@@ -15,5 +15,7 @@
   <inceptionYear>2006</inceptionYear>
   <modules>
     <module>appassembler-example-helloworld</module>
+    <module>appassembler-example-jsw</module>
+    <module>appassembler-example-webapp</module>
   </modules>
 </project>
