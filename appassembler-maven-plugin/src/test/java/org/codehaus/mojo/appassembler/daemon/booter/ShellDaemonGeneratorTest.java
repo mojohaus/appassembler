@@ -21,9 +21,9 @@ public class ShellDaemonGeneratorTest
 
         assertTrue( "Windows batch file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile());
 
-        assertTrue( "Generated batch file does not match template", FileUtils.contentEquals(
-            getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/booter/app.bat" ),
-            wrapper ));
+        assertEquals( "Generated batch file does not match template", FileUtils.fileRead(
+            getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/booter/app.bat" ) ),
+            FileUtils.fileRead( wrapper ));
 
         File manifest = new File( getTestFile( "target/output-3-bat" ), "etc/app.xml" );
 
@@ -39,9 +39,9 @@ public class ShellDaemonGeneratorTest
     
         assertTrue( "Unix shell script is missing: " + wrapper.getAbsolutePath(), wrapper.isFile());
     
-        assertTrue( "Generated batch file does not match template", FileUtils.contentEquals(
-            getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/booter/app" ),
-            wrapper ));
+        assertEquals( "Generated batch file does not match template", FileUtils.fileRead(
+            getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/booter/app" ) ),
+            FileUtils.fileRead( wrapper ));
     
         File manifest = new File( getTestFile( "target/output-3-bat" ), "etc/app.xml" );
     

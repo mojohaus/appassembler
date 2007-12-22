@@ -86,8 +86,8 @@ public abstract class AbstractBooterDaemonGenerator
 
         // TODO: Transitively resolve the dependencies of the booter.
         addDirectory( classpath, "etc" );
-        addArtifact( classpath, project, "org.codehaus.mojo:appassembler-booter", request.getRepositoryLayout() );
-        addArtifact( classpath, project, "org.codehaus.mojo:appassembler-model", request.getRepositoryLayout() );
+        addArtifact( classpath, project, "org.codehaus.mojo.appassembler:appassembler-booter", request.getRepositoryLayout() );
+        addArtifact( classpath, project, "org.codehaus.mojo.appassembler:appassembler-model", request.getRepositoryLayout() );
 
         booterDaemon.setClasspath( classpath );
         booterDaemon.setJvmSettings( jvmSettings );

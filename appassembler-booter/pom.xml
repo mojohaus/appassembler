@@ -4,15 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>appassembler</artifactId>
-    <groupId>org.codehaus.mojo</groupId>
+    <groupId>org.codehaus.mojo.appassembler</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
   <artifactId>appassembler-booter</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>Appassembler :: Generic Bootstrapper</name>
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.mojo</groupId>
+      <groupId>org.codehaus.mojo.appassembler</groupId>
       <artifactId>appassembler-model</artifactId>
       <version>${project.version}</version>
     </dependency>

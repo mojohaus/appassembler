@@ -3,12 +3,13 @@
   <parent>
     <artifactId>mojo</artifactId>
     <groupId>org.codehaus.mojo</groupId>
-    <version>17</version>
+    <version>16</version>
   </parent>
   <artifactId>appassembler</artifactId>
   <packaging>pom</packaging>
+  <groupId>org.codehaus.mojo.appassembler</groupId>
   <version>1.0-SNAPSHOT</version>
-  <name>Appassembler :: Parent</name>
+  <name>Appassembler</name>
   <inceptionYear>2006</inceptionYear>
   <developers>
     <developer>
@@ -31,6 +32,11 @@
       <name>Dan Tran</name>
       <email>dantran@gmail.com</email>
     </developer>
+    <developer>
+      <id>brett</id>
+      <name>Brett Porter</name>
+      <email>brett@apache.org</email>
+    </developer>
   </developers>
   <licenses>
     <license>
@@ -39,10 +45,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  <organization>
-    <name>Codehaus</name>
-    <url>http://mojo.codehaus.org</url>
-  </organization>
   <modules>
     <module>appassembler-maven-plugin</module>
     <module>appassembler-model</module>

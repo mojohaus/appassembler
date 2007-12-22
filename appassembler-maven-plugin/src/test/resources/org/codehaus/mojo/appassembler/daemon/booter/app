@@ -77,7 +77,7 @@ then
   REPO="$BASEDIR"/repo
 fi
 
-CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar:"$REPO"/org/codehaus/mojo/appassembler-model/1.0-SNAPSHOT/appassembler-model-1.0-SNAPSHOT.jar
+CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar:"$REPO"/org/codehaus/mojo/appassembler/appassembler-model/1.0-SNAPSHOT/appassembler-model-1.0-SNAPSHOT.jar
 EXTRA_JVM_ARGUMENTS="-Xms345 -Xmx234 -Xss321 -splash:niceImage.png -Dfoo=bar -Dbar=foo"
 
 # For Cygwin, switch paths to Windows format before running java
