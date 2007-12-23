@@ -30,8 +30,6 @@ import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
-import org.apache.maven.artifact.repository.layout.LegacyRepositoryLayout;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -41,11 +39,17 @@ import org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
-import org.codehaus.mojo.appassembler.repository.FlatRepositoryLayout;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * Assembles the artifacts and generates bin scripts for the configured applications
@@ -61,26 +65,8 @@ public class AssembleMojo
     extends AbstractMojo
 {
     // -----------------------------------------------------------------------
-    // Configuration
+    // Parameters
     // -----------------------------------------------------------------------
-
-    /**
-     * @readonly
-     * @parameter expression="${project}"
-     */
-    private MavenProject mavenProject;
-
-    /**
-     * @readonly
-     * @parameter expression="${project.build.directory}"
-     */
-    private String buildDirectory;
-
-    /**
-     * @readonly
-     * @parameter expression="${project.runtimeArtifacts}"
-     */
-    private List artifacts;
 
     /**
      * The directory that will be used to assemble the artifacts in
@@ -90,18 +76,6 @@ public class AssembleMojo
      * @parameter expression="${assembleDirectory}" default-value="${project.build.directory}/appassembler"
      */
     private File assembleDirectory;
-
-    /**
-     * @readonly
-     * @parameter expression="${project.artifact}"
-     */
-    private Artifact projectArtifact;
-
-    /**
-     * @readonly
-     * @parameter expression="${localRepository}"
-     */
-    private ArtifactRepository localRepository;
 
     /**
      * The set of Programs that bin files will be generated for.
@@ -157,6 +131,40 @@ public class AssembleMojo
     private String environmentSetupFileName;    
 
     // -----------------------------------------------------------------------
+    // Read-only Parameters
+    // -----------------------------------------------------------------------
+
+    /**
+     * @readonly
+     * @parameter expression="${project}"
+     */
+    private MavenProject mavenProject;
+
+    /**
+     * @readonly
+     * @parameter expression="${project.build.directory}"
+     */
+    private String buildDirectory;
+
+    /**
+     * @readonly
+     * @parameter expression="${project.runtimeArtifacts}"
+     */
+    private List artifacts;
+
+    /**
+     * @readonly
+     * @parameter expression="${project.artifact}"
+     */
+    private Artifact projectArtifact;
+
+    /**
+     * @readonly
+     * @parameter expression="${localRepository}"
+     */
+    private ArtifactRepository localRepository;
+
+    // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
 
@@ -175,67 +183,20 @@ public class AssembleMojo
      */
     private ScriptGenerator scriptGenerator;
 
-    // -----------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------
-
-    /**
-     * The layout of the repository.
-     */
-    private ArtifactRepositoryLayout artifactRepositoryLayout;
-
     // ----------------------------------------------------------------------
-    //
+    // CONSTANTS
     // ----------------------------------------------------------------------
 
-    // This set will be used unless the program descriptor has a set of platforms
-    private Set defaultPlatforms;
-
-    private final static Set VALID_PLATFORMS;
-
-    static
-    {
-        Set set = new HashSet();
-        set.add( "unix" );
-        set.add( "windows" );
-
-        VALID_PLATFORMS = Collections.unmodifiableSet( set );
-    }
+    private final static Set VALID_PLATFORMS =
+        Collections.unmodifiableSet( new HashSet( Arrays.asList( new String[]{"unix", "windows"} ) ) );
 
     // ----------------------------------------------------------------------
     // Validate
     // ----------------------------------------------------------------------
 
-    public void validate()
+    public void validate( Set defaultPlatforms )
         throws MojoFailureException, MojoExecutionException
     {
-        // ----------------------------------------------------------------------
-        // Create new repository for dependencies
-        // ----------------------------------------------------------------------
-
-        if ( repositoryLayout == null || repositoryLayout.equals( "default" ) )
-        {
-            artifactRepositoryLayout = new DefaultRepositoryLayout();
-        }
-        else if ( repositoryLayout.equals( "legacy" ) )
-        {
-            artifactRepositoryLayout = new LegacyRepositoryLayout();
-        }
-        else if ( repositoryLayout.equals( "flat" ) )
-        {
-            artifactRepositoryLayout = new FlatRepositoryLayout();
-        }
-        else
-        {
-            throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
-        }
-
-        // ----------------------------------------------------------------------
-        // Validate default platform configuration
-        // ----------------------------------------------------------------------
-
-        defaultPlatforms = validatePlatforms( platforms, VALID_PLATFORMS );
-
         // ----------------------------------------------------------------------
         // Validate Programs
         // ----------------------------------------------------------------------
@@ -261,8 +222,12 @@ public class AssembleMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        ArtifactRepositoryLayout artifactRepositoryLayout = Util.getRepositoryLayout( repositoryLayout );
+
+        Set defaultPlatforms = validatePlatforms( platforms, VALID_PLATFORMS );
+
         // validate input and set defaults
-        validate();
+        validate( defaultPlatforms );
 
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
@@ -306,7 +271,7 @@ public class AssembleMojo
                 try
                 {
                     scriptGenerator.createBinScript( platform,
-                                                     programToDaemon( program ),
+                                                     programToDaemon( program, artifactRepositoryLayout ),
                                                      assembleDirectory );
                 }
                 catch ( DaemonGeneratorException e )
@@ -318,7 +283,7 @@ public class AssembleMojo
         }
     }
 
-    private org.codehaus.mojo.appassembler.model.Daemon programToDaemon( Program program )
+    private org.codehaus.mojo.appassembler.model.Daemon programToDaemon( Program program, ArtifactRepositoryLayout artifactRepositoryLayout )
     {
         org.codehaus.mojo.appassembler.model.Daemon daemon = new org.codehaus.mojo.appassembler.model.Daemon();
 

@@ -55,7 +55,7 @@ public class CreateRepositoryMojo
     extends AbstractMojo
 {
     // -----------------------------------------------------------------------
-    // parameters
+    // Parameters
     // -----------------------------------------------------------------------
 
     /**
@@ -134,16 +134,6 @@ public class CreateRepositoryMojo
     //
     // -----------------------------------------------------------------------
 
-    /**
-     * The repo where the jar files will be installed
-     */
-    private ArtifactRepository artifactRepository;
-
-    /**
-     * The layout of the repository.
-     */
-    private ArtifactRepositoryLayout artifactRepositoryLayout;
-
     // -----------------------------------------------------------------------
     // AbstractMojo Implementation
     // -----------------------------------------------------------------------
@@ -155,7 +145,7 @@ public class CreateRepositoryMojo
         // Create new repository for dependencies
         // ----------------------------------------------------------------------
 
-        artifactRepositoryLayout = Util.getRepositoryLayout( repositoryLayout );
+        ArtifactRepositoryLayout artifactRepositoryLayout = Util.getRepositoryLayout( repositoryLayout );
 
         // -----------------------------------------------------------------------
         // Initialize
@@ -163,16 +153,14 @@ public class CreateRepositoryMojo
 
         String path = "file://" + assembleDirectory.getAbsolutePath() + "/" + repoPath;
 
-        artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler",
-                                                                                           path,
-                                                                                           artifactRepositoryLayout,
-                                                                                           false );
+        ArtifactRepository artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
+            "appassembler", path, artifactRepositoryLayout, false );
 
         // -----------------------------------------------------------------------
         // Install the project's artifact in the new repository
         // -----------------------------------------------------------------------
 
-        installArtifact( projectArtifact );
+        installArtifact( projectArtifact, artifactRepository );
 
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
@@ -182,14 +170,14 @@ public class CreateRepositoryMojo
         {
             Artifact artifact = (Artifact) it.next();
 
-            installArtifact( artifact );
+            installArtifact( artifact, artifactRepository );
         }
 
         for ( Iterator it = pluginArtifacts.iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
 
-            installArtifact( artifact );
+            installArtifact( artifact, artifactRepository );
         }
 
         // ----------------------------------------------------------------------
@@ -199,7 +187,7 @@ public class CreateRepositoryMojo
         //installArtifact( booter );
     }
 
-    private void installArtifact( Artifact artifact )
+    private void installArtifact( Artifact artifact, ArtifactRepository artifactRepository )
         throws MojoExecutionException
     {
         try
