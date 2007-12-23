@@ -1,9 +1,9 @@
 package org.codehaus.mojo.appassembler;
 
-/**
+/*
  * The MIT License
  *
- * Copyright 2005-2006 The Codehaus.
+ * Copyright 2005-2007 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -45,13 +45,7 @@ import org.codehaus.mojo.appassembler.repository.FlatRepositoryLayout;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * Assembles the artifacts and generates bin scripts for the configured applications
