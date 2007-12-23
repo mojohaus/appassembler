@@ -45,7 +45,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -123,7 +129,7 @@ public class DaemonModelUtil
         }
     }
 
-    public static Daemon loadModel( InputStream inputStream  )
+    public static Daemon loadModel( InputStream inputStream )
         throws IOException
     {
         try
@@ -178,7 +184,7 @@ public class DaemonModelUtil
         private JvmSettings jvmSettings;
 
         private List systemProperties;
-        
+
         private List commandLineArguments;
 
         private List extraArguments;
@@ -198,9 +204,9 @@ public class DaemonModelUtil
         private boolean insideSystemProperties;
 
         private boolean insideSystemProperty;
-        
+
         private boolean insideCommandLineArguments;
-        
+
         private boolean insideCommandLineArgument;
 
         private StringBuffer text;
@@ -306,16 +312,16 @@ public class DaemonModelUtil
         {
             if ( text == null )
             {
-                text = new StringBuffer(  );
+                text = new StringBuffer();
             }
-            text.append(ch, start, length  ); 
+            text.append( ch, start, length );
         }
 
         public void endElement( String uri, String localName, String qName )
             throws SAXException
         {
             String text = trimText();
-            
+
             if ( qName.equals( "daemon" ) )
             {
                 insideDaemon = false;
@@ -423,18 +429,18 @@ public class DaemonModelUtil
                         else if ( qName.equals( "extraArguments" ) )
                         {
                             insideExtraArguments = false;
-                            
+
                             jvmSettings.setExtraArguments( extraArguments );
                         }
                         else if ( insideExtraArgument )
                         {
                             extraArguments.add( text );
-                            
+
                             insideExtraArgument = false;
                         }
                     }
                 }
-                else if (insideCommandLineArguments) 
+                else if ( insideCommandLineArguments )
                 {
                     if ( qName.equals( "commandLineArguments" ) )
                     {
@@ -447,7 +453,7 @@ public class DaemonModelUtil
                         commandLineArguments.add( text );
                         insideCommandLineArgument = false;
                     }
-                }                
+                }
             }
 
             text = null;
@@ -459,7 +465,7 @@ public class DaemonModelUtil
             {
                 return null;
             }
-            
+
             String temp = text.toString();
             temp = temp.replace( '\n', ' ' );
             temp = temp.replace( '\t', ' ' );
@@ -495,7 +501,8 @@ public class DaemonModelUtil
         }
         if ( d.getCommandLineArguments() != null )
         {
-            daemon.appendChild( createCommandLineArguments( document.createElement( "commandLineArguments" ), d.getCommandLineArguments() ) );
+            daemon.appendChild( createCommandLineArguments( document.createElement( "commandLineArguments" ),
+                                                            d.getCommandLineArguments() ) );
         }
         return document;
     }
@@ -505,7 +512,7 @@ public class DaemonModelUtil
     {
         for ( Iterator it = classpath.iterator(); it.hasNext(); )
         {
-            Object o =  it.next();
+            Object o = it.next();
 
             Element e;
 
@@ -530,7 +537,8 @@ public class DaemonModelUtil
             }
             else
             {
-                throw new DaemonModelUtilException( "Unknonwn classpath element type '" + o.getClass().getName() + "'." );
+                throw new DaemonModelUtilException(
+                    "Unknonwn classpath element type '" + o.getClass().getName() + "'." );
             }
 
             element.appendChild( e );
@@ -546,7 +554,7 @@ public class DaemonModelUtil
         addSimpleElement( element, "maxMemorySize", jvmSettings.getMaxMemorySize() );
         addSimpleElement( element, "maxStackSize", jvmSettings.getMaxStackSize() );
         element.appendChild( createChildElements( element.getOwnerDocument().createElement( "systemProperties" ),
-                                                     "systemProperty", jvmSettings.getSystemProperties() ) );
+                                                  "systemProperty", jvmSettings.getSystemProperties() ) );
 
         element.appendChild( createChildElements( element.getOwnerDocument().createElement( "extraArguments" ),
                                                   "extraArgument", jvmSettings.getExtraArguments() ) );
@@ -567,33 +575,35 @@ public class DaemonModelUtil
             }
             else
             {
-                throw new DaemonModelUtilException( "Unknown " + childElementName + " element type '" + o.getClass().getName() + "'." );
+                throw new DaemonModelUtilException(
+                    "Unknown " + childElementName + " element type '" + o.getClass().getName() + "'." );
             }
         }
 
         return element;
     }
-    
+
     private static Node createCommandLineArguments( Element element, List commandLineArguments )
         throws DaemonModelUtilException
     {
         for ( Iterator it = commandLineArguments.iterator(); it.hasNext(); )
         {
             Object o = it.next();
-    
+
             if ( o instanceof String )
             {
                 addSimpleElement( element, "commandLineArgument", o.toString() );
             }
             else
             {
-                throw new DaemonModelUtilException( "Unknonwn system property element type '" + o.getClass().getName() + "'." );
+                throw new DaemonModelUtilException(
+                    "Unknonwn system property element type '" + o.getClass().getName() + "'." );
             }
         }
-    
+
         return element;
     }
-    
+
 
     private static void addSimpleElement( Element parent, String elementName, String value )
     {
@@ -626,8 +636,8 @@ public class DaemonModelUtil
     private static void close( InputStream closeable )
     {
         try
-            {
-                if ( closeable != null )
+        {
+            if ( closeable != null )
             {
                 closeable.close();
             }
@@ -641,8 +651,8 @@ public class DaemonModelUtil
     private static void close( OutputStream closeable )
     {
         try
-            {
-                if ( closeable != null )
+        {
+            if ( closeable != null )
             {
                 closeable.close();
             }

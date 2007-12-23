@@ -65,12 +65,14 @@ public abstract class AbstractDaemonGeneratorTest
 
         String localRepoUrl = "file://" + System.getProperty( "user.home" ) + "/.m2/repository";
 
-        ArtifactRepository localRepository = artifactRepositoryFactory.createArtifactRepository( "local", localRepoUrl, new DefaultRepositoryLayout(), policy, policy );
+        ArtifactRepository localRepository = artifactRepositoryFactory.createArtifactRepository( "local", localRepoUrl,
+                                                                                                 new DefaultRepositoryLayout(),
+                                                                                                 policy, policy );
 
         ProfileManager profileManager = new DefaultProfileManager( getContainer() );
 
-        MavenProject project = projectBuilder.buildWithDependencies( getTestFile( pom ),
-                                                                     localRepository, profileManager );
+        MavenProject project =
+            projectBuilder.buildWithDependencies( getTestFile( pom ), localRepository, profileManager );
 
         // -----------------------------------------------------------------------
         // Clean the output directory

@@ -24,25 +24,25 @@
   -->
 
 <daemon>
-	<id>app</id>
-	<mainClass>
-		org.codehaus.mojo.appassembler.booter.DummyMainWithArgs
-	</mainClass>
-	<classpath>
-		<dependency>
-			<groupId>org.codehaus.plexus</groupId>
-			<artifactId>plexus-utils</artifactId>
-			<version>1.1</version>
-			<relativePath>
-				src/test/resources/org/codehaus/mojo/appassembler
-			</relativePath>
-		</dependency>
-		<directory>
-			<relativePath>target/test-classes</relativePath>
-		</directory>
-	</classpath>
-	<jvmSettings/>
-	<commandLineArguments>
-		<commandLineArgument>first argument</commandLineArgument>
-	</commandLineArguments>
+  <id>app</id>
+  <mainClass>
+    org.codehaus.mojo.appassembler.booter.DummyMainWithArgs
+  </mainClass>
+  <classpath>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.1</version>
+      <relativePath>
+        src/test/resources/org/codehaus/mojo/appassembler
+      </relativePath>
+    </dependency>
+    <directory>
+      <relativePath>target/test-classes</relativePath>
+    </directory>
+  </classpath>
+  <jvmSettings/>
+  <commandLineArguments>
+    <commandLineArgument>first argument</commandLineArgument>
+  </commandLineArguments>
 </daemon>

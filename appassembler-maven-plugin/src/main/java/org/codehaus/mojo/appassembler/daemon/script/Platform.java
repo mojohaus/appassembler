@@ -25,15 +25,24 @@ package org.codehaus.mojo.appassembler.daemon.script;
  */
 
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
-import org.codehaus.mojo.appassembler.model.*;
+import org.codehaus.mojo.appassembler.model.ClasspathElement;
+import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.model.Dependency;
+import org.codehaus.mojo.appassembler.model.Directory;
+import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
-* @version $Id$
-*/
+ * @version $Id$
+ */
 public class Platform
 {
     public final static String UNIX_NAME = "unix";
@@ -110,7 +119,8 @@ public class Platform
                 return allSet;
             }
 
-            throw new DaemonGeneratorException( "The special platform 'all' can only be used if it is the only element in the platform list." );
+            throw new DaemonGeneratorException(
+                "The special platform 'all' can only be used if it is the only element in the platform list." );
         }
 
         Set platformSet = new HashSet();
@@ -121,7 +131,8 @@ public class Platform
 
             if ( platformName.equals( "all" ) )
             {
-                throw new DaemonGeneratorException( "The special platform 'all' can only be used if it is the only element in a platform list." );
+                throw new DaemonGeneratorException(
+                    "The special platform 'all' can only be used if it is the only element in a platform list." );
             }
 
             platformSet.add( getInstance( platformName ) );
@@ -222,7 +233,7 @@ public class Platform
                 throw new DaemonGeneratorException( "Unknown classpath element type: " + object.getClass().getName() );
             }
 
-            classpathBuffer.append( ((ClasspathElement) object).getRelativePath() );
+            classpathBuffer.append( ( (ClasspathElement) object ).getRelativePath() );
         }
 
         return classpathBuffer.toString();
@@ -311,28 +322,28 @@ public class Platform
 
     public String getEnvSetup( Daemon daemon )
     {
-    	String envSetup = "";
-    	
-    	String envSetupFileName = daemon.getEnvironmentSetupFileName();
-    	
-    	if ( envSetupFileName != null  )
-    	{
-    		if ( isWindows ) 
-    		{
-    			String envScriptPath = "%BASEDIR%\\bin\\" + envSetupFileName + ".bat" ;
+        String envSetup = "";
 
-    			envSetup = "if exist " + envScriptPath + " call " + envScriptPath ; 
-    		}
-    		else
-    		{
-    			String envScriptPath = "\"$BASEDIR\"/bin/" + envSetupFileName;
-    			envSetup = "[ -f " + envScriptPath + " ] && . " + envScriptPath;
-    		}
-    	}
-    	
-    	return envSetup;
+        String envSetupFileName = daemon.getEnvironmentSetupFileName();
+
+        if ( envSetupFileName != null )
+        {
+            if ( isWindows )
+            {
+                String envScriptPath = "%BASEDIR%\\bin\\" + envSetupFileName + ".bat";
+
+                envSetup = "if exist " + envScriptPath + " call " + envScriptPath;
+            }
+            else
+            {
+                String envScriptPath = "\"$BASEDIR\"/bin/" + envSetupFileName;
+                envSetup = "[ -f " + envScriptPath + " ] && . " + envScriptPath;
+            }
+        }
+
+        return envSetup;
     }
-    
+
     // -----------------------------------------------------------------------
     // Object overrides
     // -----------------------------------------------------------------------
@@ -363,5 +374,5 @@ public class Platform
     {
         return name;
     }
-    
+
 }

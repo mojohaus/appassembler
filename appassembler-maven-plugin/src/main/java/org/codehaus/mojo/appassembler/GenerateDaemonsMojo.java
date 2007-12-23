@@ -214,13 +214,21 @@ public class GenerateDaemonsMojo
         modelJvmSettings.setMaxMemorySize( jvmSettings.getMaxMemorySize() );
         modelJvmSettings.setMaxStackSize( jvmSettings.getMaxStackSize() );
         if ( jvmSettings.getSystemProperties() == null )
+        {
             modelJvmSettings.setSystemProperties( new ArrayList() );
+        }
         else
+        {
             modelJvmSettings.setSystemProperties( Arrays.asList( jvmSettings.getSystemProperties() ) );
+        }
         if ( jvmSettings.getExtraArguments() == null )
+        {
             modelJvmSettings.setExtraArguments( new ArrayList() );
+        }
         else
+        {
             modelJvmSettings.setExtraArguments( Arrays.asList( jvmSettings.getExtraArguments() ) );
+        }
 
         return modelJvmSettings;
     }

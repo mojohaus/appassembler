@@ -66,8 +66,8 @@ public class DefaultDaemonGeneratorService
         generateDaemon( platform, stubDescriptor, null, outputDirectory, mavenProject, localRepository );
     }
 
-    public void generateDaemon( String platform, File stubDescriptor, Daemon stubDaemon,
-                                File outputDirectory, MavenProject mavenProject, ArtifactRepository localRepository )
+    public void generateDaemon( String platform, File stubDescriptor, Daemon stubDaemon, File outputDirectory,
+                                MavenProject mavenProject, ArtifactRepository localRepository )
         throws DaemonGeneratorException
     {
         DaemonGenerationRequest request = new DaemonGenerationRequest();
@@ -158,7 +158,8 @@ public class DefaultDaemonGeneratorService
         }
         catch ( IOException e )
         {
-            throw new DaemonGeneratorException( "Error while loading daemon descriptor from '" + stubDescriptor.getAbsolutePath() + "'.", e );
+            throw new DaemonGeneratorException(
+                "Error while loading daemon descriptor from '" + stubDescriptor.getAbsolutePath() + "'.", e );
         }
     }
 

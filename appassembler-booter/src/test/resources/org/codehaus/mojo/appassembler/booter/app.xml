@@ -24,26 +24,26 @@
   -->
 
 <daemon>
-	<id>app</id>
-	<mainClass>org.codehaus.mojo.appassembler.booter.DummyMain</mainClass>
-	<classpath>
-		<dependency>
-			<groupId>org.codehaus.plexus</groupId>
-			<artifactId>plexus-utils</artifactId>
-			<version>1.1</version>
-			<relativePath>src/test/resources/org/codehaus/mojo/appassembler</relativePath>
-		</dependency>
+  <id>app</id>
+  <mainClass>org.codehaus.mojo.appassembler.booter.DummyMain</mainClass>
+  <classpath>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.1</version>
+      <relativePath>src/test/resources/org/codehaus/mojo/appassembler</relativePath>
+    </dependency>
     <directory>
       <relativePath>target/test-classes</relativePath>
     </directory>
   </classpath>
-	<jvmSettings>
-		<initialMemorySize>345</initialMemorySize>
-		<maxMemorySize>234</maxMemorySize>
-		<maxStackSize>321</maxStackSize>
-		<systemProperties>
-			<systemProperty>foo=bar</systemProperty>
-			<systemProperty>bar=foo</systemProperty>
-		</systemProperties>
-	</jvmSettings>
+  <jvmSettings>
+    <initialMemorySize>345</initialMemorySize>
+    <maxMemorySize>234</maxMemorySize>
+    <maxStackSize>321</maxStackSize>
+    <systemProperties>
+      <systemProperty>foo=bar</systemProperty>
+      <systemProperty>bar=foo</systemProperty>
+    </systemProperties>
+  </jvmSettings>
 </daemon>

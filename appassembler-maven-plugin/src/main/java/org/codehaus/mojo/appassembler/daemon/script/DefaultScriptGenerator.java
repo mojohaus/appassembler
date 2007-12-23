@@ -31,7 +31,12 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -49,9 +54,7 @@ public class DefaultScriptGenerator
     // ScriptGenerator Implementation
     // -----------------------------------------------------------------------
 
-    public void createBinScript( String platformName,
-                                 Daemon daemon,
-                                 File outputDirectory )
+    public void createBinScript( String platformName, Daemon daemon, File outputDirectory )
         throws DaemonGeneratorException
     {
         Platform platform = Platform.getInstance( platformName );
@@ -66,7 +69,8 @@ public class DefaultScriptGenerator
 
             if ( in == null )
             {
-                throw new DaemonGeneratorException( "Internal error: could not find template for platform '" + platformName + "'." );
+                throw new DaemonGeneratorException(
+                    "Internal error: could not find template for platform '" + platformName + "'." );
             }
 
             InputStreamReader reader = new InputStreamReader( in );
@@ -117,7 +121,8 @@ public class DefaultScriptGenerator
 
             out = new FileWriter( binFile );
 
-            getLogger().debug( "Writing shell file for platform '" + platform.getName() + "' to '" + binFile.getAbsolutePath() + "'." );
+            getLogger().debug( "Writing shell file for platform '" + platform.getName() + "' to '" +
+                binFile.getAbsolutePath() + "'." );
 
             IOUtil.copy( interpolationFilterReader, out );
         }

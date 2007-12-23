@@ -44,25 +44,17 @@ public class PlatformTest
     public void testCreateClassPathUnix()
         throws Exception
     {
-        test( Platform.getInstance( "unix" ), new String[] {
-            "/foo/bar",
-            "bar/foo",
-            "/foo/bar:\"$BASEDIR\"/bar/foo",
+        test( Platform.getInstance( "unix" ), new String[]{"/foo/bar", "bar/foo", "/foo/bar:\"$BASEDIR\"/bar/foo",
             "group/artifact/version/artifact-version.jar",
-            "/foo/bar:\"$BASEDIR\"/bar/foo:\"$REPO\"/group/artifact/version/artifact-version.jar",
-        });
+            "/foo/bar:\"$BASEDIR\"/bar/foo:\"$REPO\"/group/artifact/version/artifact-version.jar",} );
     }
 
     public void testCreateClassPathWindows()
         throws Exception
     {
-        test( Platform.getInstance( "windows" ), new String[] {
-            "/foo/bar",
-            "bar/foo",
-            "/foo/bar;\"%BASEDIR%\"\\bar/foo",
+        test( Platform.getInstance( "windows" ), new String[]{"/foo/bar", "bar/foo", "/foo/bar;\"%BASEDIR%\"\\bar/foo",
             "group/artifact/version/artifact-version.jar",
-            "/foo/bar;\"%BASEDIR%\"\\bar/foo;\"%REPO%\"\\group/artifact/version/artifact-version.jar",
-        });
+            "/foo/bar;\"%BASEDIR%\"\\bar/foo;\"%REPO%\"\\group/artifact/version/artifact-version.jar",} );
     }
 
     public void testGetAppArgumentsUnix()
@@ -106,12 +98,12 @@ public class PlatformTest
         assertEquals( "", util.getClassPath( daemon ) );
 
         List classpath = daemon.getClasspath();
-        classpath.add( createDirectory( asserts[ 0 ] ) );
-        classpath.add( createDirectory( asserts[ 1 ] ) );
-        assertEquals( asserts[ 2 ], util.getClassPath( daemon ) );
+        classpath.add( createDirectory( asserts[0] ) );
+        classpath.add( createDirectory( asserts[1] ) );
+        assertEquals( asserts[2], util.getClassPath( daemon ) );
 
-        classpath.add( createDependency( asserts[ 3 ]) );
-        assertEquals( asserts[ 4 ], util.getClassPath( daemon ) );
+        classpath.add( createDependency( asserts[3] ) );
+        assertEquals( asserts[4], util.getClassPath( daemon ) );
     }
 
     private Dependency createDependency( String relativePath )

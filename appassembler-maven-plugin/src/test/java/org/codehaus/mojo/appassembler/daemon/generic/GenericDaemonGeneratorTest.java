@@ -41,11 +41,12 @@ public class GenericDaemonGeneratorTest
     public void testGenerationWithAllInfoInDescriptor()
         throws Exception
     {
-        runTest( "generic", "src/test/resources/project-1/pom.xml", "src/test/resources/project-1/descriptor.xml", "target/output-1-generic" );
+        runTest( "generic", "src/test/resources/project-1/pom.xml", "src/test/resources/project-1/descriptor.xml",
+                 "target/output-1-generic" );
 
         File actualAppXml = new File( getTestFile( "target/output-1-generic" ), "app.xml" );
 
-        assertTrue( "config file is missing: " + actualAppXml.getAbsolutePath(), actualAppXml.isFile());
+        assertTrue( "config file is missing: " + actualAppXml.getAbsolutePath(), actualAppXml.isFile() );
 
 //        File expectedAppXml = getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/generic/app.xml" );
 
@@ -57,9 +58,10 @@ public class GenericDaemonGeneratorTest
 
 //        Document expected = builder.parse( expectedAppXml );
         Document actual = builder.parse( actualAppXml );
-        
+
         assertNodeEquals( "com.westerngeco.example.App", "mainClass", actual );
-        assertNodeEquals( "org/codehaus/mojo/appassembler/project-1/1.0-SNAPSHOT/project-1-1.0-SNAPSHOT.jar", "relativePath", actual );
+        assertNodeEquals( "org/codehaus/mojo/appassembler/project-1/1.0-SNAPSHOT/project-1-1.0-SNAPSHOT.jar",
+                          "relativePath", actual );
         assertNodeEquals( "345", "initialMemorySize", actual );
         assertNodeEquals( "234", "maxMemorySize", actual );
         assertNodeEquals( "321", "maxStackSize", actual );
@@ -78,6 +80,7 @@ public class GenericDaemonGeneratorTest
 
     private void assertNodeEquals( String expected, String tagName, Document document )
     {
-        assertEquals( "Node with tag name " + tagName + " does not match", expected, document.getElementsByTagName( tagName ).item( 0 ).getFirstChild().getNodeValue() );
+        assertEquals( "Node with tag name " + tagName + " does not match", expected,
+                      document.getElementsByTagName( tagName ).item( 0 ).getFirstChild().getNodeValue() );
     }
 }

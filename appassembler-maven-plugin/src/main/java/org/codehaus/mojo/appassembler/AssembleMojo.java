@@ -54,12 +54,11 @@ import java.util.StringTokenizer;
 /**
  * Assembles the artifacts and generates bin scripts for the configured applications
  *
+ * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
+ * @version $Id$
  * @goal assemble
  * @requiresDependencyResolution runtime
  * @phase package
- *
- * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
- * @version $Id$
  */
 public class AssembleMojo
     extends AbstractMojo
@@ -99,7 +98,7 @@ public class AssembleMojo
      */
     private boolean includeConfigurationDirectoryInClasspath;
 
-    
+
     /**
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
      * (flat lib/ style)
@@ -111,7 +110,7 @@ public class AssembleMojo
     /**
      * Extra arguments that will be given to the JVM verbatim.
      *
-     * @parameter 
+     * @parameter
      */
     private String extraJvmArguments;
 
@@ -122,13 +121,13 @@ public class AssembleMojo
      * @parameter
      */
     private Set platforms;
-    
+
     /**
      * Setup file in $BASEDIR/bin to be called prior to execution.
      *
-     * @parameter  
+     * @parameter
      */
-    private String environmentSetupFileName;    
+    private String environmentSetupFileName;
 
     // -----------------------------------------------------------------------
     // Read-only Parameters
@@ -270,8 +269,7 @@ public class AssembleMojo
 
                 try
                 {
-                    scriptGenerator.createBinScript( platform,
-                                                     programToDaemon( program, artifactRepositoryLayout ),
+                    scriptGenerator.createBinScript( platform, programToDaemon( program, artifactRepositoryLayout ),
                                                      assembleDirectory );
                 }
                 catch ( DaemonGeneratorException e )
@@ -283,7 +281,8 @@ public class AssembleMojo
         }
     }
 
-    private org.codehaus.mojo.appassembler.model.Daemon programToDaemon( Program program, ArtifactRepositoryLayout artifactRepositoryLayout )
+    private org.codehaus.mojo.appassembler.model.Daemon programToDaemon( Program program,
+                                                                         ArtifactRepositoryLayout artifactRepositoryLayout )
     {
         org.codehaus.mojo.appassembler.model.Daemon daemon = new org.codehaus.mojo.appassembler.model.Daemon();
 
@@ -296,7 +295,7 @@ public class AssembleMojo
         {
             Directory directory = new Directory();
             directory.setRelativePath( "etc" );
-            classpath.add( directory  );
+            classpath.add( directory );
         }
 
         Set classPathArtifacts = new HashSet( artifacts );
@@ -320,13 +319,13 @@ public class AssembleMojo
         // -----------------------------------------------------------------------
 
         JvmSettings jvmSettings = new JvmSettings();
-        
+
         jvmSettings.setExtraArguments( parseTokens( this.extraJvmArguments ) );
-        
+
         daemon.setJvmSettings( jvmSettings );
-        
+
         daemon.setEnvironmentSetupFileName( this.environmentSetupFileName );
-        
+
         return daemon;
     }
 
@@ -387,7 +386,8 @@ public class AssembleMojo
 
         if ( !VALID_PLATFORMS.containsAll( platforms ) )
         {
-            throw new MojoFailureException( "Non-valid default platform declared, supported types are: " + VALID_PLATFORMS );
+            throw new MojoFailureException(
+                "Non-valid default platform declared, supported types are: " + VALID_PLATFORMS );
         }
 
         return platforms;
@@ -406,7 +406,7 @@ public class AssembleMojo
 
         String argument = null;
 
-        while( tokenizer.hasMoreTokens() )
+        while ( tokenizer.hasMoreTokens() )
         {
             String token = tokenizer.nextToken();
 
@@ -435,7 +435,7 @@ public class AssembleMojo
                 // If the token starts with a ", save it
                 if ( token.charAt( 0 ) == '\"' )
                 {
-                    argument = token.substring( 1 ) ;
+                    argument = token.substring( 1 );
                 }
                 else
                 {

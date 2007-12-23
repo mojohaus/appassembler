@@ -51,7 +51,8 @@ public class DummyMain
 
         if ( resource.toExternalForm().indexOf( "org/codehaus/mojo/appassembler" ) == -1 )
         {
-            throw new Exception( "Expected url to '/app.xml' to contain 'org/codehaus/mojo/appassembler'. Was: " + resource.toExternalForm() );
+            throw new Exception( "Expected url to '/app.xml' to contain 'org/codehaus/mojo/appassembler'. Was: " +
+                resource.toExternalForm() );
         }
 
         kickAss = true;

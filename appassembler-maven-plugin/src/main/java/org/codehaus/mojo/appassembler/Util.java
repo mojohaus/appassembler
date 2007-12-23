@@ -59,7 +59,7 @@ public class Util
     {
         return layout.pathOf( artifact );
     }
-    
+
     public static ArtifactRepositoryLayout getRepositoryLayout( String layout )
         throws MojoFailureException
     {

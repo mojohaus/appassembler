@@ -64,9 +64,7 @@ public class DaemonGenerationRequest
     {
     }
 
-    public DaemonGenerationRequest( Daemon daemon,
-                                    MavenProject project,
-                                    ArtifactRepository localRepository,
+    public DaemonGenerationRequest( Daemon daemon, MavenProject project, ArtifactRepository localRepository,
                                     File outputDir )
     {
         this.daemon = daemon;
@@ -153,7 +151,7 @@ public class DaemonGenerationRequest
         return repositoryLayout;
     }
 
-    public void setRepositoryLayout(ArtifactRepositoryLayout repositoryLayout)
+    public void setRepositoryLayout( ArtifactRepositoryLayout repositoryLayout )
     {
         this.repositoryLayout = repositoryLayout;
     }

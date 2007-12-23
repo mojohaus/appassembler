@@ -73,11 +73,10 @@ public class ScriptGeneratorTest
 
         Daemon daemon = new Daemon();
 
-        
         daemon.setId( "test" );
         daemon.setMainClass( "foo.Bar" );
         daemon.setJvmSettings( new JvmSettings() );
-        daemon.getJvmSettings().setExtraArguments( Arrays.asList( new String[] { "Yo", "dude"} ));
+        daemon.getJvmSettings().setExtraArguments( Arrays.asList( new String[]{"Yo", "dude"} ) );
         daemon.setEnvironmentSetupFileName( "setup" );
 
         File outputDirectory = getTestFile( "target/test-output/normal-shell/" + platform.getName() );
@@ -114,7 +113,7 @@ public class ScriptGeneratorTest
 
             int lineNo = 1;
 
-            while( expectedLine != null )
+            while ( expectedLine != null )
             {
                 assertEquals( "Expected line no " + lineNo + " was not correct.", expectedLine, actualLine );
 

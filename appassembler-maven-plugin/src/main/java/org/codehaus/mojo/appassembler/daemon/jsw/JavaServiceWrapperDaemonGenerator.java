@@ -38,7 +38,14 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.io.*;
+import java.io.CharArrayWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -83,7 +90,8 @@ public class JavaServiceWrapperDaemonGenerator
         context.put( "MAX_MEMORY", getMaxMemorySize( daemon ) );
         context.put( "PARAMETERS", createParameters( daemon ) );
 
-        InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context, "@", "@" );
+        InterpolationFilterReader interpolationFilterReader =
+            new InterpolationFilterReader( reader, context, "@", "@" );
 
         File outputDirectory = new File( request.getOutputDirectory(), "etc" );
         File outputFile = new File( outputDirectory, daemon.getId() + "-wrapper.conf" );
@@ -111,8 +119,8 @@ public class JavaServiceWrapperDaemonGenerator
         }
         finally
         {
-            IOUtil.close(interpolationFilterReader);
-            IOUtil.close(out);
+            IOUtil.close( interpolationFilterReader );
+            IOUtil.close( out );
         }
     }
 
@@ -136,8 +144,7 @@ public class JavaServiceWrapperDaemonGenerator
 
     private String getInitialMemorySize( Daemon daemon )
     {
-        if ( daemon.getJvmSettings() == null ||
-            StringUtils.isEmpty( daemon.getJvmSettings().getInitialMemorySize() ) )
+        if ( daemon.getJvmSettings() == null || StringUtils.isEmpty( daemon.getJvmSettings().getInitialMemorySize() ) )
         {
             return "";
         }
@@ -147,8 +154,7 @@ public class JavaServiceWrapperDaemonGenerator
 
     private String getMaxMemorySize( Daemon daemon )
     {
-        if ( daemon.getJvmSettings() == null ||
-            StringUtils.isEmpty( daemon.getJvmSettings().getMaxMemorySize() ) )
+        if ( daemon.getJvmSettings() == null || StringUtils.isEmpty( daemon.getJvmSettings().getMaxMemorySize() ) )
         {
             return "";
         }
@@ -167,7 +173,8 @@ public class JavaServiceWrapperDaemonGenerator
         PrintWriter writer = new PrintWriter( string );
 
         writer.println( "wrapper.java.classpath.1=lib/wrapper.jar" );
-        writer.println( "wrapper.java.classpath.2=../../repo/" + Util.getRelativePath( project.getArtifact(), layout ) );
+        writer.println(
+            "wrapper.java.classpath.2=../../repo/" + Util.getRelativePath( project.getArtifact(), layout ) );
         int i = 3;
         for ( Iterator it = project.getRuntimeArtifacts().iterator(); it.hasNext(); )
         {

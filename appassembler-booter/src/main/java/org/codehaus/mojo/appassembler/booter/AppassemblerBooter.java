@@ -50,7 +50,7 @@ public class AppassemblerBooter
     private static boolean debug;
 
     private static File repoDir;
-    
+
     private static File basedir;
 
     private static Daemon config;
@@ -89,10 +89,10 @@ public class AppassemblerBooter
         }
 
         basedir = new File( b );
-        
+
         String r = System.getProperty( "app.repo", b );
-        
-        repoDir = new File ( r );
+
+        repoDir = new File( r );
 
         // -----------------------------------------------------------------------
         // Load and validate the configuration
@@ -158,14 +158,16 @@ public class AppassemblerBooter
                 String[] strings = line.split( "=" );
                 String key = strings[0];
                 String value = strings[1];
-    
+
                 if ( debug )
                 {
                     System.err.println( "Setting system property '" + key + "' to '" + value + "'." );
                 }
-    
+
                 System.setProperty( key, value );
-            } catch (Throwable e) {
+            }
+            catch ( Throwable e )
+            {
                 if ( debug )
                 {
                     System.err.println( "Error Setting system property with value '" + line + "'." );

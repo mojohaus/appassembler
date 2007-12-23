@@ -70,8 +70,8 @@ public class GenericDaemonGenerator
         // Create the daemon from the Maven project
         // -----------------------------------------------------------------------
 
-        Daemon createdDaemon = createDaemon( request.getMavenProject(), request.getRepositoryPath(),
-                request.getRepositoryLayout() );
+        Daemon createdDaemon =
+            createDaemon( request.getMavenProject(), request.getRepositoryPath(), request.getRepositoryLayout() );
 
         // -----------------------------------------------------------------------
         // Merge the given stub daemon and the generated
@@ -139,7 +139,7 @@ public class GenericDaemonGenerator
             dependency.setVersion( artifact.getVersion() );
             dependency.setClassifier( artifact.getClassifier() );
 
-            dependency.setRelativePath( Util.getRelativePath( artifact, layout ));
+            dependency.setRelativePath( Util.getRelativePath( artifact, layout ) );
 
             complete.getClasspath().add( dependency );
         }

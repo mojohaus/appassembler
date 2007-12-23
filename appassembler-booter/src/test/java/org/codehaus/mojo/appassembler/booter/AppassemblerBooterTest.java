@@ -35,16 +35,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class AppassemblerBooterTest extends TestCase
+public class AppassemblerBooterTest
+    extends TestCase
 {
-    protected void setUp() throws Exception
+    protected void setUp()
+        throws Exception
     {
         super.setUp();
 
         // System.setProperty( "app.booter.debug", "true" );
     }
 
-    public void testSystemProperties() throws Exception
+    public void testSystemProperties()
+        throws Exception
     {
         System.setProperty( "app.name", "org/codehaus/mojo/appassembler/booter/app" );
 
@@ -61,7 +64,8 @@ public class AppassemblerBooterTest extends TestCase
         assertEquals( "System property foo is not set", "bar", System.getProperty( "foo" ) );
     }
 
-    public void testRun() throws Throwable
+    public void testRun()
+        throws Throwable
     {
         System.setProperty( "app.name", "org/codehaus/mojo/appassembler/booter/app" );
 
@@ -86,7 +90,8 @@ public class AppassemblerBooterTest extends TestCase
         assertTrue( field.getBoolean( klass ) );
     }
 
-    public void testLargeConfig() throws Exception
+    public void testLargeConfig()
+        throws Exception
     {
         System.setProperty( "app.name", "org/codehaus/mojo/appassembler/booter/largeApp" );
         System.setProperty( "app.booter.debug", "true" );
@@ -97,15 +102,16 @@ public class AppassemblerBooterTest extends TestCase
         while ( iter.hasNext() )
         {
             String url = ( (URL) iter.next() ).getPath();
-            if ( url.indexOf( "appassembler-booter/adgenerator-api-1.0-I11-SNAPSHOT.jar" ) >= 0)
+            if ( url.indexOf( "appassembler-booter/adgenerator-api-1.0-I11-SNAPSHOT.jar" ) >= 0 )
             {
                 fail( "Broken path" );
             }
         }
 
     }
-    
-    public void testMainWithArgs() throws Throwable
+
+    public void testMainWithArgs()
+        throws Throwable
     {
         System.setProperty( "app.name", "org/codehaus/mojo/appassembler/booter/appWithArgs" );
 
@@ -113,7 +119,7 @@ public class AppassemblerBooterTest extends TestCase
 
         try
         {
-            AppassemblerBooter.executeMain( classLoader, new String[] { "second argument" } );
+            AppassemblerBooter.executeMain( classLoader, new String[]{"second argument"} );
         }
         catch ( InvocationTargetException e )
         {

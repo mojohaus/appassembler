@@ -79,7 +79,7 @@ public class FlatRepositoryLayout
     }
 
     public String pathOfRemoteRepositoryMetadata( ArtifactMetadata metadata )
-    {        
+    {
         return pathOfRepositoryMetadata( metadata.getRemoteFilename() );
     }
 }

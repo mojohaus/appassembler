@@ -92,7 +92,7 @@ public abstract class AbstractBooterDaemonGenerator
          */
         daemon.setJvmSettings( null );
 
-        genericDaemonGenerator.generate( request  );
+        genericDaemonGenerator.generate( request );
 
         // -----------------------------------------------------------------------
         // Generate the shell script
@@ -110,22 +110,23 @@ public abstract class AbstractBooterDaemonGenerator
 
         // TODO: Transitively resolve the dependencies of the booter.
         addDirectory( classpath, "etc" );
-        addArtifact( classpath, project, "org.codehaus.mojo.appassembler:appassembler-booter", request.getRepositoryLayout() );
-        addArtifact( classpath, project, "org.codehaus.mojo.appassembler:appassembler-model", request.getRepositoryLayout() );
+        addArtifact( classpath, project, "org.codehaus.mojo.appassembler:appassembler-booter",
+                     request.getRepositoryLayout() );
+        addArtifact( classpath, project, "org.codehaus.mojo.appassembler:appassembler-model",
+                     request.getRepositoryLayout() );
 
         booterDaemon.setClasspath( classpath );
         booterDaemon.setJvmSettings( jvmSettings );
 
-        scriptGenerator.createBinScript( platformName,
-                                         booterDaemon,
-                                         outputDirectory );
+        scriptGenerator.createBinScript( platformName, booterDaemon, outputDirectory );
     }
 
     // -----------------------------------------------------------------------
     // Private
     // -----------------------------------------------------------------------
 
-    private void addArtifact( List classpath, MavenProject project, String id, ArtifactRepositoryLayout artifactRepositoryLayout )
+    private void addArtifact( List classpath, MavenProject project, String id,
+                              ArtifactRepositoryLayout artifactRepositoryLayout )
         throws DaemonGeneratorException
     {
         Artifact artifact = (Artifact) project.getArtifactMap().get( id );
@@ -137,7 +138,7 @@ public abstract class AbstractBooterDaemonGenerator
 
         Dependency dependency = new Dependency();
 
-        dependency.setRelativePath( Util.getRelativePath( artifact, artifactRepositoryLayout) );
+        dependency.setRelativePath( Util.getRelativePath( artifact, artifactRepositoryLayout ) );
 
         classpath.add( dependency );
     }

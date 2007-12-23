@@ -33,7 +33,7 @@ public class JvmSettings
     private String maxStackSize;
 
     private String[] systemProperties;
-    
+
     private String[] extraArguments;
 
     public String getInitialMemorySize()

@@ -102,7 +102,8 @@ public class DaemonModelUtilTest
         assertEquals( "org.codehaus.mojo.appassembler", dependency.getGroupId() );
         assertEquals( "project-1", dependency.getArtifactId() );
         assertEquals( "1.0-SNAPSHOT", dependency.getVersion() );
-        assertEquals( "org/codehaus/mojo/appassembler/project-1/1.0-SNAPSHOT/project-1-1.0-SNAPSHOT.jar", dependency.getRelativePath() );
+        assertEquals( "org/codehaus/mojo/appassembler/project-1/1.0-SNAPSHOT/project-1-1.0-SNAPSHOT.jar",
+                      dependency.getRelativePath() );
         dependency = (Dependency) daemon.getClasspath().get( 1 );
         assertEquals( "org.codehaus.plexus", dependency.getGroupId() );
         assertEquals( "plexus-utils", dependency.getArtifactId() );
@@ -112,13 +113,13 @@ public class DaemonModelUtilTest
         assertEquals( "etc", directory.getRelativePath() );
         JvmSettings jvmSettings = daemon.getJvmSettings();
         assertNotNull( jvmSettings );
-        assertEquals( "345", jvmSettings.getInitialMemorySize());
-        assertEquals( "234", jvmSettings.getMaxMemorySize());
-        assertEquals( "321", jvmSettings.getMaxStackSize());
+        assertEquals( "345", jvmSettings.getInitialMemorySize() );
+        assertEquals( "234", jvmSettings.getMaxMemorySize() );
+        assertEquals( "321", jvmSettings.getMaxStackSize() );
         assertNotNull( jvmSettings.getSystemProperties() );
         assertEquals( "foo=bar", jvmSettings.getSystemProperties().get( 0 ) );
         assertEquals( "trygve=cool", jvmSettings.getSystemProperties().get( 1 ) );
-        assertNotNull( daemon.getCommandLineArguments() ) ;
+        assertNotNull( daemon.getCommandLineArguments() );
         assertEquals( "arg1=arg1-value", daemon.getCommandLineArguments().get( 0 ) );
         assertNotNull( jvmSettings.getExtraArguments() );
         assertEquals( "-da", jvmSettings.getExtraArguments().get( 0 ) );
@@ -137,7 +138,8 @@ public class DaemonModelUtilTest
         assertEquals( "org.codehaus.mojo.appassembler", dependency.getGroupId() );
         assertEquals( "project-1", dependency.getArtifactId() );
         assertEquals( "1.0-SNAPSHOT", dependency.getVersion() );
-        assertEquals( "org/codehaus/mojo/appassembler/project-1/1.0-SNAPSHOT/project-1-1.0-SNAPSHOT.jar", dependency.getRelativePath() );
+        assertEquals( "org/codehaus/mojo/appassembler/project-1/1.0-SNAPSHOT/project-1-1.0-SNAPSHOT.jar",
+                      dependency.getRelativePath() );
         dependency = (Dependency) daemon.getClasspath().get( 1 );
         assertEquals( "org.codehaus.plexus", dependency.getGroupId() );
         assertEquals( "plexus-utils", dependency.getArtifactId() );
