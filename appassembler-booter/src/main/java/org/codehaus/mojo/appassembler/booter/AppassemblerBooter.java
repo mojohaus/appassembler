@@ -42,16 +42,11 @@ import java.util.List;
  * Reads the appassembler manifest file from the repo, and executes the specified main class.
  *
  * @author <a href="mailto:kaare.nilsen@gmail.com">Kaare Nilsen</a>
+ * @todo get rid of all the statics
  */
 public class AppassemblerBooter
 {
-    private static String appName;
-
     private static boolean debug;
-
-    private static File repoDir;
-
-    private static File basedir;
 
     private static Daemon config;
 
@@ -72,7 +67,7 @@ public class AppassemblerBooter
         // Load and validate environmental settings
         // -----------------------------------------------------------------------
 
-        appName = System.getProperty( "app.name" );
+        String appName = System.getProperty( "app.name" );
 
         if ( appName == null )
         {
@@ -88,17 +83,16 @@ public class AppassemblerBooter
             throw new InternalErrorException( "Missing required system property 'basedir'." );
         }
 
-        basedir = new File( b );
-
+        // TODO: shouldn't this be in the descriptor too?
         String r = System.getProperty( "app.repo", b );
 
-        repoDir = new File( r );
+        File repoDir = new File( r );
 
         // -----------------------------------------------------------------------
         // Load and validate the configuration
         // -----------------------------------------------------------------------
 
-        config = loadConfig();
+        config = loadConfig( appName );
 
         mainClassName = config.getMainClass();
 
@@ -109,10 +103,10 @@ public class AppassemblerBooter
 
         setSystemProperties();
 
-        return createClassLoader();
+        return createClassLoader( repoDir );
     }
 
-    public static URLClassLoader createClassLoader()
+    public static URLClassLoader createClassLoader( File repoDir )
         throws Exception
     {
         List classpathUrls = new ArrayList();
@@ -142,41 +136,38 @@ public class AppassemblerBooter
      */
     public static void setSystemProperties()
     {
-        if ( config.getJvmSettings() == null || config.getJvmSettings().getSystemProperties() == null )
-        {
-            return;
-        }
-
         JvmSettings jvmSettings = config.getJvmSettings();
-        List systemProperties = jvmSettings.getSystemProperties();
-        Iterator iter = systemProperties.iterator();
-        while ( iter.hasNext() )
+        if ( jvmSettings != null && jvmSettings.getSystemProperties() != null )
         {
-            String line = (String) iter.next();
-            try
+            List systemProperties = jvmSettings.getSystemProperties();
+            for ( Iterator i = systemProperties.iterator(); i.hasNext(); )
             {
-                String[] strings = line.split( "=" );
-                String key = strings[0];
-                String value = strings[1];
-
-                if ( debug )
+                String line = (String) i.next();
+                try
                 {
-                    System.err.println( "Setting system property '" + key + "' to '" + value + "'." );
+                    String[] strings = line.split( "=" );
+                    String key = strings[0];
+                    String value = strings[1];
+
+                    if ( debug )
+                    {
+                        System.err.println( "Setting system property '" + key + "' to '" + value + "'." );
+                    }
+
+                    System.setProperty( key, value );
                 }
-
-                System.setProperty( key, value );
-            }
-            catch ( Throwable e )
-            {
-                if ( debug )
+                catch ( Throwable e )
                 {
-                    System.err.println( "Error Setting system property with value '" + line + "'." );
+                    if ( debug )
+                    {
+                        System.err.println( "Error Setting system property with value '" + line + "'." );
+                    }
                 }
             }
         }
     }
 
-    private static Daemon loadConfig()
+    private static Daemon loadConfig( String appName )
         throws Exception
     {
         String resourceName = "/" + appName + ".xml";

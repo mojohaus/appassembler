@@ -65,6 +65,7 @@ set BASEDIR=%~dp0\..
 :repoSetup
 #ENV_SETUP#
 
+@REM TODO: Remove hard coding. What about using the descriptor instead?
 if "%REPO%"=="" set REPO="%BASEDIR%\repo"
 
 set CLASSPATH=#CLASSPATH#

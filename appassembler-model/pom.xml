@@ -53,6 +53,7 @@
             </goals>
           </execution>
         </executions>
+        <!-- TODO: review the need for this -->
         <configuration>
           <model>src/main/modello/model.xml</model>
           <version>1.0.0</version>

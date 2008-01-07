@@ -25,6 +25,7 @@ package org.codehaus.mojo.appassembler;
  */
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -38,6 +39,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -66,21 +68,13 @@ public class GenerateDaemonsMojo
     private JvmSettings defaultJvmSettings;
 
     /**
-     * The directory that will be used for the dependencies, relative to assembleDirectory.
-     *
-     * @required
-     * @parameter expression="${project.build.directory}/appassembler/repo"
-     */
-    private String repoPath;
-
-    /**
      * @parameter expression="${basedir}"
      * @required
      */
     private File basedir;
 
     /**
-     * @parameter expression="${project.build.directory}"
+     * @parameter expression="${project.build.directory}/generated-resources/appassembler"
      * @required
      */
     private File target;
@@ -95,7 +89,7 @@ public class GenerateDaemonsMojo
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
      * (flat lib/ style)
      *
-     * @parameter default="default'
+     * @parameter default-value="default"
      */
     private String repositoryLayout;
 
@@ -114,9 +108,14 @@ public class GenerateDaemonsMojo
     // -----------------------------------------------------------------------
 
     /**
-     * @component org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService
+     * @component
      */
     private DaemonGeneratorService daemonGeneratorService;
+
+    /**
+     * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
+     */
+    private Map availableRepositoryLayouts;
 
     // -----------------------------------------------------------------------
     // AbstractMojo Implementation
@@ -125,86 +124,102 @@ public class GenerateDaemonsMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        try
+        for ( Iterator it = daemons.iterator(); it.hasNext(); )
         {
-            for ( Iterator it = daemons.iterator(); it.hasNext(); )
+            Daemon daemon = (Daemon) it.next();
+
+            // -----------------------------------------------------------------------
+            // Load the optional template daemon descriptor
+            // -----------------------------------------------------------------------
+
+            File descriptor = null;
+
+            if ( !StringUtils.isEmpty( daemon.getDescriptor() ) )
             {
-                Daemon daemon = (Daemon) it.next();
+                descriptor = new File( basedir, daemon.getDescriptor() );
+            }
 
-                // -----------------------------------------------------------------------
-                // Load the optional template daemon descriptor
-                // -----------------------------------------------------------------------
+            // -----------------------------------------------------------------------
+            //
+            // -----------------------------------------------------------------------
 
-                File descriptor = null;
+            org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings = null;
 
-                if ( !StringUtils.isEmpty( daemon.getDescriptor() ) )
+            if ( defaultJvmSettings != null )
+            {
+                modelJvmSettings = convertJvmSettings( defaultJvmSettings );
+            }
+
+            ArtifactRepositoryLayout artifactRepositoryLayout =
+                (ArtifactRepositoryLayout) availableRepositoryLayouts.get( repositoryLayout );
+            if ( artifactRepositoryLayout == null )
+            {
+                throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
+            }
+
+            // -----------------------------------------------------------------------
+            // Create a daemon object from the POM configuration
+            // -----------------------------------------------------------------------
+
+            org.codehaus.mojo.appassembler.model.Daemon modelDaemon = convertDaemon( daemon, modelJvmSettings );
+
+            // -----------------------------------------------------------------------
+            //
+            // -----------------------------------------------------------------------
+
+            for ( Iterator i = daemon.getPlatforms().iterator(); i.hasNext(); )
+            {
+                String platform = (String) i.next();
+
+                File output = new File( target, platform );
+
+                DaemonGenerationRequest request = new DaemonGenerationRequest();
+
+                // TODO: split platform from generator (platform = operating systems, generator = jsw, booter, standard). Generator is a property of the daemon itself
+                request.setPlatform( platform );
+                request.setStubDescriptor( descriptor );
+                request.setStubDaemon( modelDaemon );
+                request.setOutputDirectory( output );
+                request.setMavenProject( project );
+                request.setLocalRepository( localRepository );
+                request.setRepositoryLayout( artifactRepositoryLayout );
+
+                try
                 {
-                    descriptor = new File( basedir, daemon.getDescriptor() );
-                }
-
-                // -----------------------------------------------------------------------
-                //
-                // -----------------------------------------------------------------------
-
-                org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings = null;
-
-                if ( defaultJvmSettings != null )
-                {
-                    modelJvmSettings = convertJvmSettings( defaultJvmSettings );
-                }
-
-                // -----------------------------------------------------------------------
-                // Create a daemon object from the POM configuration
-                // -----------------------------------------------------------------------
-
-                org.codehaus.mojo.appassembler.model.Daemon modelDaemon;
-
-                modelDaemon = new org.codehaus.mojo.appassembler.model.Daemon();
-
-                modelDaemon.setId( daemon.getId() );
-                modelDaemon.setMainClass( daemon.getMainClass() );
-                modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
-
-                if ( daemon.getJvmSettings() != null )
-                {
-                    modelDaemon.setJvmSettings( convertJvmSettings( daemon.getJvmSettings() ) );
-                }
-                else
-                {
-                    modelDaemon.setJvmSettings( modelJvmSettings );
-                }
-
-                // -----------------------------------------------------------------------
-                //
-                // -----------------------------------------------------------------------
-
-                for ( Iterator it2 = daemon.getPlatforms().iterator(); it2.hasNext(); )
-                {
-                    String platform = (String) it2.next();
-
-                    File output = new File( new File( target, "generated-resources" ), platform );
-
-                    DaemonGenerationRequest request = new DaemonGenerationRequest();
-
-                    request.setPlatform( platform );
-                    request.setStubDescriptor( descriptor );
-                    request.setStubDaemon( modelDaemon );
-                    request.setOutputDirectory( output );
-                    request.setMavenProject( project );
-                    request.setLocalRepository( localRepository );
-                    request.setRepositoryLayout( Util.getRepositoryLayout( repositoryLayout ) );
-                    request.setRepositoryPath( repoPath );
-
                     daemonGeneratorService.generateDaemon( request );
+                }
+                catch ( DaemonGeneratorException e )
+                {
+                    throw new MojoExecutionException( "Error while generating daemon.", e );
                 }
             }
         }
-        catch ( DaemonGeneratorException e )
-        {
-            throw new MojoExecutionException( "Error while generating daemon.", e );
-        }
     }
 
+    // TODO: see if it is possible to just inherit from the model daemon
+    private org.codehaus.mojo.appassembler.model.Daemon convertDaemon( Daemon daemon,
+                                                                       org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings )
+    {
+        org.codehaus.mojo.appassembler.model.Daemon modelDaemon;
+
+        modelDaemon = new org.codehaus.mojo.appassembler.model.Daemon();
+
+        modelDaemon.setId( daemon.getId() );
+        modelDaemon.setMainClass( daemon.getMainClass() );
+        modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
+
+        if ( daemon.getJvmSettings() != null )
+        {
+            modelDaemon.setJvmSettings( convertJvmSettings( daemon.getJvmSettings() ) );
+        }
+        else
+        {
+            modelDaemon.setJvmSettings( modelJvmSettings );
+        }
+        return modelDaemon;
+    }
+
+    // TODO: see if it is possible to just inherit from the model JVM Settings
     private org.codehaus.mojo.appassembler.model.JvmSettings convertJvmSettings( JvmSettings jvmSettings )
     {
         org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings =
@@ -231,5 +246,15 @@ public class GenerateDaemonsMojo
         }
 
         return modelJvmSettings;
+    }
+
+    public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )
+    {
+        this.availableRepositoryLayouts = availableRepositoryLayouts;
+    }
+
+    public void setDaemons( Set daemons )
+    {
+        this.daemons = daemons;
     }
 }

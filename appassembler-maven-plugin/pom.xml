@@ -93,21 +93,66 @@
           </execution>
         </executions>
       </plugin>
-    </plugins>
-  </build>
-  <reporting>
-    <plugins>
+      <!-- Here, we download the wrapper bundle and incorporate into the plugin directly -->
+      <!-- TODO: improve by doing this dynamically in the plugin so that non-JSW users aren't burdened by the size of the plugin, and so the user can choose an alternate version -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changes-plugin</artifactId>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>changes-report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.0-alpha-4</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>tanuki</groupId>
+                  <artifactId>wrapper-delta-pack</artifactId>
+                  <version>3.2.3</version>
+                  <type>tar.gz</type>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
-  </reporting>
+    <resources>
+      <resource>
+        <directory>target/dependency/wrapper-delta-pack-3.2.3/src/conf</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/jsw/conf</targetPath>
+      </resource>
+      <resource>
+        <directory>target/dependency/wrapper-delta-pack-3.2.3/src/bin</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/jsw/bin</targetPath>
+        <includes>
+          <include>sh.script.in</include>
+          <include>App.bat.in</include>
+        </includes>
+      </resource>
+      <!-- TODO: Have the plugin copy these in (depending on platforms) -->
+      <resource>
+        <directory>target/dependency/wrapper-delta-pack-3.2.3/lib</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/jsw/lib</targetPath>
+        <includes>
+          <include>wrapper.jar</include>
+          <include>wrapper-*.dll</include>
+          <include>libwrapper-*</include>
+        </includes>
+      </resource>
+      <!-- TODO: Have the plugin copy these in (depending on platforms) -->
+      <resource>
+        <directory>target/dependency/wrapper-delta-pack-3.2.3/bin</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/jsw/bin</targetPath>
+        <includes>
+          <include>wrapper-*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+  </build>
 </project>

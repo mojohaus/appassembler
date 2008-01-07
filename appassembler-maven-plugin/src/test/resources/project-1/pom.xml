@@ -27,6 +27,8 @@
   <groupId>org.codehaus.mojo.appassembler</groupId>
   <artifactId>project-1</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <name>Test Project</name>
+  <description>This is a test project.</description>
   <dependencies>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>

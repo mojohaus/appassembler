@@ -24,6 +24,8 @@ package org.codehaus.mojo.appassembler.daemon.booter;
  * SOFTWARE.
  */
 
+import org.codehaus.mojo.appassembler.daemon.script.Platform;
+
 /**
  * Generates unix and/or windows wrapperscripts.
  *
@@ -35,6 +37,6 @@ public class UnixBooterDaemonGenerator
 {
     public UnixBooterDaemonGenerator()
     {
-        super( false );
+        super( Platform.UNIX_NAME );
     }
 }

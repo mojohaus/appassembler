@@ -29,6 +29,7 @@ import java.util.Set;
 /**
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
  * @version $Id$
+ * @deprecated Use generate-daemons instead
  */
 public class Program
 {

@@ -29,12 +29,9 @@ import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.LoggerManager;
-import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.FileUtils;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -86,48 +83,6 @@ public class ScriptGeneratorTest
         File expectedFile = getTestFile( PREFIX + "expected-" + daemon.getId() + platform.getBinFileExtension() );
         File actualFile = new File( outputDirectory, "bin/" + daemon.getId() + platform.getBinFileExtension() );
 
-        assertFilesEqual( expectedFile, actualFile );
-    }
-
-    private void assertFilesEqual( File expectedFile, File actualFile )
-        throws Exception
-    {
-        Reader expectedFReader = null;
-        Reader actualFReader = null;
-
-        try
-        {
-            expectedFReader = new FileReader( expectedFile );
-            BufferedReader expectedReader = new BufferedReader( expectedFReader );
-
-            actualFReader = new FileReader( actualFile );
-            BufferedReader actualReader = new BufferedReader( actualFReader );
-
-            String expectedLine = expectedReader.readLine();
-            String actualLine = actualReader.readLine();
-
-            if ( expectedLine == null && actualLine != null )
-            {
-                fail( "Expected file was empty but the actual file wasn't." );
-            }
-
-            int lineNo = 1;
-
-            while ( expectedLine != null )
-            {
-                assertEquals( "Expected line no " + lineNo + " was not correct.", expectedLine, actualLine );
-
-                expectedLine = expectedReader.readLine();
-
-                actualLine = actualReader.readLine();
-
-                lineNo++;
-            }
-        }
-        finally
-        {
-            IOUtil.close( expectedFReader );
-            IOUtil.close( actualFReader );
-        }
+        assertEquals( FileUtils.fileRead( expectedFile ), FileUtils.fileRead( actualFile ) );
     }
 }

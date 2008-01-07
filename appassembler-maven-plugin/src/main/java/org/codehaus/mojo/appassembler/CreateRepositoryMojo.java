@@ -40,10 +40,12 @@ import org.apache.maven.plugin.MojoFailureException;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
- * Creates an appassembler repository.
+ * Creates an appassembler repository. Note that this is deliberately a bit more specific than the assembly plugin
+ * version - if it can generate a flat layout and exclude JARs, it may be a suitable replacement.
  *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
  * @version $Id$
@@ -71,6 +73,7 @@ public class CreateRepositoryMojo
      *
      * @required
      * @parameter expression="repo"
+     * @todo customisation doesn't work due to the shell scripts not honouring it
      */
     private String repoPath;
 
@@ -121,22 +124,19 @@ public class CreateRepositoryMojo
     // -----------------------------------------------------------------------
 
     /**
-     * @component org.apache.maven.artifact.repository.ArtifactRepositoryFactory
+     * @component
      */
     private ArtifactRepositoryFactory artifactRepositoryFactory;
 
     /**
-     * @component org.apache.maven.artifact.installer.ArtifactInstaller
+     * @component
      */
     private ArtifactInstaller artifactInstaller;
 
-    // -----------------------------------------------------------------------
-    //
-    // -----------------------------------------------------------------------
-
-    // -----------------------------------------------------------------------
-    // AbstractMojo Implementation
-    // -----------------------------------------------------------------------
+    /**
+     * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
+     */
+    private Map availableRepositoryLayouts;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -145,7 +145,12 @@ public class CreateRepositoryMojo
         // Create new repository for dependencies
         // ----------------------------------------------------------------------
 
-        ArtifactRepositoryLayout artifactRepositoryLayout = Util.getRepositoryLayout( repositoryLayout );
+        ArtifactRepositoryLayout artifactRepositoryLayout =
+            (ArtifactRepositoryLayout) availableRepositoryLayouts.get( repositoryLayout );
+        if ( artifactRepositoryLayout == null )
+        {
+            throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
+        }
 
         // -----------------------------------------------------------------------
         // Initialize
@@ -213,5 +218,10 @@ public class CreateRepositoryMojo
                                       new DefaultArtifactHandler( "" ) );
 
         return booter;
+    }
+
+    public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )
+    {
+        this.availableRepositoryLayouts = availableRepositoryLayouts;
     }
 }

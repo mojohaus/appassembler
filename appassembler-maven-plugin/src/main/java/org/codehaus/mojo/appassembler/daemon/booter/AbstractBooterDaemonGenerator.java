@@ -27,12 +27,10 @@ package org.codehaus.mojo.appassembler.daemon.booter;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.appassembler.Util;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
-import org.codehaus.mojo.appassembler.daemon.script.Platform;
-import org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator;
+import org.codehaus.mojo.appassembler.daemon.script.AbstactScriptDaemonGenerator;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
@@ -47,23 +45,16 @@ import java.util.List;
  * @version $Id$
  */
 public abstract class AbstractBooterDaemonGenerator
-    implements DaemonGenerator
+    extends AbstactScriptDaemonGenerator
 {
     /**
      * @plexus.requirement role-hint="generic"
      */
     private DaemonGenerator genericDaemonGenerator;
 
-    /**
-     * @plexus.requirement
-     */
-    private ScriptGenerator scriptGenerator;
-
-    private boolean isWindows;
-
-    protected AbstractBooterDaemonGenerator( boolean windows )
+    protected AbstractBooterDaemonGenerator( String platformName )
     {
-        isWindows = windows;
+        super( platformName );
     }
 
     // -----------------------------------------------------------------------
@@ -76,8 +67,6 @@ public abstract class AbstractBooterDaemonGenerator
         Daemon daemon = request.getDaemon();
         JvmSettings jvmSettings = daemon.getJvmSettings();
 
-        String platformName = isWindows ? Platform.WINDOWS_NAME : Platform.UNIX_NAME;
-
         File outputDirectory = request.getOutputDirectory();
 
         // -----------------------------------------------------------------------
@@ -86,13 +75,17 @@ public abstract class AbstractBooterDaemonGenerator
 
         request.setOutputDirectory( new File( outputDirectory, "etc" ) );
 
+        // TODO: we're assuming state for things that don't really appear stateful
         /*
-         * The JVM settings are written to the script, and do not need to go into 
+         * The JVM settings are written to the script, and do not need to go into
          * the manifest.
          */
         daemon.setJvmSettings( null );
 
         genericDaemonGenerator.generate( request );
+
+        // set back
+        daemon.setJvmSettings( jvmSettings );
 
         // -----------------------------------------------------------------------
         // Generate the shell script
@@ -118,7 +111,7 @@ public abstract class AbstractBooterDaemonGenerator
         booterDaemon.setClasspath( classpath );
         booterDaemon.setJvmSettings( jvmSettings );
 
-        scriptGenerator.createBinScript( platformName, booterDaemon, outputDirectory );
+        scriptGenerator.createBinScript( getPlatformName(), booterDaemon, outputDirectory );
     }
 
     // -----------------------------------------------------------------------
@@ -138,7 +131,7 @@ public abstract class AbstractBooterDaemonGenerator
 
         Dependency dependency = new Dependency();
 
-        dependency.setRelativePath( Util.getRelativePath( artifact, artifactRepositoryLayout ) );
+        dependency.setRelativePath( artifactRepositoryLayout.pathOf( artifact ) );
 
         classpath.add( dependency );
     }

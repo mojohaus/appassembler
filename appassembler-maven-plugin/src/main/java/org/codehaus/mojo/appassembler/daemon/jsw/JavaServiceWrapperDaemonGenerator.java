@@ -27,25 +27,25 @@ package org.codehaus.mojo.appassembler.daemon.jsw;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.appassembler.Util;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.model.Dependency;
+import org.codehaus.mojo.appassembler.util.FormattedProperties;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.codehaus.plexus.util.StringInputStream;
+import org.codehaus.plexus.util.StringOutputStream;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -67,51 +67,100 @@ public class JavaServiceWrapperDaemonGenerator
         throws DaemonGeneratorException
     {
         Daemon daemon = request.getDaemon();
-        MavenProject project = request.getMavenProject();
 
-        // -----------------------------------------------------------------------
-        //
-        // -----------------------------------------------------------------------
+        File outputDirectory = new File( request.getOutputDirectory(), daemon.getId() );
 
-        InputStream in = this.getClass().getResourceAsStream( "wrapper.conf.template" );
+        writeWrapperConfFile( request, daemon, outputDirectory );
+
+        writeScriptFiles( request, daemon, outputDirectory );
+
+        writeLibraryFiles( outputDirectory );
+
+        writeExecutableFiles( outputDirectory );
+    }
+
+    private void writeWrapperConfFile( DaemonGenerationRequest request, Daemon daemon, File outputDirectory )
+        throws DaemonGeneratorException
+    {
+        InputStream in = this.getClass().getResourceAsStream( "conf/wrapper.conf.in" );
 
         if ( in == null )
         {
             throw new DaemonGeneratorException( "Could not load template." );
         }
 
-        InputStreamReader reader = new InputStreamReader( in );
+        FormattedProperties confFile = new FormattedProperties();
 
+        try
+        {
+            confFile.read( in );
+        }
+        catch ( IOException e )
+        {
+            throw new DaemonGeneratorException( "Error reading template: " + e.getMessage(), e );
+        }
+        finally
+        {
+            IOUtil.close( in );
+        }
+
+        // TODO: configurable?
+        confFile.setPropertyAfter( "wrapper.working.dir", "..", "wrapper.java.command" );
+        confFile.setProperty( "wrapper.java.library.path.1", "lib" );
+
+        // TODO: write this variable into the start scripts
+        confFile.setPropertyAfter( "set.default.REPO_DIR", "repo", "wrapper.java.mainclass" );
+
+        if ( daemon.getJvmSettings() != null && !StringUtils.isEmpty( daemon.getJvmSettings().getInitialMemorySize() ) )
+        {
+            confFile.setProperty( "wrapper.java.initmemory", daemon.getJvmSettings().getInitialMemorySize() );
+        }
+
+        if ( daemon.getJvmSettings() != null && !StringUtils.isEmpty( daemon.getJvmSettings().getMaxMemorySize() ) )
+        {
+            confFile.setProperty( "wrapper.java.maxmemory", daemon.getJvmSettings().getMaxMemorySize() );
+        }
+
+        confFile.setProperty( "wrapper.app.parameter.1", daemon.getMainClass() );
+
+        createClasspath( request, confFile );
+        createAdditional( daemon, confFile );
+        createParameters( daemon, confFile );
+
+        StringOutputStream string = new StringOutputStream();
+        confFile.save( string );
+
+        Reader reader = new InputStreamReader( new StringInputStream( string.toString() ) );
+
+        writeFilteredFile( request, daemon, reader, new File( outputDirectory, "conf/wrapper.conf" ) );
+    }
+
+    private static void writeFilteredFile( DaemonGenerationRequest request, Daemon daemon, Reader reader,
+                                           File outputFile )
+        throws DaemonGeneratorException
+    {
         Map context = new HashMap();
-        context.put( "MAINCLASS", daemon.getMainClass() );
-        context.put( "CLASSPATH", constructClasspath( project, request.getRepositoryLayout() ) );
-        context.put( "ADDITIONAL", constructAdditional( daemon ) );
-        context.put( "INITIAL_MEMORY", getInitialMemorySize( daemon ) );
-        context.put( "MAX_MEMORY", getMaxMemorySize( daemon ) );
-        context.put( "PARAMETERS", createParameters( daemon ) );
+        context.put( "app.long.name", request.getMavenProject().getName() );
+        context.put( "app.name", daemon.getId() );
+        context.put( "app.description", request.getMavenProject().getDescription() );
 
         InterpolationFilterReader interpolationFilterReader =
             new InterpolationFilterReader( reader, context, "@", "@" );
 
-        File outputDirectory = new File( request.getOutputDirectory(), "etc" );
-        File outputFile = new File( outputDirectory, daemon.getId() + "-wrapper.conf" );
+        writeFile( outputFile, interpolationFilterReader );
+    }
+
+    private static void writeFile( File outputFile, Reader reader )
+        throws DaemonGeneratorException
+    {
         FileWriter out = null;
 
         try
         {
-            // -----------------------------------------------------------------------
-            // Make the parent directories
-            // -----------------------------------------------------------------------
-
-            FileUtils.forceMkdir( outputDirectory );
-
-            // -----------------------------------------------------------------------
-            // Write the file
-            // -----------------------------------------------------------------------
-
+            outputFile.getParentFile().mkdirs();
             out = new FileWriter( outputFile );
 
-            IOUtil.copy( interpolationFilterReader, out );
+            IOUtil.copy( reader, out );
         }
         catch ( IOException e )
         {
@@ -119,89 +168,122 @@ public class JavaServiceWrapperDaemonGenerator
         }
         finally
         {
-            IOUtil.close( interpolationFilterReader );
+            IOUtil.close( reader );
             IOUtil.close( out );
         }
     }
 
-    private String constructAdditional( Daemon daemon )
+    private static void createClasspath( DaemonGenerationRequest request, FormattedProperties confFile )
     {
-        if ( daemon.getJvmSettings() == null )
-        {
-            return "";
-        }
+        confFile.setProperty( "wrapper.java.classpath.1", "lib/wrapper.jar" );
 
-        int i = 1;
-        CharArrayWriter output = new CharArrayWriter();
-        PrintWriter writer = new PrintWriter( output );
-        for ( Iterator it = daemon.getJvmSettings().getSystemProperties().iterator(); it.hasNext(); i++ )
+        MavenProject project = request.getMavenProject();
+        ArtifactRepositoryLayout layout = request.getRepositoryLayout();
+        confFile.setProperty( "wrapper.java.classpath.2",
+                              "%REPO_DIR%/" + createDependency( layout, project.getArtifact() ).getRelativePath() );
+        int counter = 3;
+        for ( Iterator i = project.getRuntimeArtifacts().iterator(); i.hasNext(); counter++ )
         {
-            String systemProperty = (String) it.next();
-            writer.println( "wrapper.java.additional." + i + "=-D" + systemProperty );
+            Artifact artifact = (Artifact) i.next();
+
+            confFile.setProperty( "wrapper.java.classpath." + counter,
+                                  "%REPO_DIR%/" + createDependency( layout, artifact ).getRelativePath() );
         }
-        return output.toString();
     }
 
-    private String getInitialMemorySize( Daemon daemon )
+    private static Dependency createDependency( ArtifactRepositoryLayout layout, Artifact artifact )
     {
-        if ( daemon.getJvmSettings() == null || StringUtils.isEmpty( daemon.getJvmSettings().getInitialMemorySize() ) )
-        {
-            return "";
-        }
-
-        return "wrapper.java.initmemory=" + daemon.getJvmSettings().getInitialMemorySize();
+        Dependency dependency = new Dependency();
+        dependency.setArtifactId( artifact.getArtifactId() );
+        dependency.setGroupId( artifact.getGroupId() );
+        dependency.setVersion( artifact.getVersion() );
+        dependency.setRelativePath( layout.pathOf( artifact ) );
+        return dependency;
     }
 
-    private String getMaxMemorySize( Daemon daemon )
+    private static void createAdditional( Daemon daemon, FormattedProperties confFile )
     {
-        if ( daemon.getJvmSettings() == null || StringUtils.isEmpty( daemon.getJvmSettings().getMaxMemorySize() ) )
+        if ( daemon.getJvmSettings() != null )
         {
-            return "";
+            int count = 1;
+            for ( Iterator i = daemon.getJvmSettings().getSystemProperties().iterator(); i.hasNext(); count++ )
+            {
+                String systemProperty = (String) i.next();
+                confFile.setProperty( "wrapper.java.additional." + count, "-D" + systemProperty );
+            }
         }
-
-        return "wrapper.java.maxmemory=" + daemon.getJvmSettings().getMaxMemorySize();
     }
 
-    // -----------------------------------------------------------------------
-    // Private
-    // -----------------------------------------------------------------------
-
-    private String constructClasspath( MavenProject project, ArtifactRepositoryLayout layout )
+    private static void createParameters( Daemon daemon, FormattedProperties confFile )
     {
-        StringWriter string = new StringWriter();
-
-        PrintWriter writer = new PrintWriter( string );
-
-        writer.println( "wrapper.java.classpath.1=lib/wrapper.jar" );
-        writer.println(
-            "wrapper.java.classpath.2=../../repo/" + Util.getRelativePath( project.getArtifact(), layout ) );
-        int i = 3;
-        for ( Iterator it = project.getRuntimeArtifacts().iterator(); it.hasNext(); )
+        int count = 2;
+        for ( Iterator i = daemon.getCommandLineArguments().iterator(); i.hasNext(); count++ )
         {
-            Artifact artifact = (Artifact) it.next();
+            String argument = (String) i.next();
 
-            String path = Util.getRelativePath( artifact, layout );
-            writer.println( "wrapper.java.classpath." + i + "=../../repo/" + path );
-            i++;
+            confFile.setProperty( "wrapper.app.parameter." + count, argument );
         }
-
-        return string.toString();
     }
 
-    private String createParameters( Daemon daemon )
+    private void writeScriptFiles( DaemonGenerationRequest request, Daemon daemon, File outputDirectory )
+        throws DaemonGeneratorException
     {
-        StringWriter buffer = new StringWriter();
-        PrintWriter writer = new PrintWriter( buffer );
+        // TODO: selectively depending on selected platforms instead of always doing both
+        InputStream shellScriptInputStream = this.getClass().getResourceAsStream( "bin/sh.script.in" );
 
-        writer.println( "wrapper.app.parameter.1=" + daemon.getMainClass() );
-        int i = 2;
-        for ( Iterator it = daemon.getCommandLineArguments().iterator(); it.hasNext(); i++ )
+        if ( shellScriptInputStream == null )
         {
-            String argument = (String) it.next();
-
-            writer.println( "wrapper.app.parameter." + i + "=" + argument );
+            throw new DaemonGeneratorException( "Could not load template." );
         }
 
-        return buffer.toString();
+        Reader reader = new InputStreamReader( shellScriptInputStream );
+
+        writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + daemon.getId() ) );
+
+        // App.bat is not filtered
+        InputStream batchFileInputStream = this.getClass().getResourceAsStream( "bin/App.bat.in" );
+
+        if ( batchFileInputStream == null )
+        {
+            throw new DaemonGeneratorException( "Could not load template." );
+        }
+
+        writeFile( new File( outputDirectory, "bin/" + daemon.getId() + ".bat" ),
+                   new InputStreamReader( batchFileInputStream ) );
+    }
+
+    private void writeLibraryFiles( File outputDirectory )
+        throws DaemonGeneratorException
+    {
+        copyResourceFile( outputDirectory, "lib/wrapper.jar" );
+
+        // TODO: selectively depending on selected platforms instead of always doing both
+        copyResourceFile( outputDirectory, "lib/libwrapper-macosx-universal-32.jnilib" );
+        copyResourceFile( outputDirectory, "lib/libwrapper-linux-x86-32.so" );
+        copyResourceFile( outputDirectory, "lib/libwrapper-solaris-x86-32.so" );
+        copyResourceFile( outputDirectory, "lib/wrapper-windows-x86-32.dll" );
+    }
+
+    private void writeExecutableFiles( File outputDirectory )
+        throws DaemonGeneratorException
+    {
+        // TODO: selectively depending on selected platforms instead of always doing both
+        copyResourceFile( outputDirectory, "bin/wrapper-macosx-universal-32" );
+        copyResourceFile( outputDirectory, "bin/wrapper-linux-x86-32" );
+        copyResourceFile( outputDirectory, "bin/wrapper-solaris-x86-32" );
+        copyResourceFile( outputDirectory, "bin/wrapper-windows-x86-32.exe" );
+    }
+
+    private void copyResourceFile( File outputDirectory, String fileName )
+        throws DaemonGeneratorException
+    {
+        InputStream batchFileInputStream = this.getClass().getResourceAsStream( fileName );
+
+        if ( batchFileInputStream == null )
+        {
+            throw new DaemonGeneratorException( "Could not load library file: " + fileName );
+        }
+
+        writeFile( new File( outputDirectory, fileName ), new InputStreamReader( batchFileInputStream ) );
     }
 }

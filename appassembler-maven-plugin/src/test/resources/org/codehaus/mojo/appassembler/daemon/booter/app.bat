@@ -65,6 +65,7 @@ set BASEDIR=%~dp0\..
 :repoSetup
 if exist %BASEDIR%\bin\app-env.bat call %BASEDIR%\bin\app-env.bat
 
+@REM TODO: Remove hard coding. What about using the descriptor instead?
 if "%REPO%"=="" set REPO="%BASEDIR%\repo"
 
 set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org/codehaus/mojo/appassembler/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar;"%REPO%"\org/codehaus/mojo/appassembler/appassembler-model/1.0-SNAPSHOT/appassembler-model-1.0-SNAPSHOT.jar

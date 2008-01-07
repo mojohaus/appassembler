@@ -23,10 +23,10 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.codehaus.mojo.appassembler.example</groupId>
-  <artifactId>hello-world</artifactId>
+  <artifactId>appassembler-example-jsw</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>Application Assembler Java Service Wrapper Example</name>
   <dependencies>
@@ -49,17 +49,19 @@
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
       <artifactId>jsp-2.1</artifactId>
-      <version>6.1.6</version>
+      <version>6.1.3</version>
     </dependency>
   </dependencies>
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
+        <groupId>org.codehaus.mojo.appassembler</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
         <configuration>
-          <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-          <extraJvmArguments>-Xms16m</extraJvmArguments>
+          <defaultJvmSettings>
+            <initialMemorySize>16m</initialMemorySize>
+          </defaultJvmSettings>
           <daemons>
             <daemon>
               <id>my-server</id>

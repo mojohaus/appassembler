@@ -27,7 +27,6 @@ package org.codehaus.mojo.appassembler.daemon.generic;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.appassembler.Util;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
@@ -70,8 +69,7 @@ public class GenericDaemonGenerator
         // Create the daemon from the Maven project
         // -----------------------------------------------------------------------
 
-        Daemon createdDaemon =
-            createDaemon( request.getMavenProject(), request.getRepositoryPath(), request.getRepositoryLayout() );
+        Daemon createdDaemon = createDaemon( request.getMavenProject(), request.getRepositoryLayout() );
 
         // -----------------------------------------------------------------------
         // Merge the given stub daemon and the generated
@@ -109,7 +107,7 @@ public class GenericDaemonGenerator
     // Private
     // -----------------------------------------------------------------------
 
-    private Daemon createDaemon( MavenProject project, String repositoryPath, ArtifactRepositoryLayout layout )
+    private Daemon createDaemon( MavenProject project, ArtifactRepositoryLayout layout )
     {
         Daemon complete = new Daemon();
 
@@ -123,7 +121,7 @@ public class GenericDaemonGenerator
         projectDependency.setArtifactId( projectArtifact.getArtifactId() );
         projectDependency.setVersion( projectArtifact.getVersion() );
         projectDependency.setClassifier( projectArtifact.getClassifier() );
-        projectDependency.setRelativePath( Util.getRelativePath( projectArtifact, layout ) );
+        projectDependency.setRelativePath( layout.pathOf( projectArtifact ) );
         complete.getClasspath().add( projectDependency );
 
         // -----------------------------------------------------------------------
@@ -139,7 +137,7 @@ public class GenericDaemonGenerator
             dependency.setVersion( artifact.getVersion() );
             dependency.setClassifier( artifact.getClassifier() );
 
-            dependency.setRelativePath( Util.getRelativePath( artifact, layout ) );
+            dependency.setRelativePath( layout.pathOf( artifact ) );
 
             complete.getClasspath().add( dependency );
         }

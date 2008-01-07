@@ -42,6 +42,7 @@ public class DaemonGenerationRequest
 
     private File stubDescriptor;
 
+    // TODO: what is the difference?
     private Daemon stubDaemon;
 
     private Daemon daemon;
@@ -53,11 +54,6 @@ public class DaemonGenerationRequest
     private ArtifactRepository localRepository;
 
     private ArtifactRepositoryLayout repositoryLayout = new DefaultRepositoryLayout();
-
-    /**
-     * A path to the repository relative from the root directory of the deamon.
-     */
-    private String repositoryPath;
 
 
     public DaemonGenerationRequest()
@@ -156,13 +152,4 @@ public class DaemonGenerationRequest
         this.repositoryLayout = repositoryLayout;
     }
 
-    public String getRepositoryPath()
-    {
-        return repositoryPath;
-    }
-
-    public void setRepositoryPath( String repositoryPath )
-    {
-        this.repositoryPath = repositoryPath;
-    }
 }

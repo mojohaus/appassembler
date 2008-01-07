@@ -34,8 +34,9 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
-import org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator;
+import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
@@ -48,6 +49,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -59,6 +61,7 @@ import java.util.StringTokenizer;
  * @goal assemble
  * @requiresDependencyResolution runtime
  * @phase package
+ * @deprecated Use the generate-daemons goal instead
  */
 public class AssembleMojo
     extends AbstractMojo
@@ -83,13 +86,6 @@ public class AssembleMojo
      * @parameter
      */
     private Set programs;
-
-    /**
-     * Prefix generated bin files with this.
-     *
-     * @parameter
-     */
-    private String binPrefix;
 
     /**
      * Include /etc in the beginning of the classpath in the generated bin files
@@ -129,6 +125,11 @@ public class AssembleMojo
      */
     private String environmentSetupFileName;
 
+    /**
+     * @parameter default-value="true"
+     */
+    private boolean generateRepository;
+
     // -----------------------------------------------------------------------
     // Read-only Parameters
     // -----------------------------------------------------------------------
@@ -138,12 +139,6 @@ public class AssembleMojo
      * @parameter expression="${project}"
      */
     private MavenProject mavenProject;
-
-    /**
-     * @readonly
-     * @parameter expression="${project.build.directory}"
-     */
-    private String buildDirectory;
 
     /**
      * @readonly
@@ -168,19 +163,24 @@ public class AssembleMojo
     // -----------------------------------------------------------------------
 
     /**
-     * @component org.apache.maven.artifact.repository.ArtifactRepositoryFactory
+     * @component
      */
     private ArtifactRepositoryFactory artifactRepositoryFactory;
 
     /**
-     * @component org.apache.maven.artifact.installer.ArtifactInstaller
+     * @component
      */
     private ArtifactInstaller artifactInstaller;
 
     /**
-     * @component org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator
+     * @component
      */
-    private ScriptGenerator scriptGenerator;
+    private DaemonGeneratorService daemonGeneratorService;
+
+    /**
+     * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
+     */
+    private Map availableRepositoryLayouts;
 
     // ----------------------------------------------------------------------
     // CONSTANTS
@@ -221,31 +221,38 @@ public class AssembleMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        ArtifactRepositoryLayout artifactRepositoryLayout = Util.getRepositoryLayout( repositoryLayout );
-
         Set defaultPlatforms = validatePlatforms( platforms, VALID_PLATFORMS );
 
         // validate input and set defaults
         validate( defaultPlatforms );
 
+        ArtifactRepositoryLayout artifactRepositoryLayout =
+            (ArtifactRepositoryLayout) availableRepositoryLayouts.get( repositoryLayout );
+        if ( artifactRepositoryLayout == null )
+        {
+            throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
+        }
+
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
         // ----------------------------------------------------------------------
-
-        // The repo where the jar files will be installed
-        ArtifactRepository artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
-            "appassembler", "file://" + assembleDirectory.getAbsolutePath() + "/repo", artifactRepositoryLayout,
-            false );
-
-        for ( Iterator it = artifacts.iterator(); it.hasNext(); )
+        if ( generateRepository )
         {
-            Artifact artifact = (Artifact) it.next();
+            // The repo where the jar files will be installed
+            ArtifactRepository artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
+                "appassembler", "file://" + assembleDirectory.getAbsolutePath() + "/repo", artifactRepositoryLayout,
+                false );
 
-            installArtifact( artifactRepository, artifact );
+            for ( Iterator it = artifacts.iterator(); it.hasNext(); )
+            {
+                Artifact artifact = (Artifact) it.next();
+
+                installArtifact( artifactRepository, artifact );
+            }
+
+            // install the project's artifact in the new repository
+            installArtifact( artifactRepository, projectArtifact );
         }
-
-        // install the project's artifact in the new repository
-        installArtifact( artifactRepository, projectArtifact );
 
         // ----------------------------------------------------------------------
         // Setup
@@ -267,15 +274,23 @@ public class AssembleMojo
             {
                 String platform = (String) platformIt.next();
 
+                // TODO: seems like a bug in the generator that the request is modified
+                org.codehaus.mojo.appassembler.model.Daemon daemon =
+                    programToDaemon( program, artifactRepositoryLayout );
+                DaemonGenerationRequest request =
+                    new DaemonGenerationRequest( daemon, mavenProject, localRepository, assembleDirectory );
+                request.setStubDaemon( request.getDaemon() );
+
+                request.setPlatform( platform );
+
                 try
                 {
-                    scriptGenerator.createBinScript( platform, programToDaemon( program, artifactRepositoryLayout ),
-                                                     assembleDirectory );
+                    daemonGeneratorService.generateDaemon( request );
                 }
                 catch ( DaemonGeneratorException e )
                 {
                     throw new MojoExecutionException( "Error while generating script for the program '" +
-                        program.getName() + "' for the platform '" + platform + "'." );
+                        program.getName() + "' for the platform '" + platform + "': " + e.getMessage(), e );
                 }
             }
         }
@@ -313,10 +328,6 @@ public class AssembleMojo
         }
 
         daemon.setClasspath( classpath );
-
-        // -----------------------------------------------------------------------
-        // This is a bit of a clusterfuck
-        // -----------------------------------------------------------------------
 
         JvmSettings jvmSettings = new JvmSettings();
 
@@ -445,5 +456,10 @@ public class AssembleMojo
         }
 
         return extraJvmArguments;
+    }
+
+    public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )
+    {
+        this.availableRepositoryLayouts = availableRepositoryLayouts;
     }
 }
