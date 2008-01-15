@@ -40,4 +40,15 @@
   <commandLineArguments>
     <commandLineArgument>arg1=arg1-value</commandLineArgument>
   </commandLineArguments>
+  <generatorConfigurations>
+    <generatorConfiguration>
+      <generator>jsw</generator>
+      <configuration>
+        <!-- remove a built in one -->
+        <wrapper.console.format/>
+        <!-- change a built in one -->
+        <wrapper.console.loglevel>WARN</wrapper.console.loglevel>
+      </configuration>
+    </generatorConfiguration>
+  </generatorConfigurations>
 </daemon>

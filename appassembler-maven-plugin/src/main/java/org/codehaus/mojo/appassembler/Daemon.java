@@ -24,6 +24,8 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
+import org.codehaus.mojo.appassembler.model.GeneratorConfiguration;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +58,8 @@ public class Daemon
     private List commandLineArguments;
 
     private JvmSettings jvmSettings;
+
+    private List generatorConfigurations;
 
 //    private Properties properties;
 
@@ -92,5 +96,10 @@ public class Daemon
     public JvmSettings getJvmSettings()
     {
         return jvmSettings;
+    }
+
+    public List getGeneratorConfigurations()
+    {
+        return generatorConfigurations;
     }
 }

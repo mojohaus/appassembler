@@ -35,6 +35,7 @@ import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.mojo.appassembler.model.Classpath;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -99,16 +100,17 @@ public abstract class AbstractBooterDaemonGenerator
 
         MavenProject project = request.getMavenProject();
 
-        List classpath = new ArrayList( 2 );
-
         // TODO: Transitively resolve the dependencies of the booter.
-        addDirectory( classpath, "etc" );
-        addArtifact( classpath, project, "org.codehaus.mojo.appassembler:appassembler-booter",
-                     request.getRepositoryLayout() );
-        addArtifact( classpath, project, "org.codehaus.mojo.appassembler:appassembler-model",
-                     request.getRepositoryLayout() );
 
+        Classpath classpath = new Classpath();
         booterDaemon.setClasspath( classpath );
+        classpath.addDirectory( createDirectory( "etc" ) );
+        classpath.addDependency( createDependency( project,
+                                                                     "org.codehaus.mojo.appassembler:appassembler-booter",
+                                                                     request.getRepositoryLayout() ) );
+        classpath.addDependency( createDependency( project,
+                                                                     "org.codehaus.mojo.appassembler:appassembler-model",
+                                                                     request.getRepositoryLayout() ) );
         booterDaemon.setJvmSettings( jvmSettings );
 
         scriptGenerator.createBinScript( getPlatformName(), booterDaemon, outputDirectory );
@@ -118,8 +120,8 @@ public abstract class AbstractBooterDaemonGenerator
     // Private
     // -----------------------------------------------------------------------
 
-    private void addArtifact( List classpath, MavenProject project, String id,
-                              ArtifactRepositoryLayout artifactRepositoryLayout )
+    private static Dependency createDependency( MavenProject project, String id,
+                                                ArtifactRepositoryLayout artifactRepositoryLayout )
         throws DaemonGeneratorException
     {
         Artifact artifact = (Artifact) project.getArtifactMap().get( id );
@@ -132,14 +134,13 @@ public abstract class AbstractBooterDaemonGenerator
         Dependency dependency = new Dependency();
 
         dependency.setRelativePath( artifactRepositoryLayout.pathOf( artifact ) );
-
-        classpath.add( dependency );
+        return dependency;
     }
 
-    private void addDirectory( List classpath, String relativePath )
+    private static Directory createDirectory( String relativePath )
     {
         Directory directory = new Directory();
         directory.setRelativePath( relativePath );
-        classpath.add( directory );
+        return directory;
     }
 }

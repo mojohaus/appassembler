@@ -27,9 +27,11 @@ package org.codehaus.mojo.appassembler.booter;
 import org.codehaus.mojo.appassembler.model.ClasspathElement;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
-import org.codehaus.mojo.appassembler.model.io.DaemonModelUtil;
+import org.codehaus.mojo.appassembler.model.io.stax.AppassemblerModelStaxReader;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -110,7 +112,7 @@ public class AppassemblerBooter
         throws Exception
     {
         List classpathUrls = new ArrayList();
-        List classPathElements = config.getClasspath();
+        List classPathElements = config.getAllClasspathElements();
         Iterator iter = classPathElements.iterator();
 
         while ( iter.hasNext() )
@@ -172,11 +174,11 @@ public class AppassemblerBooter
     {
         String resourceName = "/" + appName + ".xml";
 
-        URL resource = AppassemblerBooter.class.getResource( resourceName );
+        InputStream resource = AppassemblerBooter.class.getResourceAsStream( resourceName );
 
         if ( debug )
         {
-            System.err.println( "Loading configuration file from: " + resource.toExternalForm() );
+            System.err.println( "Loading configuration file from: " + resourceName );
         }
 
         if ( resource == null )
@@ -184,7 +186,15 @@ public class AppassemblerBooter
             throw new InternalErrorException( "Could not load configuration resource: '" + resourceName + "'." );
         }
 
-        return DaemonModelUtil.loadModel( resource.openStream() );
+        try
+        {
+            AppassemblerModelStaxReader reader = new AppassemblerModelStaxReader();
+            return reader.read( new InputStreamReader( resource ) );
+        }
+        finally
+        {
+            resource.close();
+        }
     }
 
     public static void executeMain( URLClassLoader classLoader, String[] args )

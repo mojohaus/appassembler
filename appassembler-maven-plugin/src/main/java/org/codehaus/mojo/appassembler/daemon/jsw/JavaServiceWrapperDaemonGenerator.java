@@ -32,6 +32,7 @@ import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
+import org.codehaus.mojo.appassembler.model.GeneratorConfiguration;
 import org.codehaus.mojo.appassembler.util.FormattedProperties;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.IOUtil;
@@ -126,6 +127,30 @@ public class JavaServiceWrapperDaemonGenerator
         createClasspath( request, confFile );
         createAdditional( daemon, confFile );
         createParameters( daemon, confFile );
+
+        for ( Iterator i = daemon.getGeneratorConfigurations().iterator(); i.hasNext(); )
+        {
+            GeneratorConfiguration generatorConfiguration = (GeneratorConfiguration) i.next();
+
+            if ( generatorConfiguration.getGenerator().equals( "jsw" ) )
+            {
+                for ( Iterator j = generatorConfiguration.getConfiguration().entrySet().iterator(); j.hasNext(); )
+                {
+                    Map.Entry entry = (Map.Entry) j.next();
+
+                    String key = (String) entry.getKey();
+                    String value = (String) entry.getValue();
+                    if ( value.length() > 0 )
+                    {
+                        confFile.setProperty( key, value );
+                    }
+                    else
+                    {
+                        confFile.removeProperty( key );
+                    }
+                }
+            }
+        }
 
         StringOutputStream string = new StringOutputStream();
         confFile.save( string );

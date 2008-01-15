@@ -193,12 +193,7 @@ public class Platform
     public String getClassPath( Daemon daemon )
         throws DaemonGeneratorException
     {
-        List classpath = daemon.getClasspath();
-
-        if ( classpath == null || classpath.size() == 0 )
-        {
-            return "";
-        }
+        List classpath = daemon.getAllClasspathElements();
 
         StringBuffer classpathBuffer = new StringBuffer();
 

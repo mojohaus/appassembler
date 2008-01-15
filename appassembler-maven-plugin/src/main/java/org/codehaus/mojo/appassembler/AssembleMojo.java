@@ -304,14 +304,18 @@ public class AssembleMojo
         daemon.setId( program.getName() );
         daemon.setMainClass( program.getMainClass() );
 
-        List classpath = new ArrayList();
+        List directories = new ArrayList();
 
         if ( includeConfigurationDirectoryInClasspath )
         {
             Directory directory = new Directory();
             directory.setRelativePath( "etc" );
-            classpath.add( directory );
+            directories.add( directory );
         }
+
+        daemon.getClasspath().setDirectories( directories );
+
+        List dependencies = new ArrayList();
 
         Set classPathArtifacts = new HashSet( artifacts );
         classPathArtifacts.add( projectArtifact );
@@ -324,10 +328,10 @@ public class AssembleMojo
             dependency.setArtifactId( artifact.getArtifactId() );
             dependency.setVersion( artifact.getVersion() );
             dependency.setRelativePath( artifactRepositoryLayout.pathOf( artifact ) );
-            classpath.add( dependency );
+            dependencies.add( dependency );
         }
 
-        daemon.setClasspath( classpath );
+        daemon.getClasspath().setDependencies( dependencies );
 
         JvmSettings jvmSettings = new JvmSettings();
 

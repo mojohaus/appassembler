@@ -25,6 +25,7 @@ package org.codehaus.mojo.appassembler.daemon.script;
  */
 
 import junit.framework.TestCase;
+import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
@@ -94,10 +95,11 @@ public class PlatformTest
         throws Exception
     {
         Daemon daemon = new Daemon();
+        daemon.setClasspath( new Classpath() );
 
         assertEquals( "", util.getClassPath( daemon ) );
 
-        List classpath = daemon.getClasspath();
+        List classpath = daemon.getClasspath().getDirectories();
         classpath.add( createDirectory( asserts[0] ) );
         classpath.add( createDirectory( asserts[1] ) );
         assertEquals( asserts[2], util.getClassPath( daemon ) );

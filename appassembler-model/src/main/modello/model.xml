@@ -50,8 +50,7 @@
           <name>classpath</name>
           <version>1.0.0+</version>
           <association>
-            <type>ClasspathElement</type>
-            <multiplicity>*</multiplicity>
+            <type>Classpath</type>
           </association>
         </field>
         <field>
@@ -74,7 +73,35 @@
           <version>1.0.0+</version>
           <type>String</type>
         </field>
+        <field>
+          <name>generatorConfigurations</name>
+          <version>1.0.0+</version>
+          <association>
+            <type>GeneratorConfiguration</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
       </fields>
+      <codeSegments>
+        <codeSegment>
+          <version>1.0.0+</version>
+          <code><![CDATA[
+            public java.util.List getAllClasspathElements()
+            {
+                if ( classpath == null )
+                {
+                    return java.util.Collections.EMPTY_LIST;
+                }
+
+                java.util.List elements = new java.util.ArrayList(
+                    classpath.getDependencies().size() + classpath.getDirectories().size() );
+                elements.addAll( classpath.getDirectories() );
+                elements.addAll( classpath.getDependencies() );
+                return elements;
+            }
+              ]]></code>
+        </codeSegment>
+      </codeSegments>
     </class>
     <class>
       <name>JvmSettings</name>
@@ -109,6 +136,46 @@
           <association>
             <multiplicity>*</multiplicity>
             <type>String</type>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>Classpath</name>
+      <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>dependencies</name>
+          <version>1.0.0+</version>
+          <association>
+            <type>Dependency</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+        <field>
+          <name>directories</name>
+          <version>1.0.0+</version>
+          <association>
+            <type>Directory</type>
+            <multiplicity>*</multiplicity>
+          </association>
+        </field>
+      </fields>
+    </class>
+    <class>
+      <name>GeneratorConfiguration</name>
+      <version>1.0.0+</version>
+      <fields>
+        <field>
+          <name>generator</name>
+          <type>String</type>
+        </field>
+        <field>
+          <name>configuration</name>
+          <type>Properties</type>
+          <association xml.mapStyle="inline">
+            <type>String</type>
+            <multiplicity>*</multiplicity>
           </association>
         </field>
       </fields>

@@ -39,6 +39,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -216,7 +217,36 @@ public class GenerateDaemonsMojo
         {
             modelDaemon.setJvmSettings( modelJvmSettings );
         }
+
+        if ( daemon.getGeneratorConfigurations() != null )
+        {
+            modelDaemon.setGeneratorConfigurations(
+                convertGeneratorConfigurations( daemon.getGeneratorConfigurations() ) );
+        }
+
         return modelDaemon;
+    }
+
+    private List convertGeneratorConfigurations( List generatorConfigurations )
+    {
+        List value = new ArrayList( generatorConfigurations.size() );
+        for ( Iterator i = generatorConfigurations.iterator(); i.hasNext(); )
+        {
+            GeneratorConfiguration config = (GeneratorConfiguration) i.next();
+
+            value.add( convertGeneratorConfiguration( config ) );
+        }
+        return value;
+    }
+
+    private org.codehaus.mojo.appassembler.model.GeneratorConfiguration convertGeneratorConfiguration(
+        GeneratorConfiguration config )
+    {
+        org.codehaus.mojo.appassembler.model.GeneratorConfiguration value =
+            new org.codehaus.mojo.appassembler.model.GeneratorConfiguration();
+        value.setGenerator( config.getGenerator() );
+        value.setConfiguration( config.getConfiguration() );
+        return value;
     }
 
     // TODO: see if it is possible to just inherit from the model JVM Settings

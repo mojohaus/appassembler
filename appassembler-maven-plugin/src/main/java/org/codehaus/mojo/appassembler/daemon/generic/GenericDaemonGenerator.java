@@ -31,17 +31,18 @@ import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.merge.DaemonMerger;
+import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
-import org.codehaus.mojo.appassembler.model.io.DaemonModelUtil;
+import org.codehaus.mojo.appassembler.model.io.stax.AppassemblerModelStaxWriter;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -91,9 +92,14 @@ public class GenericDaemonGenerator
 
             writer = new FileWriter( outputFile );
 
-            DaemonModelUtil.storeModel( mergedDaemon, outputFile );
+            AppassemblerModelStaxWriter staxWriter = new AppassemblerModelStaxWriter();
+            staxWriter.write( writer, mergedDaemon );
         }
         catch ( IOException e )
+        {
+            throw new DaemonGeneratorException( "Error while writing output file: " + request.getOutputDirectory(), e );
+        }
+        catch ( XMLStreamException e )
         {
             throw new DaemonGeneratorException( "Error while writing output file: " + request.getOutputDirectory(), e );
         }
@@ -111,10 +117,11 @@ public class GenericDaemonGenerator
     {
         Daemon complete = new Daemon();
 
+        complete.setClasspath( new Classpath() );
+
         // -----------------------------------------------------------------------
         // Add the project itself as a dependency.
         // -----------------------------------------------------------------------
-        complete.setClasspath( new ArrayList() );
         Dependency projectDependency = new Dependency();
         Artifact projectArtifact = project.getArtifact();
         projectDependency.setGroupId( projectArtifact.getGroupId() );
@@ -122,7 +129,7 @@ public class GenericDaemonGenerator
         projectDependency.setVersion( projectArtifact.getVersion() );
         projectDependency.setClassifier( projectArtifact.getClassifier() );
         projectDependency.setRelativePath( layout.pathOf( projectArtifact ) );
-        complete.getClasspath().add( projectDependency );
+        complete.getClasspath().addDependency( projectDependency );
 
         // -----------------------------------------------------------------------
         // Add all the dependencies from the project.
@@ -139,7 +146,7 @@ public class GenericDaemonGenerator
 
             dependency.setRelativePath( layout.pathOf( artifact ) );
 
-            complete.getClasspath().add( dependency );
+            complete.getClasspath().addDependency( dependency );
         }
 
         return complete;

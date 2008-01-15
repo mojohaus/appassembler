@@ -29,17 +29,21 @@
     org.codehaus.mojo.appassembler.booter.DummyMainWithArgs
   </mainClass>
   <classpath>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-utils</artifactId>
-      <version>1.1</version>
-      <relativePath>
-        src/test/resources/org/codehaus/mojo/appassembler
-      </relativePath>
-    </dependency>
-    <directory>
-      <relativePath>target/test-classes</relativePath>
-    </directory>
+    <dependencies>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-utils</artifactId>
+        <version>1.1</version>
+        <relativePath>
+          src/test/resources/org/codehaus/mojo/appassembler
+        </relativePath>
+      </dependency>
+    </dependencies>
+    <directories>
+      <directory>
+        <relativePath>target/test-classes</relativePath>
+      </directory>
+    </directories>
   </classpath>
   <jvmSettings/>
   <commandLineArguments>

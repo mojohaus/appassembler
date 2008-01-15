@@ -31,6 +31,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.model.Daemon;
 
 import java.io.File;
+import java.util.Properties;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>

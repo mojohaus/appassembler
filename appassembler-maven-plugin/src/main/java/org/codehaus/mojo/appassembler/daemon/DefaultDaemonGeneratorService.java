@@ -28,11 +28,14 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.merge.DaemonMerger;
 import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.mojo.appassembler.model.io.DaemonModelUtil;
+import org.codehaus.mojo.appassembler.model.io.stax.AppassemblerModelStaxReader;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
 
@@ -148,9 +151,14 @@ public class DefaultDaemonGeneratorService
     public Daemon loadModel( File stubDescriptor )
         throws DaemonGeneratorException
     {
+        FileReader fileReader = null;
+
         try
         {
-            Daemon stubDaemon = DaemonModelUtil.loadModel( stubDescriptor );
+            fileReader = new FileReader( stubDescriptor );
+
+            AppassemblerModelStaxReader reader = new AppassemblerModelStaxReader();
+            Daemon stubDaemon = reader.read( fileReader );
 
             validateDaemon( stubDaemon, stubDescriptor );
 
@@ -160,6 +168,15 @@ public class DefaultDaemonGeneratorService
         {
             throw new DaemonGeneratorException(
                 "Error while loading daemon descriptor from '" + stubDescriptor.getAbsolutePath() + "'.", e );
+        }
+        catch ( XMLStreamException e )
+        {
+            throw new DaemonGeneratorException(
+                "Error while loading daemon descriptor from '" + stubDescriptor.getAbsolutePath() + "'.", e );
+        }
+        finally
+        {
+            IOUtil.close( fileReader );
         }
     }
 

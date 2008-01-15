@@ -27,6 +27,7 @@ package org.codehaus.mojo.appassembler.daemon.merge;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -62,7 +63,7 @@ public class DefaultDaemonMerger
 
         result.setId( select( dominant.getId(), recessive.getId() ) );
         result.setMainClass( select( dominant.getMainClass(), recessive.getMainClass() ) );
-        result.setClasspath( select( dominant.getClasspath(), recessive.getClasspath() ) );
+        result.setClasspath( (Classpath) select( dominant.getClasspath(), recessive.getClasspath() ) );
         result.setCommandLineArguments(
             select( dominant.getCommandLineArguments(), recessive.getCommandLineArguments() ) );
         // This should probably be improved
