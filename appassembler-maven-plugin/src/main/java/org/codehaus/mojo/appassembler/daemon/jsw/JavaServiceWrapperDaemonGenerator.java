@@ -35,18 +35,9 @@ import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.GeneratorConfiguration;
 import org.codehaus.mojo.appassembler.util.FormattedProperties;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.StringInputStream;
-import org.codehaus.plexus.util.StringOutputStream;
-import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.*;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -198,6 +189,29 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
+    private static void writeFile( File outputFile, InputStream inputStream )
+        throws DaemonGeneratorException
+    {
+        FileOutputStream out = null;
+
+        try
+        {
+            outputFile.getParentFile().mkdirs();
+            out = new FileOutputStream( outputFile );
+
+            IOUtil.copy( inputStream, out );
+        }
+        catch ( IOException e )
+        {
+            throw new DaemonGeneratorException( "Error writing output file: " + outputFile.getAbsolutePath(), e );
+        }
+        finally
+        {
+            IOUtil.close( inputStream );
+            IOUtil.close( out );
+        }
+    }
+
     private static void createClasspath( DaemonGenerationRequest request, FormattedProperties confFile )
     {
         confFile.setProperty( "wrapper.java.classpath.1", "lib/wrapper.jar" );
@@ -274,7 +288,7 @@ public class JavaServiceWrapperDaemonGenerator
         }
 
         writeFile( new File( outputDirectory, "bin/" + daemon.getId() + ".bat" ),
-                   new InputStreamReader( batchFileInputStream ) );
+                   batchFileInputStream );
     }
 
     private void writeLibraryFiles( File outputDirectory )
@@ -309,6 +323,6 @@ public class JavaServiceWrapperDaemonGenerator
             throw new DaemonGeneratorException( "Could not load library file: " + fileName );
         }
 
-        writeFile( new File( outputDirectory, fileName ), new InputStreamReader( batchFileInputStream ) );
+        writeFile( new File( outputDirectory, fileName ), batchFileInputStream );
     }
 }
