@@ -69,6 +69,10 @@ public class JavaServiceWrapperDaemonGeneratorTest
             getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-1.bat" ) ),
                       FileUtils.fileRead( batchFile ) );
 
+        assertEquals( ( new File( getBasedir() +
+            "/target/classes/org/codehaus/mojo/appassembler/daemon/jsw/bin/wrapper-linux-x86-32" ) ).length(),
+                      ( new File( jswDir, "bin/wrapper-linux-x86-32" )).length() );
+
         assertFileExists( jswDir, "lib/wrapper.jar" );
         assertFileExists( jswDir, "lib/wrapper-windows-x86-32.dll" );
         assertFileExists( jswDir, "lib/libwrapper-macosx-universal-32.jnilib" );
