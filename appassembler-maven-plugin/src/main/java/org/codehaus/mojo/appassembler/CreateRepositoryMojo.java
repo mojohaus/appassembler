@@ -26,18 +26,27 @@ package org.codehaus.mojo.appassembler;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.handler.DefaultArtifactHandler;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
+import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
+import org.apache.maven.artifact.resolver.ArtifactNotFoundException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionException;
+import org.apache.maven.artifact.resolver.ArtifactResolutionResult;
+import org.apache.maven.artifact.resolver.ArtifactResolver;
+import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
+import org.apache.maven.artifact.resolver.filter.ExcludesArtifactFilter;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -97,10 +106,10 @@ public class CreateRepositoryMojo
 
     /**
      * @readonly
-     * @parameter expression="${plugin.artifacts}"
+     * @parameter expression="${plugin.version}"
      */
-    private List pluginArtifacts;
-
+    private String pluginVersion;
+    
     /**
      * @readonly
      * @parameter expression="${localRepository}"
@@ -119,9 +128,20 @@ public class CreateRepositoryMojo
      */
     private Artifact projectArtifact;
 
+    /**
+     * Whether to install the booter artifacts into the repository. This may be needed if you are using the Shell
+     * script generators.
+     *  
+     * @parameter default-value="false" 
+     */
+    private boolean installBooterArtifacts;
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
+
+    /** @component */
+    private ArtifactFactory artifactFactory;
 
     /**
      * @component
@@ -137,6 +157,12 @@ public class CreateRepositoryMojo
      * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
      */
     private Map availableRepositoryLayouts;
+
+    /** @component */
+    private ArtifactResolver artifactResolver;
+
+    /** @component */
+    private ArtifactMetadataSource metadataSource;
 
     public void execute()
         throws MojoExecutionException, MojoFailureException
@@ -171,6 +197,7 @@ public class CreateRepositoryMojo
         // Install dependencies in the new repository
         // ----------------------------------------------------------------------
 
+        // TODO: merge with the artifacts below so no duplicate versions included
         for ( Iterator it = artifacts.iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
@@ -178,18 +205,46 @@ public class CreateRepositoryMojo
             installArtifact( artifact, artifactRepository );
         }
 
-        for ( Iterator it = pluginArtifacts.iterator(); it.hasNext(); )
+        if ( installBooterArtifacts )
         {
-            Artifact artifact = (Artifact) it.next();
-
-            installArtifact( artifact, artifactRepository );
+            // ----------------------------------------------------------------------
+            // Install appassembler booter in the new repos
+            // ----------------------------------------------------------------------
+            installBooterArtifacts( artifactRepository );
         }
+    }
 
-        // ----------------------------------------------------------------------
-        // Install appassembler booter in the new repos
-        // ----------------------------------------------------------------------
-        Artifact booter = resolveBooterArtifact();
-        //installArtifact( booter );
+    private void installBooterArtifacts( ArtifactRepository artifactRepository )
+        throws MojoExecutionException
+    {
+        Artifact artifact =
+            artifactFactory.createDependencyArtifact( "org.codehaus.mojo.appassembler", "appassembler-booter",
+                                                      VersionRange.createFromVersion( pluginVersion ), 
+                                                      "jar", null, Artifact.SCOPE_RUNTIME );
+        try
+        {
+            Artifact p =
+                artifactFactory.createBuildArtifact( "org.codehaus.mojo.appassembler", "appassembler-maven-plugin",
+                                                     pluginVersion, "jar" );
+
+            ArtifactFilter filter = new ExcludesArtifactFilter( Collections.singletonList( "junit:junit" ) );
+            ArtifactResolutionResult result =
+                artifactResolver.resolveTransitively( Collections.singleton( artifact ), p, localRepository,
+                                                      Collections.EMPTY_LIST, metadataSource, filter );
+            for ( Iterator i = result.getArtifacts().iterator(); i.hasNext(); )
+            {
+                Artifact a = (Artifact) i.next();
+                installArtifact( a, artifactRepository );
+            }
+        }
+        catch ( ArtifactResolutionException e )
+        {
+            throw new MojoExecutionException( "Failed to copy artifact.", e );
+        }
+        catch ( ArtifactNotFoundException e )
+        {
+            throw new MojoExecutionException( "Failed to copy artifact.", e );
+        }
     }
 
     private void installArtifact( Artifact artifact, ArtifactRepository artifactRepository )
@@ -210,17 +265,6 @@ public class CreateRepositoryMojo
                 throw new MojoExecutionException( "Failed to copy artifact.", e );
             }
         }
-    }
-
-    protected Artifact resolveBooterArtifact()
-        throws MojoExecutionException
-    {
-        Artifact booter;
-        booter = new DefaultArtifact( "org.codehaus.mojo", "appassembler-booter",
-                                      VersionRange.createFromVersion( "1.0-SNAPSHOT" ), "compile", "jar", "",
-                                      new DefaultArtifactHandler( "" ) );
-
-        return booter;
     }
 
     public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )
