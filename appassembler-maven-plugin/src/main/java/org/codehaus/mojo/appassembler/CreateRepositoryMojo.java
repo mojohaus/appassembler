@@ -195,17 +195,20 @@ public class CreateRepositoryMojo
     private void installArtifact( Artifact artifact, ArtifactRepository artifactRepository )
         throws MojoExecutionException
     {
-        try
+        if ( artifact.getFile() != null )
         {
-            // Necessary for the artifact's baseVersion to be set correctly
-            // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
-            artifact.isSnapshot();
+            try
+            {
+                // Necessary for the artifact's baseVersion to be set correctly
+                // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
+                artifact.isSnapshot();
 
-            artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
-        }
-        catch ( ArtifactInstallationException e )
-        {
-            throw new MojoExecutionException( "Failed to copy artifact.", e );
+                artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
+            }
+            catch ( ArtifactInstallationException e )
+            {
+                throw new MojoExecutionException( "Failed to copy artifact.", e );
+            }
         }
     }
 
