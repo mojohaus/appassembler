@@ -11,8 +11,8 @@
 # These settings can be modified to fit the needs of your application
 
 # Application
-APP_NAME="app"
-APP_LONG_NAME="Test Project"
+APP_NAME="@app.name@"
+APP_LONG_NAME="@app.long.name@"
 
 # Wrapper
 WRAPPER_CMD="./wrapper"
@@ -43,7 +43,7 @@ PIDDIR="."
 # The following two lines are used by the chkconfig command. Change as is
 #  appropriate for your application.  They should remain commented.
 # chkconfig: 2345 20 80
-# description: Test Project
+# description: @app.long.name@
 
 # Do not modify anything beyond this point
 #-----------------------------------------------------------------------------
