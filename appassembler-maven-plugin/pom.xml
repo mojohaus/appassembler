@@ -135,7 +135,7 @@
         <directory>target/dependency/wrapper-delta-pack-3.2.3/src/bin</directory>
         <targetPath>org/codehaus/mojo/appassembler/daemon/jsw/bin</targetPath>
         <includes>
-          <include>App.bat.in</include>
+          <include>AppCommand.bat.in</include>
         </includes>
       </resource>
       <!-- TODO: Have the plugin copy these in (depending on platforms) -->

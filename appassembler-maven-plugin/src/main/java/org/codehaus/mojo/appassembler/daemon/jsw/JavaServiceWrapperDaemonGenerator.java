@@ -279,8 +279,8 @@ public class JavaServiceWrapperDaemonGenerator
 
         writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + daemon.getId() ) );
 
-        // App.bat is not filtered
-        InputStream batchFileInputStream = this.getClass().getResourceAsStream( "bin/App.bat.in" );
+        // AppCommand.bat is not filtered
+        InputStream batchFileInputStream = this.getClass().getResourceAsStream( "bin/AppCommand.bat.in" );
 
         if ( batchFileInputStream == null )
         {
