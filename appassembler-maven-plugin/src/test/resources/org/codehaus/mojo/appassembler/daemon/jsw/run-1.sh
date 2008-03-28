@@ -14,16 +14,24 @@
 APP_NAME="app"
 APP_LONG_NAME="Test Project"
 
+if [ "X$APP_BASE" = "X" ]; then
+  APP_BASE=..
+fi
+
 # Wrapper
 WRAPPER_CMD="./wrapper"
-WRAPPER_CONF="../conf/wrapper.conf"
+WRAPPER_CONF="$APP_BASE/conf/wrapper.conf"
+
+if [ ! -f "$WRAPPER_CONF" ]; then
+  WRAPPER_CONF="../conf/wrapper.conf"
+fi
 
 # Priority at which to run the wrapper.  See "man nice" for valid priorities.
 #  nice is only used if a priority is specified.
 PRIORITY=
 
 # Location of the pid file.
-PIDDIR="."
+PIDDIR="$APP_BASE/logs"
 
 # If uncommented, causes the Wrapper to be shutdown using an anchor file.
 #  When launched with the 'start' command, it will also ignore all INT and

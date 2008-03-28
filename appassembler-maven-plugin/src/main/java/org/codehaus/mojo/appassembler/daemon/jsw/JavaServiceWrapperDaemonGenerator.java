@@ -100,8 +100,8 @@ public class JavaServiceWrapperDaemonGenerator
         confFile.setPropertyAfter( "wrapper.working.dir", "..", "wrapper.java.command" );
         confFile.setProperty( "wrapper.java.library.path.1", "lib" );
 
-        // TODO: write this variable into the start scripts
         confFile.setPropertyAfter( "set.default.REPO_DIR", "repo", "wrapper.java.mainclass" );
+        confFile.setPropertyAfter( "set.default.APP_BASE", ".", "wrapper.java.mainclass" );
 
         if ( daemon.getJvmSettings() != null && !StringUtils.isEmpty( daemon.getJvmSettings().getInitialMemorySize() ) )
         {
