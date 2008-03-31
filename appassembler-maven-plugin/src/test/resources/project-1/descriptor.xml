@@ -48,6 +48,7 @@
         <wrapper.console.format/>
         <!-- change a built in one -->
         <wrapper.console.loglevel>WARN</wrapper.console.loglevel>
+        <app.base.envvar>MY_BASE</app.base.envvar>
       </configuration>
     </generatorConfiguration>
   </generatorConfigurations>

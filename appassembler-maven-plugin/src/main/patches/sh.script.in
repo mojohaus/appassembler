@@ -14,13 +14,13 @@
 APP_NAME="@app.name@"
 APP_LONG_NAME="@app.long.name@"
 
-if [ "X$APP_BASE" = "X" ]; then
-  APP_BASE=..
+if [ "X$@app.base.envvar@" = "X" ]; then
+  @app.base.envvar@=..
 fi
 
 # Wrapper
 WRAPPER_CMD="./wrapper"
-WRAPPER_CONF="$APP_BASE/conf/wrapper.conf"
+WRAPPER_CONF="$@app.base.envvar@/conf/wrapper.conf"
 
 if [ ! -f "$WRAPPER_CONF" ]; then
   WRAPPER_CONF="../conf/wrapper.conf"
@@ -31,7 +31,7 @@ fi
 PRIORITY=
 
 # Location of the pid file.
-PIDDIR="$APP_BASE/logs"
+PIDDIR="$@app.base.envvar@/logs"
 
 # If uncommented, causes the Wrapper to be shutdown using an anchor file.
 #  When launched with the 'start' command, it will also ignore all INT and

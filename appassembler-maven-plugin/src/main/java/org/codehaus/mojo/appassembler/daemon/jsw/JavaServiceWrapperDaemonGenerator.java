@@ -24,6 +24,19 @@ package org.codehaus.mojo.appassembler.daemon.jsw;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Map.Entry;
+
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.project.MavenProject;
@@ -35,12 +48,11 @@ import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.GeneratorConfiguration;
 import org.codehaus.mojo.appassembler.util.FormattedProperties;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.util.*;
-
-import java.io.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.codehaus.plexus.util.StringInputStream;
+import org.codehaus.plexus.util.StringOutputStream;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -62,16 +74,25 @@ public class JavaServiceWrapperDaemonGenerator
 
         File outputDirectory = new File( request.getOutputDirectory(), daemon.getId() );
 
-        writeWrapperConfFile( request, daemon, outputDirectory );
+        Properties configuration = createConfiguration( daemon );
 
-        writeScriptFiles( request, daemon, outputDirectory );
+        // Don't want these in the wrapper.conf file
+        String appBaseEnvVar = configuration.getProperty( "app.base.envvar", "APP_BASE" );
+        configuration.remove( "app.base.envvar" );
+
+        Properties context = createContext( request, daemon );
+        context.setProperty( "app.base.envvar", appBaseEnvVar );
+        
+        writeWrapperConfFile( request, daemon, outputDirectory, context, configuration );
+
+        writeScriptFiles( request, daemon, outputDirectory, context );
 
         writeLibraryFiles( outputDirectory );
 
         writeExecutableFiles( outputDirectory );
     }
 
-    private void writeWrapperConfFile( DaemonGenerationRequest request, Daemon daemon, File outputDirectory )
+    private void writeWrapperConfFile( DaemonGenerationRequest request, Daemon daemon, File outputDirectory, Properties context, Properties configuration )
         throws DaemonGeneratorException
     {
         InputStream in = this.getClass().getResourceAsStream( "conf/wrapper.conf.in" );
@@ -101,7 +122,8 @@ public class JavaServiceWrapperDaemonGenerator
         confFile.setProperty( "wrapper.java.library.path.1", "lib" );
 
         confFile.setPropertyAfter( "set.default.REPO_DIR", "repo", "wrapper.java.mainclass" );
-        confFile.setPropertyAfter( "set.default.APP_BASE", ".", "wrapper.java.mainclass" );
+        confFile.setPropertyAfter( "set.default." + context.getProperty( "app.base.envvar" ), ".",
+                                   "wrapper.java.mainclass" );
 
         if ( daemon.getJvmSettings() != null && !StringUtils.isEmpty( daemon.getJvmSettings().getInitialMemorySize() ) )
         {
@@ -119,27 +141,19 @@ public class JavaServiceWrapperDaemonGenerator
         createAdditional( daemon, confFile );
         createParameters( daemon, confFile );
 
-        for ( Iterator i = daemon.getGeneratorConfigurations().iterator(); i.hasNext(); )
+        for ( Iterator i = configuration.entrySet().iterator(); i.hasNext(); )
         {
-            GeneratorConfiguration generatorConfiguration = (GeneratorConfiguration) i.next();
+            Map.Entry entry = (Map.Entry) i.next();
 
-            if ( generatorConfiguration.getGenerator().equals( "jsw" ) )
+            String key = (String) entry.getKey();
+            String value = (String) entry.getValue();
+            if ( value.length() > 0 )
             {
-                for ( Iterator j = generatorConfiguration.getConfiguration().entrySet().iterator(); j.hasNext(); )
-                {
-                    Map.Entry entry = (Map.Entry) j.next();
-
-                    String key = (String) entry.getKey();
-                    String value = (String) entry.getValue();
-                    if ( value.length() > 0 )
-                    {
-                        confFile.setProperty( key, value );
-                    }
-                    else
-                    {
-                        confFile.removeProperty( key );
-                    }
-                }
+                confFile.setProperty( key, value );
+            }
+            else
+            {
+                confFile.removeProperty( key );
             }
         }
 
@@ -148,22 +162,42 @@ public class JavaServiceWrapperDaemonGenerator
 
         Reader reader = new InputStreamReader( new StringInputStream( string.toString() ) );
 
-        writeFilteredFile( request, daemon, reader, new File( outputDirectory, "conf/wrapper.conf" ) );
+        writeFilteredFile( request, daemon, reader, new File( outputDirectory, "conf/wrapper.conf" ), context );
+    }
+
+    private Properties createConfiguration( Daemon daemon )
+    {
+        Properties configuration = new Properties();
+        
+        for ( Iterator i = daemon.getGeneratorConfigurations().iterator(); i.hasNext(); )
+        {
+            GeneratorConfiguration generatorConfiguration = (GeneratorConfiguration) i.next();
+
+            if ( generatorConfiguration.getGenerator().equals( "jsw" ) )
+            {
+                configuration.putAll( generatorConfiguration.getConfiguration() );
+            }
+        }
+        return configuration;
     }
 
     private static void writeFilteredFile( DaemonGenerationRequest request, Daemon daemon, Reader reader,
-                                           File outputFile )
+                                           File outputFile, Map context )
         throws DaemonGeneratorException
     {
-        Map context = new HashMap();
-        context.put( "app.long.name", request.getMavenProject().getName() );
-        context.put( "app.name", daemon.getId() );
-        context.put( "app.description", request.getMavenProject().getDescription() );
-
         InterpolationFilterReader interpolationFilterReader =
             new InterpolationFilterReader( reader, context, "@", "@" );
 
         writeFile( outputFile, interpolationFilterReader );
+    }
+
+    private static Properties createContext( DaemonGenerationRequest request, Daemon daemon )
+    {
+        Properties context = new Properties();
+        context.setProperty( "app.long.name", request.getMavenProject().getName() );
+        context.setProperty( "app.name", daemon.getId() );
+        context.setProperty( "app.description", request.getMavenProject().getDescription() );
+        return context;
     }
 
     private static void writeFile( File outputFile, Reader reader )
@@ -264,7 +298,7 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
-    private void writeScriptFiles( DaemonGenerationRequest request, Daemon daemon, File outputDirectory )
+    private void writeScriptFiles( DaemonGenerationRequest request, Daemon daemon, File outputDirectory, Properties context )
         throws DaemonGeneratorException
     {
         // TODO: selectively depending on selected platforms instead of always doing both
@@ -277,7 +311,7 @@ public class JavaServiceWrapperDaemonGenerator
 
         Reader reader = new InputStreamReader( shellScriptInputStream );
 
-        writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + daemon.getId() ) );
+        writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + daemon.getId() ), context );
 
         // AppCommand.bat is not filtered
         InputStream batchFileInputStream = this.getClass().getResourceAsStream( "bin/AppCommand.bat.in" );
