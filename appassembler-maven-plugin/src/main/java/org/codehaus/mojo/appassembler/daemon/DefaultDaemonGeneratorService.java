@@ -49,7 +49,7 @@ public class DefaultDaemonGeneratorService
     implements DaemonGeneratorService
 {
     /**
-     * @plexus.requirement role=org.codehaus.mojo.appassembler.daemon.DaemonGenerator
+     * @plexus.requirement role="org.codehaus.mojo.appassembler.daemon.DaemonGenerator"
      */
     private Map generators;
 
