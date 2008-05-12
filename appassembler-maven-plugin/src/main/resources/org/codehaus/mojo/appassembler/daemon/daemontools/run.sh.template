@@ -1,0 +1,14 @@
+#!/bin/sh
+
+export DAEMONDIR=`dirname $0`
+export DAEMONDIR=`(cd "$DAEMONDIR"; pwd)`
+export BASEDIR=`(cd "$DAEMONDIR/../.."; pwd)`
+
+if [ $SHLVL -gt 1 ]; then
+  echo "This script mut be run by daemontools, not from the shell"
+  echo "To set this up symlink $DAEMONDIR to /services/mydaemon"
+fi
+
+exec \
+envdir $DAEMONDIR/env \
+sh -c 'exec setuidgid $USER $BASEDIR/bin/@NAME@' > $DAEMONDIR/logs/@NAME@.log 2>&1
