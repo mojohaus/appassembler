@@ -87,6 +87,12 @@
             <multiplicity>*</multiplicity>
           </association>
         </field>
+        <field>
+          <name>repositoryName</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+          <defaultValue>repo</defaultValue>
+        </field>
       </fields>
       <codeSegments>
         <codeSegment>

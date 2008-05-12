@@ -75,7 +75,7 @@ public class ScriptGeneratorTest
         daemon.setJvmSettings( new JvmSettings() );
         daemon.getJvmSettings().setExtraArguments( Arrays.asList( new String[]{"Yo", "dude"} ) );
         daemon.setEnvironmentSetupFileName( "setup" );
-
+        daemon.setRepositoryName("repo");
         File outputDirectory = getTestFile( "target/test-output/normal-shell/" + platform.getName() );
 
         generator.createBinScript( platform.getName(), daemon, outputDirectory );

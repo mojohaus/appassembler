@@ -74,7 +74,6 @@ fi
 
 if [ -z "$REPO" ]
 then
-  # TODO: Remove hard coding. What about using the descriptor instead?
   REPO="$BASEDIR"/repo
 fi
 

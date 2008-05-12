@@ -130,6 +130,11 @@ public class AssembleMojo
      * @parameter default-value="true"
      */
     private boolean generateRepository;
+    /**
+     * Path (relative to target) of the desired output repository.
+     * @parameter default-value="repo"
+     */
+    private String repositoryName;
 
     // -----------------------------------------------------------------------
     // Read-only Parameters
@@ -248,7 +253,7 @@ public class AssembleMojo
         {
             // The repo where the jar files will be installed
             ArtifactRepository artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
-                "appassembler", "file://" + assembleDirectory.getAbsolutePath() + "/repo", artifactRepositoryLayout,
+                "appassembler", "file://" + assembleDirectory.getAbsolutePath() + "/"+repositoryName, artifactRepositoryLayout,
                 false );
 
             for ( Iterator it = artifacts.iterator(); it.hasNext(); )
@@ -327,7 +332,8 @@ public class AssembleMojo
             daemon.setClasspath( new Classpath() );
         }
         daemon.getClasspath().setDirectories( directories );
-
+        daemon.setRepositoryName(repositoryName);
+        
         List dependencies = new ArrayList();
 
         Set classPathArtifacts = new HashSet( artifacts );
