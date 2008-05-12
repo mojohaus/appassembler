@@ -66,7 +66,7 @@ set BASEDIR=%~dp0\..
 if exist %BASEDIR%\bin\app-env.bat call %BASEDIR%\bin\app-env.bat
 
 @REM TODO: Remove hard coding. What about using the descriptor instead?
-if "%REPO%"=="" set REPO="%BASEDIR%\repo"
+if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
 set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org/codehaus/mojo/appassembler/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar;"%REPO%"\org/codehaus/mojo/appassembler/appassembler-model/1.0-SNAPSHOT/appassembler-model-1.0-SNAPSHOT.jar
 set EXTRA_JVM_ARGUMENTS=-Xms345 -Xmx234 -Xss321 -splash:niceImage.png -Dfoo=bar -Dbar=foo

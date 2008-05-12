@@ -66,7 +66,7 @@ set BASEDIR=%~dp0\..
 #ENV_SETUP#
 
 @REM TODO: Remove hard coding. What about using the descriptor instead?
-if "%REPO%"=="" set REPO="%BASEDIR%\repo"
+if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
 set CLASSPATH=#CLASSPATH#
 set EXTRA_JVM_ARGUMENTS=#EXTRA_JVM_ARGUMENTS#

@@ -66,7 +66,7 @@ set BASEDIR=%~dp0\..
 if exist %BASEDIR%\bin\setup.bat call %BASEDIR%\bin\setup.bat
 
 @REM TODO: Remove hard coding. What about using the descriptor instead?
-if "%REPO%"=="" set REPO="%BASEDIR%\repo"
+if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
 set CLASSPATH=
 set EXTRA_JVM_ARGUMENTS=Yo dude
