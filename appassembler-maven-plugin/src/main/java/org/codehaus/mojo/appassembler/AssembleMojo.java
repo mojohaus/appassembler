@@ -37,6 +37,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
+import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
@@ -313,6 +314,10 @@ public class AssembleMojo
             directories.add( directory );
         }
 
+        if ( daemon.getClasspath() == null )
+        {
+            daemon.setClasspath( new Classpath() );
+        }
         daemon.getClasspath().setDirectories( directories );
 
         List dependencies = new ArrayList();
@@ -377,7 +382,8 @@ public class AssembleMojo
 
         if ( !binDir.exists() )
         {
-            boolean success = new File( assembleDirectory.getAbsolutePath(), "bin" ).mkdir();
+            
+            boolean success = binDir.mkdirs();
 
             if ( !success )
             {
