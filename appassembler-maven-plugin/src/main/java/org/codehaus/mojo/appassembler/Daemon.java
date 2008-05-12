@@ -24,8 +24,6 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
-import org.codehaus.mojo.appassembler.model.GeneratorConfiguration;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,25 +41,11 @@ public class Daemon
 
     private List platforms;
 
-    // TODO:
-    /**
-     * auto, manual
-     */
-    private String startType;
-
-    // TODO:
-    private String description;
-
-    // TODO:
-    private String longDescription;
-
     private List commandLineArguments;
 
     private JvmSettings jvmSettings;
 
     private List generatorConfigurations;
-
-//    private Properties properties;
 
     public String getId()
     {

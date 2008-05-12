@@ -24,10 +24,14 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.handler.DefaultArtifactHandler;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
@@ -44,13 +48,6 @@ import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Creates an appassembler repository. Note that this is deliberately a bit more specific than the assembly plugin
@@ -115,12 +112,6 @@ public class CreateRepositoryMojo
      * @parameter expression="${localRepository}"
      */
     private ArtifactRepository localRepository;
-
-    /**
-     * @readonly
-     * @parameter expression="${project.build.directory}/${project.build.finalName}.${project.packaging}"
-     */
-    private String artifactFinalName;
 
     /**
      * @readonly

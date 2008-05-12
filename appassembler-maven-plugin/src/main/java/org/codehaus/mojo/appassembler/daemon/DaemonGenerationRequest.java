@@ -24,14 +24,13 @@ package org.codehaus.mojo.appassembler.daemon;
  * SOFTWARE.
  */
 
+import java.io.File;
+
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.artifact.repository.layout.DefaultRepositoryLayout;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.model.Daemon;
-
-import java.io.File;
-import java.util.Properties;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>

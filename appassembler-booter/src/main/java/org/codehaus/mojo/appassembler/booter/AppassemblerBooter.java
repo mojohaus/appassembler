@@ -30,9 +30,11 @@ import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.mojo.appassembler.model.io.stax.AppassemblerModelStaxReader;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -40,9 +42,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.stream.XMLStreamException;
+
 /**
  * Reads the appassembler manifest file from the repo, and executes the specified main class.
- *
+ * 
  * @author <a href="mailto:kaare.nilsen@gmail.com">Kaare Nilsen</a>
  * @todo get rid of all the statics
  */
@@ -63,7 +67,7 @@ public class AppassemblerBooter
     }
 
     public static URLClassLoader setup()
-        throws Exception
+        throws IOException, XMLStreamException
     {
         // -----------------------------------------------------------------------
         // Load and validate environmental settings
@@ -73,7 +77,7 @@ public class AppassemblerBooter
 
         if ( appName == null )
         {
-            throw new InternalErrorException( "Missing required system property 'app.name'." );
+            throw new RuntimeException( "Missing required system property 'app.name'." );
         }
 
         debug = Boolean.getBoolean( "app.booter.debug" );
@@ -82,7 +86,7 @@ public class AppassemblerBooter
 
         if ( b == null )
         {
-            throw new InternalErrorException( "Missing required system property 'basedir'." );
+            throw new RuntimeException( "Missing required system property 'basedir'." );
         }
 
         // TODO: shouldn't this be in the descriptor too?
@@ -100,7 +104,7 @@ public class AppassemblerBooter
 
         if ( isEmpty( mainClassName ) )
         {
-            throw new InternalErrorException( "Missing required property from configuration: 'mainClass'." );
+            throw new RuntimeException( "Missing required property from configuration: 'mainClass'." );
         }
 
         setSystemProperties();
@@ -109,7 +113,7 @@ public class AppassemblerBooter
     }
 
     public static URLClassLoader createClassLoader( File repoDir )
-        throws Exception
+        throws MalformedURLException
     {
         List classpathUrls = new ArrayList();
         List classPathElements = config.getAllClasspathElements();
@@ -170,7 +174,7 @@ public class AppassemblerBooter
     }
 
     private static Daemon loadConfig( String appName )
-        throws Exception
+        throws IOException, XMLStreamException
     {
         String resourceName = "/" + appName + ".xml";
 
@@ -183,7 +187,7 @@ public class AppassemblerBooter
 
         if ( resource == null )
         {
-            throw new InternalErrorException( "Could not load configuration resource: '" + resourceName + "'." );
+            throw new RuntimeException( "Could not load configuration resource: '" + resourceName + "'." );
         }
 
         try
@@ -209,7 +213,7 @@ public class AppassemblerBooter
         // This will always return an instance or throw an exception
         Class mainClass = classLoader.loadClass( mainClassName );
 
-        Method main = mainClass.getMethod( "main", new Class[]{String[].class} );
+        Method main = mainClass.getMethod( "main", new Class[] { String[].class } );
 
         if ( arguments == null )
         {
@@ -232,7 +236,7 @@ public class AppassemblerBooter
         //
         // -----------------------------------------------------------------------
 
-        main.invoke( null, new Object[]{commandLineArgs} );
+        main.invoke( null, new Object[] { commandLineArgs } );
     }
 
     // -----------------------------------------------------------------------

@@ -24,6 +24,8 @@ package org.codehaus.mojo.appassembler.daemon.booter;
  * SOFTWARE.
  */
 
+import java.io.File;
+
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.project.MavenProject;
@@ -31,15 +33,11 @@ import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.script.AbstactScriptDaemonGenerator;
+import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
-import org.codehaus.mojo.appassembler.model.Classpath;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
