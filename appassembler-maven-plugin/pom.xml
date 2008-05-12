@@ -72,13 +72,6 @@
       <version>1.0-beta-2</version>
     </dependency>
   </dependencies>
-  <distributionManagement>
-    <site>
-      <id>codehaus.org</id>
-      <name>Application Assembler Website</name>
-      <url>dav:https://dav.codehaus.org/mojo/appassembler/appassembler-maven-plugin/</url>
-    </site>
-  </distributionManagement>
   <build>
     <plugins>
       <plugin>
