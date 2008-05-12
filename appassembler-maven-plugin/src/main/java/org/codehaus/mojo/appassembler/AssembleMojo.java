@@ -362,7 +362,10 @@ public class AssembleMojo
             // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
             artifact.isSnapshot();
 
-            artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
+            if ( artifact.getFile() != null )
+            {
+                artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
+            }
         }
         catch ( ArtifactInstallationException e )
         {
