@@ -194,7 +194,12 @@ public class JavaServiceWrapperDaemonGenerator
         Properties context = new Properties();
         context.setProperty( "app.long.name", request.getMavenProject().getName() );
         context.setProperty( "app.name", daemon.getId() );
-        context.setProperty( "app.description", request.getMavenProject().getDescription() );
+        String description = request.getMavenProject().getDescription();
+        if ( description == null )
+        {
+            description = request.getMavenProject().getName();
+        }
+        context.setProperty( "app.description", description );
         return context;
     }
 
