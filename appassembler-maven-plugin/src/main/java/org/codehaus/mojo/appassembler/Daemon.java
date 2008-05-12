@@ -47,6 +47,8 @@ public class Daemon
 
     private List generatorConfigurations;
 
+    private boolean showConsoleWindow = true;
+    
     public String getId()
     {
         return id;
@@ -85,5 +87,10 @@ public class Daemon
     public List getGeneratorConfigurations()
     {
         return generatorConfigurations;
+    }
+
+    public boolean isShowConsoleWindow()
+    {
+        return showConsoleWindow;
     }
 }

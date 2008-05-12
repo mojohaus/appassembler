@@ -370,4 +370,8 @@ public class Platform
         return name;
     }
 
+    public boolean isShowConsoleWindow( Daemon daemon )
+    {
+        return daemon.isShowConsoleWindow() && isWindows;
+    }
 }

@@ -81,6 +81,14 @@ public class DefaultScriptGenerator
             context.put( "EXTRA_JVM_ARGUMENTS", platform.getExtraJvmArguments( daemon.getJvmSettings() ) );
             context.put( "APP_NAME", daemon.getId() );
             context.put( "ENV_SETUP", platform.getEnvSetup( daemon ) );
+            if ( platform.isShowConsoleWindow( daemon ) )
+            {
+                context.put( "JAVA_BINARY", "java" );
+            }
+            else
+            {
+                context.put( "JAVA_BINARY", "start /min javaw" );
+            }
 
             String appArguments = platform.getAppArguments( daemon );
             if ( appArguments != null )

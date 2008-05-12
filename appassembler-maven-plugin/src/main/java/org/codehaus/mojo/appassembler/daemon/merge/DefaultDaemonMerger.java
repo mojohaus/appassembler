@@ -68,6 +68,7 @@ public class DefaultDaemonMerger
             select( dominant.getCommandLineArguments(), recessive.getCommandLineArguments() ) );
         // This should probably be improved
         result.setJvmSettings( (JvmSettings) select( dominant.getJvmSettings(), recessive.getJvmSettings() ) );
+        result.setShowConsoleWindow( dominant.isShowConsoleWindow() );
 
         return result;
     }

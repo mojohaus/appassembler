@@ -159,6 +159,13 @@ public class AssembleMojo
      */
     private ArtifactRepository localRepository;
 
+    /**
+     * Show console window when execute this application.
+     *
+     * @parameter default-value="true"
+     */
+    private boolean showConsoleWindow;
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -304,6 +311,7 @@ public class AssembleMojo
 
         daemon.setId( program.getName() );
         daemon.setMainClass( program.getMainClass() );
+        daemon.setShowConsoleWindow( showConsoleWindow );
 
         List directories = new ArrayList();
 

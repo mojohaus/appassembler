@@ -95,6 +95,7 @@ public abstract class AbstractBooterDaemonGenerator
         booterDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
         booterDaemon.setModelEncoding( daemon.getModelEncoding() );
         booterDaemon.setMainClass( "org.codehaus.mojo.appassembler.booter.AppassemblerBooter" );
+        booterDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
 
         MavenProject project = request.getMavenProject();
 

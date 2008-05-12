@@ -38,7 +38,7 @@ public class Program
     private String mainClass;
 
     private Set platforms;
-
+    
     public Program()
     {
     }
@@ -78,4 +78,5 @@ public class Program
     {
         this.platforms = platforms;
     }
+    
 }
