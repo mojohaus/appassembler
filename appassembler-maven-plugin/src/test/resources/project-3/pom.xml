@@ -36,12 +36,12 @@
     <dependency>
       <groupId>org.codehaus.mojo.appassembler</groupId>
       <artifactId>appassembler-booter</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>@appassembler.version@</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.mojo.appassembler</groupId>
       <artifactId>appassembler-model</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>@appassembler.version@</version>
     </dependency>
   </dependencies>
 </project>
