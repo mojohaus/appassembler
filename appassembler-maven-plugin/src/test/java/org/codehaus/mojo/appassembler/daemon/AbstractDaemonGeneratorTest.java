@@ -40,6 +40,8 @@ import org.apache.maven.profiles.DefaultProfileManager;
 import org.apache.maven.profiles.ProfileManager;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
+import org.apache.maven.settings.MavenSettingsBuilder;
+import org.apache.maven.settings.Settings;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
@@ -69,16 +71,17 @@ public abstract class AbstractDaemonGeneratorTest
 
         MavenProjectBuilder projectBuilder = (MavenProjectBuilder) lookup( MavenProjectBuilder.ROLE );
 
+        MavenSettingsBuilder settingsBuilder = (MavenSettingsBuilder) lookup( MavenSettingsBuilder.ROLE );
+        Settings settings = settingsBuilder.buildSettings();
+        
         ArtifactRepositoryFactory artifactRepositoryFactory =
             (ArtifactRepositoryFactory) lookup( ArtifactRepositoryFactory.ROLE );
 
-        ArtifactRepositoryPolicy policy = new ArtifactRepositoryPolicy( true, "never", "never" );
-
-        String localRepoUrl = "file://" + System.getProperty( "user.home" ) + "/.m2/repository";
+        String localRepoUrl = new File( settings.getLocalRepository() ).toURL().toExternalForm();
 
         ArtifactRepository localRepository =
-            artifactRepositoryFactory.createArtifactRepository( "local", localRepoUrl, new DefaultRepositoryLayout(),
-                                                                policy, policy );
+            artifactRepositoryFactory.createDeploymentArtifactRepository( "local", localRepoUrl,
+                                                                          new DefaultRepositoryLayout(), false );
 
         ProfileManager profileManager = new DefaultProfileManager( getContainer() );
 
