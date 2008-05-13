@@ -1,0 +1,21 @@
+ -----
+ Mojo Appassembler
+ -----
+ Brett Porter
+ Kristian Nordal
+ Trygve Laugst¿l
+ -----
+ 13 May 2008
+ -----
+ 
+Mojo Appassembler
+
+    Writing good an end to end portable applications in Java has always
+    been a pain because of the missing OS abstractions. The main goal of the
+    Appassembler Maven plug-in is to try to remove some of this pain through
+    an application descriptor and a set of Maven Mojos.
+    
+    To get started using the plug-in for generating a runtime, see the
+    {{{appassembler-maven-plugin/index.html} Maven plugin documentation}}
+ 
+ 

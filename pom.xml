@@ -74,4 +74,21 @@
     <module>appassembler-model</module>
     <module>appassembler-booter</module>
   </modules>
+  <scm>
+    <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/appassembler</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/appassembler</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/appassembler</url>
+  </scm>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
