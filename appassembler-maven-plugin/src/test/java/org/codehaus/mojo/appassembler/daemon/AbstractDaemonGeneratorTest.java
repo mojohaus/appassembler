@@ -84,7 +84,7 @@ public abstract class AbstractDaemonGeneratorTest
 
         ProfileManager profileManager = new DefaultProfileManager( getContainer() );
 
-        File tempPom = createFilteredPom( pom );
+        File tempPom = createFilteredFile( pom );
 
         MavenProject project = projectBuilder.buildWithDependencies( tempPom, localRepository, profileManager );
 
@@ -106,7 +106,7 @@ public abstract class AbstractDaemonGeneratorTest
         generator.generate( new DaemonGenerationRequest( model, project, localRepository, outputDir ) );
     }
 
-    private File createFilteredPom( String pom )
+    protected File createFilteredFile( String file )
         throws IOException, FileNotFoundException, DaemonGeneratorException, XmlPullParserException
     {
         String version = getAppAssemblerBooterVersion();
@@ -117,7 +117,7 @@ public abstract class AbstractDaemonGeneratorTest
         tempPom.deleteOnExit();
 
         InterpolationFilterReader reader =
-            new InterpolationFilterReader( new FileReader( getTestFile( pom ) ), context, "@", "@" );
+            new InterpolationFilterReader( new FileReader( getTestFile( file ) ), context, "@", "@" );
         FileWriter out = null;
 
         try

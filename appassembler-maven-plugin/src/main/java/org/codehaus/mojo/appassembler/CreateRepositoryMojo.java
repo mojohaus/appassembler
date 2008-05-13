@@ -78,7 +78,7 @@ public class CreateRepositoryMojo
      * The directory that will be used for the dependencies, relative to assembleDirectory.
      *
      * @required
-     * @parameter expression="repo"
+     * @parameter default-value="repo"
      * @todo customisation doesn't work due to the shell scripts not honouring it
      */
     private String repoPath;
@@ -87,7 +87,7 @@ public class CreateRepositoryMojo
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
      * (flat lib/ style)
      *
-     * @parameter default="default'
+     * @parameter default-value="default"
      */
     private String repositoryLayout;
 

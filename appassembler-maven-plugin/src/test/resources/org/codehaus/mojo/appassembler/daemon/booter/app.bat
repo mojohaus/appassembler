@@ -67,7 +67,7 @@ if exist %BASEDIR%\bin\app-env.bat call %BASEDIR%\bin\app-env.bat
 
 if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
-set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org/codehaus/mojo/appassembler/appassembler-booter/1.0-SNAPSHOT/appassembler-booter-1.0-SNAPSHOT.jar;"%REPO%"\org/codehaus/mojo/appassembler/appassembler-model/1.0-SNAPSHOT/appassembler-model-1.0-SNAPSHOT.jar
+set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org\codehaus\mojo\appassembler\appassembler-booter\@appassembler.version@\appassembler-booter-@appassembler.version@.jar;"%REPO%"\org\codehaus\mojo\appassembler\appassembler-model\@appassembler.version@\appassembler-model-@appassembler.version@.jar;"%REPO%"\org\codehaus\plexus\plexus-utils\1.1\plexus-utils-1.1.jar;"%REPO%"\stax\stax-api\1.0.1\stax-api-1.0.1.jar;"%REPO%"\stax\stax\1.1.1-dev\stax-1.1.1-dev.jar
 set EXTRA_JVM_ARGUMENTS=-Xms345 -Xmx234 -Xss321 -splash:niceImage.png -Dfoo=bar -Dbar=foo
 goto endInit
 

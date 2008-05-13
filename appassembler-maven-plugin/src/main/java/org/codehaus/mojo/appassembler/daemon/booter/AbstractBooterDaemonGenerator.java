@@ -97,21 +97,26 @@ public abstract class AbstractBooterDaemonGenerator
         booterDaemon.setMainClass( "org.codehaus.mojo.appassembler.booter.AppassemblerBooter" );
         booterDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
 
-        MavenProject project = request.getMavenProject();
+        booterDaemon.setJvmSettings( jvmSettings );
 
-        // TODO: Transitively resolve the dependencies of the booter.
+        MavenProject project = request.getMavenProject();
 
         Classpath classpath = new Classpath();
         booterDaemon.setClasspath( classpath );
         classpath.addDirectory( createDirectory( "etc" ) );
-        classpath.addDependency( createDependency( project,
-                                                                     "org.codehaus.mojo.appassembler:appassembler-booter",
-                                                                     request.getRepositoryLayout() ) );
-        classpath.addDependency( createDependency( project,
-                                                                     "org.codehaus.mojo.appassembler:appassembler-model",
-                                                                     request.getRepositoryLayout() ) );
-        booterDaemon.setJvmSettings( jvmSettings );
+        classpath.addDependency( createDependency( project, "org.codehaus.mojo.appassembler:appassembler-booter",
+                                                   request.getRepositoryLayout() ) );
 
+        // TODO: Transitively resolve the dependencies of the booter - for now we're just hardcoding them in
+        classpath.addDependency( createDependency( project, "org.codehaus.mojo.appassembler:appassembler-model",
+                                                   request.getRepositoryLayout() ) );
+        classpath.addDependency( createDependency( project, "org.codehaus.plexus:plexus-utils",
+                                                   request.getRepositoryLayout() ) );
+        classpath.addDependency( createDependency( project, "stax:stax-api",
+                                                   request.getRepositoryLayout() ) );
+        classpath.addDependency( createDependency( project, "stax:stax",
+                                                   request.getRepositoryLayout() ) );
+        
         scriptGenerator.createBinScript( getPlatformName(), booterDaemon, outputDirectory );
     }
 

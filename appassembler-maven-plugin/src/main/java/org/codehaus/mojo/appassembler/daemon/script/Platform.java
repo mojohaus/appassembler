@@ -228,7 +228,7 @@ public class Platform
                 throw new DaemonGeneratorException( "Unknown classpath element type: " + object.getClass().getName() );
             }
 
-            classpathBuffer.append( ( (ClasspathElement) object ).getRelativePath() );
+            classpathBuffer.append( ( (ClasspathElement) object ).getRelativePath().replace( "/", getSeparator() ) );
         }
 
         return classpathBuffer.toString();

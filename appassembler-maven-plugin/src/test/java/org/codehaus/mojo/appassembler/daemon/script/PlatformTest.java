@@ -53,9 +53,9 @@ public class PlatformTest
     public void testCreateClassPathWindows()
         throws Exception
     {
-        test( Platform.getInstance( "windows" ), new String[]{"/foo/bar", "bar/foo", "/foo/bar;\"%BASEDIR%\"\\bar/foo",
-            "group/artifact/version/artifact-version.jar",
-            "/foo/bar;\"%BASEDIR%\"\\bar/foo;\"%REPO%\"\\group/artifact/version/artifact-version.jar",} );
+        test( Platform.getInstance( "windows" ), new String[] { "/foo/bar", "bar/foo",
+            "\\foo\\bar;\"%BASEDIR%\"\\bar\\foo", "group/artifact/version/artifact-version.jar",
+            "\\foo\\bar;\"%BASEDIR%\"\\bar\\foo;\"%REPO%\"\\group\\artifact\\version\\artifact-version.jar" } );
     }
 
     public void testGetAppArgumentsUnix()
