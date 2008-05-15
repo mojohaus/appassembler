@@ -24,14 +24,14 @@
   ~ SOFTWARE.
   -->
 
-<project name="Maven Application Assembler Plugin">
+<project name="Application Assembler Maven Plugin">
   <body>
     <menu ref="parent" />
 
     <menu name="Overview">
-      <item name="Introduction" href="introduction.html"/>
+      <item name="Introduction" href="index.html"/>
       <item name="Goals" href="plugin-info.html"/>
-      <item name="How to Use" href="usage.html"/>
+      <item name="Usage" href="usage.html"/>
     </menu>
 
   </body>
