@@ -112,7 +112,7 @@ public class AssembleMojo
     private String extraJvmArguments;
 
     /**
-     * The the default platforms the plugin will generate bin files for.
+     * The default platforms the plugin will generate bin files for.
      * Configure with string values - "all"(default/empty) | "windows" | "unix".
      *
      * @parameter

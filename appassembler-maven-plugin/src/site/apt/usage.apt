@@ -20,7 +20,7 @@ Usage
 mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app
 +--------------------------
 
-  Configuration the plugin in <<<pom.xml>>>:
+  Configuring the plugin in <<<pom.xml>>>:
 
 +--------------------------
 <project>
