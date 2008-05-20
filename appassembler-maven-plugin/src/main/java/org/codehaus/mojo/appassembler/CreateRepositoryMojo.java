@@ -75,7 +75,7 @@ public class CreateRepositoryMojo
     private File assembleDirectory;
 
     /**
-     * The directory that will be used for the dependencies, relative to assembleDirectory.
+     * The directory that will be used for the dependencies, relative to <code>assembleDirectory</code>.
      *
      * @required
      * @parameter default-value="repo"
@@ -85,7 +85,7 @@ public class CreateRepositoryMojo
 
     /**
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
-     * (flat lib/ style)
+     * (flat <code>lib/</code> style).
      *
      * @parameter default-value="default"
      */

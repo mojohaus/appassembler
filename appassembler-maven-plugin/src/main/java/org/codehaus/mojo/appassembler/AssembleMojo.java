@@ -89,7 +89,7 @@ public class AssembleMojo
     private Set programs;
 
     /**
-     * Include /etc in the beginning of the classpath in the generated bin files
+     * Include <code>/etc</code> in the beginning of the classpath in the generated bin files.
      *
      * @parameter default-value="true"
      */
@@ -98,7 +98,7 @@ public class AssembleMojo
 
     /**
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
-     * (flat lib/ style)
+     * (flat <code>lib/</code> style).
      *
      * @parameter default-value="default"
      */
@@ -112,8 +112,8 @@ public class AssembleMojo
     private String extraJvmArguments;
 
     /**
-     * The default platforms the plugin will generate bin files for.
-     * Configure with string values - "all"(default/empty) | "windows" | "unix"
+     * The the default platforms the plugin will generate bin files for.
+     * Configure with string values - "all"(default/empty) | "windows" | "unix".
      *
      * @parameter
      */
@@ -128,10 +128,13 @@ public class AssembleMojo
 
     /**
      * @parameter default-value="true"
+     * @todo Write Javadoc for this parameter
      */
     private boolean generateRepository;
+
     /**
      * Path (relative to target) of the desired output repository.
+     * 
      * @parameter default-value="repo"
      */
     private String repositoryName;

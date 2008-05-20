@@ -88,7 +88,7 @@ public class GenerateDaemonsMojo
 
     /**
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
-     * (flat lib/ style)
+     * (flat <code>lib/</code> style).
      *
      * @parameter default-value="default"
      */
