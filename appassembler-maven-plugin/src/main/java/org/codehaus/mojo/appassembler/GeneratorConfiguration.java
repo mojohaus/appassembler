@@ -24,6 +24,7 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
+import java.util.List;
 import java.util.Properties;
 
 public class GeneratorConfiguration
@@ -31,6 +32,13 @@ public class GeneratorConfiguration
     private String generator;
 
     private Properties configuration;
+    
+    /**
+     * The platforms to be included in the generator. This is currently only used in JSW generator. Options are:
+     * "linux-ppc-64", "linux-x86-32", "linux-x86-64", "macosx-ppc-32", "macosx-x86-universal-32", "solaris-sparc-32",
+     * "solaris-sparc-64", "solaris-x86-32", "windows-x86-32
+     */
+    private List includes;
 
     public String getGenerator()
     {
@@ -56,4 +64,12 @@ public class GeneratorConfiguration
     {
         return "generator = " + generator + "; configuration = " + configuration;
     }
+
+	public List getIncludes() {
+		return includes;
+	}
+
+	public void setIncludes(List includes) {
+		this.includes = includes;
+	}
 }

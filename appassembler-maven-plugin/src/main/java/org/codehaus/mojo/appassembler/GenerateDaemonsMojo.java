@@ -247,6 +247,8 @@ public class GenerateDaemonsMojo
             new org.codehaus.mojo.appassembler.model.GeneratorConfiguration();
         value.setGenerator( config.getGenerator() );
         value.setConfiguration( config.getConfiguration() );
+        value.setIncludes( config.getIncludes() );
+        
         return value;
     }
 

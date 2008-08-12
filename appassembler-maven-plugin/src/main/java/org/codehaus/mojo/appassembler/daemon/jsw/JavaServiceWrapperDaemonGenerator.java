@@ -31,7 +31,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -61,10 +63,33 @@ public class JavaServiceWrapperDaemonGenerator
     extends AbstractLogEnabled
     implements DaemonGenerator
 {
+    private static final Map jswPlatformsMap = new HashMap() { 
+        {   
+            put( "linux-x86-32-lib", "lib/libwrapper-linux-x86-32.so");
+            put( "linux-x86-32-exec", "bin/wrapper-linux-x86-32");
+            put( "linux-x86-64-lib", "lib/libwrapper-linux-x86-64.so");
+            put( "linux-x86-64-exec", "bin/wrapper-linux-x86-64");
+            put( "linux-ppc-64-lib", "lib/libwrapper-linux-ppc-64.so");
+            put( "linux-ppc-64-exec", "bin/wrapper-linux-ppc-64");
+            put( "macosx-ppc-32-lib", "lib/libwrapper-macosx-ppc-32.jnilib");
+            put( "macosx-ppc-32-exec", "bin/wrapper-macosx-ppc-32");
+            put( "macosx-x86-universal-32-lib", "lib/libwrapper-macosx-universal-32.jnilib");
+            put( "macosx-x86-universal-32-exec", "bin/wrapper-macosx-universal-32");
+            put( "solaris-sparc-32-lib", "lib/libwrapper-solaris-sparc-32.so");
+            put( "solaris-sparc-32-exec", "bin/wrapper-solaris-sparc-32");
+            put( "solaris-sparc-64-lib", "lib/libwrapper-solaris-sparc-64.so");
+            put( "solaris-sparc-64-exec", "bin/wrapper-solaris-sparc-64");
+            put( "solaris-x86-32-lib", "lib/libwrapper-solaris-x86-32.so");
+            put( "solaris-x86-32-exec", "bin/wrapper-solaris-x86-32");
+            put( "windows-x86-32-lib", "lib/wrapper-windows-x86-32.dll");
+            put( "windows-x86-32-exec", "bin/wrapper-windows-x86-32.exe");
+        }
+    };
+    
     // -----------------------------------------------------------------------
     // DaemonGenerator Implementation
     // -----------------------------------------------------------------------
-
+    
     public void generate( DaemonGenerationRequest request )
         throws DaemonGeneratorException
     {
@@ -84,10 +109,12 @@ public class JavaServiceWrapperDaemonGenerator
         writeWrapperConfFile( request, daemon, outputDirectory, context, configuration );
 
         writeScriptFiles( request, daemon, outputDirectory, context );
+                
+        List jswPlatformIncludes = getJswPlatformIncludes( daemon );        
+        
+        writeLibraryFiles( outputDirectory, jswPlatformIncludes );
 
-        writeLibraryFiles( outputDirectory );
-
-        writeExecutableFiles( outputDirectory );
+        writeExecutableFiles( outputDirectory, jswPlatformIncludes );
     }
 
     private void writeWrapperConfFile( DaemonGenerationRequest request, Daemon daemon, File outputDirectory, Properties context, Properties configuration )
@@ -239,7 +266,7 @@ public class JavaServiceWrapperDaemonGenerator
             IOUtil.copy( inputStream, out );
         }
         catch ( IOException e )
-        {
+        {            
             throw new DaemonGeneratorException( "Error writing output file: " + outputFile.getAbsolutePath(), e );
         }
         finally
@@ -328,26 +355,42 @@ public class JavaServiceWrapperDaemonGenerator
                    batchFileInputStream );
     }
 
-    private void writeLibraryFiles( File outputDirectory )
+    private void writeLibraryFiles( File outputDirectory, List jswPlatformIncludes )
         throws DaemonGeneratorException
     {
         copyResourceFile( outputDirectory, "lib/wrapper.jar" );
 
-        // TODO: selectively depending on selected platforms instead of always doing both
-        copyResourceFile( outputDirectory, "lib/libwrapper-macosx-universal-32.jnilib" );
-        copyResourceFile( outputDirectory, "lib/libwrapper-linux-x86-32.so" );
-        copyResourceFile( outputDirectory, "lib/libwrapper-solaris-x86-32.so" );
-        copyResourceFile( outputDirectory, "lib/wrapper-windows-x86-32.dll" );
+        for ( Iterator iter = jswPlatformIncludes.iterator(); iter.hasNext(); )
+        {
+            String platform = (String) iter.next();
+            String libFile = (String) jswPlatformsMap.get( platform + "-lib" );
+            if ( libFile != null )
+            {
+                copyResourceFile( outputDirectory, libFile );
+            }
+            else
+            {
+                getLogger().warn( "Lib file for " + platform + " not found in map." );
+            }
+        }
     }
 
-    private void writeExecutableFiles( File outputDirectory )
+    private void writeExecutableFiles( File outputDirectory, List jswPlatformIncludes )
         throws DaemonGeneratorException
     {
-        // TODO: selectively depending on selected platforms instead of always doing both
-        copyResourceFile( outputDirectory, "bin/wrapper-macosx-universal-32" );
-        copyResourceFile( outputDirectory, "bin/wrapper-linux-x86-32" );
-        copyResourceFile( outputDirectory, "bin/wrapper-solaris-x86-32" );
-        copyResourceFile( outputDirectory, "bin/wrapper-windows-x86-32.exe" );
+        for ( Iterator iter = jswPlatformIncludes.iterator(); iter.hasNext(); )
+        {
+            String platform = (String) iter.next();
+            String execFile = (String) jswPlatformsMap.get( platform + "-exec" );
+            if ( execFile != null )
+            {
+                copyResourceFile( outputDirectory, execFile );
+            }
+            else
+            {
+                getLogger().warn( "Exec file for " + platform + " not found in map." );
+            }
+        }
     }
 
     private void copyResourceFile( File outputDirectory, String fileName )
@@ -361,5 +404,30 @@ public class JavaServiceWrapperDaemonGenerator
         }
 
         writeFile( new File( outputDirectory, fileName ), batchFileInputStream );
+    }
+    
+    private List getJswPlatformIncludes( Daemon daemon )
+    {
+        List jswPlatformIncludes = null;
+        for ( Iterator i = daemon.getGeneratorConfigurations().iterator(); i.hasNext(); )
+        {
+            GeneratorConfiguration generatorConfiguration = (GeneratorConfiguration) i.next();
+
+            if ( generatorConfiguration.getGenerator().equals( "jsw" ) )
+            {
+                jswPlatformIncludes = generatorConfiguration.getIncludes();
+            }
+        }
+
+        // set default if none is specified
+        if ( jswPlatformIncludes == null || jswPlatformIncludes.isEmpty() )
+        {
+            jswPlatformIncludes.add( "linux-x86-32" );
+            jswPlatformIncludes.add( "macosx-x86-universal-32" );
+            jswPlatformIncludes.add( "solaris-x86-32" );
+            jswPlatformIncludes.add( "windows-x86-32" );
+        }
+
+        return jswPlatformIncludes;
     }
 }
