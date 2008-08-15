@@ -314,6 +314,11 @@ public class JavaServiceWrapperDaemonGenerator
                 String systemProperty = (String) i.next();
                 confFile.setProperty( "wrapper.java.additional." + count, "-D" + systemProperty );
             }
+            for ( Iterator i = daemon.getJvmSettings().getExtraArguments().iterator(); i.hasNext(); count++ )
+            {
+                String extraArgument = (String) i.next();
+                confFile.setProperty( "wrapper.java.additional." + count, extraArgument );
+            }
         }
     }
 
