@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -427,6 +428,7 @@ public class JavaServiceWrapperDaemonGenerator
         // set default if none is specified
         if ( jswPlatformIncludes == null || jswPlatformIncludes.isEmpty() )
         {
+            jswPlatformIncludes = new ArrayList();
             jswPlatformIncludes.add( "linux-x86-32" );
             jswPlatformIncludes.add( "macosx-x86-universal-32" );
             jswPlatformIncludes.add( "solaris-x86-32" );

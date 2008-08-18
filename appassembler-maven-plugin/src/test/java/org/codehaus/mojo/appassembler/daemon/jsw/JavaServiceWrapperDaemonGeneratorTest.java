@@ -149,6 +149,64 @@ public class JavaServiceWrapperDaemonGeneratorTest
         assertFileNotExists( jswDir, "bin/wrapper-solaris-x86-32" );
         assertFileExists( jswDir, "bin/wrapper-solaris-sparc-64" );
     }
+    
+    // MAPPASM-64: Bug in getJswPlatformIncludes (NPE when no <generatorConfigurations> is configured)
+    public void testDefaultJSWFilesIfNoGeneratorConfigurationsIsSet()
+        throws Exception
+    {
+        runTest( "jsw", "src/test/resources/project-5/pom.xml", "src/test/resources/project-5/descriptor.xml",
+        "target/output-5-jsw" );
+
+        File jswDir = getTestFile( "target/output-5-jsw/app" );
+        File wrapper = new File( jswDir, "conf/wrapper.conf" );
+        
+        assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
+        
+        assertEquals( FileUtils.fileRead(
+           getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/no-generator-configurations-wrapper.conf" ) ),
+                     FileUtils.fileRead( wrapper ) );
+        
+        File shellScript = new File( jswDir, "bin/app" );
+        
+        assertTrue( "Shell script file is missing: " + shellScript.getAbsolutePath(), shellScript.isFile() );
+        
+        assertEquals( FileUtils.fileRead(
+           getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/no-generator-configurations-run.sh" ) ),
+                     FileUtils.fileRead( shellScript ) );
+        
+        File batchFile = new File( jswDir, "bin/app.bat" );
+        
+        assertTrue( "Batch file is missing: " + batchFile.getAbsolutePath(), batchFile.isFile() );
+        
+        assertEquals( FileUtils.fileRead(
+           getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/no-generator-configurations-run.bat" ) ),
+                     FileUtils.fileRead( batchFile ) );
+        
+        assertEquals( ( new File( getBasedir() +
+           "/target/classes/org/codehaus/mojo/appassembler/daemon/jsw/bin/wrapper-linux-x86-32" ) ).length(),
+                     ( new File( jswDir, "bin/wrapper-linux-x86-32" )).length() );
+        
+        assertFileExists( jswDir, "lib/wrapper.jar" );
+        assertFileExists( jswDir, "lib/wrapper-windows-x86-32.dll" );
+        assertFileExists( jswDir, "lib/libwrapper-macosx-universal-32.jnilib" );
+        assertFileExists( jswDir, "lib/libwrapper-linux-x86-32.so" );
+        assertFileExists( jswDir, "lib/libwrapper-solaris-x86-32.so" );
+        assertFileNotExists( jswDir, "lib/libwrapper-macosx-ppc-32.jnilib" );
+        assertFileNotExists( jswDir, "lib/libwrapper-linux-ppc-64.so" );        
+        assertFileNotExists( jswDir, "lib/libwrapper-linux-x86-64.so" );        
+        assertFileNotExists( jswDir, "lib/libwrapper-solaris-sparc-32.so" );
+        assertFileNotExists( jswDir, "lib/libwrapper-solaris-sparc-64.so" );
+        
+        assertFileExists( jswDir, "bin/wrapper-windows-x86-32.exe" );
+        assertFileExists( jswDir, "bin/wrapper-macosx-universal-32" );
+        assertFileExists( jswDir, "bin/wrapper-linux-x86-32" );
+        assertFileExists( jswDir, "bin/wrapper-solaris-x86-32" );
+        assertFileNotExists( jswDir, "bin/wrapper-macosx-ppc-32" );
+        assertFileNotExists( jswDir, "bin/wrapper-linux-ppc-64" );        
+        assertFileNotExists( jswDir, "bin/wrapper-linux-x86-64" );        
+        assertFileNotExists( jswDir, "bin/wrapper-solaris-sparc-32" );
+        assertFileNotExists( jswDir, "bin/wrapper-solaris-sparc-64" );
+    }
 
     private static void assertFileExists( File jswDir, String file )
     {
