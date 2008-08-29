@@ -62,6 +62,11 @@
       <email>brett@apache.org</email>
     </developer>
   </developers>
+  <contributors>
+    <contributor>
+      <name>Erik Drolshammer</name>
+    </contributor>
+  </contributors>
   <licenses>
     <license>
       <name>The MIT License</name>
