@@ -208,6 +208,25 @@ public class JavaServiceWrapperDaemonGeneratorTest
         assertFileNotExists( jswDir, "bin/wrapper-solaris-sparc-64" );
     }
 
+
+    public void testGenerateWithConfigurationDirectoriesAddedFromGeneratorConfiguration()
+        throws Exception
+    {
+        runTest( "jsw", "src/test/resources/project-6/pom.xml", "src/test/resources/project-6/descriptor.xml",
+                 "target/output-6-jsw" );
+
+        File jswDir = getTestFile( "target/output-6-jsw/app" );
+        File wrapper = new File( jswDir, "conf/wrapper.conf" );
+
+        assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
+
+        assertEquals( FileUtils.fileRead(
+           getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-6.conf" ) ),
+                     FileUtils.fileRead( wrapper ) );
+       
+
+    }
+
     private static void assertFileExists( File jswDir, String file )
     {
         File wrapperJar = new File( jswDir, file );

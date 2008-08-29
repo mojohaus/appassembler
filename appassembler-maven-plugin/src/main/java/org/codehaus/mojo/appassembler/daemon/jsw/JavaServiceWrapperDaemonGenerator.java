@@ -44,9 +44,7 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
-import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.mojo.appassembler.model.Dependency;
-import org.codehaus.mojo.appassembler.model.GeneratorConfiguration;
+import org.codehaus.mojo.appassembler.model.*;
 import org.codehaus.mojo.appassembler.util.FormattedProperties;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.IOUtil;
@@ -163,7 +161,7 @@ public class JavaServiceWrapperDaemonGenerator
 
         confFile.setProperty( "wrapper.app.parameter.1", daemon.getMainClass() );
 
-        createClasspath( request, confFile );
+        createClasspath( request, confFile, configuration );
         createAdditional( daemon, confFile );
         createParameters( daemon, confFile );
 
@@ -277,21 +275,40 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
-    private static void createClasspath( DaemonGenerationRequest request, FormattedProperties confFile )
+    private static void createClasspath( DaemonGenerationRequest request, FormattedProperties confFile,
+                                         Properties configuration )
     {
-        confFile.setProperty( "wrapper.java.classpath.1", "lib/wrapper.jar" );
+        final String wrapperClassPathPrefix = "wrapper.java.classpath.";
+
+        int counter = 1;
+        confFile.setProperty( wrapperClassPathPrefix + counter++, "lib/wrapper.jar" );
+
+        String configurationDirFirst = configuration.getProperty( "configuration.directory.in.classpath.first" );
+        if ( configurationDirFirst != null )
+        {
+            confFile.setProperty( wrapperClassPathPrefix + counter++, configurationDirFirst );
+        }
 
         MavenProject project = request.getMavenProject();
         ArtifactRepositoryLayout layout = request.getRepositoryLayout();
-        confFile.setProperty( "wrapper.java.classpath.2",
-                              "%REPO_DIR%/" + createDependency( layout, project.getArtifact() ).getRelativePath() );
-        int counter = 3;
-        for ( Iterator i = project.getRuntimeArtifacts().iterator(); i.hasNext(); counter++ )
-        {
-            Artifact artifact = (Artifact) i.next();
 
-            confFile.setProperty( "wrapper.java.classpath." + counter,
-                                  "%REPO_DIR%/" + createDependency( layout, artifact ).getRelativePath() );
+        confFile.setProperty( wrapperClassPathPrefix + counter++, "%REPO_DIR%/" +
+            createDependency( layout, project.getArtifact() ).getRelativePath() );
+
+        Iterator j = project.getRuntimeArtifacts().iterator();
+        while ( j.hasNext() )
+        {
+            Artifact artifact = (Artifact) j.next();
+
+            confFile.setProperty( wrapperClassPathPrefix + counter, "%REPO_DIR%/" +
+                createDependency( layout, artifact ).getRelativePath() );
+            counter++;
+        }
+
+        String configurationDirLast = configuration.getProperty( "configuration.directory.in.classpath.last" );
+        if ( configurationDirLast != null )
+        {
+            confFile.setProperty( wrapperClassPathPrefix + counter++, configurationDirLast );
         }
     }
 
