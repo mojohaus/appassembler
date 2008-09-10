@@ -41,8 +41,9 @@ import org.codehaus.plexus.util.IOUtil;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Iterator;
 
 /**
@@ -82,15 +83,18 @@ public class GenericDaemonGenerator
         // Write out the project
         // -----------------------------------------------------------------------
 
-        FileWriter writer = null;
+        OutputStreamWriter writer = null;
 
         try
         {
+        	
             FileUtils.forceMkdir( request.getOutputDirectory() );
-
+            
             File outputFile = new File( request.getOutputDirectory(), mergedDaemon.getId() + ".xml" );
-
-            writer = new FileWriter( outputFile );
+            
+            FileOutputStream fos = new FileOutputStream(outputFile);
+            
+            writer = new OutputStreamWriter( fos, "UTF-8" );
 
             AppassemblerModelStaxWriter staxWriter = new AppassemblerModelStaxWriter();
             staxWriter.write( writer, mergedDaemon );
