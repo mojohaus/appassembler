@@ -51,9 +51,7 @@ import java.util.Iterator;
  * @version $Id$
  * @plexus.component role-hint="generic"
  */
-public class GenericDaemonGenerator
-    extends AbstractLogEnabled
-    implements DaemonGenerator
+public class GenericDaemonGenerator extends AbstractLogEnabled implements DaemonGenerator
 {
     /**
      * @plexus.requirement
@@ -64,8 +62,7 @@ public class GenericDaemonGenerator
     // DaemonGenerator Implementation
     // -----------------------------------------------------------------------
 
-    public void generate( DaemonGenerationRequest request )
-        throws DaemonGeneratorException
+    public void generate( DaemonGenerationRequest request ) throws DaemonGeneratorException
     {
         // -----------------------------------------------------------------------
         // Create the daemon from the Maven project
@@ -87,13 +84,13 @@ public class GenericDaemonGenerator
 
         try
         {
-        	
+
             FileUtils.forceMkdir( request.getOutputDirectory() );
-            
+
             File outputFile = new File( request.getOutputDirectory(), mergedDaemon.getId() + ".xml" );
-            
-            FileOutputStream fos = new FileOutputStream(outputFile);
-            
+
+            FileOutputStream fos = new FileOutputStream( outputFile );
+
             writer = new OutputStreamWriter( fos, "UTF-8" );
 
             AppassemblerModelStaxWriter staxWriter = new AppassemblerModelStaxWriter();
@@ -142,13 +139,16 @@ public class GenericDaemonGenerator
         for ( Iterator it = project.getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
-            artifact.isSnapshot();
-            
+            if ( artifact.isSnapshot() )
+            {
+                artifact.setVersion( artifact.getVersionRange().getRecommendedVersion().toString() );
+            }
+
             Dependency dependency = new Dependency();
             dependency.setGroupId( artifact.getGroupId() );
             dependency.setArtifactId( artifact.getArtifactId() );
             dependency.setVersion( artifact.getVersion() );
-            
+
             dependency.setClassifier( artifact.getClassifier() );
             dependency.setRelativePath( layout.pathOf( artifact ) );
 

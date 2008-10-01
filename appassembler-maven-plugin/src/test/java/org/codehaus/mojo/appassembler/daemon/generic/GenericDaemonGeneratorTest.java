@@ -88,7 +88,7 @@ public class GenericDaemonGeneratorTest
 
         assertNodeEquals( "org/codehaus/mojo/appassembler/project-7/1.0-SNAPSHOT/project-7-1.0-SNAPSHOT.jar",
                           "relativePath", actual );
-        assertNodeContains( "org/springframework/spring-core/2.5.6-SNAPSHOT/spring-core-2.5.6-20080930.010034-59.jar",
+        assertNodeContains( "org/springframework/spring-core/2.5.6-SNAPSHOT/spring-core-2.5.6-SNAPSHOT.jar",
                           "relativePath", actual );
 
     }
