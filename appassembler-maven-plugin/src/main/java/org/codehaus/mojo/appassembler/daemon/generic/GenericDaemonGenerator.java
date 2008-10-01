@@ -128,6 +128,7 @@ public class GenericDaemonGenerator
         // -----------------------------------------------------------------------
         Dependency projectDependency = new Dependency();
         Artifact projectArtifact = project.getArtifact();
+        projectArtifact.isSnapshot();
         projectDependency.setGroupId( projectArtifact.getGroupId() );
         projectDependency.setArtifactId( projectArtifact.getArtifactId() );
         projectDependency.setVersion( projectArtifact.getVersion() );
@@ -141,13 +142,14 @@ public class GenericDaemonGenerator
         for ( Iterator it = project.getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
-
+            artifact.isSnapshot();
+            
             Dependency dependency = new Dependency();
             dependency.setGroupId( artifact.getGroupId() );
             dependency.setArtifactId( artifact.getArtifactId() );
             dependency.setVersion( artifact.getVersion() );
+            
             dependency.setClassifier( artifact.getClassifier() );
-
             dependency.setRelativePath( layout.pathOf( artifact ) );
 
             complete.getClasspath().addDependency( dependency );

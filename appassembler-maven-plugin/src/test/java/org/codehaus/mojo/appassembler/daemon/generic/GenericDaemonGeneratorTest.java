@@ -26,6 +26,7 @@ package org.codehaus.mojo.appassembler.daemon.generic;
 
 import org.codehaus.mojo.appassembler.daemon.AbstractDaemonGeneratorTest;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -48,15 +49,12 @@ public class GenericDaemonGeneratorTest
 
         assertTrue( "config file is missing: " + actualAppXml.getAbsolutePath(), actualAppXml.isFile() );
 
-//        File expectedAppXml = getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/generic/app.xml" );
-
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         builderFactory.setIgnoringComments( true );
         builderFactory.setIgnoringElementContentWhitespace( true );
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
 
-//        Document expected = builder.parse( expectedAppXml );
         Document actual = builder.parse( actualAppXml );
 
         assertNodeEquals( "com.westerngeco.example.App", "mainClass", actual );
@@ -68,19 +66,52 @@ public class GenericDaemonGeneratorTest
         assertNodeEquals( "foo=bar", "systemProperty", actual );
         assertNodeEquals( "arg1=arg1-value", "commandLineArgument", actual );
 
-/* I'm too lazy to get this to work properly
-        DaemonGeneratorService service = (DaemonGeneratorService) lookup( DaemonGeneratorService.ROLE );
+    }
 
-        Daemon expectedDaemon = service.loadModel( expectedAppXml );
-        Daemon actualDaemon = service.loadModel( actualAppXml );
+    public void testGenerationWithSnapshotDependencies()
+        throws Exception
+    {
+        runTest( "generic", "src/test/resources/project-7/pom.xml", "src/test/resources/project-7/descriptor.xml",
+                 "target/output-7-generic" );
 
-        assertEquals( expectedDaemon, actualDaemon );
-*/
+        File actualAppXml = new File( getTestFile( "target/output-7-generic" ), "app.xml" );
+
+        assertTrue( "config file is missing: " + actualAppXml.getAbsolutePath(), actualAppXml.isFile() );
+
+        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+
+        builderFactory.setIgnoringComments( true );
+        builderFactory.setIgnoringElementContentWhitespace( true );
+        DocumentBuilder builder = builderFactory.newDocumentBuilder();
+
+        Document actual = builder.parse( actualAppXml );
+
+        assertNodeEquals( "org/codehaus/mojo/appassembler/project-7/1.0-SNAPSHOT/project-7-1.0-SNAPSHOT.jar",
+                          "relativePath", actual );
+        assertNodeContains( "org/springframework/spring-core/2.5.6-SNAPSHOT/spring-core-2.5.6-20080930.010034-59.jar",
+                          "relativePath", actual );
+
     }
 
     private void assertNodeEquals( String expected, String tagName, Document document )
     {
         assertEquals( "Node with tag name " + tagName + " does not match", expected,
                       document.getElementsByTagName( tagName ).item( 0 ).getFirstChild().getNodeValue() );
+    }
+    
+    private void assertNodeContains( String expected, String tagName, Document document )
+    {
+        boolean result = false;
+        NodeList relativePaths = document.getElementsByTagName( tagName );
+        
+        for ( int i = 0; i < relativePaths.getLength(); i++ )
+        {
+            if (expected.equals( relativePaths.item( i ).getFirstChild().getNodeValue() ))
+            {
+                result = true;
+            }
+        }
+        
+        assertTrue( "Node with tag name " + tagName + " does not match", result);
     }
 }

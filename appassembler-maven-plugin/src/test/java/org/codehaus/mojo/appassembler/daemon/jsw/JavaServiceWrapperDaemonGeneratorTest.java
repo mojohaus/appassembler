@@ -150,7 +150,6 @@ public class JavaServiceWrapperDaemonGeneratorTest
         assertFileExists( jswDir, "bin/wrapper-solaris-sparc-64" );
     }
     
-    // MAPPASM-64: Bug in getJswPlatformIncludes (NPE when no <generatorConfigurations> is configured)
     public void testDefaultJSWFilesIfNoGeneratorConfigurationsIsSet()
         throws Exception
     {
