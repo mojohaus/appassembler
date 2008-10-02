@@ -25,6 +25,7 @@ package org.codehaus.mojo.appassembler;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -33,7 +34,6 @@ import java.util.Set;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
-import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
@@ -48,11 +48,12 @@ import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Creates an appassembler repository. Note that this is deliberately a bit more specific than the assembly plugin
  * version - if it can generate a flat layout and exclude JARs, it may be a suitable replacement.
- *
+ * 
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
  * @version $Id$
  * @goal create-repository
@@ -68,7 +69,7 @@ public class CreateRepositoryMojo
 
     /**
      * The directory that will be used to assemble the artifacts in and place the bin scripts.
-     *
+     * 
      * @required
      * @parameter expression="${project.build.directory}/appassembler"
      */
@@ -76,7 +77,7 @@ public class CreateRepositoryMojo
 
     /**
      * The directory that will be used for the dependencies, relative to <code>assembleDirectory</code>.
-     *
+     * 
      * @required
      * @parameter default-value="repo"
      * @todo customisation doesn't work due to the shell scripts not honouring it
@@ -86,7 +87,7 @@ public class CreateRepositoryMojo
     /**
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
      * (flat <code>lib/</code> style).
-     *
+     * 
      * @parameter default-value="default"
      */
     private String repositoryLayout;
@@ -106,7 +107,7 @@ public class CreateRepositoryMojo
      * @parameter expression="${plugin.version}"
      */
     private String pluginVersion;
-    
+
     /**
      * @readonly
      * @parameter expression="${localRepository}"
@@ -120,10 +121,10 @@ public class CreateRepositoryMojo
     private Artifact projectArtifact;
 
     /**
-     * Whether to install the booter artifacts into the repository. This may be needed if you are using the Shell
-     * script generators.
-     *  
-     * @parameter default-value="false" 
+     * Whether to install the booter artifacts into the repository. This may be needed if you are using the Shell script
+     * generators.
+     * 
+     * @parameter default-value="false"
      */
     private boolean installBooterArtifacts;
 
@@ -138,11 +139,6 @@ public class CreateRepositoryMojo
      * @component
      */
     private ArtifactRepositoryFactory artifactRepositoryFactory;
-
-    /**
-     * @component
-     */
-    private ArtifactInstaller artifactInstaller;
 
     /**
      * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
@@ -175,8 +171,9 @@ public class CreateRepositoryMojo
 
         String path = "file://" + assembleDirectory.getAbsolutePath() + "/" + repoPath;
 
-        ArtifactRepository artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
-            "appassembler", path, artifactRepositoryLayout, false );
+        ArtifactRepository artifactRepository =
+            artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", path,
+                                                                          artifactRepositoryLayout, true );
 
         // -----------------------------------------------------------------------
         // Install the project's artifact in the new repository
@@ -210,8 +207,8 @@ public class CreateRepositoryMojo
     {
         Artifact artifact =
             artifactFactory.createDependencyArtifact( "org.codehaus.mojo.appassembler", "appassembler-booter",
-                                                      VersionRange.createFromVersion( pluginVersion ), 
-                                                      "jar", null, Artifact.SCOPE_RUNTIME );
+                                                      VersionRange.createFromVersion( pluginVersion ), "jar", null,
+                                                      Artifact.SCOPE_RUNTIME );
         try
         {
             Artifact p =
@@ -249,7 +246,7 @@ public class CreateRepositoryMojo
                 // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
                 artifact.isSnapshot();
 
-                artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
+                install( artifact.getFile(), artifact, artifactRepository );
             }
             catch ( ArtifactInstallationException e )
             {
@@ -261,5 +258,29 @@ public class CreateRepositoryMojo
     public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )
     {
         this.availableRepositoryLayouts = availableRepositoryLayouts;
+    }
+
+    public void install( File source, Artifact artifact, ArtifactRepository localRepository )
+        throws ArtifactInstallationException
+    {
+        try
+        {
+            String localPath = localRepository.pathOf( artifact );
+
+            File destination = new File( localRepository.getBasedir(), localPath );
+            if ( !destination.getParentFile().exists() )
+            {
+                destination.getParentFile().mkdirs();
+            }
+
+            getLog().info( "Installerer for faen " + source.getPath() + " to " + destination );
+
+            FileUtils.copyFile( source, destination );
+
+        }
+        catch ( IOException e )
+        {
+            throw new ArtifactInstallationException( "Error installing artifact: " + e.getMessage(), e );
+        }
     }
 }

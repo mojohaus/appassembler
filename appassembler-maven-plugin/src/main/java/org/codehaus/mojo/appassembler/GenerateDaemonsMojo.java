@@ -48,7 +48,7 @@ import java.util.Set;
  * @version $Id$
  * @goal generate-daemons
  * @requiresDependencyResolution runtime
- * @phase generate-resources
+ * @phase package
  */
 public class GenerateDaemonsMojo
     extends AbstractMojo

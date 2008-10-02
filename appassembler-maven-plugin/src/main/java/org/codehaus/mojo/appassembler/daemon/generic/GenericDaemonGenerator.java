@@ -139,10 +139,8 @@ public class GenericDaemonGenerator extends AbstractLogEnabled implements Daemon
         for ( Iterator it = project.getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
             Artifact artifact = (Artifact) it.next();
-            if ( artifact.isSnapshot() )
-            {
-                artifact.setVersion( artifact.getVersionRange().getRecommendedVersion().toString() );
-            }
+            
+            artifact.isSnapshot();
 
             Dependency dependency = new Dependency();
             dependency.setGroupId( artifact.getGroupId() );
