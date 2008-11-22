@@ -209,6 +209,7 @@ public class GenerateDaemonsMojo
         modelDaemon.setMainClass( daemon.getMainClass() );
         modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
         modelDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
+        modelDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
 
         if ( daemon.getJvmSettings() != null )
         {

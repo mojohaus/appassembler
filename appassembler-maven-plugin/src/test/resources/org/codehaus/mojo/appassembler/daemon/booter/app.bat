@@ -65,6 +65,8 @@ set BASEDIR=%~dp0\..
 :repoSetup
 if exist %BASEDIR%\bin\app-env.bat call %BASEDIR%\bin\app-env.bat
 
+if "%JAVACMD%"=="" set JAVACMD=java
+
 if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
 set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org\codehaus\mojo\appassembler\appassembler-booter\@appassembler.version@\appassembler-booter-@appassembler.version@.jar;"%REPO%"\org\codehaus\mojo\appassembler\appassembler-model\@appassembler.version@\appassembler-model-@appassembler.version@.jar;"%REPO%"\org\codehaus\plexus\plexus-utils\1.1\plexus-utils-1.1.jar;"%REPO%"\stax\stax-api\1.0.1\stax-api-1.0.1.jar;"%REPO%"\stax\stax\1.1.1-dev\stax-1.1.1-dev.jar
@@ -74,7 +76,7 @@ goto endInit
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-java %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="app" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.booter.AppassemblerBooter %CMD_LINE_ARGS%
+%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="app" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.booter.AppassemblerBooter %CMD_LINE_ARGS%
 if ERRORLEVEL 1 goto error
 goto end
 

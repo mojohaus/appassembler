@@ -273,7 +273,7 @@ public class CreateRepositoryMojo
                 destination.getParentFile().mkdirs();
             }
 
-            getLog().info( "Installerer for faen " + source.getPath() + " to " + destination );
+            getLog().info( "Installing artifact " + source.getPath() + " to " + destination );
 
             FileUtils.copyFile( source, destination );
 

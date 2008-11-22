@@ -65,6 +65,8 @@ set BASEDIR=%~dp0\..
 :repoSetup
 if exist %BASEDIR%\bin\setup.bat call %BASEDIR%\bin\setup.bat
 
+if "%JAVACMD%"=="" set JAVACMD=java
+
 if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
 set CLASSPATH=
@@ -74,7 +76,7 @@ goto endInit
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-java %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="test" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" foo.Bar %CMD_LINE_ARGS%
+%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="test" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" foo.Bar %CMD_LINE_ARGS%
 if ERRORLEVEL 1 goto error
 goto end
 

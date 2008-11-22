@@ -48,7 +48,9 @@ public class Daemon
     private List generatorConfigurations;
 
     private boolean showConsoleWindow = true;
-    
+
+    private String environmentSetupFileName;
+
     public String getId()
     {
         return id;
@@ -93,4 +95,13 @@ public class Daemon
     {
         return showConsoleWindow;
     }
+
+    public String getEnvironmentSetupFileName() {
+        return environmentSetupFileName;
+    }
+
+    public void setEnvironmentSetupFileName(String environmentSetupFileName) {
+        this.environmentSetupFileName = environmentSetupFileName;
+    }
+    
 }
