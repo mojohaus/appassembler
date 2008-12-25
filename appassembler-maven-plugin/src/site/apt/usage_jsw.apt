@@ -1,0 +1,141 @@
+  ------
+  Usage: how create Java Service Wrapper Scripts
+  ------
+  Erik Drolshammer
+  ------
+  December 25, 2008
+  ------
+  
+Usage
+
+
+* Java Daemon based on Java Service Wrapper
+
+  The following example shows how to generate start scripts to make an application run as a Linux daemon.
+
+  The setup is based on {{{http://wrapper.tanukisoftware.org} Java Service Wrapper (JSW)}}
+  version {{{http://wrapper.tanukisoftware.org/downloads/3.2.3} 3.2.3}}, using the
+  {{{http://wrapper.tanukisoftware.org/doc/english/integrate.html#method1} WrapperSimpleApp Integration}}.
+
+
+
+
+** Linux example configuration
+
+  In <<<pom.xml>>>:
+
++--------------------------
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>        
+        <configuration>
+          <repositoryLayout>flat</repositoryLayout>
+          <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+          <target>${project.build.directory}</target>
+
+          <defaultJvmSettings>
+            <initialMemorySize>256M</initialMemorySize>
+            <maxMemorySize>1024M</maxMemorySize>
+            <systemProperties>
+              <systemProperty>java.security.policy=conf/policy.all</systemProperty>
+              <systemProperty>com.sun.management.jmxremote</systemProperty>
+              <systemProperty>com.sun.management.jmxremote.port=8999</systemProperty>
+              <systemProperty>com.sun.management.jmxremote.authenticate=false</systemProperty>
+              <systemProperty>com.sun.management.jmxremote.ssl=false</systemProperty>
+            </systemProperties>
+            <extraArguments>
+              <extraArgument>-server</extraArgument>
+            </extraArguments>
+          </defaultJvmSettings>
+
+          <daemons>
+            <daemon>
+              <id>app1</id>
+              <mainClass>${pom.groupId}.SomeMainClass</mainClass>
+              <commandLineArguments>
+                <commandLineArgument>start</commandLineArgument>
+              </commandLineArguments>
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>
+              <generatorConfigurations>
+                <generatorConfiguration>
+                  <generator>jsw</generator>
+                  <includes>
+                    <include>linux-x86-32</include>
+                    <include>linux-x86-64</include>
+                  </includes>
+                  <configuration>
+                    <property>
+                      <name>configuration.directory.in.classpath.first</name>
+                      <value>etc</value>
+                    </property>
+                    <property>
+                      <name>set.default.REPO_DIR</name>
+                      <value>lib</value>
+                    </property>
+                    <property>
+                      <name>wrapper.logfile</name>
+                      <value>logs/wrapper.log</value>
+                    </property>
+                  </configuration>
+                </generatorConfiguration>
+              </generatorConfigurations>
+            </daemon>
+          </daemons>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-jsw-scripts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>generate-daemons</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++--------------------------
+
+** Using the generated scripts
+
+  * All dependencies and the artifact itself are placed in <<<target/appassembler/repo>>>
+  directory.
+
+  * The JSW bin scripts and configuration are placed in <<<target/jsw/app1>>> directory.
+
++--------------------------
+$ mvn package
+
+$ target/jsw/app1/bin/app1 start
+
+$ ps -ef | grep java
+(to check that it is running)
+
+$ target/jsw/app1/bin/app1 stop
++--------------------------
+
+
+** Add application specific shutdown code
+
+  * The JSW default stop script use the "kill" command.
+  Use a shutdown hook to override this behaviour with application specific shutdown code.
+
+  E.g. add something like the following to your Main method:
+
++--------------------------
+Runtime.getRuntime().addShutdownHook(new Thread(){
+    public void run() {
+        log.debug("Shutdown hook was invoked. Shutting down App1.");
+        App1JmxStopper appJmxStopper = new App1JmxStopper();
+        appJmxStopper.stop();
+    }
+}); 
++--------------------------
+  
