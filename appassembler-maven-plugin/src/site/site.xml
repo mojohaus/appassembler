@@ -24,7 +24,7 @@
   ~ SOFTWARE.
   -->
 
-<project name="Application Assembler Maven Plugin">
+<project>
   <body>
     <menu ref="parent" />
 
