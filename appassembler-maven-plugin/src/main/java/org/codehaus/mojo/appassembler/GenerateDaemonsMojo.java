@@ -44,6 +44,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * Generates JSW based daemon wrappers.
+ * 
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  * @goal generate-daemons
@@ -58,29 +60,34 @@ public class GenerateDaemonsMojo
     // -----------------------------------------------------------------------
 
     /**
+     * Set of {@linkplain Daemon}s to generate.
      * @parameter
      * @required
      */
     private Set daemons;
 
     /**
+     * {@linkplain JvmSettings} describing min/max memory and stack size, system properties and extra arguments.
      * @parameter
      */
     private JvmSettings defaultJvmSettings;
 
     /**
+     * The base directory of the project.
      * @parameter expression="${basedir}"
      * @required
      */
     private File basedir;
 
     /**
+     * Target directory for generated daemons.
      * @parameter expression="${project.build.directory}/generated-resources/appassembler"
      * @required
      */
     private File target;
 
     /**
+     * The maven project in question.
      * @parameter expression="${project}"
      * @required
      */
