@@ -65,6 +65,18 @@
       <name>Brett Porter</name>
       <email>brett@apache.org</email>
     </developer>
+    <developer>
+      <id>david</id>
+      <name>David J. M. Karlsen</name>
+      <email>david@codehaus.org</email>
+      <organization>Codehaus</organization>
+      <organizationUrl>http://www.codehaus.org</organizationUrl>
+      <timezone>1</timezone>
+      <url>http://www.davidkarlsen.com</url>
+      <roles>
+        <role>Small fixes and changes</role>
+      </roles>
+    </developer>
   </developers>
   <contributors>
     <contributor>
