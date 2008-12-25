@@ -35,6 +35,10 @@
   <version>1.0-SNAPSHOT</version>
   <name>Appassembler</name>
   <inceptionYear>2006</inceptionYear>
+  <issueManagement>
+    <system>jira</system>
+    <url>http://jira.codehaus.org/browse/MAPPASM</url>
+  </issueManagement>
   <developers>
     <developer>
       <id>kristian</id>
