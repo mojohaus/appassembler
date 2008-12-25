@@ -31,7 +31,8 @@ Usage
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
-        <artifactId>appassembler-maven-plugin</artifactId>        
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <version>${project.version}</version>        
         <configuration>
           <repositoryLayout>flat</repositoryLayout>
           <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>

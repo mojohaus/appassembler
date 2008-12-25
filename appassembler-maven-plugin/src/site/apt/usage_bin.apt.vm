@@ -21,6 +21,7 @@ mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
+        <version>${project.version}</version>
         <configuration>
           <programs>
             <program>
@@ -69,6 +70,7 @@ Hello World!
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
+        <version>${project.version}</version>
         <configuration>
           <!-- Include etc/ in the beginning of the classpath declaration in the bin scripts -->
           <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
