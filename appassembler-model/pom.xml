@@ -90,7 +90,9 @@
         </executions>
         <!-- TODO: review the need for this -->
         <configuration>
-          <model>src/main/modello/model.xml</model>
+          <models>
+            <model>src/main/modello/model.xml</model>
+          </models>
           <version>1.0.0</version>
         </configuration>
       </plugin>
