@@ -2,36 +2,58 @@
 
 <faqs title="Frequently Asked Questions" toplink="false">
 
-  <part id="Bin scripts">
-    <title>Bin scripts</title>
+  <part id="Tips and tricks">
+    <title>Tips and tricks</title>
 
-    <faq id="whats-foo">
+    <faq id="ulimit">
       <question>
-        What is Foo?
+        How to set environment properties like for example ulimit?
       </question>
       <answer>
-        <p>some markup goes here</p>
+        <p>
+        Environment properties are outside the scope of appassembler, but a wrapper script might do the trick. 
+        This works for
+        <a href="http://www.ss64.com/bash/ulimit.html">ulimit</a> and other properties,
+        because the shell spawned by JSW inherits the properties
+        of the "parent shell". The wrapper script can look something like:
+        </p>
+        
+        <source>
+#!/bin/sh
 
-        <source>some source code</source>
+# The following two lines are used by the chkconfig command. Change as is
+#  appropriate for your application.  They should remain commented.
+# chkconfig: 2345 20 80
+# description: ${pom.name}
 
-        <p>some markup goes here</p>
+echo 'Running wrapper for ${pom.name}'
+
+if [ "$1" = "start" ] || [ "$1" = "console" ]; then
+    ulimit -n 65000
+    echo "ulimit set to $(ulimit -n)"
+fi
+
+echo 'Calling JSW script'
+exec ${rpm.path}/bin/${rpm.appname} $1
+        </source>
+
+        <p>
+        Remember to enable filtering to have the variables in the script resolved.
+        (The wrapper script is placed in the "bin" directory.) 
+        </p>
+        <source>
+<build>
+    <resources>
+      <resource>
+        <directory>bin</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+...
+</build>
+        </source>
       </answer>
     </faq>   
-  </part>
-
-  <part id="Java Service Wrapper">
-
-    <title>Java Service Wrapper</title>
-
-    <faq id="how-install">
-      <question>
-        How do I install Foo?
-      </question>
-      <answer>
-        <p>some markup goes here</p>
-      </answer>
-    </faq>
-
   </part>
 
 </faqs>
