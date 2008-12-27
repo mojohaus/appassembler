@@ -127,8 +127,8 @@ public class AssembleMojo
     private String environmentSetupFileName;
 
     /**
-     * @parameter default-value="true"
-     * @todo Write Javadoc for this parameter
+     * Set to false to skip repository generation.
+     * @parameter default-value="true" 
      */
     private boolean generateRepository;
 

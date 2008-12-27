@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faqs title="Frequently Asked Questions" toplink="false">
+
+  <part id="Bin scripts">
+    <title>Bin scripts</title>
+
+    <faq id="whats-foo">
+      <question>
+        What is Foo?
+      </question>
+      <answer>
+        <p>some markup goes here</p>
+
+        <source>some source code</source>
+
+        <p>some markup goes here</p>
+      </answer>
+    </faq>   
+  </part>
+
+  <part id="Java Service Wrapper">
+
+    <title>Java Service Wrapper</title>
+
+    <faq id="how-install">
+      <question>
+        How do I install Foo?
+      </question>
+      <answer>
+        <p>some markup goes here</p>
+      </answer>
+    </faq>
+
+  </part>
+
+</faqs>

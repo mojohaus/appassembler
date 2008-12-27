@@ -11,7 +11,7 @@ Usage
 
 * Java Daemon based on Java Service Wrapper
 
-  The following example shows how to generate start scripts to make an application run as a Linux daemon.
+  The following shows how to generate start scripts to make an application run as a Linux daemon.
 
   The setup is based on {{{http://wrapper.tanukisoftware.org} Java Service Wrapper (JSW)}}
   version {{{http://wrapper.tanukisoftware.org/downloads/3.2.3} 3.2.3}}, using the
@@ -19,8 +19,7 @@ Usage
 
 
 
-
-** Linux example configuration
+** Minimal configuration
 
   In <<<pom.xml>>>:
 
@@ -35,23 +34,7 @@ Usage
         <version>${project.version}</version>        
         <configuration>
           <repositoryLayout>flat</repositoryLayout>
-          <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-          <target>${project.build.directory}</target>
-
-          <defaultJvmSettings>
-            <initialMemorySize>256M</initialMemorySize>
-            <maxMemorySize>1024M</maxMemorySize>
-            <systemProperties>
-              <systemProperty>java.security.policy=conf/policy.all</systemProperty>
-              <systemProperty>com.sun.management.jmxremote</systemProperty>
-              <systemProperty>com.sun.management.jmxremote.port=8999</systemProperty>
-              <systemProperty>com.sun.management.jmxremote.authenticate=false</systemProperty>
-              <systemProperty>com.sun.management.jmxremote.ssl=false</systemProperty>
-            </systemProperties>
-            <extraArguments>
-              <extraArgument>-server</extraArgument>
-            </extraArguments>
-          </defaultJvmSettings>
+          <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>         
 
           <daemons>
             <daemon>
@@ -62,30 +45,7 @@ Usage
               </commandLineArguments>
               <platforms>
                 <platform>jsw</platform>
-              </platforms>
-              <generatorConfigurations>
-                <generatorConfiguration>
-                  <generator>jsw</generator>
-                  <includes>
-                    <include>linux-x86-32</include>
-                    <include>linux-x86-64</include>
-                  </includes>
-                  <configuration>
-                    <property>
-                      <name>configuration.directory.in.classpath.first</name>
-                      <value>etc</value>
-                    </property>
-                    <property>
-                      <name>set.default.REPO_DIR</name>
-                      <value>lib</value>
-                    </property>
-                    <property>
-                      <name>wrapper.logfile</name>
-                      <value>logs/wrapper.log</value>
-                    </property>
-                  </configuration>
-                </generatorConfiguration>
-              </generatorConfigurations>
+              </platforms>              
             </daemon>
           </daemons>
         </configuration>
