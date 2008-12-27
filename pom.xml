@@ -118,6 +118,22 @@
           </reportSet>
         </reportSets>
       </plugin>
+       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <onlyCurrentVersion>true</onlyCurrentVersion>          
+          <sortColumnNames>Type,Key</sortColumnNames>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>jira-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
     </plugins>
   </reporting>
   <build>
