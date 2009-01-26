@@ -72,6 +72,10 @@ Example: Linux daemon based on Java Service Wrapper
                       <name>wrapper.logfile</name>
                       <value>logs/wrapper.log</value>
                     </property>
+                    <property>
+                      <name>run.as.user.envvar</name>
+                      <value>johndoe</value>
+                    </property>
                   </configuration>
                 </generatorConfiguration>
               </generatorConfigurations>
