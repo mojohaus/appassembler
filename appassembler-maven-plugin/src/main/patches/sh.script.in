@@ -48,7 +48,6 @@ PIDDIR="$@app.base.envvar@/logs"
 #  port needs to be allocated prior to the user being changed.
 #RUN_AS_USER=
 @run.as.user.envvar@
-
 # The following two lines are used by the chkconfig command. Change as is
 #  appropriate for your application.  They should remain commented.
 # chkconfig: 2345 20 80
