@@ -222,9 +222,41 @@ public class JavaServiceWrapperDaemonGeneratorTest
         assertEquals( FileUtils.fileRead(
            getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-6.conf" ) ),
                      FileUtils.fileRead( wrapper ) );
-       
-
     }
+
+
+    public void testGenerationWithRunAsUserEnvVar()
+        throws Exception
+    {
+        runTest( "jsw", "src/test/resources/project-8/pom.xml", "src/test/resources/project-8/descriptor.xml",
+                 "target/output-8-jsw" );
+
+        File jswDir = getTestFile( "target/output-8-jsw/app" );
+        File wrapper = new File( jswDir, "conf/wrapper.conf" );
+
+        assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
+
+        assertEquals( FileUtils.fileRead(
+            getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-8.conf" ) ),
+                      FileUtils.fileRead( wrapper ) );
+
+        File shellScript = new File( jswDir, "bin/app" );
+
+        assertTrue( "Shell script file is missing: " + shellScript.getAbsolutePath(), shellScript.isFile() );
+
+        assertEquals( FileUtils.fileRead(
+            getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-8.sh" ) ),
+                      FileUtils.fileRead( shellScript ) );
+
+        File batchFile = new File( jswDir, "bin/app.bat" );
+
+        assertTrue( "Batch file is missing: " + batchFile.getAbsolutePath(), batchFile.isFile() );
+
+        assertEquals( FileUtils.fileRead(
+            getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-8.bat" ) ),
+                      FileUtils.fileRead( batchFile ) );
+    }
+
 
     private static void assertFileExists( File jswDir, String file )
     {

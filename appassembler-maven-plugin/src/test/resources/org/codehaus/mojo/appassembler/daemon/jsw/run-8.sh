@@ -11,16 +11,16 @@
 # These settings can be modified to fit the needs of your application
 
 # Application
-APP_NAME="@app.name@"
-APP_LONG_NAME="@app.long.name@"
+APP_NAME="app"
+APP_LONG_NAME="Test Project"
 
-if [ "X$@app.base.envvar@" = "X" ]; then
-  @app.base.envvar@=..
+if [ "X$MY_BASE" = "X" ]; then
+  MY_BASE=..
 fi
 
 # Wrapper
 WRAPPER_CMD="./wrapper"
-WRAPPER_CONF="$@app.base.envvar@/conf/wrapper.conf"
+WRAPPER_CONF="$MY_BASE/conf/wrapper.conf"
 
 if [ ! -f "$WRAPPER_CONF" ]; then
   WRAPPER_CONF="../conf/wrapper.conf"
@@ -31,7 +31,7 @@ fi
 PRIORITY=
 
 # Location of the pid file.
-PIDDIR="$@app.base.envvar@/logs"
+PIDDIR="$MY_BASE/logs"
 
 # If uncommented, causes the Wrapper to be shutdown using an anchor file.
 #  When launched with the 'start' command, it will also ignore all INT and
@@ -47,12 +47,11 @@ PIDDIR="$@app.base.envvar@/logs"
 #  the JVM and is not useful in situations where a privileged resource or
 #  port needs to be allocated prior to the user being changed.
 #RUN_AS_USER=
-@run.as.user.envvar@
-
+RUN_AS_USER=runAsUser1
 # The following two lines are used by the chkconfig command. Change as is
 #  appropriate for your application.  They should remain commented.
 # chkconfig: 2345 20 80
-# description: @app.long.name@
+# description: Test Project
 
 # Do not modify anything beyond this point
 #-----------------------------------------------------------------------------

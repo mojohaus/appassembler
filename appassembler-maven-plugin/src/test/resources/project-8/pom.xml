@@ -1,7 +1,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright 2005-2007 The Codehaus.
+  ~ Copyright 2005-2008 The Codehaus.
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy of
   ~ this software and associated documentation files (the "Software"), to deal in
@@ -21,28 +21,19 @@
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
   -->
-  
- <daemon>
-   <mainClass>com.company.example.App</mainClass> 
-   <environmentSetupFileName>app-env</environmentSetupFileName>  
-   <generatorConfigurations>
-     <generatorConfiguration>
-       <generator>jsw</generator>
-       <configuration>       
-         <configuration.directory.in.classpath.first>etc1</configuration.directory.in.classpath.first>
-         <configuration.directory.in.classpath.last>etc2</configuration.directory.in.classpath.last>         
-         <!-- remove a built in one -->
-         <wrapper.console.format/>
-         <!-- change a built in one -->
-         <wrapper.console.loglevel>WARN</wrapper.console.loglevel>
-         <app.base.envvar>MY_BASE</app.base.envvar>        
-       </configuration>
-       <includes>
-         <include>macosx-x86-universal-32</include>
-         <include>linux-x86-32</include>
-         <include>solaris-sparc-64</include>
-         <include>windows-x86-32</include>
-      </includes>
-     </generatorConfiguration>
-   </generatorConfigurations>  
- </daemon>
+
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.mojo.appassembler</groupId>
+  <artifactId>project-8</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>Test Project</name>
+  <description>This is a test project using RUN_AS_USER.</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.1</version>
+    </dependency>
+  </dependencies>
+</project>

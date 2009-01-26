@@ -101,10 +101,17 @@ public class JavaServiceWrapperDaemonGenerator
         // Don't want these in the wrapper.conf file
         String appBaseEnvVar = configuration.getProperty( "app.base.envvar", "APP_BASE" );
         configuration.remove( "app.base.envvar" );
+        String runAsUserEnvVar = configuration.getProperty( "run.as.user.envvar", "" );
+        if ( !runAsUserEnvVar.equals("") )
+        {
+            runAsUserEnvVar = "RUN_AS_USER=" + runAsUserEnvVar;
+            configuration.remove( "run.as.user.envvar" );
+        }
 
         Properties context = createContext( request, daemon );
         context.setProperty( "app.base.envvar", appBaseEnvVar );
-        
+        context.setProperty( "run.as.user.envvar", runAsUserEnvVar );
+
         writeWrapperConfFile( request, daemon, outputDirectory, context, configuration );
 
         writeScriptFiles( request, daemon, outputDirectory, context );
@@ -159,7 +166,7 @@ public class JavaServiceWrapperDaemonGenerator
             confFile.setProperty( "wrapper.java.maxmemory", daemon.getJvmSettings().getMaxMemorySize() );
         }
 
-        confFile.setProperty( "wrapper.app.parameter.1", daemon.getMainClass() );
+        confFile.setProperty( "wrapper.app.parameter.1", daemon.getMainClass() );        
 
         createClasspath( request, confFile, configuration );
         createAdditional( daemon, confFile );
