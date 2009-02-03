@@ -89,12 +89,19 @@ public class AssembleMojo
     private Set programs;
 
     /**
-     * Include <code>/etc</code> in the beginning of the classpath in the generated bin files.
+     * The name of the configuration directory.
+     *
+     * @parameter default-value="etc"
+     */
+    private String configurationDirectory;
+
+    /**
+     * Include configuration directory (<code>/etc</code> by default) in the beginning of the classpath in the
+     * generated bin files.
      *
      * @parameter default-value="true"
      */
     private boolean includeConfigurationDirectoryInClasspath;
-
 
     /**
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
@@ -326,7 +333,7 @@ public class AssembleMojo
         if ( includeConfigurationDirectoryInClasspath )
         {
             Directory directory = new Directory();
-            directory.setRelativePath( "etc" );
+            directory.setRelativePath( configurationDirectory );
             directories.add( directory );
         }
 
@@ -336,10 +343,10 @@ public class AssembleMojo
         }
         daemon.getClasspath().setDirectories( directories );
         daemon.setRepositoryName(repositoryName);
-        
+
         List dependencies = new ArrayList();
 
-        Set classPathArtifacts = new HashSet( artifacts );
+        List classPathArtifacts = new ArrayList( artifacts );
         classPathArtifacts.add( projectArtifact );
 
         for ( Iterator it = classPathArtifacts.iterator(); it.hasNext(); )
