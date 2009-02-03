@@ -58,10 +58,10 @@ set BASEDIR=%CD%
 cd %SAVEDIR%
 set SAVE_DIR=
 goto repoSetup
- 
+
 :WinNTGetScriptDir
 set BASEDIR=%~dp0\..
- 
+
 :repoSetup
 if exist %BASEDIR%\bin\app-env.bat call %BASEDIR%\bin\app-env.bat
 
