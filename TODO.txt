@@ -2,7 +2,3 @@ Make sure you add your name on the different items, makes it easier to track.
 
 o Move the appassembler-examples to appassembler-maven-plugin/src/it/* and get the to run as integration tests
   -- Trygve
-
-o Un-deprecate the applications part, it is too useful to drop for now. Or at least document how to do it with the
-  booters
-  -- Trygve

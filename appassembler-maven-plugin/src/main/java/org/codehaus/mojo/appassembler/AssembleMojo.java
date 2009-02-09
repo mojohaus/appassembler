@@ -54,6 +54,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+//@deprecated Use the generate-daemons goal instead
+
 /**
  * Assembles the artifacts and generates bin scripts for the configured applications
  *
@@ -62,7 +64,6 @@ import java.util.StringTokenizer;
  * @goal assemble
  * @requiresDependencyResolution runtime
  * @phase package
- * @deprecated Use the generate-daemons goal instead
  */
 public class AssembleMojo
     extends AbstractMojo
