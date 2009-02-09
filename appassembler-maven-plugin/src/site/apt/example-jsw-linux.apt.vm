@@ -10,6 +10,8 @@ Example: Linux daemon based on Java Service Wrapper
 
 
   The following example shows how to generate start scripts to make an application run as a Linux daemon.
+  See comments below. 
+
 
   In <<<pom.xml>>>:
 
@@ -96,3 +98,27 @@ Example: Linux daemon based on Java Service Wrapper
   </build>
 </project>
 +--------------------------  
+
+* Comments
+  
+  The <<defaultJvmSettings>> are all properties passed to the JVM when it is started.
+
+  In the daemon configuration the first thing to notice is the <<mainClass>> element and
+  the <<commandLineArgument>> start. The command line argument will be passed to the main method of the given mainClass.
+
+  In the <<generatorConfiguration>> specify architectures to avoid generating scripts for unrelevant platforms.
+
+
+  The example also shows some custom properties. These properties are mostly workarounds to facilitate the
+  needs of the community, and will probably be changed/refactored in later versions of the plugin.
+
+  <<configuration.directory.in.classpath.first>> is a hardcoded directory which will be added to the classpath
+    before everything else. (Guess what <<configuration.directory.in.classpath.last>> will do...)
+
+  <<set.default.REPO_DIR>> will override the default <<repo>> as location for libraries.
+
+  <<wrapper.logfile>> sets the wrapper.log location to the <<log>> directory.
+
+  <<run.as.user.envvar>> will set the environment varaible RUN_AS_USER to the given string in the shell JSW is started in.
+  The application will thus be started with this user, if the string represents an existing user.
+  
