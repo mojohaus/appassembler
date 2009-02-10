@@ -90,7 +90,7 @@
   <licenses>
     <license>
       <name>The MIT License</name>
-      <url>file://LICENSE.txt</url>
+      <url>http://svn.codehaus.org/mojo/trunk/mojo/appassembler/LICENSE.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
