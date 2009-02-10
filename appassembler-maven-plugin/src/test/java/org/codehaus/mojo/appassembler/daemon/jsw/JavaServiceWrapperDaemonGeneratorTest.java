@@ -239,16 +239,16 @@ public class JavaServiceWrapperDaemonGeneratorTest
         String dir = "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw";
 
         String testFile = dir + "/wrapper-8.conf";
-        assertEquals( "Comparing " + testFile + " to " + wrapper, FileUtils.fileRead( getTestFile( testFile ) ),
-                      FileUtils.fileRead( wrapper ) );
+        assertEquals( "Comparing " + testFile + " to " + wrapper, normalizeLineTerminators( FileUtils.fileRead( getTestFile( testFile ) ) ),
+                      normalizeLineTerminators( FileUtils.fileRead( wrapper ) ) );
 
         File shellScript = new File( jswDir, "bin/app" );
 
         assertTrue( "Shell script file is missing: " + shellScript.getAbsolutePath(), shellScript.isFile() );
 
         testFile = dir + "/run-8.sh";
-        assertEquals( "Comparing " + testFile + " to " + shellScript, FileUtils.fileRead( getTestFile( testFile ) ),
-                      FileUtils.fileRead( shellScript ) );
+        assertEquals( "Comparing " + testFile + " to " + shellScript, normalizeLineTerminators( FileUtils.fileRead( getTestFile( testFile ) ) ),
+                      normalizeLineTerminators( FileUtils.fileRead( shellScript ) ) );
 
         File batchFile = new File( jswDir, "bin/app.bat" );
 

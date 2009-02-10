@@ -156,4 +156,9 @@ public abstract class AbstractDaemonGeneratorTest
         }
         return appassemblerVersion;
     }
+
+    protected static String normalizeLineTerminators( String input )
+    {
+        return ( input != null ) ? input.replaceAll( "(\r\n)|(\r)", "\n" ) : null;
+    }
 }
