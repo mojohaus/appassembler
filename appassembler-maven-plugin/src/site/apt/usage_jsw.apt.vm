@@ -39,7 +39,7 @@ Usage
           <daemons>
             <daemon>
               <id>app1</id>
-              <mainClass>${pom.groupId}.SomeMainClass</mainClass>
+              <mainClass>${project.groupId}.SomeMainClass</mainClass>
               <commandLineArguments>
                 <commandLineArgument>start</commandLineArgument>
               </commandLineArguments>

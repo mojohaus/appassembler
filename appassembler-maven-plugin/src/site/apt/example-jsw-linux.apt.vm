@@ -27,7 +27,7 @@ Example: Linux daemon based on Java Service Wrapper
         <configuration>
           <repositoryLayout>flat</repositoryLayout>
           <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-          <target>${project.build.directory}</target>
+          <target>\${project.build.directory}</target>
 
           <defaultJvmSettings>
             <initialMemorySize>256M</initialMemorySize>

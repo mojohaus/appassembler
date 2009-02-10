@@ -77,7 +77,7 @@ Hello World!
           <!-- prefix all bin files with "mycompany" -->
           <binPrefix>mycompany</binPrefix>
           <!-- set alternative assemble directory -->
-          <assembleDirectory>${project.build.directory}/mycompany-assemble</assembleDirectory>
+          <assembleDirectory>\${project.build.directory}/mycompany-assemble</assembleDirectory>
           <!-- Extra JVM arguments that will be included in the bin scripts -->
           <extraJvmArguments>-Xms128m</extraJvmArguments>
           <!-- Generate bin scripts for windows and unix pr default -->
