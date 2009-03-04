@@ -7,6 +7,21 @@
 
     <faq id="ulimit">
       <question>
+        The generated CLASSPATH environment variable gets too long for my system!
+      </question>
+      <answer>
+        <p>
+          The CLASSPATH string can get very long, in particular if the application is installed deep inside the file
+          system. To solve this problem use the 'booter-windows' and/or the 'booter-unix' platforms.
+        </p>
+        <p>
+          This problem is most common on Windows, but applies to Unix systems too.
+        </p>
+      </answer>
+    </faq>
+
+    <faq id="ulimit">
+      <question>
         How to set environment properties like for example ulimit?
       </question>
       <answer>

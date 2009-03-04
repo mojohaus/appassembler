@@ -14,13 +14,15 @@ Usage
 
   Choose a usage scenario for detailed documentation
 
-    * {{{usage_bin.html} generate bin scripts}}
-    
-    * {{{usage_jsw.html} generate Java Service Wrapper scripts}}
+    * {{{usage-program.html} generate simple wrapper scripts}} - uses the "programs" mechanism to start the
+    applications
 
+    * {{{usage-daemon.html} generate advanced and/or customizable wrapper scripts}} including:
+
+      * {{{usage_jsw.html} Java Service Wrapper scripts}}
+
+      * {{{usage-script.html} Unix shell scripts and Windows bat files}}
 
  Examples
 
-
     * {{{example-jsw-linux.html} Linux daemon using JSW}}
-

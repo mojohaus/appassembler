@@ -3,7 +3,7 @@
  -----
  Brett Porter
  Kristian Nordal
- Trygve Laugst¿l
+ Trygve Laugstol
  -----
  13 May 2008
  -----
@@ -17,5 +17,3 @@ Mojo Appassembler
     
     To get started using the plug-in for generating a runtime, see the
     {{{appassembler-maven-plugin/index.html} Maven plugin documentation}}
- 
- 

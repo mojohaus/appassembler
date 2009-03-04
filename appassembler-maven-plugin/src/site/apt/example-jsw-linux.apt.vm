@@ -8,10 +8,8 @@
   
 Example: Linux daemon based on Java Service Wrapper
 
-
   The following example shows how to generate start scripts to make an application run as a Linux daemon.
-  See comments below. 
-
+  See comments below.
 
   In <<<pom.xml>>>:
 
@@ -27,7 +25,7 @@ Example: Linux daemon based on Java Service Wrapper
         <configuration>
           <repositoryLayout>flat</repositoryLayout>
           <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-          <target>\${project.build.directory}</target>
+          <target>${project.build.directory}</target>
 
           <defaultJvmSettings>
             <initialMemorySize>256M</initialMemorySize>
@@ -47,7 +45,7 @@ Example: Linux daemon based on Java Service Wrapper
           <daemons>
             <daemon>
               <id>app1</id>
-              <mainClass>\${project.groupId}.SomeMainClass</mainClass>
+              <mainClass>${pom.groupId}.SomeMainClass</mainClass>
               <commandLineArguments>
                 <commandLineArgument>start</commandLineArgument>
               </commandLineArguments>

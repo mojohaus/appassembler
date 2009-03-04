@@ -9,7 +9,7 @@
 
 Application Assembler Maven Plugin
 
-  The Application Assembler Plugin is a Maven plugin for generating bin scripts for java applications.
+  The Application Assembler Plugin is a Maven plugin for generating scripts for starting java applications.
   All dependencies and the artifact of the project itself are placed in a generated Maven repository
   in a defined assemble directory. All artifacts (dependencies + the artifact from the project) are added to
   the classpath in the generated bin scripts.
@@ -19,6 +19,8 @@ Application Assembler Maven Plugin
     * Unix-variants
 
     * Windows NT (Windows 9x is NOT supported)
+
+    * Java Service Wrapper (JSW)
 
   Other generators than the default support different platforms depending on the availability of the tools
   the generator targets.
@@ -31,7 +33,6 @@ Application Assembler Maven Plugin
   * {{{create-repository-mojo.html}appassembler:create-repository}} Creates an appassembler repository.
 
   * {{{generate-daemons-mojo.html}appassembler:generate-daemons}} Generates JSW based daemon wrappers.
-
 
 * Usage
 

@@ -5,9 +5,8 @@
   ------
   December 25, 2008
   ------
-  
-Usage
 
+Usage
 
 * Java Daemon based on Java Service Wrapper
 
@@ -16,8 +15,6 @@ Usage
   The setup is based on {{{http://wrapper.tanukisoftware.org} Java Service Wrapper (JSW)}}
   version {{{http://wrapper.tanukisoftware.org/downloads/3.2.3} 3.2.3}}, using the
   {{{http://wrapper.tanukisoftware.org/doc/english/integrate.html#method1} WrapperSimpleApp Integration}}.
-
-
 
 ** Minimal configuration
 
@@ -82,7 +79,6 @@ $ ps -ef | grep java
 $ target/jsw/app1/bin/app1 stop
 +--------------------------
 
-
 ** Add application specific shutdown code
 
   * The JSW default stop script use the "kill" command.
@@ -99,4 +95,3 @@ Runtime.getRuntime().addShutdownHook(new Thread(){
     }
 }); 
 +--------------------------
-  

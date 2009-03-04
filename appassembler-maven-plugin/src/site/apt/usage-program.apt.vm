@@ -1,0 +1,128 @@
+Usage
+
+* Simple example
+
+** Configuring
+
+  The following is a basic configuration of the plugin, and an example of usage based on a project
+  generated with:
+
++--------------------------
+mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app
++--------------------------
+
+  Configuring the plugin in <<<pom.xml>>>:
+
++--------------------------
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <configuration>
+          <programs>
+            <program>
+              <mainClass>com.mycompany.app.App</mainClass>
+              <name>app</name>
+            </program>
+          </programs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++--------------------------
+
+** Using the generated scripts
+
++--------------------------
+$ mvn package appassembler:assemble
+...
+$ sh target/appassembler/bin/app
+Hello World!
++--------------------------
+
+      * All dependencies and the artifact itself are placed in the defined assemble directory
+        (defaults to <<<${project.build.directory}/appassembler>>>).
+
+      * A <<<bin/>>> directory is created in the assemble directory and the generated bin scripts are
+        placed in that directory (defaults to both unix shell scripts and Windows bat files).
+
+      []
+
+~~ TODO: Add an example of what a generated shell script and bat file looks like
+
+
+* Advanced example
+
+  The following is a configuration example with more of the available options set.
+
+** Configuring
+
++--------------------------
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <configuration>
+          <!-- Include etc/ in the beginning of the classpath declaration in the bin scripts -->
+          <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+          <!-- prefix all bin files with "mycompany" -->
+          <binPrefix>mycompany</binPrefix>
+          <!-- set alternative assemble directory -->
+          <assembleDirectory>\${project.build.directory}/mycompany-assemble</assembleDirectory>
+          <!-- Extra JVM arguments that will be included in the bin scripts -->
+          <extraJvmArguments>-Xms128m</extraJvmArguments>
+          <!-- Generate bin scripts for windows and unix pr default -->
+          <platforms>
+            <platform>windows</platform>
+            <platform>unix</platform>
+          </platforms>
+          <programs>
+            <program>
+              <mainClass>com.mycompany.app.WindowsApp1</mainClass>
+              <name>app1</name>
+              <!-- Only generate windows bat script for this application -->
+              <platforms>
+                <platform>windows</platform>
+              </platforms>
+            </program>
+            <program>
+              <mainClass>com.mycompany.app.UnixApp2</mainClass>
+              <name>app2</name>
+              <!-- Only generate unix shell script for this application -->
+              <platforms>
+                <platform>unix</platform>
+              </platforms>
+            </program>
+            <program>
+              <mainClass>com.mycompany.app.App3</mainClass>
+              <name>app3</name>
+            </program>
+            <program>
+              <mainClass>com.mycompany.app.App4</mainClass>
+              <name>app4</name>
+            </program>
+          </programs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++--------------------------
+
+** Using the generated scripts
+
++--------------------------
+$ mvn package appassembler:assemble
+...
+$ sh target/mycompany-assemble/bin/mycompanyapp2
+Hello World!
++--------------------------
