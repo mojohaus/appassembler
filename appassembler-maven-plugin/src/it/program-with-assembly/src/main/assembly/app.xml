@@ -1,0 +1,19 @@
+<assembly>
+  <id>app</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+<!--
+  <files>
+    <file>
+      <source>target/appassembler/bin</source>
+      <outputDirectory>bin</outputDirectory>
+    </file>
+  </files>
+-->
+  <fileSets>
+    <fileSet>
+      <directory>target/appassembler</directory>
+    </fileSet>
+  </fileSets>
+</assembly>

@@ -1,8 +1,12 @@
-Usage
+  ------
+  Using the Application Assembler Plugin
+  ------
+  ------
+  ------
 
-* Simple example
+Simple example
 
-** Configuring
+* Configuring
 
   The following is a basic configuration of the plugin, and an example of usage based on a project
   generated with:
@@ -36,7 +40,7 @@ mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app
 </project>
 +--------------------------
 
-** Using the generated scripts
+* Using the generated scripts
 
 +--------------------------
 $ mvn package appassembler:assemble

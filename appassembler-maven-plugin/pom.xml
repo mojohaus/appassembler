@@ -187,4 +187,43 @@
       </resource>
     </resources>
   </build>
+  <profiles>
+    <profile>
+      <id>integration-tests</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>shitty-maven-plugin</artifactId>
+            <version>1.0-alpha-3</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>clean</goal>
+                  <goal>install</goal>
+                  <goal>test</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <projects>
+                <project>
+                  <directory>src/it</directory>
+                  <includes>
+                    <include>${its}/pom.xml</include>
+                  </includes>
+                </project>
+              </projects>
+              <threadCount>${threadCount}</threadCount>
+              <parallel>true</parallel>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  <properties>
+    <its>*</its>
+    <threadCount>2</threadCount>
+  </properties>
 </project>

@@ -119,4 +119,3 @@ Example: Linux daemon based on Java Service Wrapper
 
   <<run.as.user.envvar>> will set the environment varaible RUN_AS_USER to the given string in the shell JSW is started in.
   The application will thus be started with this user, if the string represents an existing user.
-  

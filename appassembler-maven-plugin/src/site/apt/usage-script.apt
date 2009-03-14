@@ -1,0 +1,38 @@
+  ------
+  Using the Application Assembler Plugin
+  ------
+  ------
+  ------
+
+About the Generated Scripts
+
+  The generated scripts have some environment variables that they use and some system properties they set that you can
+  use in your application.
+
+* Consumed Environment Variables
+
+  * <<JAVACMD>>, <<JAVA_HOME>> - If set, this command will be used to launch "java". If not set it will try to use
+  JAVA_HOME/bin/java as the command
+
+  * <<JAVA_OPTS>> - A string that will be inserted before the arguments to the application. Use this to customize the
+  JVM settings like -Xms etc.
+
+  * <<REPO>> - Used by the script to build the local repository
+
+  * <<CLASSPATH_PREFIX>> - A string that will be prefixed to the classpath. Use this to inject special directories into
+  the classpath.
+
+* Consumed System Properties
+
+ * <<app.booter.debug>> - Used by the booters to print out some info.
+
+* Exported System Properties
+
+  * <<app.name>> - The name of the application as stated in the POM.
+
+  * <<app.pid>> - The process ID of the process. NOTE: This applies to unix only.
+
+  * <<app.repo>> - The path to the repository that was used to start the application. See REPO
+
+  * <<basedir>> - The installation directory of the application, i.e. the directory where bin/ and repo/ exist. Use
+  this if you need to load files relative to your installation directory.
