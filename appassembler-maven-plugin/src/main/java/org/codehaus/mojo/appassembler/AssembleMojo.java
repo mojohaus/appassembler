@@ -141,7 +141,7 @@ public class AssembleMojo
     private boolean generateRepository;
 
     /**
-     * Path (relative to target) of the desired output repository.
+     * Path (relative to assembleDirectory) of the desired output repository.
      * 
      * @parameter default-value="repo"
      */
