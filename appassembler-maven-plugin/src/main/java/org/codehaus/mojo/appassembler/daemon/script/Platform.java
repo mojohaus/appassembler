@@ -51,6 +51,12 @@ public class Platform
 
     private final static Map ALL_PLATFORMS;
 
+    private static final String DEFAULT_UNIX_BIN_FILE_EXTENSION = "";
+
+    private static final String DEFAULT_WINDOWS_BIN_FILE_EXTENSION = ".bat";
+
+    private String binFileExtension;
+
     private String name;
 
     private boolean isWindows;
@@ -62,8 +68,8 @@ public class Platform
     static
     {
         ALL_PLATFORMS = new HashMap();
-        addPlatform( new Platform( UNIX_NAME, false ) );
-        addPlatform( new Platform( WINDOWS_NAME, true ) );
+        addPlatform( new Platform( UNIX_NAME, false, DEFAULT_UNIX_BIN_FILE_EXTENSION ) );
+        addPlatform( new Platform( WINDOWS_NAME, true, DEFAULT_WINDOWS_BIN_FILE_EXTENSION ) );
     }
 
     private static Platform addPlatform( Platform platform )
@@ -145,11 +151,13 @@ public class Platform
     //
     // -----------------------------------------------------------------------
 
-    private Platform( String name, boolean isWindows )
+    private Platform( String name, boolean isWindows, String binFileExtension )
     {
         this.name = name;
 
         this.isWindows = isWindows;
+
+        this.binFileExtension = binFileExtension;
     }
 
     // -----------------------------------------------------------------------
@@ -163,7 +171,7 @@ public class Platform
 
     public String getBinFileExtension()
     {
-        return isWindows ? ".bat" : "";
+        return binFileExtension;
     }
 
     public String getBasedir()
@@ -373,5 +381,22 @@ public class Platform
     public boolean isShowConsoleWindow( Daemon daemon )
     {
         return daemon.isShowConsoleWindow() && isWindows;
+    }
+
+    // -----------------------------------------------------------------------
+    // Setters for the platform-specific bits
+    // -----------------------------------------------------------------------
+
+    public void setBinFileExtension( String binFileExtension )
+    {
+        // We can't have a null extension
+        if ( binFileExtension == null )
+        {
+            this.binFileExtension = "";
+        }
+        else
+        {
+            this.binFileExtension = binFileExtension;
+        }
     }
 }
