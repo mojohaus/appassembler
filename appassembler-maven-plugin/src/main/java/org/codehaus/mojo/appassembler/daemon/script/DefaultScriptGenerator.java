@@ -129,8 +129,8 @@ public class DefaultScriptGenerator
             File binFile = new File( binDir, programName + platform.getBinFileExtension() );
 
             out = new FileWriter( binFile );
-            getLogger().debug( "Writing shell file for platform '" + platform.getName() + "' to '" +
-                binFile.getAbsolutePath() + "'." );
+            getLogger().debug( "Writing shell file for platform '" + platform.getName() + "' to '"
+                + binFile.getAbsolutePath() + "'." );
 
             IOUtil.copy( interpolationFilterReader, out );
         }

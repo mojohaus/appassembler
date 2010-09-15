@@ -45,11 +45,11 @@ import java.util.Set;
  */
 public class Platform
 {
-    public final static String UNIX_NAME = "unix";
+    public static final String UNIX_NAME = "unix";
 
-    public final static String WINDOWS_NAME = "windows";
+    public static final String WINDOWS_NAME = "windows";
 
-    private final static Map ALL_PLATFORMS;
+    private static final Map ALL_PLATFORMS;
 
     private static final String DEFAULT_UNIX_BIN_FILE_EXTENSION = "";
 
@@ -236,7 +236,8 @@ public class Platform
                 throw new DaemonGeneratorException( "Unknown classpath element type: " + object.getClass().getName() );
             }
 
-            classpathBuffer.append( StringUtils.replace( ( (ClasspathElement) object ).getRelativePath(), "/", getSeparator() ) );
+            classpathBuffer.append( StringUtils.replace( ( (ClasspathElement) object ).getRelativePath(),
+                                                         "/", getSeparator() ) );
         }
 
         return classpathBuffer.toString();

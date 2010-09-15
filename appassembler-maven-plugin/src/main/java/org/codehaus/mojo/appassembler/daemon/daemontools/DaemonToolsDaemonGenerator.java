@@ -33,7 +33,13 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,7 +99,8 @@ public class DaemonToolsDaemonGenerator
         context.put( "MAINCLASS", daemon.getMainClass() );
         context.put( "NAME", daemon.getId() );
 
-        InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context, "@", "@" );
+        InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context,
+                                                                                             "@", "@" );
 
         File runFile = new File( request.getOutputDirectory(), "run" );
         FileWriter out = null;
@@ -114,8 +121,8 @@ public class DaemonToolsDaemonGenerator
         }
         finally
         {
-            IOUtil.close(interpolationFilterReader);
-            IOUtil.close(out);
+            IOUtil.close( interpolationFilterReader );
+            IOUtil.close( out );
         }
 
     }
@@ -146,8 +153,8 @@ public class DaemonToolsDaemonGenerator
         }
         finally
         {
-            IOUtil.close(envReader);
-            IOUtil.close(out);
+            IOUtil.close( envReader );
+            IOUtil.close( out );
         }
     }
 }

@@ -64,24 +64,24 @@ public class JavaServiceWrapperDaemonGenerator
 {
     private static final Map jswPlatformsMap = new HashMap() { 
         {   
-            put( "linux-x86-32-lib", "lib/libwrapper-linux-x86-32.so");
-            put( "linux-x86-32-exec", "bin/wrapper-linux-x86-32");
-            put( "linux-x86-64-lib", "lib/libwrapper-linux-x86-64.so");
-            put( "linux-x86-64-exec", "bin/wrapper-linux-x86-64");
-            put( "linux-ppc-64-lib", "lib/libwrapper-linux-ppc-64.so");
-            put( "linux-ppc-64-exec", "bin/wrapper-linux-ppc-64");
-            put( "macosx-ppc-32-lib", "lib/libwrapper-macosx-ppc-32.jnilib");
-            put( "macosx-ppc-32-exec", "bin/wrapper-macosx-ppc-32");
-            put( "macosx-x86-universal-32-lib", "lib/libwrapper-macosx-universal-32.jnilib");
-            put( "macosx-x86-universal-32-exec", "bin/wrapper-macosx-universal-32");
-            put( "solaris-sparc-32-lib", "lib/libwrapper-solaris-sparc-32.so");
-            put( "solaris-sparc-32-exec", "bin/wrapper-solaris-sparc-32");
-            put( "solaris-sparc-64-lib", "lib/libwrapper-solaris-sparc-64.so");
-            put( "solaris-sparc-64-exec", "bin/wrapper-solaris-sparc-64");
-            put( "solaris-x86-32-lib", "lib/libwrapper-solaris-x86-32.so");
-            put( "solaris-x86-32-exec", "bin/wrapper-solaris-x86-32");
-            put( "windows-x86-32-lib", "lib/wrapper-windows-x86-32.dll");
-            put( "windows-x86-32-exec", "bin/wrapper-windows-x86-32.exe");
+            put( "linux-x86-32-lib", "lib/libwrapper-linux-x86-32.so" );
+            put( "linux-x86-32-exec", "bin/wrapper-linux-x86-32" );
+            put( "linux-x86-64-lib", "lib/libwrapper-linux-x86-64.so" );
+            put( "linux-x86-64-exec", "bin/wrapper-linux-x86-64" );
+            put( "linux-ppc-64-lib", "lib/libwrapper-linux-ppc-64.so" );
+            put( "linux-ppc-64-exec", "bin/wrapper-linux-ppc-64" );
+            put( "macosx-ppc-32-lib", "lib/libwrapper-macosx-ppc-32.jnilib" );
+            put( "macosx-ppc-32-exec", "bin/wrapper-macosx-ppc-32" );
+            put( "macosx-x86-universal-32-lib", "lib/libwrapper-macosx-universal-32.jnilib" );
+            put( "macosx-x86-universal-32-exec", "bin/wrapper-macosx-universal-32" );
+            put( "solaris-sparc-32-lib", "lib/libwrapper-solaris-sparc-32.so" );
+            put( "solaris-sparc-32-exec", "bin/wrapper-solaris-sparc-32" );
+            put( "solaris-sparc-64-lib", "lib/libwrapper-solaris-sparc-64.so" );
+            put( "solaris-sparc-64-exec", "bin/wrapper-solaris-sparc-64" );
+            put( "solaris-x86-32-lib", "lib/libwrapper-solaris-x86-32.so" );
+            put( "solaris-x86-32-exec", "bin/wrapper-solaris-x86-32" );
+            put( "windows-x86-32-lib", "lib/wrapper-windows-x86-32.dll" );
+            put( "windows-x86-32-exec", "bin/wrapper-windows-x86-32.exe" );
         }
     };
     
@@ -102,7 +102,7 @@ public class JavaServiceWrapperDaemonGenerator
         String appBaseEnvVar = configuration.getProperty( "app.base.envvar", "APP_BASE" );
         configuration.remove( "app.base.envvar" );
         String runAsUserEnvVar = configuration.getProperty( "run.as.user.envvar", "" );
-        if ( !runAsUserEnvVar.equals("") )
+        if ( !runAsUserEnvVar.equals( "" ) )
         {
             runAsUserEnvVar = "RUN_AS_USER=" + runAsUserEnvVar;
             configuration.remove( "run.as.user.envvar" );
@@ -123,7 +123,8 @@ public class JavaServiceWrapperDaemonGenerator
         writeExecutableFiles( outputDirectory, jswPlatformIncludes );
     }
 
-    private void writeWrapperConfFile( DaemonGenerationRequest request, Daemon daemon, File outputDirectory, Properties context, Properties configuration )
+    private void writeWrapperConfFile( DaemonGenerationRequest request, Daemon daemon, File outputDirectory,
+                                       Properties context, Properties configuration )
         throws DaemonGeneratorException
     {
         InputStream in = this.getClass().getResourceAsStream( "conf/wrapper.conf.in" );
@@ -299,16 +300,16 @@ public class JavaServiceWrapperDaemonGenerator
         MavenProject project = request.getMavenProject();
         ArtifactRepositoryLayout layout = request.getRepositoryLayout();
 
-        confFile.setProperty( wrapperClassPathPrefix + counter++, "%REPO_DIR%/" +
-            createDependency( layout, project.getArtifact() ).getRelativePath() );
+        confFile.setProperty( wrapperClassPathPrefix + counter++, "%REPO_DIR%/"
+            + createDependency( layout, project.getArtifact() ).getRelativePath() );
 
         Iterator j = project.getRuntimeArtifacts().iterator();
         while ( j.hasNext() )
         {
             Artifact artifact = (Artifact) j.next();
 
-            confFile.setProperty( wrapperClassPathPrefix + counter, "%REPO_DIR%/" +
-                createDependency( layout, artifact ).getRelativePath() );
+            confFile.setProperty( wrapperClassPathPrefix + counter, "%REPO_DIR%/"
+                + createDependency( layout, artifact ).getRelativePath() );
             counter++;
         }
 
@@ -358,7 +359,8 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
-    private void writeScriptFiles( DaemonGenerationRequest request, Daemon daemon, File outputDirectory, Properties context )
+    private void writeScriptFiles( DaemonGenerationRequest request, Daemon daemon, File outputDirectory,
+                                   Properties context )
         throws DaemonGeneratorException
     {
         // TODO: selectively depending on selected platforms instead of always doing both

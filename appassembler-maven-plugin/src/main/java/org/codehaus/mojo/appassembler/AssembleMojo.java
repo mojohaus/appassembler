@@ -245,7 +245,7 @@ public class AssembleMojo
     // CONSTANTS
     // ----------------------------------------------------------------------
 
-    private final static Set VALID_PLATFORMS =
+    private static final Set VALID_PLATFORMS =
         Collections.unmodifiableSet( new HashSet( Arrays.asList( new String[]{"unix", "windows"} ) ) );
 
     // ----------------------------------------------------------------------
@@ -302,8 +302,8 @@ public class AssembleMojo
         {
             // The repo where the jar files will be installed
             ArtifactRepository artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
-                "appassembler", "file://" + assembleDirectory.getAbsolutePath() + "/"+repositoryName, artifactRepositoryLayout,
-                false );
+                "appassembler", "file://" + assembleDirectory.getAbsolutePath() + "/" + repositoryName,
+                artifactRepositoryLayout, false );
 
             for ( Iterator it = artifacts.iterator(); it.hasNext(); )
             {
@@ -351,8 +351,8 @@ public class AssembleMojo
                 }
                 catch ( DaemonGeneratorException e )
                 {
-                    throw new MojoExecutionException( "Error while generating script for the program '" +
-                        program.getName() + "' for the platform '" + platform + "': " + e.getMessage(), e );
+                    throw new MojoExecutionException( "Error while generating script for the program '"
+                        + program.getName() + "' for the platform '" + platform + "': " + e.getMessage(), e );
                 }
             }
         }
@@ -361,7 +361,8 @@ public class AssembleMojo
         // Copy configuration directory
         // ----------------------------------------------------------------------
 
-        if( copyConfigurationDirectory ) { 
+        if ( copyConfigurationDirectory )
+        { 
             copyConfigurationDirectory();
         }
     }
@@ -389,7 +390,7 @@ public class AssembleMojo
             daemon.setClasspath( new Classpath() );
         }
         daemon.getClasspath().setDirectories( directories );
-        daemon.setRepositoryName(repositoryName);
+        daemon.setRepositoryName( repositoryName );
 
         List dependencies = new ArrayList();
 
@@ -484,25 +485,26 @@ public class AssembleMojo
             if ( !success )
             {
                 throw new MojoFailureException( "Failed to create the target directory for configuration files: "
-                        + configurationTargetDirectory.getAbsolutePath());
+                        + configurationTargetDirectory.getAbsolutePath() );
             }
 
             try
             {
                 getLog().debug( "Will try to copy configuration files from "
                         + configurationSourceDirectory.getAbsolutePath() + " to "
-                        +  configurationTargetDirectory.getAbsolutePath());
+                        +  configurationTargetDirectory.getAbsolutePath() );
                 FileUtils.copyDirectory( configurationSourceDirectory, configurationTargetDirectory,
                                          null, getDefaultExcludesAsCommaSeparatedString() );
             }
-            catch( IOException e )
+            catch ( IOException e )
             {
                 throw new MojoFailureException( "Failed to copy the configuration files." );
             }
         }
     }
 
-    private String getDefaultExcludesAsCommaSeparatedString() {
+    private String getDefaultExcludesAsCommaSeparatedString()
+    {
         StringBuffer defaultExcludes = new StringBuffer();
 
         List defaultExcludesAsList = FileUtils.getDefaultExcludesAsList();
@@ -511,7 +513,7 @@ public class AssembleMojo
         {
             String exclude = (String) iterator.next();
             defaultExcludes.append( exclude );
-            if( iterator.hasNext() )
+            if ( iterator.hasNext() )
             {
                 defaultExcludes.append( "," );
             }
@@ -617,8 +619,8 @@ public class AssembleMojo
                 String platformName = (String) iterator.next();
                 if ( !VALID_PLATFORMS.contains( platformName ) )
                 {
-                    getLog().warn( "Bin file extension configured for a non-valid platform (" + platformName +
-                        "), supported platforms are: " + VALID_PLATFORMS );
+                    getLog().warn( "Bin file extension configured for a non-valid platform (" + platformName
+                        + "), supported platforms are: " + VALID_PLATFORMS );
                 }
                 else
                 {

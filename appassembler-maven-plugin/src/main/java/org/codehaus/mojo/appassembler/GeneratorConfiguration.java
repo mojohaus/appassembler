@@ -65,11 +65,13 @@ public class GeneratorConfiguration
         return "generator = " + generator + "; configuration = " + configuration;
     }
 
-	public List getIncludes() {
-		return includes;
-	}
+    public List getIncludes()
+    {
+        return includes;
+    }
 
-	public void setIncludes(List includes) {
-		this.includes = includes;
-	}
+    public void setIncludes( List includes )
+    {
+        this.includes = includes;
+    }
 }

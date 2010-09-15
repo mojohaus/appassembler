@@ -96,11 +96,13 @@ public class Daemon
         return showConsoleWindow;
     }
 
-    public String getEnvironmentSetupFileName() {
+    public String getEnvironmentSetupFileName()
+    {
         return environmentSetupFileName;
     }
 
-    public void setEnvironmentSetupFileName(String environmentSetupFileName) {
+    public void setEnvironmentSetupFileName( String environmentSetupFileName )
+    {
         this.environmentSetupFileName = environmentSetupFileName;
     }
     
