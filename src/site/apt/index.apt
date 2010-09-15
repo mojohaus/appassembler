@@ -10,7 +10,7 @@
  
 Mojo Appassembler
 
-    Writing good an end to end portable applications in Java has always
+    Writing good end to end portable applications in Java has always
     been a pain because of the missing OS abstractions. The main goal of the
     Appassembler Maven plug-in is to try to remove some of this pain through
     an application descriptor and a set of Maven Mojos.
