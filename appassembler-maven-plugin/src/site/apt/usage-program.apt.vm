@@ -76,7 +76,13 @@ Hello World!
         <artifactId>appassembler-maven-plugin</artifactId>
         <version>${project.version}</version>
         <configuration>
-          <!-- Include etc/ in the beginning of the classpath declaration in the bin scripts -->
+          <!-- Set the target configuration directory to be used in the bin scripts -->
+          <configurationDirectory>conf</configurationDirectory>
+          <!-- Copy the contents from "/src/main/config" to the target
+               configuration directory in the assembled application -->
+          <copyConfigurationDirectory>true</copyConfigurationDirectory>
+          <!-- Include the target configuration directory in the beginning of
+               the classpath declaration in the bin scripts -->
           <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
           <!-- prefix all bin files with "mycompany" -->
           <binPrefix>mycompany</binPrefix>

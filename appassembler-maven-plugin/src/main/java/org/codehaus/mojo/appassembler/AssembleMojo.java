@@ -42,9 +42,11 @@ import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -91,15 +93,32 @@ public class AssembleMojo
     private Set programs;
 
     /**
-     * The name of the configuration directory.
+     * The name of the target directory for configuration files.
      *
      * @parameter default-value="etc"
      */
     private String configurationDirectory;
 
     /**
-     * Include configuration directory (<code>/etc</code> by default) in the beginning of the classpath in the
-     * generated bin files.
+     * The name of the source directory for configuration files.
+     *
+     * @parameter default-value="src/main/config"
+     * @since 1.1
+     */
+    private File configurationSourceDirectory;
+
+    /**
+     * If the source configuration directory should be copied to the
+     * configured <code>configurationDirectory</code>.
+     *
+     * @parameter default-value="false"
+     * @since 1.1
+     */
+    private boolean copyConfigurationDirectory;
+
+    /**
+     * If the <code>configurationDirectory</code> (<code>etc</code> by default) should be included
+     * in the beginning of the classpath in the generated bin files.
      *
      * @parameter default-value="true"
      */
@@ -159,6 +178,7 @@ public class AssembleMojo
      * </pre>
      *
      * @parameter
+     * @since 1.1
      */
     protected Map/*<String, String>*/ binFileExtensions;
 
@@ -336,6 +356,14 @@ public class AssembleMojo
                 }
             }
         }
+
+        // ----------------------------------------------------------------------
+        // Copy configuration directory
+        // ----------------------------------------------------------------------
+
+        if( copyConfigurationDirectory ) { 
+            copyConfigurationDirectory();
+        }
     }
 
     private org.codehaus.mojo.appassembler.model.Daemon programToDaemon( Program program,
@@ -436,6 +464,60 @@ public class AssembleMojo
                 throw new MojoFailureException( "Failed to create directory for bin files." );
             }
         }
+    }
+
+    private void copyConfigurationDirectory()
+        throws MojoFailureException
+    {
+        if ( !configurationSourceDirectory.exists() )
+        {
+            throw new MojoFailureException( "The source directory for configuration files does not exist: "
+                    + configurationSourceDirectory.getAbsolutePath() );
+        }
+
+        File configurationTargetDirectory = new File( assembleDirectory.getAbsolutePath(), configurationDirectory );
+        if ( !configurationTargetDirectory.exists() )
+        {
+            // Create (if necessary) target directory for configuration files
+            boolean success = configurationTargetDirectory.mkdirs();
+
+            if ( !success )
+            {
+                throw new MojoFailureException( "Failed to create the target directory for configuration files: "
+                        + configurationTargetDirectory.getAbsolutePath());
+            }
+
+            try
+            {
+                getLog().debug( "Will try to copy configuration files from "
+                        + configurationSourceDirectory.getAbsolutePath() + " to "
+                        +  configurationTargetDirectory.getAbsolutePath());
+                FileUtils.copyDirectory( configurationSourceDirectory, configurationTargetDirectory,
+                                         null, getDefaultExcludesAsCommaSeparatedString() );
+            }
+            catch( IOException e )
+            {
+                throw new MojoFailureException( "Failed to copy the configuration files." );
+            }
+        }
+    }
+
+    private String getDefaultExcludesAsCommaSeparatedString() {
+        StringBuffer defaultExcludes = new StringBuffer();
+
+        List defaultExcludesAsList = FileUtils.getDefaultExcludesAsList();
+        Iterator iterator = defaultExcludesAsList.iterator();
+        while ( iterator.hasNext() )
+        {
+            String exclude = (String) iterator.next();
+            defaultExcludes.append( exclude );
+            if( iterator.hasNext() )
+            {
+                defaultExcludes.append( "," );
+            }
+        }
+
+        return defaultExcludes.toString();
     }
 
     private Set validatePlatforms( Set platforms, Set defaultPlatforms )
