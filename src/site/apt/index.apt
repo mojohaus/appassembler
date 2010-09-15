@@ -16,4 +16,4 @@ Mojo Appassembler
     an application descriptor and a set of Maven Mojos.
     
     To get started using the plug-in for generating a runtime, see the
-    {{{appassembler-maven-plugin/index.html} Maven plugin documentation}}
+    {{{./appassembler-maven-plugin/index.html} Maven plugin documentation}}

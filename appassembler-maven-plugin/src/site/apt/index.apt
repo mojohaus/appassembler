@@ -27,13 +27,13 @@ Application Assembler Maven Plugin
 
 * Goals Overview
 
-  * {{{assemble-mojo.html}appassembler:assemble}} 	Assembles the artifacts and generates bin scripts
+  * {{{./assemble-mojo.html}appassembler:assemble}} Assembles the artifacts and generates bin scripts
     for the configured applications.
 
-  * {{{create-repository-mojo.html}appassembler:create-repository}} Creates an appassembler repository.
+  * {{{./create-repository-mojo.html}appassembler:create-repository}} Creates an appassembler repository.
 
-  * {{{generate-daemons-mojo.html}appassembler:generate-daemons}} Generates JSW based daemon wrappers.
+  * {{{./generate-daemons-mojo.html}appassembler:generate-daemons}} Generates JSW based daemon wrappers.
 
 * Usage
 
-  Instructions on how to use the Application Assembler Plugin can be found {{{usage.html}here}}.
+  Instructions on how to use the Application Assembler Plugin can be found {{{./usage.html}here}}.
