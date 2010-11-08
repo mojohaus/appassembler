@@ -90,6 +90,7 @@ public class GenerateDaemonsMojo
      * The maven project in question.
      * @parameter expression="${project}"
      * @required
+     * @readonly
      */
     private MavenProject project;
 
