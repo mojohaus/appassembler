@@ -32,7 +32,7 @@
   <artifactId>appassembler</artifactId>
   <packaging>pom</packaging>
   <groupId>org.codehaus.mojo.appassembler</groupId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.1.1</version>
   <name>Appassembler</name>
   <inceptionYear>2006</inceptionYear>
   <issueManagement>
@@ -100,9 +100,9 @@
     <module>appassembler-booter</module>
   </modules>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/appassembler</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/appassembler</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/appassembler</url>
+    <connection>scm:svn:http://svn.codehaus.org/mojo/tags/appassembler-1.1.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/tags/appassembler-1.1.1</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/mojo/tags/appassembler-1.1.1</url>
   </scm>
   <reporting>
     <plugins>
