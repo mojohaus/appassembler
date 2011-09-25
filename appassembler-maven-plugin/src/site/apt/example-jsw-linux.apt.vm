@@ -27,7 +27,7 @@ Example: Linux daemon based on Java Service Wrapper
           <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
           <target>${project.build.directory}</target>
 
-          <defaultJvmSettings>
+          <jvmSettings>
             <initialMemorySize>256M</initialMemorySize>
             <maxMemorySize>1024M</maxMemorySize>
             <systemProperties>
@@ -40,7 +40,7 @@ Example: Linux daemon based on Java Service Wrapper
             <extraArguments>
               <extraArgument>-server</extraArgument>
             </extraArguments>
-          </defaultJvmSettings>
+          </jvmSettings>
 
           <daemons>
             <daemon>
@@ -99,7 +99,7 @@ Example: Linux daemon based on Java Service Wrapper
 
 * Comments
   
-  The <<defaultJvmSettings>> are all properties passed to the JVM when it is started.
+  The <<jvmSettings>> are all properties passed to the JVM when it is started.
 
   In the daemon configuration the first thing to notice is the <<mainClass>> element and
   the <<commandLineArgument>> start. The command line argument will be passed to the main method of the given mainClass.
