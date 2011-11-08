@@ -36,7 +36,6 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <version>1.0-alpha-10</version>
       <scope>test</scope>
     </dependency>
     <!-- Temporary until modello stax plugin makes buildDom method generation optional -->
