@@ -96,9 +96,9 @@
     </license>
   </licenses>
   <modules>
-    <module>appassembler-maven-plugin</module>
     <module>appassembler-model</module>
     <module>appassembler-booter</module>
+    <module>appassembler-maven-plugin</module>
   </modules>
   <scm>
     <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/appassembler</connection>
