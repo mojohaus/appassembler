@@ -35,9 +35,17 @@
   <packaging>maven-plugin</packaging>
   <name>Appassembler :: Maven Plug-In</name>
   <description>A Mojo for generating bin scripts for Java applications.</description>
+
+  <properties>
+    <its>*</its>
+    <threadCount>2</threadCount>
+    <maven.version>2.0.10</maven.version>
+  </properties>
+
   <prerequisites>
     <maven>${maven.version}</maven>
   </prerequisites>
+
   <contributors>
     <contributor>
       <name>Philip Oliver-Paull</name>
@@ -79,7 +87,6 @@
     <dependency>
       <groupId>stax</groupId>
       <artifactId>stax-api</artifactId>
-      <version>1.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -219,9 +226,5 @@
       </build>
     </profile>
   </profiles>
-  <properties>
-    <its>*</its>
-    <threadCount>2</threadCount>
-    <maven.version>2.0.10</maven.version>
-  </properties>
+
 </project>
