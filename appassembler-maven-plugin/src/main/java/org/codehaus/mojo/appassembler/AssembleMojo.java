@@ -375,6 +375,7 @@ public class AssembleMojo
         daemon.setId( program.getName() );
         daemon.setMainClass( program.getMainClass() );
         daemon.setShowConsoleWindow( showConsoleWindow );
+        daemon.setCommandLineArguments( program.getCommandLineArguments() );
 
         List directories = new ArrayList();
 

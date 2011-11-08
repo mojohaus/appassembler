@@ -24,6 +24,7 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,8 +38,16 @@ public class Program
 
     private String mainClass;
 
+    /**
+     * Extra arguments which will be given the Main Class as arguments verbatim.
+     *
+     * @parameter
+     */
+    private List commandLineArguments;
+
+
     private Set platforms;
-    
+
     public Program()
     {
     }
@@ -78,5 +87,19 @@ public class Program
     {
         this.platforms = platforms;
     }
-    
+
+    public List getCommandLineArguments()
+    {
+        return this.commandLineArguments;
+    }
+
+    public void setCommandLineArguments( List arguments )
+    {
+        this.commandLineArguments = arguments;
+    }
+
+    public void addCommandLineArgument( String argument )
+    {
+        this.commandLineArguments.add( argument );
+    }
 }
