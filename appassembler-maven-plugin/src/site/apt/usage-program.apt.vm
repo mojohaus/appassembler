@@ -114,6 +114,11 @@ Hello World!
             </program>
             <program>
               <mainClass>com.mycompany.app.App3</mainClass>
+              <commandLineArguments>
+              	<!-- Add two predefined command line arguments to the call of App3 -->
+              	<commandLineArgument>arg1</commandLineArgument>
+              	<commandLineArgument>arg2</commandLineArgument>
+              </commandLineArguments>
               <name>app3</name>
             </program>
             <program>
