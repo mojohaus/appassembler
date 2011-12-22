@@ -37,7 +37,6 @@
         <version>1.0-SNAPSHOT</version>
         <configuration>
           <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-          <binPrefix>foo</binPrefix>
           <extraJvmArguments>-Xms16m</extraJvmArguments>
           <programs>
             <program>

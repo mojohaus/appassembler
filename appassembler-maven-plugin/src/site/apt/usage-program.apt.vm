@@ -84,8 +84,6 @@ Hello World!
           <!-- Include the target configuration directory in the beginning of
                the classpath declaration in the bin scripts -->
           <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-          <!-- prefix all bin files with "mycompany" -->
-          <binPrefix>mycompany</binPrefix>
           <!-- set alternative assemble directory -->
           <assembleDirectory>\${project.build.directory}/mycompany-assemble</assembleDirectory>
           <!-- Extra JVM arguments that will be included in the bin scripts -->

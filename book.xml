@@ -157,8 +157,6 @@ Hello World!</programlisting>
         &lt;configuration&gt;
           &lt;!-- Include etc/ in the beginning of the classpath declaration in the bin scripts --&gt;
           &lt;includeConfigurationDirectoryInClasspath&gt;true&lt;/includeConfigurationDirectoryInClasspath&gt;
-          &lt;!-- prefix all bin files with "mycompany" --&gt;
-          &lt;binPrefix&gt;mycompany&lt;/binPrefix&gt;
           &lt;!-- set alternative assemble directory --&gt;
           &lt;assembleDirectory&gt;${project.build.directory}/mycompany-assemble&lt;/assembleDirectory&gt;
           &lt;!-- Extra JVM arguments that will be included in the bin scripts --&gt;
