@@ -57,15 +57,15 @@ exec ${rpm.path}/bin/${rpm.appname} $1
         (The wrapper script is placed in the "bin" directory.) 
         </p>
         <source>
-<build>
-    <resources>
-      <resource>
-        <directory>bin</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
+&lt;build&gt;
+    &lt;resources&gt;
+      &lt;resource&gt;
+        &lt;directory&gt;bin&lt;/directory&gt;
+        &lt;filtering&gt;true&lt;/filtering&gt;
+      &lt;/resource&gt;
+    &lt;/resources&gt;
 ...
-</build>
+&lt;/build&gt;
         </source>
       </answer>
     </faq>   
