@@ -134,7 +134,7 @@ public class GenericDaemonGenerator extends AbstractLogEnabled implements Daemon
         complete.getClasspath().addDependency( projectDependency );
 
         // -----------------------------------------------------------------------
-        // Add all the dependencies from the project.
+        // Add all the dependencies of the project.
         // -----------------------------------------------------------------------
         for ( Iterator it = project.getRuntimeArtifacts().iterator(); it.hasNext(); )
         {
