@@ -39,9 +39,9 @@
 # The following two lines are used by the chkconfig command. Change as is
 #  appropriate for your application.  They should remain commented.
 # chkconfig: 2345 20 80
-# description: ${pom.name}
+# description: ${project.name}
 
-echo 'Running wrapper for ${pom.name}'
+echo 'Running wrapper for ${project.name}'
 
 if [ "$1" = "start" ] || [ "$1" = "console" ]; then
     ulimit -n 65000
