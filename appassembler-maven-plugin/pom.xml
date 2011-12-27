@@ -215,6 +215,9 @@
               <pomIncludes>
                 <pomInclude>*/pom.xml</pomInclude>
               </pomIncludes>
+              <pomExcludes>
+                <pomExclude>MAPPASM-108-*/pom.xml</pomExclude>
+              </pomExcludes>
               <preBuildHookScript>setup</preBuildHookScript>
               <postBuildHookScript>verify</postBuildHookScript>
               <settingsFile>src/it/settings.xml</settingsFile>
