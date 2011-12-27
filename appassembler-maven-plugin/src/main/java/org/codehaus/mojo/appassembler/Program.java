@@ -45,7 +45,19 @@ public class Program
      */
     private List commandLineArguments;
 
+    /**
+     * JvmSettings for every program.
+     * 
+     * @parameter
+     */
+    private org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings;
 
+    /**
+     * The platforms the plugin will generate bin files for.
+     * Configure with string values - "all"(default/empty) | "windows" | "unix".
+     *
+     * @parameter
+     */
     private Set platforms;
 
     public Program()
@@ -102,4 +114,13 @@ public class Program
     {
         this.commandLineArguments.add( argument );
     }
+
+    public org.codehaus.mojo.appassembler.model.JvmSettings getJvmSettings() {
+        return jvmSettings;
+    }
+
+    public void setJvmSettings(org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings) {
+        this.jvmSettings = jvmSettings;
+    }
+
 }

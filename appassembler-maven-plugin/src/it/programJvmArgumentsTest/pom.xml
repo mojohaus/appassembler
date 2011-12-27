@@ -1,0 +1,80 @@
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.mojo.appassembler-maven-plugin.it</groupId>
+  <artifactId>programJvmArguments-test</artifactId>
+
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>appassembler-maven-plugin programJvmArgumentsTest</name>
+  <description>This integration test is related to the MAPPASM-52 to support JvmArguments for the program part.</description>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>@project.groupId@</groupId>
+        <artifactId>@project.artifactId@</artifactId>
+        <version>@project.version@</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <extraJvmArguments>-Xms16m</extraJvmArguments>
+          <platforms>
+            <platform>all</platform>
+          </platforms>
+          <programs>
+            <program>
+              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+              <name>program-01-test</name>
+              <jvmSettings>
+                <extraArguments>
+                  <extraArgument>--port 1</extraArgument>
+                  <extraArgument>--option 2</extraArgument>
+                </extraArguments>
+              </jvmSettings>
+              <commandLineArguments>
+                <commandLineArgument>arg1</commandLineArgument>
+                <commandLineArgument>arg2</commandLineArgument>
+              </commandLineArguments>
+            </program>
+            <program>
+              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+              <name>program-02-test</name>
+              <jvmSettings>
+                <initialMemorySize>20M</initialMemorySize>
+                <maxMemorySize>256G</maxMemorySize>
+              </jvmSettings>
+              <commandLineArguments>
+                <commandLineArgument>test-environment</commandLineArgument>
+              </commandLineArguments>
+            </program>
+            <program>
+              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+              <name>program-03-test</name>
+              <commandLineArguments>
+                <commandLineArgument>test-environment</commandLineArgument>
+              </commandLineArguments>
+            </program>
+          </programs>
+        </configuration>
+      </plugin>
+    </plugins>
+
+  </build>
+
+</project>

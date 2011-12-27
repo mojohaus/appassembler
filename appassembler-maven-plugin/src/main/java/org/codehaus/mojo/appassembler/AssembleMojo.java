@@ -135,11 +135,18 @@ public class AssembleMojo
 
     /**
      * Extra arguments that will be given to the JVM verbatim.
+     * If you define JvmSettings on the {@link Program#setJvmSettings(JvmSettings)} 
+     * level this part will be overwritten by the given parameters on program level. 
+     * Otherwise if {@link Program#setJvmSettings(JvmSettings)} is not given 
+     * these settings will be used instead. This can be used to define some
+     * default values whereas by using the {@link Program#setJvmSettings(JvmSettings)}
+     * to overwrite the default settings. This is only valid for the extraJvmArguments
+     * not for the rest of the {@link JvmSettings#}.
      *
      * @parameter
      */
     private String extraJvmArguments;
-
+    
     /**
      * The default platforms the plugin will generate bin files for.
      * Configure with string values - "all"(default/empty) | "windows" | "unix".
@@ -412,17 +419,29 @@ public class AssembleMojo
 
         daemon.getClasspath().setDependencies( dependencies );
 
-        JvmSettings jvmSettings = new JvmSettings();
-
-        jvmSettings.setExtraArguments( parseTokens( this.extraJvmArguments ) );
-
-        daemon.setJvmSettings( jvmSettings );
-
+        daemon.setJvmSettings(convertToJvmSettingsWithDefaultHandling(program));
+        
         daemon.setEnvironmentSetupFileName( this.environmentSetupFileName );
 
         return daemon;
     }
 
+    
+    private JvmSettings convertToJvmSettingsWithDefaultHandling (Program program) {
+        JvmSettings jvmSettings = new JvmSettings();
+        
+        if (program.getJvmSettings() != null) {
+            //Some kind of settings done on per program base so they take precendence.
+            jvmSettings = program.getJvmSettings();
+        } else {
+            //No settings in the program done so we use the default behaviour
+            if (StringUtils.isNotBlank(this.extraJvmArguments)) {
+                jvmSettings.setExtraArguments( parseTokens( this.extraJvmArguments ) );
+            }
+        }
+        
+        return jvmSettings;
+    }
     // ----------------------------------------------------------------------
     // Install artifacts into the assemble repository
     // ----------------------------------------------------------------------
