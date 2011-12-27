@@ -1,1 +1,0 @@
-return new File( System.getProperty("user.home"), ".m2/repository/org/codehaus/mojo/appassembler/example/appassembler-example-helloworld/1.0-SNAPSHOT/appassembler-example-helloworld-1.0-SNAPSHOT-app.zip").canRead()

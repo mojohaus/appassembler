@@ -48,6 +48,12 @@
       <timezone>+1</timezone>
     </developer>
     <developer>
+      <id>khmarbaise</id>
+      <name>Karl Heinz Marbaise</name>
+      <email>codehaus@soebes.de</email>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
       <id>trygvis</id>
       <name>Trygve Laugstoel</name>
       <email>trygvis@inamo.no</email>
@@ -183,6 +189,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.10</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <version>1.5</version>
         </plugin>
       </plugins>
     </pluginManagement>

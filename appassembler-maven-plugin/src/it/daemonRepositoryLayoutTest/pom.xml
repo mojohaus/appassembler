@@ -1,0 +1,96 @@
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.mojo.appassembler-maven-plugin.it</groupId>
+  <artifactId>daemonRepositoryLayout-test</artifactId>
+
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>appassembler-maven-plugin daemonRepositoryLayout-test</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>@project.groupId@</groupId>
+        <artifactId>@project.artifactId@</artifactId>
+        <version>@project.version@</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>generate-daemons</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <extraJvmArguments>-Xms16m</extraJvmArguments>
+          <repositoryLayout>flat</repositoryLayout>
+          <defaultJvmSettings>
+            <initialMemorySize>256M</initialMemorySize>
+            <maxMemorySize>1024M</maxMemorySize>
+            <systemProperties>
+              <systemProperty>java.security.policy=conf/policy.all</systemProperty>
+              <systemProperty>com.sun.management.jmxremote</systemProperty>
+              <systemProperty>com.sun.management.jmxremote.port=8999</systemProperty>
+              <systemProperty>com.sun.management.jmxremote.authenticate=false</systemProperty>
+              <systemProperty>com.sun.management.jmxremote.ssl=false</systemProperty>
+            </systemProperties>
+            <extraArguments>
+              <extraArgument>-server</extraArgument>
+            </extraArguments>
+          </defaultJvmSettings>
+          <daemons>
+            <daemon>
+              <id>daemon-1</id>
+              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+              <commandLineArguments>
+                <commandLineArgument>start</commandLineArgument>
+              </commandLineArguments>
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>
+              <generatorConfigurations>
+                <generatorConfiguration>
+                  <generator>jsw</generator>
+                  <includes>
+                    <include>linux-x86-32</include>
+                    <include>linux-x86-64</include>
+                  </includes>
+                  <configuration>
+                    <property>
+                      <name>configuration.directory.in.classpath.first</name>
+                      <value>etc</value>
+                    </property>
+                    <property>
+                      <name>set.default.REPO_DIR</name>
+                      <value>lib</value>
+                    </property>
+                    <property>
+                      <name>wrapper.logfile</name>
+                      <value>logs/wrapper.log</value>
+                    </property>
+                    <property>
+                      <name>run.as.user.envvar</name>
+                      <value>johndoe</value>
+                    </property>
+                  </configuration>
+                </generatorConfiguration>
+              </generatorConfigurations>
+            </daemon>
+          </daemons>
+        </configuration>
+      </plugin>
+    </plugins>
+
+  </build>
+
+</project>

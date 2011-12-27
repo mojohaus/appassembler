@@ -114,7 +114,6 @@
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-maven-plugin</artifactId>
-        <version>1.3.8</version>
         <executions>
           <execution>
             <goals>
@@ -193,38 +192,209 @@
   </build>
   <profiles>
     <profile>
-      <id>integration-tests</id>
+      <id>run-its</id>
       <build>
+        <!--  Download the different Maven versions -->
         <plugins>
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
-            <artifactId>shitty-maven-plugin</artifactId>
-            <version>1.0-alpha-3</version>
+            <artifactId>wagon-maven-plugin</artifactId>
+            <version>1.0-beta-3</version>
             <executions>
               <execution>
+                <id>download-maven-2.0.11</id>
+                <phase>prepare-package</phase>
                 <goals>
-                  <goal>clean</goal>
-                  <goal>install</goal>
-                  <goal>test</goal>
+                  <goal>download-single</goal>
                 </goals>
+                <configuration>
+                  <url>http://archive.apache.org/dist/maven/binaries/</url>
+                  <fromFile>apache-maven-2.0.11-bin.tar.gz</fromFile>
+                  <toDir>${project.build.directory}/maven/download/</toDir>
+                </configuration>
+              </execution>
+              <execution>
+                <id>download-maven-2.2.1</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>download-single</goal>
+                </goals>
+                <configuration>
+                  <url>http://archive.apache.org/dist/maven/binaries/</url>
+                  <fromFile>apache-maven-2.2.1-bin.tar.gz</fromFile>
+                  <toDir>${project.build.directory}/maven/download/</toDir>
+                </configuration>
+              </execution>
+              <execution>
+                <id>download-maven-3.0.3</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>download-single</goal>
+                </goals>
+                <configuration>
+                  <url>http://archive.apache.org/dist/maven/binaries/</url>
+                  <fromFile>apache-maven-3.0.3-bin.tar.gz</fromFile>
+                  <toDir>${project.build.directory}/maven/download/</toDir>
+                </configuration>
               </execution>
             </executions>
+          </plugin>
+
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>truezip-maven-plugin</artifactId>
+            <version>1.0-beta-4</version>
+            <executions>
+              <execution>
+                <id>extract-maven-2.0.11</id>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <fileset>
+                    <directory>${project.build.directory}/maven/download/apache-maven-2.0.11-bin.tar.gz</directory>
+                    <outputDirectory>${project.build.directory}/maven/tools/</outputDirectory>
+                  </fileset>
+                </configuration>
+              </execution>
+              <execution>
+                <id>extract-maven-2.2.1</id>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <fileset>
+                    <directory>${project.build.directory}/maven/download/apache-maven-2.2.1-bin.tar.gz</directory>
+                    <outputDirectory>${project.build.directory}/maven/tools/</outputDirectory>
+                  </fileset>
+                </configuration>
+              </execution>
+              <execution>
+                <id>extract-maven-3.0.3</id>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <fileset>
+                    <directory>${project.build.directory}/maven/download/apache-maven-3.0.3-bin.tar.gz</directory>
+                    <outputDirectory>${project.build.directory}/maven/tools/</outputDirectory>
+                  </fileset>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          
+          <!--
+            This is currently needed due to a bug of the truezip-plugin cause it unpacks without permission!
+            see http://jira.codehaus.org/browse/MOJO-1796
+           -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.7</version>
+            <executions>
+                <execution>
+                  <id>chmod-files</id>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>run</goal>
+                  </goals>
+                  <configuration>
+                    <target>
+                      <chmod file="${project.build.directory}/maven/tools/apache-maven-2.0.11/bin/mvn" perm="+x"/>
+                      <chmod file="${project.build.directory}/maven/tools/apache-maven-2.2.1/bin/mvn" perm="+x"/>
+                      <chmod file="${project.build.directory}/maven/tools/apache-maven-3.0.3/bin/mvn" perm="+x"/>
+                    </target>
+                  </configuration>
+                </execution>
+              </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <version>1.5</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy</artifactId>
+                <version>1.8.4</version>
+              </dependency>
+            </dependencies>
             <configuration>
-              <projects>
-                <project>
-                  <directory>src/it</directory>
-                  <includes>
-                    <include>${its}/pom.xml</include>
-                  </includes>
-                </project>
-              </projects>
-              <threadCount>${threadCount}</threadCount>
-              <parallel>true</parallel>
+              <debug>false</debug>
+                  <!-- src/it-ip as for integration tests invoker plugin for the time of transition to maven-invoker-plugin -->
+              <projectsDirectory>src/it</projectsDirectory>
+              <showVersion>true</showVersion>
+              <pomIncludes>
+                <pomInclude>*/pom.xml</pomInclude>
+              </pomIncludes>
+              <preBuildHookScript>setup</preBuildHookScript>
+              <postBuildHookScript>verify</postBuildHookScript>
+              <settingsFile>src/it/settings.xml</settingsFile>
             </configuration>
+            <executions>
+              <execution>
+                <id>integration-test-maven-2.0.11</id>
+                <goals>
+                  <goal>install</goal>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <reportsDirectory>${project.build.directory}/invoker-reports-2.0.11</reportsDirectory>
+                  <localRepositoryPath>${project.build.directory}/local-repo-2.0.11</localRepositoryPath>
+                  <cloneProjectsTo>${project.build.directory}/it-2.0.11</cloneProjectsTo>
+                  <mavenHome>${project.build.directory}/maven/tools/apache-maven-2.0.11</mavenHome>
+                  <goals>
+                    <goal>clean</goal>
+                    <goal>test</goal>
+                  </goals>
+                </configuration>
+              </execution>
+              <execution>
+                <id>integration-test-maven-2.2.1</id>
+                <goals>
+                  <goal>install</goal>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <reportsDirectory>${project.build.directory}/invoker-reports-2.2.1</reportsDirectory>
+                  <localRepositoryPath>${project.build.directory}/local-repo-2.2.1</localRepositoryPath>
+                  <cloneProjectsTo>${project.build.directory}/it-2.2.1</cloneProjectsTo>
+                  <mavenHome>${project.build.directory}/maven/tools/apache-maven-2.2.1</mavenHome>
+                  <goals>
+                    <goal>clean</goal>
+                    <goal>test</goal>
+                  </goals>
+                </configuration>
+              </execution>
+              <execution>
+                <id>integration-test-maven-3.0.3</id>
+                <goals>
+                  <goal>install</goal>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <reportsDirectory>${project.build.directory}/invoker-reports-3.0.3</reportsDirectory>
+                  <localRepositoryPath>${project.build.directory}/local-repo-3.0.3</localRepositoryPath>
+                  <cloneProjectsTo>${project.build.directory}/it-3.0.3</cloneProjectsTo>
+                  <mavenHome>${project.build.directory}/maven/tools/apache-maven-3.0.3</mavenHome>
+                  <goals>
+                    <goal>clean</goal>
+                    <goal>test</goal>
+                  </goals>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
     </profile>
+
   </profiles>
 
 </project>
