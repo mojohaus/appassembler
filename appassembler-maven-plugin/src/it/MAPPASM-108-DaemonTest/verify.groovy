@@ -1,13 +1,6 @@
 import java.io.*
 import java.util.*
 
-
-/*
- * THIS TEST WILL NOT FAIL....
- * 
- * THIS IS A PREPARATION for MAPPASM-108 (generate-daemons).
- * 
- */
 //The bin folder where to find the generated scripts.
 def fileBinFolder = new File( basedir, "target/generated-resources/appassembler/jsw/mappasm-108-test/bin");
 
@@ -75,10 +68,10 @@ wrapperConfFile.eachLine {
                 found = true;
             }
         }
-//        if (!found) {
-//            //TODO: Make it better!
-//            throw new FileNotFoundException("We couldn't find an element!");
-//        }
+        if (!found) {
+            //TODO: Make it better!
+            throw new FileNotFoundException("We couldn't find an element!");
+        }
     }
 }
 
@@ -112,7 +105,7 @@ def list_of_files_which_must_be_existing_in_repository = [
 list_of_files_which_must_be_existing_in_repository.each {
     lib_file -> file = new File(fileRepoFolder, lib_file);
     if (!file.canRead()) {
-//        throw new FileNotFoundException("Could not find " + lib_file + " in generated repository.");
+        throw new FileNotFoundException("Could not find " + lib_file + " in generated repository.");
     }
 }
 
