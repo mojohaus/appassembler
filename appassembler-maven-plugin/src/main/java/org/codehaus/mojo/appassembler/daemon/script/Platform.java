@@ -255,8 +255,9 @@ public class Platform
         StringWriter result = new StringWriter();
 
         Map context = new HashMap();
-        context.put( "BASEDIR", getBasedir().replace("\"", "\\\""));
-        context.put( "REPO", getRepo().replace("\"", "\\\""));
+
+        context.put( "BASEDIR", StringUtils.quoteAndEscape(getBasedir(), '"'));
+        context.put( "REPO", StringUtils.quoteAndEscape(getRepo(), '"'));
         InterpolationFilterReader interpolationFilterReader =
             new InterpolationFilterReader( sr, context, "@", "@");
         try {

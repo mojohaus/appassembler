@@ -78,7 +78,7 @@ then
 fi
 
 CLASSPATH=$CLASSPATH_PREFIX:
-EXTRA_JVM_ARGUMENTS="Yo dude xyz=\"$REPO\""
+EXTRA_JVM_ARGUMENTS="Yo dude xyz="$REPO""
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then

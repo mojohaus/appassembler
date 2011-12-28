@@ -20,7 +20,7 @@ if ( !windowsBatchFile.canRead() ) {
 
 def lines_to_check_in_unix_script = [
     'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/programCLIArgumentsWithExpanding-test/1.0-SNAPSHOT/programCLIArgumentsWithExpanding-test-1.0-SNAPSHOT.jar',
-    'EXTRA_JVM_ARGUMENTS="-Xms16m \\"$BASEDIR\\" \\"$REPO\\""',
+    'EXTRA_JVM_ARGUMENTS="-Dx.y.basedir="$BASEDIR" -Dx.y.repo="$REPO""',
     'exec "$JAVACMD" $JAVA_OPTS \\',
     '  $EXTRA_JVM_ARGUMENTS \\',
     '  -classpath "$CLASSPATH" \\',
@@ -29,7 +29,7 @@ def lines_to_check_in_unix_script = [
     '  -Dapp.repo="$REPO" \\',
     '  -Dbasedir="$BASEDIR" \\',
     '  org.codehaus.mojo.appassembler.example.helloworld.HelloWorld \\',
-    '  arg1 arg2 \\"$BASEDIR\\" \\"$REPO\\" "$@"',
+    '  arg1 arg2 "$BASEDIR" "$REPO" "$@"',
     
 ];
 
@@ -64,8 +64,8 @@ lines_to_check_in_unix_script_marker.eachWithIndex {
 
 def lines_to_check_in_windows_script = [
     'set CLASSPATH="%BASEDIR%"\\etc;"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\programCLIArgumentsWithExpanding-test\\1.0-SNAPSHOT\\programCLIArgumentsWithExpanding-test-1.0-SNAPSHOT.jar',
-    'set EXTRA_JVM_ARGUMENTS=-Xms16m \\"%BASEDIR%\\" \\"%REPO%\\"',
-    '%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="basic-test" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 \\"%BASEDIR%\\" \\"%REPO%\\" %CMD_LINE_ARGS%',
+    'set EXTRA_JVM_ARGUMENTS=-Dx.y.basedir="%BASEDIR%" -Dx.y.repo="%REPO%"',
+    '%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="basic-test" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 "%BASEDIR%" "%REPO%" %CMD_LINE_ARGS%',
 ];
 
 def lines_to_check_in_windows_script_marker = [

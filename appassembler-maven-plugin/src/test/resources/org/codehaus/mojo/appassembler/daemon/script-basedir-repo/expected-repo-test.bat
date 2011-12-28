@@ -70,7 +70,7 @@ if "%JAVACMD%"=="" set JAVACMD=java
 if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
 set CLASSPATH=
-set EXTRA_JVM_ARGUMENTS=Yo dude xyz=\"%REPO%\"
+set EXTRA_JVM_ARGUMENTS=Yo dude xyz="%REPO%"
 goto endInit
 
 @REM Reaching here means variables are defined and arguments have been captured
