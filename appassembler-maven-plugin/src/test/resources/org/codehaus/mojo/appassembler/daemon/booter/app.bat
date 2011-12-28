@@ -63,7 +63,7 @@ goto repoSetup
 set BASEDIR=%~dp0\..
 
 :repoSetup
-if exist %BASEDIR%\bin\app-env.bat call %BASEDIR%\bin\app-env.bat
+if exist "%BASEDIR%\bin\app-env.bat" call "%BASEDIR%\bin\app-env.bat"
 
 if "%JAVACMD%"=="" set JAVACMD=java
 

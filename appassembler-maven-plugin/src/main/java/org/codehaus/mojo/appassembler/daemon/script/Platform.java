@@ -374,7 +374,7 @@ public class Platform
         {
             if ( isWindows )
             {
-                String envScriptPath = "%BASEDIR%\\bin\\" + envSetupFileName + ".bat";
+                String envScriptPath = "\"%BASEDIR%\\bin\\" + envSetupFileName + ".bat\"";
 
                 envSetup = "if exist " + envScriptPath + " call " + envScriptPath;
             }
