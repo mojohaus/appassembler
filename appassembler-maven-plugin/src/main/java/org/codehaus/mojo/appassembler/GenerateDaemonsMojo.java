@@ -24,7 +24,11 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.installer.ArtifactInstallationException;
+import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -103,9 +107,25 @@ public class GenerateDaemonsMojo
      */
     private String repositoryLayout;
 
+    /**
+     * @component
+     */
+    private ArtifactRepositoryFactory artifactRepositoryFactory;
+
+    /**
+     * @component
+     */
+    private ArtifactInstaller artifactInstaller;
+
     // -----------------------------------------------------------------------
     // Read-only parameters
     // -----------------------------------------------------------------------
+
+    /**
+     * @readonly
+     * @parameter expression="${project.runtimeArtifacts}"
+     */
+    private List artifacts;
 
     /**
      * @readonly
@@ -113,6 +133,12 @@ public class GenerateDaemonsMojo
      */
     private ArtifactRepository localRepository;
 
+    /**
+     * @readonly
+     * @parameter expression="${project.artifact}"
+     */
+    private Artifact projectArtifact;
+    
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -134,9 +160,9 @@ public class GenerateDaemonsMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        for ( Iterator it = daemons.iterator(); it.hasNext(); )
+        for ( Iterator itd = daemons.iterator(); itd.hasNext(); )
         {
-            Daemon daemon = (Daemon) it.next();
+            Daemon daemon = (Daemon) itd.next();
 
             // -----------------------------------------------------------------------
             // Load the optional template daemon descriptor
@@ -202,7 +228,51 @@ public class GenerateDaemonsMojo
                 {
                     throw new MojoExecutionException( "Error while generating daemon.", e );
                 }
+
+                File outputDirectory = new File( request.getOutputDirectory(), daemon.getId());
+
+                // The repo where the jar files will be installed
+                //FIXME: /lib hard coded. Should be made configurable.
+                ArtifactRepository artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
+                    "appassembler", "file://" + outputDirectory.getAbsolutePath() + "/lib",
+                    artifactRepositoryLayout, false );
+
+                for ( Iterator it = artifacts.iterator(); it.hasNext(); )
+                {
+                    Artifact artifact = (Artifact) it.next();
+
+                    installArtifact( artifactRepository, artifact );
+                }
+
+                // install the project's artifact in the new repository
+                installArtifact( artifactRepository, projectArtifact );
+
             }
+            
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Install artifacts into the assemble repository
+    // ----------------------------------------------------------------------
+
+    private void installArtifact( ArtifactRepository artifactRepository, Artifact artifact )
+        throws MojoExecutionException
+    {
+        try
+        {
+            // Necessary for the artifact's baseVersion to be set correctly
+            // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
+            artifact.isSnapshot();
+
+            if ( artifact.getFile() != null )
+            {
+                artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
+            }
+        }
+        catch ( ArtifactInstallationException e )
+        {
+            throw new MojoExecutionException( "Failed to copy artifact.", e );
         }
     }
 
