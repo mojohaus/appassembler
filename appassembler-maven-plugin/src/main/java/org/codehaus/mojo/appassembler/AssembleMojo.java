@@ -69,7 +69,7 @@ import java.util.StringTokenizer;
  * @phase package
  */
 public class AssembleMojo
-    extends AbstractMojo
+    extends AbstractAppAssemblerMojo
 {
     // -----------------------------------------------------------------------
     // Parameters
@@ -142,6 +142,9 @@ public class AssembleMojo
      * default values whereas by using the {@link Program#setJvmSettings(JvmSettings)}
      * to overwrite the default settings. This is only valid for the extraJvmArguments
      * not for the rest of the {@link JvmSettings#}.
+     * 
+     * Since 1.2 it's possible to use place holder <code>@BASEDIR@</code> and <code>@REPO@</code> 
+     * which will be expanded based on the platform for which the appropriate script will generated.
      *
      * @parameter
      */

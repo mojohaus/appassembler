@@ -24,20 +24,26 @@ package org.codehaus.mojo.appassembler.daemon.script;
  * SOFTWARE.
  */
 
-import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
-import org.codehaus.mojo.appassembler.model.ClasspathElement;
-import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.mojo.appassembler.model.Dependency;
-import org.codehaus.mojo.appassembler.model.Directory;
-import org.codehaus.mojo.appassembler.model.JvmSettings;
-import org.codehaus.plexus.util.StringUtils;
-
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
+import org.codehaus.mojo.appassembler.model.ClasspathElement;
+import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.mojo.appassembler.model.Dependency;
+import org.codehaus.mojo.appassembler.model.Directory;
+import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
@@ -243,7 +249,40 @@ public class Platform
         return classpathBuffer.toString();
     }
 
-    public String getExtraJvmArguments( JvmSettings jvmSettings )
+    
+    private String interpolateBaseDirAndRepo(String content) {
+        StringReader sr = new StringReader(content);
+        StringWriter result = new StringWriter();
+
+        Map context = new HashMap();
+        context.put( "BASEDIR", getBasedir().replace("\"", "\\\""));
+        context.put( "REPO", getRepo().replace("\"", "\\\""));
+        InterpolationFilterReader interpolationFilterReader =
+            new InterpolationFilterReader( sr, context, "@", "@");
+        try {
+            IOUtil.copy( interpolationFilterReader, result);
+        } catch (IOException e) {
+            //shouldn't happen...
+        }
+        return result.toString();
+    }
+
+    private List convertArguments(List strings) {
+        if (strings == null) {
+            return strings;
+        }
+
+        ArrayList result = new ArrayList();
+        for (Iterator iterator = strings.iterator(); iterator.hasNext();) {
+            String argument = (String) iterator.next();
+            result.add(interpolateBaseDirAndRepo(argument));
+        }
+
+        return result;
+    }
+
+
+    public String getExtraJvmArguments( JvmSettings jvmSettings ) throws IOException
     {
         if ( jvmSettings == null )
         {
@@ -256,7 +295,7 @@ public class Platform
         vmArgs = addJvmSetting( "-Xmx", jvmSettings.getMaxMemorySize(), vmArgs );
         vmArgs = addJvmSetting( "-Xss", jvmSettings.getMaxStackSize(), vmArgs );
 
-        vmArgs += arrayToString( jvmSettings.getExtraArguments(), "" );
+        vmArgs += arrayToString( convertArguments(jvmSettings.getExtraArguments()), "" );
         vmArgs += arrayToString( jvmSettings.getSystemProperties(), "-D" );
 
         return vmArgs.trim();
@@ -290,7 +329,7 @@ public class Platform
 
     public String getAppArguments( Daemon descriptor )
     {
-        List commandLineArguments = descriptor.getCommandLineArguments();
+        List commandLineArguments = convertArguments(descriptor.getCommandLineArguments());
 
         if ( commandLineArguments == null || commandLineArguments.size() == 0 )
         {

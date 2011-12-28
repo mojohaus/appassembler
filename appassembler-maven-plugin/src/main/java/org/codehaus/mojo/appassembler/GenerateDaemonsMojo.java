@@ -53,7 +53,7 @@ import java.util.Set;
  * @phase package
  */
 public class GenerateDaemonsMojo
-    extends AbstractMojo
+    extends AbstractAppAssemblerMojo
 {
     // -----------------------------------------------------------------------
     // Parameters
