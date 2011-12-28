@@ -200,6 +200,12 @@ public class Platform
         return isWindows ? ";" : ":";
     }
 
+    public String getCommentPrefix() {
+        return isWindows ? "@REM " : "# ";
+    }
+    public String getNewLine() {
+        return isWindows ? "\r\n" : "\n";
+    }
     // -----------------------------------------------------------------------
     // This part depend on the platform-specific parts
     // -----------------------------------------------------------------------

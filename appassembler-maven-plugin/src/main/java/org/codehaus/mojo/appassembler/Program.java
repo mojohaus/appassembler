@@ -24,6 +24,7 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
 
@@ -44,6 +45,12 @@ public class Program
      * @parameter
      */
     private List commandLineArguments;
+
+    /**
+     * The License header which can be used instead of the default header.
+     * @parameter
+     */
+    private File licenseHeaderFile;
 
     /**
      * JvmSettings for every program.
@@ -121,6 +128,14 @@ public class Program
 
     public void setJvmSettings(org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings) {
         this.jvmSettings = jvmSettings;
+    }
+
+    public File getLicenseHeaderFile() {
+        return licenseHeaderFile;
+    }
+
+    public void setLicenseHeaderFile(File licenseHeaderFile) {
+        this.licenseHeaderFile = licenseHeaderFile;
     }
 
 }

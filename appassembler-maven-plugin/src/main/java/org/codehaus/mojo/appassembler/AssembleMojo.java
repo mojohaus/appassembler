@@ -24,13 +24,24 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
@@ -44,18 +55,6 @@ import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
 
 //@deprecated Use the generate-daemons goal instead
 
@@ -227,6 +226,13 @@ public class AssembleMojo
      * @parameter default-value="true"
      */
     private boolean showConsoleWindow;
+    
+    /**
+     * You can define a license header file which will be used
+     * instead the default header in the generated scripts.
+     * @parameter
+     */
+    private File licenseHeaderFile; 
 
     // -----------------------------------------------------------------------
     // Components
@@ -347,6 +353,12 @@ public class AssembleMojo
             {
                 String platform = (String) platformIt.next();
 
+                getLog().debug("licenseHeaderFile:" + licenseHeaderFile);
+                if (licenseHeaderFile != null) {
+                    getLog().debug("We are using the licesense header file of the mojo");
+                    program.setLicenseHeaderFile(licenseHeaderFile);
+                }
+
                 // TODO: seems like a bug in the generator that the request is modified
                 org.codehaus.mojo.appassembler.model.Daemon daemon =
                     programToDaemon( program, artifactRepositoryLayout );
@@ -387,6 +399,11 @@ public class AssembleMojo
         daemon.setMainClass( program.getMainClass() );
         daemon.setShowConsoleWindow( showConsoleWindow );
         daemon.setCommandLineArguments( program.getCommandLineArguments() );
+        getLog().debug("License file:" + program.getLicenseHeaderFile());
+        
+        if (program.getLicenseHeaderFile() != null) {
+            daemon.setLicenseHeaderFile(program.getLicenseHeaderFile().getPath());
+        }
 
         List directories = new ArrayList();
 

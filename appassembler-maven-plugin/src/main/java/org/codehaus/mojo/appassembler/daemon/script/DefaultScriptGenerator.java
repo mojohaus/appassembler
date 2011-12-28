@@ -24,13 +24,17 @@ package org.codehaus.mojo.appassembler.daemon.script;
  * SOFTWARE.
  */
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -50,6 +54,73 @@ public class DefaultScriptGenerator
     extends AbstractLogEnabled
     implements ScriptGenerator
 {
+    
+    
+    private static final String DEFAULT_LICENSE_HEADER = "default-license-header.txt" ;
+
+    private boolean isDefaultLicenseHeaderRequested(Daemon daemon) {
+        if (daemon.getLicenseHeaderFile() == null) {
+            return false;
+        }
+        if (daemon.getLicenseHeaderFile().trim().length() == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    private String getLicenseHeader(Platform platform, Daemon daemon) throws DaemonGeneratorException {
+        List lines = null;
+        if (isDefaultLicenseHeaderRequested(daemon)) {
+            getLogger().debug("Using license file: " + daemon.getLicenseHeaderFile());
+            lines = readLicenseHeaderFromFile(new File(daemon.getLicenseHeaderFile()));
+        } else {
+            getLogger().debug("Using default licence file (" + DEFAULT_LICENSE_HEADER + ".");
+            lines = readLicenseHeader();
+        }
+        StringBuilder resultLines = new StringBuilder();
+        for (int i = 0; i < lines.size(); i++) {
+            String licenseLine = platform.getCommentPrefix() + lines.get(i);
+            resultLines.append(licenseLine.trim() + platform.getNewLine());
+        }
+        return resultLines.toString();
+    }
+    
+    private List readLicenseHeader() throws DaemonGeneratorException {
+        ArrayList result = new ArrayList();
+
+        InputStream in = getClass().getResourceAsStream( DEFAULT_LICENSE_HEADER );
+        
+        InputStreamReader inr = new InputStreamReader(in);
+        try {
+            BufferedReader bufRead = new BufferedReader(inr);
+            String str;
+            while ((str = bufRead.readLine()) != null) {
+                result.add(str);
+            }
+            bufRead.close();
+        } catch (IOException e) {
+            throw new DaemonGeneratorException(
+                    "Internal error: could not read license header template file (license-header.txt)");
+        }        
+        return result;
+    }
+
+    private List readLicenseHeaderFromFile(File licenseHeader) throws DaemonGeneratorException {
+        ArrayList result = new ArrayList();
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(licenseHeader));
+            String str;
+            while ((str = in.readLine()) != null) {
+                result.add(str);
+            }
+            in.close();
+        } catch (IOException e) {
+            throw new DaemonGeneratorException(
+                    "Internal error: could not read license header template file " + licenseHeader.getName() );
+        }        
+        return result;
+    }
+
     
     // -----------------------------------------------------------------------
     // ScriptGenerator Implementation
@@ -73,9 +144,8 @@ public class DefaultScriptGenerator
                 throw new DaemonGeneratorException(
                     "Internal error: could not find template for platform '" + platformName + "'." );
             }
-
             InputStreamReader reader = new InputStreamReader( in );
-
+            
             Map context = new HashMap();
             context.put( "MAINCLASS", daemon.getMainClass() );
             context.put( "CLASSPATH", platform.getClassPath( daemon ) );
@@ -83,6 +153,7 @@ public class DefaultScriptGenerator
             context.put( "APP_NAME", daemon.getId() );
             context.put( "ENV_SETUP", platform.getEnvSetup( daemon ) );
             context.put( "REPO", daemon.getRepositoryName() );
+            context.put( "LICENSE_HEADER", getLicenseHeader(platform, daemon));
             if ( platform.isShowConsoleWindow( daemon ) )
             {
                 context.put( "JAVA_BINARY", "java" );

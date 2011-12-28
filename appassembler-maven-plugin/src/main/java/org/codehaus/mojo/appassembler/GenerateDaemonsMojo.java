@@ -108,6 +108,14 @@ public class GenerateDaemonsMojo
     private String repositoryLayout;
 
     /**
+     * You can define a license header file which will be used
+     * instead the default header in the generated scripts.
+     * @parameter
+     */
+    private File licenseHeaderFile; 
+
+    
+    /**
      * @component
      */
     private ArtifactRepositoryFactory artifactRepositoryFactory;
@@ -199,6 +207,16 @@ public class GenerateDaemonsMojo
 
             org.codehaus.mojo.appassembler.model.Daemon modelDaemon = convertDaemon( daemon, modelJvmSettings );
 
+            // -----------------------------------------------------------------------
+            // Default Handling for license file
+            // -----------------------------------------------------------------------
+            if (this.licenseHeaderFile != null) {
+                //Allow overwrite if not set otherwise the set license header file will be used.
+                if (modelDaemon.getLicenseHeaderFile() == null) {
+                    modelDaemon.setLicenseHeaderFile(this.licenseHeaderFile.toString());
+                }
+            }
+            
             // -----------------------------------------------------------------------
             //
             // -----------------------------------------------------------------------

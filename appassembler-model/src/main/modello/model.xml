@@ -93,6 +93,11 @@
           <type>String</type>
           <defaultValue>repo</defaultValue>
         </field>
+        <field>
+          <name>licenseHeaderFile</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
       </fields>
       <codeSegments>
         <codeSegment>
