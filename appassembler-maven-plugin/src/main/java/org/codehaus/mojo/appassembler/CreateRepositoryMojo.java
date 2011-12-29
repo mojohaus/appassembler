@@ -59,6 +59,7 @@ import org.codehaus.plexus.util.FileUtils;
  * @goal create-repository
  * @requiresDependencyResolution runtime
  * @phase package
+ * @threadsafe
  */
 public class CreateRepositoryMojo
     extends AbstractMojo

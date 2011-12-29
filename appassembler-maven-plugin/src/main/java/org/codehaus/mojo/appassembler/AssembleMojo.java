@@ -66,6 +66,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @goal assemble
  * @requiresDependencyResolution runtime
  * @phase package
+ * @threadsafe
  */
 public class AssembleMojo
     extends AbstractAppAssemblerMojo
