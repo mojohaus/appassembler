@@ -43,7 +43,12 @@
               <commandLineArguments>
                 <commandLineArgument>arg1</commandLineArgument>
                 <commandLineArgument>arg2</commandLineArgument>
-            </commandLineArguments>
+              </commandLineArguments>
+            </program>
+            <program>
+              <licenseHeaderFile>${basedir}/license-header-01.txt</licenseHeaderFile>
+              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+              <name>programLicenseHeader-01-test</name>
             </program>
           </programs>
         </configuration>

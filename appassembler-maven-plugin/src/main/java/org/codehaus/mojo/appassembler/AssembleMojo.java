@@ -353,12 +353,6 @@ public class AssembleMojo
             {
                 String platform = (String) platformIt.next();
 
-                getLog().debug("licenseHeaderFile:" + licenseHeaderFile);
-                if (licenseHeaderFile != null) {
-                    getLog().debug("We are using the licesense header file of the mojo");
-                    program.setLicenseHeaderFile(licenseHeaderFile);
-                }
-
                 // TODO: seems like a bug in the generator that the request is modified
                 org.codehaus.mojo.appassembler.model.Daemon daemon =
                     programToDaemon( program, artifactRepositoryLayout );
@@ -399,10 +393,18 @@ public class AssembleMojo
         daemon.setMainClass( program.getMainClass() );
         daemon.setShowConsoleWindow( showConsoleWindow );
         daemon.setCommandLineArguments( program.getCommandLineArguments() );
-        getLog().debug("License file:" + program.getLicenseHeaderFile());
-        
+
         if (program.getLicenseHeaderFile() != null) {
+            getLog().debug("Using the program specific license header. :" + program.getLicenseHeaderFile());
             daemon.setLicenseHeaderFile(program.getLicenseHeaderFile().getPath());
+        } else {
+            getLog().debug("Using the global defined license header. :" + licenseHeaderFile);
+            
+            if (licenseHeaderFile != null) {
+                daemon.setLicenseHeaderFile(this.licenseHeaderFile.getAbsolutePath());
+            } else {
+                daemon.setLicenseHeaderFile(null);
+            }
         }
 
         List directories = new ArrayList();

@@ -60,22 +60,24 @@ public class DefaultScriptGenerator
 
     private boolean isDefaultLicenseHeaderRequested(Daemon daemon) {
         if (daemon.getLicenseHeaderFile() == null) {
+            return true;
+        }
+
+        if (daemon.getLicenseHeaderFile().trim().length() > 0) {
             return false;
         }
-        if (daemon.getLicenseHeaderFile().trim().length() == 0) {
-            return false;
-        }
-        return true;
+
+        return false;
     }
 
     private String getLicenseHeader(Platform platform, Daemon daemon) throws DaemonGeneratorException {
         List lines = null;
         if (isDefaultLicenseHeaderRequested(daemon)) {
-            getLogger().debug("Using license file: " + daemon.getLicenseHeaderFile());
-            lines = readLicenseHeaderFromFile(new File(daemon.getLicenseHeaderFile()));
-        } else {
             getLogger().debug("Using default licence file (" + DEFAULT_LICENSE_HEADER + ".");
             lines = readLicenseHeader();
+        } else {
+            getLogger().debug("Using license file: " + daemon.getLicenseHeaderFile());
+            lines = readLicenseHeaderFromFile(new File(daemon.getLicenseHeaderFile()));
         }
         StringBuilder resultLines = new StringBuilder();
         for (int i = 0; i < lines.size(); i++) {

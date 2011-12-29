@@ -196,6 +196,32 @@
       <build>
         <plugins>
           <plugin>
+            <groupId>org.codehaus.gmaven</groupId>
+            <artifactId>gmaven-plugin</artifactId>
+            <version>1.3</version>
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy</artifactId>
+                <version>1.8.4</version>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <debug>false</debug>
+              <verbose>true</verbose>
+              <stacktrace>true</stacktrace>
+              <defaultScriptExtension>.groovy</defaultScriptExtension>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-invoker-plugin</artifactId>
             <version>1.5</version>
@@ -207,6 +233,7 @@
               </dependency>
             </dependencies>
             <configuration>
+              <addTestClassPath>true</addTestClassPath>
               <debug>false</debug>
               <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
               <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
