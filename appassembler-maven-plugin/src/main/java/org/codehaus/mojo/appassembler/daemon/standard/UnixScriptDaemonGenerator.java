@@ -46,6 +46,6 @@ public class UnixScriptDaemonGenerator
         throws DaemonGeneratorException
     {
         scriptGenerator.createBinScript( getPlatformName(), generationRequest.getDaemon(),
-                                         generationRequest.getOutputDirectory() );
+                                         generationRequest.getOutputDirectory(), generationRequest.getBinFolder() );
     }
 }

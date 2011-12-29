@@ -53,6 +53,12 @@ public class Program
     private File licenseHeaderFile;
 
     /**
+     * Define the name of binary folder. 
+     * @parameter default-value="bin"
+     */
+    private File binFolder;
+    
+    /**
      * JvmSettings for every program.
      * 
      * @parameter
@@ -136,6 +142,14 @@ public class Program
 
     public void setLicenseHeaderFile(File licenseHeaderFile) {
         this.licenseHeaderFile = licenseHeaderFile;
+    }
+
+    public File getBinFolder() {
+        return binFolder;
+    }
+
+    public void setBinFolder(File binFolder) {
+        this.binFolder = binFolder;
     }
 
 }

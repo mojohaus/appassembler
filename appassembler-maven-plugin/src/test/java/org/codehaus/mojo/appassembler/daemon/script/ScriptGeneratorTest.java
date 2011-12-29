@@ -78,7 +78,7 @@ public class ScriptGeneratorTest
         daemon.setRepositoryName("repo");
         File outputDirectory = getTestFile( "target/test-output/normal-shell/" + platform.getName() );
 
-        generator.createBinScript( platform.getName(), daemon, outputDirectory );
+        generator.createBinScript( platform.getName(), daemon, outputDirectory, "bin" );
 
         File expectedFile = getTestFile( PREFIX + "expected-" + daemon.getId() + platform.getBinFileExtension() );
         File actualFile = new File( outputDirectory, "bin/" + daemon.getId() + platform.getBinFileExtension() );

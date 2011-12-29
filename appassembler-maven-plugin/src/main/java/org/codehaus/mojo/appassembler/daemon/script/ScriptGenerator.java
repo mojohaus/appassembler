@@ -37,6 +37,6 @@ public interface ScriptGenerator
 {
     String ROLE = ScriptGenerator.class.getName();
 
-    void createBinScript( String platform, Daemon daemon, File outputDirectory )
+    void createBinScript( String platform, Daemon daemon, File outputDirectory, String binFolder)
         throws DaemonGeneratorException;
 }

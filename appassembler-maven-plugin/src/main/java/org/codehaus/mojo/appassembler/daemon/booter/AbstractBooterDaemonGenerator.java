@@ -118,7 +118,8 @@ public abstract class AbstractBooterDaemonGenerator
         classpath.addDependency( createDependency( project, "stax:stax",
                                                    request.getRepositoryLayout() ) );
         
-        scriptGenerator.createBinScript( getPlatformName(), booterDaemon, outputDirectory );
+        //FIXME: Check if this is correct new File("bin") ?
+        scriptGenerator.createBinScript( getPlatformName(), booterDaemon, outputDirectory, "bin" );
     }
 
     // -----------------------------------------------------------------------

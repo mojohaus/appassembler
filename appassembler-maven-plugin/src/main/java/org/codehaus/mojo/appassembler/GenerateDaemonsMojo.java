@@ -24,21 +24,6 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
-import org.apache.maven.artifact.installer.ArtifactInstaller;
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
-import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
-import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
-import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
-import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
-import org.codehaus.plexus.util.StringUtils;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +31,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.installer.ArtifactInstallationException;
+import org.apache.maven.artifact.installer.ArtifactInstaller;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
+import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
+import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
+import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Generates JSW based daemon wrappers.
@@ -114,7 +113,6 @@ public class GenerateDaemonsMojo
      */
     private File licenseHeaderFile; 
 
-    
     /**
      * @component
      */
@@ -251,6 +249,7 @@ public class GenerateDaemonsMojo
 
                 // The repo where the jar files will be installed
                 //FIXME: /lib hard coded. Should be made configurable.
+                // via repositoryName like int AssembleMojo ?
                 ArtifactRepository artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
                     "appassembler", "file://" + outputDirectory.getAbsolutePath() + "/lib",
                     artifactRepositoryLayout, false );

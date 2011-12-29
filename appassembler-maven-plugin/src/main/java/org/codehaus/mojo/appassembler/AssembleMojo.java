@@ -92,6 +92,12 @@ public class AssembleMojo
     private Set programs;
 
     /**
+     * Define the name of binary folder. 
+     * @parameter default-value="bin"
+     */
+    private String binFolder;
+    
+    /**
      * The name of the target directory for configuration files.
      *
      * @parameter default-value="etc"
@@ -357,7 +363,7 @@ public class AssembleMojo
                 org.codehaus.mojo.appassembler.model.Daemon daemon =
                     programToDaemon( program, artifactRepositoryLayout );
                 DaemonGenerationRequest request =
-                    new DaemonGenerationRequest( daemon, mavenProject, localRepository, assembleDirectory );
+                    new DaemonGenerationRequest( daemon, mavenProject, localRepository, assembleDirectory, binFolder );
                 request.setStubDaemon( request.getDaemon() );
 
                 request.setPlatform( platform );
@@ -496,7 +502,7 @@ public class AssembleMojo
         throws MojoFailureException
     {
         // create (if necessary) directory for bin files
-        File binDir = new File( assembleDirectory.getAbsolutePath(), "bin" );
+        File binDir = new File( assembleDirectory.getAbsolutePath(), binFolder.toString() );
 
         if ( !binDir.exists() )
         {

@@ -48,6 +48,8 @@ public class DaemonGenerationRequest
     private Daemon daemon;
 
     private File outputDirectory;
+    
+    private String binFolder;
 
     private MavenProject mavenProject;
 
@@ -61,7 +63,7 @@ public class DaemonGenerationRequest
     }
 
     public DaemonGenerationRequest( Daemon daemon, MavenProject project, ArtifactRepository localRepository,
-                                    File outputDir )
+                                    File outputDir, String binFolder )
     {
         this.daemon = daemon;
 
@@ -70,6 +72,8 @@ public class DaemonGenerationRequest
         this.localRepository = localRepository;
 
         this.outputDirectory = outputDir;
+        
+        this.binFolder = binFolder;
     }
 
     public String getPlatform()
@@ -150,6 +154,14 @@ public class DaemonGenerationRequest
     public void setRepositoryLayout( ArtifactRepositoryLayout repositoryLayout )
     {
         this.repositoryLayout = repositoryLayout;
+    }
+
+    public String getBinFolder() {
+        return binFolder;
+    }
+
+    public void setBinFolder(String binFolder) {
+        this.binFolder = binFolder;
     }
 
 }

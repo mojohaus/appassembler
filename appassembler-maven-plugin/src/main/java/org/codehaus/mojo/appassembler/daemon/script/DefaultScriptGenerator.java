@@ -128,7 +128,7 @@ public class DefaultScriptGenerator
     // ScriptGenerator Implementation
     // -----------------------------------------------------------------------
 
-    public void createBinScript( String platformName, Daemon daemon, File outputDirectory )
+    public void createBinScript( String platformName, Daemon daemon, File outputDirectory, String binFolder )
         throws DaemonGeneratorException
     {
         Platform platform = Platform.getInstance( platformName );
@@ -198,7 +198,7 @@ public class DefaultScriptGenerator
                 programName = daemon.getId();
             }
 
-            File binDir = new File( outputDirectory, "bin" );
+            File binDir = new File( outputDirectory, binFolder );
             FileUtils.forceMkdir( binDir );
             File binFile = new File( binDir, programName + platform.getBinFileExtension() );
 
