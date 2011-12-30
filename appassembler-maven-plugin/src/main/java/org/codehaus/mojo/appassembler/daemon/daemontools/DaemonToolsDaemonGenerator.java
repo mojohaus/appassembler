@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler.daemon.daemontools;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2008 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler.daemon.daemontools;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler.daemon.daemontools;
 
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
@@ -49,60 +49,60 @@ import java.util.Map;
  * @plexus.component role-hint="daemontools"
  */
 public class DaemonToolsDaemonGenerator
-    extends AbstractLogEnabled
-    implements DaemonGenerator
+        extends AbstractLogEnabled
+        implements DaemonGenerator
 {
     // -----------------------------------------------------------------------
     // DaemonGenerator Implementation
     // -----------------------------------------------------------------------
 
-    public void generate( DaemonGenerationRequest request )
-        throws DaemonGeneratorException
+    public void generate ( DaemonGenerationRequest request )
+            throws DaemonGeneratorException
     {
-        Daemon daemon = request.getDaemon();
+        Daemon daemon = request.getDaemon ( );
 
         try
         {
-            FileUtils.forceMkdir( request.getOutputDirectory() );
+            FileUtils.forceMkdir ( request.getOutputDirectory ( ) );
         }
         catch ( IOException e )
         {
-            throw new DaemonGeneratorException( "Error creating output directory: " + request.getOutputDirectory(), e );
+            throw new DaemonGeneratorException ( "Error creating output directory: " + request.getOutputDirectory ( ), e );
         }
 
-        File envDir = new File( request.getOutputDirectory(), "env" );
-        envDir.mkdir();
+        File envDir = new File ( request.getOutputDirectory ( ), "env" );
+        envDir.mkdir ( );
 
-        copyEnvFile( "JAVA_HOME", envDir );
-        copyEnvFile( "USER", envDir );
+        copyEnvFile ( "JAVA_HOME", envDir );
+        copyEnvFile ( "USER", envDir );
 
-        File logDir = new File( request.getOutputDirectory(), "logs" );
-        logDir.mkdir();
+        File logDir = new File ( request.getOutputDirectory ( ), "logs" );
+        logDir.mkdir ( );
 
-        File serviceDir = new File( request.getOutputDirectory(), "service" );
-        serviceDir.mkdir();
+        File serviceDir = new File ( request.getOutputDirectory ( ), "service" );
+        serviceDir.mkdir ( );
 
         // -----------------------------------------------------------------------
         //
         // -----------------------------------------------------------------------
 
-        InputStream in = this.getClass().getResourceAsStream( "run.sh.template" );
+        InputStream in = this.getClass ( ).getResourceAsStream ( "run.sh.template" );
 
         if ( in == null )
         {
-            throw new DaemonGeneratorException( "Could not load template." );
+            throw new DaemonGeneratorException ( "Could not load template." );
         }
 
-        InputStreamReader reader = new InputStreamReader( in );
+        InputStreamReader reader = new InputStreamReader ( in );
 
-        Map context = new HashMap();
-        context.put( "MAINCLASS", daemon.getMainClass() );
-        context.put( "NAME", daemon.getId() );
+        Map context = new HashMap ( );
+        context.put ( "MAINCLASS", daemon.getMainClass ( ) );
+        context.put ( "NAME", daemon.getId ( ) );
 
-        InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context,
-                                                                                             "@", "@" );
+        InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader ( reader, context,
+                "@", "@" );
 
-        File runFile = new File( request.getOutputDirectory(), "run" );
+        File runFile = new File ( request.getOutputDirectory ( ), "run" );
         FileWriter out = null;
 
         try
@@ -111,50 +111,50 @@ public class DaemonToolsDaemonGenerator
             // Write the file
             // -----------------------------------------------------------------------
 
-            out = new FileWriter( runFile );
+            out = new FileWriter ( runFile );
 
-            IOUtil.copy( interpolationFilterReader, out );
+            IOUtil.copy ( interpolationFilterReader, out );
         }
         catch ( IOException e )
         {
-            throw new DaemonGeneratorException( "Error writing output file: " + runFile.getAbsolutePath(), e );
+            throw new DaemonGeneratorException ( "Error writing output file: " + runFile.getAbsolutePath ( ), e );
         }
         finally
         {
-            IOUtil.close( interpolationFilterReader );
-            IOUtil.close( out );
+            IOUtil.close ( interpolationFilterReader );
+            IOUtil.close ( out );
         }
 
     }
 
-    private void copyEnvFile( String envName, File envDir )
-        throws DaemonGeneratorException
+    private void copyEnvFile ( String envName, File envDir )
+            throws DaemonGeneratorException
     {
         Writer out = null;
         Reader envReader = null;
 
-        File envFile = new File( envDir, envName );
+        File envFile = new File ( envDir, envName );
 
         try
         {
-            envReader = new InputStreamReader( this.getClass().getResourceAsStream( "env/" + envName ) );
+            envReader = new InputStreamReader ( this.getClass ( ).getResourceAsStream ( "env/" + envName ) );
 
             // -----------------------------------------------------------------------
             // Write the file
             // -----------------------------------------------------------------------
 
-            out = new FileWriter( envFile );
+            out = new FileWriter ( envFile );
 
-            IOUtil.copy( envReader, out );
+            IOUtil.copy ( envReader, out );
         }
         catch ( IOException e )
         {
-            throw new DaemonGeneratorException( "Error writing environment file: " + envFile, e );
+            throw new DaemonGeneratorException ( "Error writing environment file: " + envFile, e );
         }
         finally
         {
-            IOUtil.close( envReader );
-            IOUtil.close( out );
+            IOUtil.close ( envReader );
+            IOUtil.close ( out );
         }
     }
 }

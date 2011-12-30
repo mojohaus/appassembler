@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler.daemon.booter;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2007 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,20 +22,21 @@ package org.codehaus.mojo.appassembler.daemon.booter;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler.daemon.booter;
 
 import org.codehaus.mojo.appassembler.daemon.script.Platform;
 
 /**
  * Generates unix and/or windows wrapperscripts.
- *
+ * 
  * @author <a href="mailto:kaare.nilsen@gmail.com">Kaare Nilsen</a>
  * @plexus.component role-hint="booter-windows"
  */
 public class WindowsBooterDaemonGenerator
-    extends AbstractBooterDaemonGenerator
+        extends AbstractBooterDaemonGenerator
 {
-    public WindowsBooterDaemonGenerator()
+    public WindowsBooterDaemonGenerator ( )
     {
-        super( Platform.WINDOWS_NAME );
+        super ( Platform.WINDOWS_NAME );
     }
 }

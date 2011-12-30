@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler.daemon.generic;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2007 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler.daemon.generic;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler.daemon.generic;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
@@ -62,19 +62,19 @@ public class GenericDaemonGenerator extends AbstractLogEnabled implements Daemon
     // DaemonGenerator Implementation
     // -----------------------------------------------------------------------
 
-    public void generate( DaemonGenerationRequest request ) throws DaemonGeneratorException
+    public void generate ( DaemonGenerationRequest request ) throws DaemonGeneratorException
     {
         // -----------------------------------------------------------------------
         // Create the daemon from the Maven project
         // -----------------------------------------------------------------------
 
-        Daemon createdDaemon = createDaemon( request.getMavenProject(), request.getRepositoryLayout() );
+        Daemon createdDaemon = createDaemon ( request.getMavenProject ( ), request.getRepositoryLayout ( ) );
 
         // -----------------------------------------------------------------------
         // Merge the given stub daemon and the generated
         // -----------------------------------------------------------------------
 
-        Daemon mergedDaemon = daemonMerger.mergeDaemons( request.getDaemon(), createdDaemon );
+        Daemon mergedDaemon = daemonMerger.mergeDaemons ( request.getDaemon ( ), createdDaemon );
 
         // -----------------------------------------------------------------------
         // Write out the project
@@ -85,28 +85,28 @@ public class GenericDaemonGenerator extends AbstractLogEnabled implements Daemon
         try
         {
 
-            FileUtils.forceMkdir( request.getOutputDirectory() );
+            FileUtils.forceMkdir ( request.getOutputDirectory ( ) );
 
-            File outputFile = new File( request.getOutputDirectory(), mergedDaemon.getId() + ".xml" );
+            File outputFile = new File ( request.getOutputDirectory ( ), mergedDaemon.getId ( ) + ".xml" );
 
-            FileOutputStream fos = new FileOutputStream( outputFile );
+            FileOutputStream fos = new FileOutputStream ( outputFile );
 
-            writer = new OutputStreamWriter( fos, "UTF-8" );
+            writer = new OutputStreamWriter ( fos, "UTF-8" );
 
-            AppassemblerModelStaxWriter staxWriter = new AppassemblerModelStaxWriter();
-            staxWriter.write( writer, mergedDaemon );
+            AppassemblerModelStaxWriter staxWriter = new AppassemblerModelStaxWriter ( );
+            staxWriter.write ( writer, mergedDaemon );
         }
         catch ( IOException e )
         {
-            throw new DaemonGeneratorException( "Error while writing output file: " + request.getOutputDirectory(), e );
+            throw new DaemonGeneratorException ( "Error while writing output file: " + request.getOutputDirectory ( ), e );
         }
         catch ( XMLStreamException e )
         {
-            throw new DaemonGeneratorException( "Error while writing output file: " + request.getOutputDirectory(), e );
+            throw new DaemonGeneratorException ( "Error while writing output file: " + request.getOutputDirectory ( ), e );
         }
         finally
         {
-            IOUtil.close( writer );
+            IOUtil.close ( writer );
         }
     }
 
@@ -114,43 +114,43 @@ public class GenericDaemonGenerator extends AbstractLogEnabled implements Daemon
     // Private
     // -----------------------------------------------------------------------
 
-    private Daemon createDaemon( MavenProject project, ArtifactRepositoryLayout layout )
+    private Daemon createDaemon ( MavenProject project, ArtifactRepositoryLayout layout )
     {
-        Daemon complete = new Daemon();
+        Daemon complete = new Daemon ( );
 
-        complete.setClasspath( new Classpath() );
+        complete.setClasspath ( new Classpath ( ) );
 
         // -----------------------------------------------------------------------
         // Add the project itself as a dependency.
         // -----------------------------------------------------------------------
-        Dependency projectDependency = new Dependency();
-        Artifact projectArtifact = project.getArtifact();
-        projectArtifact.isSnapshot();
-        projectDependency.setGroupId( projectArtifact.getGroupId() );
-        projectDependency.setArtifactId( projectArtifact.getArtifactId() );
-        projectDependency.setVersion( projectArtifact.getVersion() );
-        projectDependency.setClassifier( projectArtifact.getClassifier() );
-        projectDependency.setRelativePath( layout.pathOf( projectArtifact ) );
-        complete.getClasspath().addDependency( projectDependency );
+        Dependency projectDependency = new Dependency ( );
+        Artifact projectArtifact = project.getArtifact ( );
+        projectArtifact.isSnapshot ( );
+        projectDependency.setGroupId ( projectArtifact.getGroupId ( ) );
+        projectDependency.setArtifactId ( projectArtifact.getArtifactId ( ) );
+        projectDependency.setVersion ( projectArtifact.getVersion ( ) );
+        projectDependency.setClassifier ( projectArtifact.getClassifier ( ) );
+        projectDependency.setRelativePath ( layout.pathOf ( projectArtifact ) );
+        complete.getClasspath ( ).addDependency ( projectDependency );
 
         // -----------------------------------------------------------------------
         // Add all the dependencies of the project.
         // -----------------------------------------------------------------------
-        for ( Iterator it = project.getRuntimeArtifacts().iterator(); it.hasNext(); )
+        for ( Iterator it = project.getRuntimeArtifacts ( ).iterator ( ); it.hasNext ( ); )
         {
-            Artifact artifact = (Artifact) it.next();
-            
-            artifact.isSnapshot();
+            Artifact artifact = ( Artifact ) it.next ( );
 
-            Dependency dependency = new Dependency();
-            dependency.setGroupId( artifact.getGroupId() );
-            dependency.setArtifactId( artifact.getArtifactId() );
-            dependency.setVersion( artifact.getVersion() );
+            artifact.isSnapshot ( );
 
-            dependency.setClassifier( artifact.getClassifier() );
-            dependency.setRelativePath( layout.pathOf( artifact ) );
+            Dependency dependency = new Dependency ( );
+            dependency.setGroupId ( artifact.getGroupId ( ) );
+            dependency.setArtifactId ( artifact.getArtifactId ( ) );
+            dependency.setVersion ( artifact.getVersion ( ) );
 
-            complete.getClasspath().addDependency( dependency );
+            dependency.setClassifier ( artifact.getClassifier ( ) );
+            dependency.setRelativePath ( layout.pathOf ( artifact ) );
+
+            complete.getClasspath ( ).addDependency ( dependency );
         }
 
         return complete;

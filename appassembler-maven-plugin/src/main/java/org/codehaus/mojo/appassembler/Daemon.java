@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2008 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,59 +51,59 @@ public class Daemon
 
     private String environmentSetupFileName;
 
-    public String getId()
+    public String getId ()
     {
         return id;
     }
 
-    public String getMainClass()
+    public String getMainClass ()
     {
         return mainClass;
     }
 
-    public String getDescriptor()
+    public String getDescriptor ()
     {
         return descriptor;
     }
 
-    public List getPlatforms()
+    public List getPlatforms ()
     {
         if ( platforms == null )
         {
-            platforms = new ArrayList();
+            platforms = new ArrayList ( );
         }
 
         return platforms;
     }
 
-    public List getCommandLineArguments()
+    public List getCommandLineArguments ()
     {
         return commandLineArguments;
     }
 
-    public JvmSettings getJvmSettings()
+    public JvmSettings getJvmSettings ()
     {
         return jvmSettings;
     }
 
-    public List getGeneratorConfigurations()
+    public List getGeneratorConfigurations ()
     {
         return generatorConfigurations;
     }
 
-    public boolean isShowConsoleWindow()
+    public boolean isShowConsoleWindow ()
     {
         return showConsoleWindow;
     }
 
-    public String getEnvironmentSetupFileName()
+    public String getEnvironmentSetupFileName ()
     {
         return environmentSetupFileName;
     }
 
-    public void setEnvironmentSetupFileName( String environmentSetupFileName )
+    public void setEnvironmentSetupFileName ( String environmentSetupFileName )
     {
         this.environmentSetupFileName = environmentSetupFileName;
     }
-    
+
 }

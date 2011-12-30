@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2007 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @threadsafe
  */
 public class GenerateDaemonsMojo
-    extends AbstractAppAssemblerMojo
+        extends AbstractAppAssemblerMojo
 {
     // -----------------------------------------------------------------------
     // Parameters
@@ -65,6 +65,7 @@ public class GenerateDaemonsMojo
 
     /**
      * Set of {@linkplain Daemon}s to generate.
+     * 
      * @parameter
      * @required
      */
@@ -72,12 +73,14 @@ public class GenerateDaemonsMojo
 
     /**
      * {@linkplain JvmSettings} describing min/max memory and stack size, system properties and extra arguments.
+     * 
      * @parameter
      */
     private JvmSettings defaultJvmSettings;
 
     /**
      * The base directory of the project.
+     * 
      * @parameter expression="${basedir}"
      * @required
      */
@@ -85,6 +88,7 @@ public class GenerateDaemonsMojo
 
     /**
      * Target directory for generated daemons.
+     * 
      * @parameter expression="${project.build.directory}/generated-resources/appassembler"
      * @required
      */
@@ -92,6 +96,7 @@ public class GenerateDaemonsMojo
 
     /**
      * The maven project in question.
+     * 
      * @parameter expression="${project}"
      * @required
      * @readonly
@@ -102,7 +107,7 @@ public class GenerateDaemonsMojo
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
      * (flat <code>lib/</code> style).
      * The style "legacy" is only supported if you are running under Maven 2.2.1 and before.
-     *
+     * 
      * @parameter default-value="default"
      */
     private String repositoryLayout;
@@ -110,9 +115,10 @@ public class GenerateDaemonsMojo
     /**
      * You can define a license header file which will be used
      * instead the default header in the generated scripts.
+     * 
      * @parameter
      */
-    private File licenseHeaderFile; 
+    private File licenseHeaderFile;
 
     /**
      * @component
@@ -145,7 +151,7 @@ public class GenerateDaemonsMojo
      * @parameter expression="${project.artifact}"
      */
     private Artifact projectArtifact;
-    
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -164,12 +170,12 @@ public class GenerateDaemonsMojo
     // AbstractMojo Implementation
     // -----------------------------------------------------------------------
 
-    public void execute()
-        throws MojoExecutionException, MojoFailureException
+    public void execute ()
+            throws MojoExecutionException, MojoFailureException
     {
-        for ( Iterator itd = daemons.iterator(); itd.hasNext(); )
+        for ( Iterator itd = daemons.iterator ( ); itd.hasNext ( ); )
         {
-            Daemon daemon = (Daemon) itd.next();
+            Daemon daemon = ( Daemon ) itd.next ( );
 
             // -----------------------------------------------------------------------
             // Load the optional template daemon descriptor
@@ -177,9 +183,9 @@ public class GenerateDaemonsMojo
 
             File descriptor = null;
 
-            if ( !StringUtils.isEmpty( daemon.getDescriptor() ) )
+            if ( !StringUtils.isEmpty ( daemon.getDescriptor ( ) ) )
             {
-                descriptor = new File( basedir, daemon.getDescriptor() );
+                descriptor = new File ( basedir, daemon.getDescriptor ( ) );
             }
 
             // -----------------------------------------------------------------------
@@ -190,83 +196,87 @@ public class GenerateDaemonsMojo
 
             if ( defaultJvmSettings != null )
             {
-                modelJvmSettings = convertJvmSettings( defaultJvmSettings );
+                modelJvmSettings = convertJvmSettings ( defaultJvmSettings );
             }
 
             ArtifactRepositoryLayout artifactRepositoryLayout =
-                (ArtifactRepositoryLayout) availableRepositoryLayouts.get( repositoryLayout );
+                    ( ArtifactRepositoryLayout ) availableRepositoryLayouts.get ( repositoryLayout );
             if ( artifactRepositoryLayout == null )
             {
-                throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
+                throw new MojoFailureException ( "Unknown repository layout '" + repositoryLayout + "'." );
             }
 
             // -----------------------------------------------------------------------
             // Create a daemon object from the POM configuration
             // -----------------------------------------------------------------------
 
-            org.codehaus.mojo.appassembler.model.Daemon modelDaemon = convertDaemon( daemon, modelJvmSettings );
+            org.codehaus.mojo.appassembler.model.Daemon modelDaemon = convertDaemon ( daemon, modelJvmSettings );
 
             // -----------------------------------------------------------------------
             // Default Handling for license file
             // -----------------------------------------------------------------------
-            if (this.licenseHeaderFile != null) {
-                //Allow overwrite if not set otherwise the set license header file will be used.
-                if (modelDaemon.getLicenseHeaderFile() == null) {
-                    modelDaemon.setLicenseHeaderFile(this.licenseHeaderFile.toString());
+            if ( this.licenseHeaderFile != null )
+            {
+                // Allow overwrite if not set otherwise the set license header file will be used.
+                if ( modelDaemon.getLicenseHeaderFile ( ) == null )
+                {
+                    modelDaemon.setLicenseHeaderFile ( this.licenseHeaderFile.toString ( ) );
                 }
             }
-            
+
             // -----------------------------------------------------------------------
             //
             // -----------------------------------------------------------------------
 
-            for ( Iterator i = daemon.getPlatforms().iterator(); i.hasNext(); )
+            for ( Iterator i = daemon.getPlatforms ( ).iterator ( ); i.hasNext ( ); )
             {
-                String platform = (String) i.next();
+                String platform = ( String ) i.next ( );
 
-                File output = new File( target, platform );
+                File output = new File ( target, platform );
 
-                DaemonGenerationRequest request = new DaemonGenerationRequest();
+                DaemonGenerationRequest request = new DaemonGenerationRequest ( );
 
-                // TODO: split platform from generator (platform = operating systems, generator = jsw, booter, standard). Generator is a property of the daemon itself
-                request.setPlatform( platform );
-                request.setStubDescriptor( descriptor );
-                request.setStubDaemon( modelDaemon );
-                request.setOutputDirectory( output );
-                request.setMavenProject( project );
-                request.setLocalRepository( localRepository );
-                request.setRepositoryLayout( artifactRepositoryLayout );
+                // TODO: split platform from generator (platform = operating systems, generator = jsw, booter,
+                // standard). Generator is a property of the daemon itself
+                request.setPlatform ( platform );
+                request.setStubDescriptor ( descriptor );
+                request.setStubDaemon ( modelDaemon );
+                request.setOutputDirectory ( output );
+                request.setMavenProject ( project );
+                request.setLocalRepository ( localRepository );
+                request.setRepositoryLayout ( artifactRepositoryLayout );
 
                 try
                 {
-                    daemonGeneratorService.generateDaemon( request );
+                    daemonGeneratorService.generateDaemon ( request );
                 }
                 catch ( DaemonGeneratorException e )
                 {
-                    throw new MojoExecutionException( "Error while generating daemon.", e );
+                    throw new MojoExecutionException ( "Error while generating daemon.", e );
                 }
 
-                File outputDirectory = new File( request.getOutputDirectory(), daemon.getId());
+                File outputDirectory = new File ( request.getOutputDirectory ( ), daemon.getId ( ) );
 
                 // The repo where the jar files will be installed
-                //FIXME: /lib hard coded. Should be made configurable.
-                // via repositoryName like int AssembleMojo ?
-                ArtifactRepository artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository(
-                    "appassembler", "file://" + outputDirectory.getAbsolutePath() + "/lib",
-                    artifactRepositoryLayout, false );
+                // FIXME: /lib hard coded. Should be made configurable.
+                // via repositoryName like in AssembleMojo ?
+                // Might be refactored into AbstractAppAssemblerMojo?
+                ArtifactRepository artifactRepository = artifactRepositoryFactory.createDeploymentArtifactRepository (
+                        "appassembler", "file://" + outputDirectory.getAbsolutePath ( ) + "/lib",
+                        artifactRepositoryLayout, false );
 
-                for ( Iterator it = artifacts.iterator(); it.hasNext(); )
+                for ( Iterator it = artifacts.iterator ( ); it.hasNext ( ); )
                 {
-                    Artifact artifact = (Artifact) it.next();
+                    Artifact artifact = ( Artifact ) it.next ( );
 
-                    installArtifact( artifactRepository, artifact );
+                    installArtifact ( artifactRepository, artifact );
                 }
 
                 // install the project's artifact in the new repository
-                installArtifact( artifactRepository, projectArtifact );
+                installArtifact ( artifactRepository, projectArtifact );
 
             }
-            
+
         }
     }
 
@@ -274,117 +284,117 @@ public class GenerateDaemonsMojo
     // Install artifacts into the assemble repository
     // ----------------------------------------------------------------------
 
-    private void installArtifact( ArtifactRepository artifactRepository, Artifact artifact )
-        throws MojoExecutionException
+    private void installArtifact ( ArtifactRepository artifactRepository, Artifact artifact )
+            throws MojoExecutionException
     {
         try
         {
             // Necessary for the artifact's baseVersion to be set correctly
             // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
-            artifact.isSnapshot();
+            artifact.isSnapshot ( );
 
-            if ( artifact.getFile() != null )
+            if ( artifact.getFile ( ) != null )
             {
-                artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
+                artifactInstaller.install ( artifact.getFile ( ), artifact, artifactRepository );
             }
         }
         catch ( ArtifactInstallationException e )
         {
-            throw new MojoExecutionException( "Failed to copy artifact.", e );
+            throw new MojoExecutionException ( "Failed to copy artifact.", e );
         }
     }
 
     // TODO: see if it is possible to just inherit from the model daemon
-    private org.codehaus.mojo.appassembler.model.Daemon convertDaemon( Daemon daemon,
-                                                                       org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings )
+    private org.codehaus.mojo.appassembler.model.Daemon convertDaemon ( Daemon daemon,
+            org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings )
     {
         org.codehaus.mojo.appassembler.model.Daemon modelDaemon;
 
-        modelDaemon = new org.codehaus.mojo.appassembler.model.Daemon();
+        modelDaemon = new org.codehaus.mojo.appassembler.model.Daemon ( );
 
-        modelDaemon.setId( daemon.getId() );
-        modelDaemon.setMainClass( daemon.getMainClass() );
-        modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
-        modelDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
-        modelDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
+        modelDaemon.setId ( daemon.getId ( ) );
+        modelDaemon.setMainClass ( daemon.getMainClass ( ) );
+        modelDaemon.setCommandLineArguments ( daemon.getCommandLineArguments ( ) );
+        modelDaemon.setShowConsoleWindow ( daemon.isShowConsoleWindow ( ) );
+        modelDaemon.setEnvironmentSetupFileName ( daemon.getEnvironmentSetupFileName ( ) );
 
-        if ( daemon.getJvmSettings() != null )
+        if ( daemon.getJvmSettings ( ) != null )
         {
-            modelDaemon.setJvmSettings( convertJvmSettings( daemon.getJvmSettings() ) );
+            modelDaemon.setJvmSettings ( convertJvmSettings ( daemon.getJvmSettings ( ) ) );
         }
         else
         {
-            modelDaemon.setJvmSettings( modelJvmSettings );
+            modelDaemon.setJvmSettings ( modelJvmSettings );
         }
 
-        if ( daemon.getGeneratorConfigurations() != null )
+        if ( daemon.getGeneratorConfigurations ( ) != null )
         {
-            modelDaemon.setGeneratorConfigurations(
-                convertGeneratorConfigurations( daemon.getGeneratorConfigurations() ) );
+            modelDaemon.setGeneratorConfigurations (
+                    convertGeneratorConfigurations ( daemon.getGeneratorConfigurations ( ) ) );
         }
 
         return modelDaemon;
     }
 
-    private List convertGeneratorConfigurations( List generatorConfigurations )
+    private List convertGeneratorConfigurations ( List generatorConfigurations )
     {
-        List value = new ArrayList( generatorConfigurations.size() );
-        for ( Iterator i = generatorConfigurations.iterator(); i.hasNext(); )
+        List value = new ArrayList ( generatorConfigurations.size ( ) );
+        for ( Iterator i = generatorConfigurations.iterator ( ); i.hasNext ( ); )
         {
-            GeneratorConfiguration config = (GeneratorConfiguration) i.next();
+            GeneratorConfiguration config = ( GeneratorConfiguration ) i.next ( );
 
-            value.add( convertGeneratorConfiguration( config ) );
+            value.add ( convertGeneratorConfiguration ( config ) );
         }
         return value;
     }
 
-    private org.codehaus.mojo.appassembler.model.GeneratorConfiguration convertGeneratorConfiguration(
-        GeneratorConfiguration config )
+    private org.codehaus.mojo.appassembler.model.GeneratorConfiguration convertGeneratorConfiguration (
+            GeneratorConfiguration config )
     {
         org.codehaus.mojo.appassembler.model.GeneratorConfiguration value =
-            new org.codehaus.mojo.appassembler.model.GeneratorConfiguration();
-        value.setGenerator( config.getGenerator() );
-        value.setConfiguration( config.getConfiguration() );
-        value.setIncludes( config.getIncludes() );
-        
+                new org.codehaus.mojo.appassembler.model.GeneratorConfiguration ( );
+        value.setGenerator ( config.getGenerator ( ) );
+        value.setConfiguration ( config.getConfiguration ( ) );
+        value.setIncludes ( config.getIncludes ( ) );
+
         return value;
     }
 
     // TODO: see if it is possible to just inherit from the model JVM Settings
-    private org.codehaus.mojo.appassembler.model.JvmSettings convertJvmSettings( JvmSettings jvmSettings )
+    private org.codehaus.mojo.appassembler.model.JvmSettings convertJvmSettings ( JvmSettings jvmSettings )
     {
         org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings =
-            new org.codehaus.mojo.appassembler.model.JvmSettings();
+                new org.codehaus.mojo.appassembler.model.JvmSettings ( );
 
-        modelJvmSettings.setInitialMemorySize( jvmSettings.getInitialMemorySize() );
-        modelJvmSettings.setMaxMemorySize( jvmSettings.getMaxMemorySize() );
-        modelJvmSettings.setMaxStackSize( jvmSettings.getMaxStackSize() );
-        if ( jvmSettings.getSystemProperties() == null )
+        modelJvmSettings.setInitialMemorySize ( jvmSettings.getInitialMemorySize ( ) );
+        modelJvmSettings.setMaxMemorySize ( jvmSettings.getMaxMemorySize ( ) );
+        modelJvmSettings.setMaxStackSize ( jvmSettings.getMaxStackSize ( ) );
+        if ( jvmSettings.getSystemProperties ( ) == null )
         {
-            modelJvmSettings.setSystemProperties( new ArrayList() );
+            modelJvmSettings.setSystemProperties ( new ArrayList ( ) );
         }
         else
         {
-            modelJvmSettings.setSystemProperties( Arrays.asList( jvmSettings.getSystemProperties() ) );
+            modelJvmSettings.setSystemProperties ( Arrays.asList ( jvmSettings.getSystemProperties ( ) ) );
         }
-        if ( jvmSettings.getExtraArguments() == null )
+        if ( jvmSettings.getExtraArguments ( ) == null )
         {
-            modelJvmSettings.setExtraArguments( new ArrayList() );
+            modelJvmSettings.setExtraArguments ( new ArrayList ( ) );
         }
         else
         {
-            modelJvmSettings.setExtraArguments( Arrays.asList( jvmSettings.getExtraArguments() ) );
+            modelJvmSettings.setExtraArguments ( Arrays.asList ( jvmSettings.getExtraArguments ( ) ) );
         }
 
         return modelJvmSettings;
     }
 
-    public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )
+    public void setAvailableRepositoryLayouts ( Map availableRepositoryLayouts )
     {
         this.availableRepositoryLayouts = availableRepositoryLayouts;
     }
 
-    public void setDaemons( Set daemons )
+    public void setDaemons ( Set daemons )
     {
         this.daemons = daemons;
     }

@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler.daemon.merge;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2007 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler.daemon.merge;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler.daemon.merge;
 
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.model.Daemon;
@@ -39,15 +39,15 @@ import java.util.List;
  * @plexus.component
  */
 public class DefaultDaemonMerger
-    extends AbstractLogEnabled
-    implements DaemonMerger
+        extends AbstractLogEnabled
+        implements DaemonMerger
 {
     // -----------------------------------------------------------------------
     // DaemonMerger Implementation
     // -----------------------------------------------------------------------
 
-    public Daemon mergeDaemons( Daemon dominant, Daemon recessive )
-        throws DaemonGeneratorException
+    public Daemon mergeDaemons ( Daemon dominant, Daemon recessive )
+            throws DaemonGeneratorException
     {
         if ( dominant == null )
         {
@@ -59,16 +59,16 @@ public class DefaultDaemonMerger
             return dominant;
         }
 
-        Daemon result = new Daemon();
+        Daemon result = new Daemon ( );
 
-        result.setId( select( dominant.getId(), recessive.getId() ) );
-        result.setMainClass( select( dominant.getMainClass(), recessive.getMainClass() ) );
-        result.setClasspath( (Classpath) select( dominant.getClasspath(), recessive.getClasspath() ) );
-        result.setCommandLineArguments(
-            select( dominant.getCommandLineArguments(), recessive.getCommandLineArguments() ) );
+        result.setId ( select ( dominant.getId ( ), recessive.getId ( ) ) );
+        result.setMainClass ( select ( dominant.getMainClass ( ), recessive.getMainClass ( ) ) );
+        result.setClasspath ( ( Classpath ) select ( dominant.getClasspath ( ), recessive.getClasspath ( ) ) );
+        result.setCommandLineArguments (
+                select ( dominant.getCommandLineArguments ( ), recessive.getCommandLineArguments ( ) ) );
         // This should probably be improved
-        result.setJvmSettings( (JvmSettings) select( dominant.getJvmSettings(), recessive.getJvmSettings() ) );
-        result.setShowConsoleWindow( dominant.isShowConsoleWindow() );
+        result.setJvmSettings ( ( JvmSettings ) select ( dominant.getJvmSettings ( ), recessive.getJvmSettings ( ) ) );
+        result.setShowConsoleWindow ( dominant.isShowConsoleWindow ( ) );
 
         return result;
     }
@@ -77,9 +77,9 @@ public class DefaultDaemonMerger
     // Private
     // -----------------------------------------------------------------------
 
-    private String select( String dominant, String recessive )
+    private String select ( String dominant, String recessive )
     {
-        if ( StringUtils.isNotEmpty( dominant ) )
+        if ( StringUtils.isNotEmpty ( dominant ) )
         {
             return dominant;
         }
@@ -89,12 +89,13 @@ public class DefaultDaemonMerger
         }
     }
 
-    private List select( List dominant, List recessive )
+    private List select ( List dominant, List recessive )
     {
         // Even if the list is empty, return it. This makes it possible to clear the default list.
 
-        // TODO: The above is not possible as long as the modello generated stuff returns an empty list on not set fields.
-        if ( dominant != null && dominant.size() > 0 )
+        // TODO: The above is not possible as long as the modello generated stuff returns an empty list on not set
+        // fields.
+        if ( dominant != null && dominant.size ( ) > 0 )
         {
             return dominant;
         }
@@ -104,7 +105,7 @@ public class DefaultDaemonMerger
         }
     }
 
-    private Object select( Object dominant, Object recessive )
+    private Object select ( Object dominant, Object recessive )
     {
         if ( dominant != null )
         {

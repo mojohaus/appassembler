@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler.daemon;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2007 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,21 +22,22 @@ package org.codehaus.mojo.appassembler.daemon;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler.daemon;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
 public class DaemonGeneratorException
-    extends Exception
+        extends Exception
 {
-    public DaemonGeneratorException( String message )
+    public DaemonGeneratorException ( String message )
     {
-        super( message );
+        super ( message );
     }
 
-    public DaemonGeneratorException( String message, Throwable cause )
+    public DaemonGeneratorException ( String message, Throwable cause )
     {
-        super( message, cause );
+        super ( message, cause );
     }
 }

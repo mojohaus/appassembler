@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler.daemon;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2007 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler.daemon;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler.daemon;
 
 import java.io.File;
 
@@ -48,22 +48,21 @@ public class DaemonGenerationRequest
     private Daemon daemon;
 
     private File outputDirectory;
-    
+
     private String binFolder;
 
     private MavenProject mavenProject;
 
     private ArtifactRepository localRepository;
 
-    private ArtifactRepositoryLayout repositoryLayout = new DefaultRepositoryLayout();
+    private ArtifactRepositoryLayout repositoryLayout = new DefaultRepositoryLayout ( );
 
-
-    public DaemonGenerationRequest()
+    public DaemonGenerationRequest ( )
     {
     }
 
-    public DaemonGenerationRequest( Daemon daemon, MavenProject project, ArtifactRepository localRepository,
-                                    File outputDir, String binFolder )
+    public DaemonGenerationRequest ( Daemon daemon, MavenProject project, ArtifactRepository localRepository,
+            File outputDir, String binFolder )
     {
         this.daemon = daemon;
 
@@ -72,95 +71,97 @@ public class DaemonGenerationRequest
         this.localRepository = localRepository;
 
         this.outputDirectory = outputDir;
-        
+
         this.binFolder = binFolder;
     }
 
-    public String getPlatform()
+    public String getPlatform ()
     {
         return platform;
     }
 
-    public void setPlatform( String platform )
+    public void setPlatform ( String platform )
     {
         this.platform = platform;
     }
 
-    public File getStubDescriptor()
+    public File getStubDescriptor ()
     {
         return stubDescriptor;
     }
 
-    public void setStubDescriptor( File stubDescriptor )
+    public void setStubDescriptor ( File stubDescriptor )
     {
         this.stubDescriptor = stubDescriptor;
     }
 
-    public Daemon getStubDaemon()
+    public Daemon getStubDaemon ()
     {
         return stubDaemon;
     }
 
-    public void setStubDaemon( Daemon stubDaemon )
+    public void setStubDaemon ( Daemon stubDaemon )
     {
         this.stubDaemon = stubDaemon;
     }
 
-    public Daemon getDaemon()
+    public Daemon getDaemon ()
     {
         return daemon;
     }
 
-    public void setDaemon( Daemon daemon )
+    public void setDaemon ( Daemon daemon )
     {
         this.daemon = daemon;
     }
 
-    public File getOutputDirectory()
+    public File getOutputDirectory ()
     {
         return outputDirectory;
     }
 
-    public void setOutputDirectory( File outputDirectory )
+    public void setOutputDirectory ( File outputDirectory )
     {
         this.outputDirectory = outputDirectory;
     }
 
-    public MavenProject getMavenProject()
+    public MavenProject getMavenProject ()
     {
         return mavenProject;
     }
 
-    public void setMavenProject( MavenProject mavenProject )
+    public void setMavenProject ( MavenProject mavenProject )
     {
         this.mavenProject = mavenProject;
     }
 
-    public ArtifactRepository getLocalRepository()
+    public ArtifactRepository getLocalRepository ()
     {
         return localRepository;
     }
 
-    public void setLocalRepository( ArtifactRepository localRepository )
+    public void setLocalRepository ( ArtifactRepository localRepository )
     {
         this.localRepository = localRepository;
     }
 
-    public ArtifactRepositoryLayout getRepositoryLayout()
+    public ArtifactRepositoryLayout getRepositoryLayout ()
     {
         return repositoryLayout;
     }
 
-    public void setRepositoryLayout( ArtifactRepositoryLayout repositoryLayout )
+    public void setRepositoryLayout ( ArtifactRepositoryLayout repositoryLayout )
     {
         this.repositoryLayout = repositoryLayout;
     }
 
-    public String getBinFolder() {
+    public String getBinFolder ()
+    {
         return binFolder;
     }
 
-    public void setBinFolder(String binFolder) {
+    public void setBinFolder ( String binFolder )
+    {
         this.binFolder = binFolder;
     }
 

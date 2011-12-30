@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2008 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler;
 
 import java.util.List;
 import java.util.Properties;
@@ -32,7 +32,7 @@ public class GeneratorConfiguration
     private String generator;
 
     private Properties configuration;
-    
+
     /**
      * The platforms to be included in the generator. This is currently only used in JSW generator. Options are:
      * "linux-ppc-64", "linux-x86-32", "linux-x86-64", "macosx-ppc-32", "macosx-x86-universal-32", "solaris-sparc-32",
@@ -40,37 +40,37 @@ public class GeneratorConfiguration
      */
     private List includes;
 
-    public String getGenerator()
+    public String getGenerator ()
     {
         return generator;
     }
 
-    public void setGenerator( String generator )
+    public void setGenerator ( String generator )
     {
         this.generator = generator;
     }
 
-    public Properties getConfiguration()
+    public Properties getConfiguration ()
     {
         return configuration;
     }
 
-    public void setConfiguration( Properties configuration )
+    public void setConfiguration ( Properties configuration )
     {
         this.configuration = configuration;
     }
 
-    public String toString()
+    public String toString ()
     {
         return "generator = " + generator + "; configuration = " + configuration;
     }
 
-    public List getIncludes()
+    public List getIncludes ()
     {
         return includes;
     }
 
-    public void setIncludes( List includes )
+    public void setIncludes ( List includes )
     {
         this.includes = includes;
     }

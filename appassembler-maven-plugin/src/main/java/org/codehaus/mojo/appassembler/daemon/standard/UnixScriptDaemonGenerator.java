@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler.daemon.standard;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2008 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler.daemon.standard;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler.daemon.standard;
 
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
@@ -31,21 +31,21 @@ import org.codehaus.mojo.appassembler.daemon.script.Platform;
 
 /**
  * Generates unix and/or windows wrapperscripts.
- *
+ * 
  * @plexus.component role-hint="unix"
  */
 public class UnixScriptDaemonGenerator
-    extends AbstactScriptDaemonGenerator
+        extends AbstactScriptDaemonGenerator
 {
-    public UnixScriptDaemonGenerator()
+    public UnixScriptDaemonGenerator ( )
     {
-        super( Platform.UNIX_NAME );
+        super ( Platform.UNIX_NAME );
     }
 
-    public void generate( DaemonGenerationRequest generationRequest )
-        throws DaemonGeneratorException
+    public void generate ( DaemonGenerationRequest generationRequest )
+            throws DaemonGeneratorException
     {
-        scriptGenerator.createBinScript( getPlatformName(), generationRequest.getDaemon(),
-                                         generationRequest.getOutputDirectory(), generationRequest.getBinFolder() );
+        scriptGenerator.createBinScript ( getPlatformName ( ), generationRequest.getDaemon ( ),
+                generationRequest.getOutputDirectory ( ), generationRequest.getBinFolder ( ) );
     }
 }

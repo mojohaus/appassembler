@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2007 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler;
 
 import java.io.File;
 import java.util.List;
@@ -41,23 +41,25 @@ public class Program
 
     /**
      * Extra arguments which will be given the Main Class as arguments verbatim.
-     *
+     * 
      * @parameter
      */
     private List commandLineArguments;
 
     /**
      * The License header which can be used instead of the default header.
+     * 
      * @parameter
      */
     private File licenseHeaderFile;
 
     /**
-     * Define the name of binary folder. 
+     * Define the name of binary folder.
+     * 
      * @parameter default-value="bin"
      */
     private File binFolder;
-    
+
     /**
      * JvmSettings for every program.
      * 
@@ -68,87 +70,93 @@ public class Program
     /**
      * The platforms the plugin will generate bin files for.
      * Configure with string values - "all"(default/empty) | "windows" | "unix".
-     *
+     * 
      * @parameter
      */
     private Set platforms;
 
-    public Program()
+    public Program ( )
     {
     }
 
-    public Program( String name, String mainClass )
+    public Program ( String name, String mainClass )
     {
         this.name = name;
         this.mainClass = mainClass;
     }
 
-    public String getName()
+    public String getName ()
     {
         return name;
     }
 
-    public void setName( String name )
+    public void setName ( String name )
     {
         this.name = name;
     }
 
-    public String getMainClass()
+    public String getMainClass ()
     {
         return mainClass;
     }
 
-    public void setMainClass( String mainClass )
+    public void setMainClass ( String mainClass )
     {
         this.mainClass = mainClass;
     }
 
-    public Set getPlatforms()
+    public Set getPlatforms ()
     {
         return platforms;
     }
 
-    public void setPlatforms( Set platforms )
+    public void setPlatforms ( Set platforms )
     {
         this.platforms = platforms;
     }
 
-    public List getCommandLineArguments()
+    public List getCommandLineArguments ()
     {
         return this.commandLineArguments;
     }
 
-    public void setCommandLineArguments( List arguments )
+    public void setCommandLineArguments ( List arguments )
     {
         this.commandLineArguments = arguments;
     }
 
-    public void addCommandLineArgument( String argument )
+    public void addCommandLineArgument ( String argument )
     {
-        this.commandLineArguments.add( argument );
+        this.commandLineArguments.add ( argument );
     }
 
-    public org.codehaus.mojo.appassembler.model.JvmSettings getJvmSettings() {
+    public org.codehaus.mojo.appassembler.model.JvmSettings getJvmSettings ()
+    {
         return jvmSettings;
     }
 
-    public void setJvmSettings(org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings) {
+    public void setJvmSettings ( org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings )
+    {
         this.jvmSettings = jvmSettings;
     }
 
-    public File getLicenseHeaderFile() {
+    public File getLicenseHeaderFile ()
+    {
         return licenseHeaderFile;
     }
 
-    public void setLicenseHeaderFile(File licenseHeaderFile) {
+    public void setLicenseHeaderFile ( File licenseHeaderFile )
+    {
         this.licenseHeaderFile = licenseHeaderFile;
     }
 
-    public File getBinFolder() {
+    public File getBinFolder ()
+    {
         return binFolder;
     }
 
-    public void setBinFolder(File binFolder) {
+    public void setBinFolder ( File binFolder )
+    {
         this.binFolder = binFolder;
     }
 

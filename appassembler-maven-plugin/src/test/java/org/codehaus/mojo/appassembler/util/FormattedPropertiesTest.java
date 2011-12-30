@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler.util;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2008 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,13 +22,15 @@ package org.codehaus.mojo.appassembler.util;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-import junit.framework.TestCase;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringOutputStream;
+package org.codehaus.mojo.appassembler.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import junit.framework.TestCase;
+
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.StringOutputStream;
 
 public class FormattedPropertiesTest
     extends TestCase

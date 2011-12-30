@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler.daemon.booter;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2007 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,8 @@ package org.codehaus.mojo.appassembler.daemon.booter;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler.daemon.booter;
+
 
 import java.io.File;
 
@@ -44,109 +45,109 @@ import org.codehaus.mojo.appassembler.model.JvmSettings;
  * @version $Id$
  */
 public abstract class AbstractBooterDaemonGenerator
-    extends AbstactScriptDaemonGenerator
+        extends AbstactScriptDaemonGenerator
 {
     /**
      * @plexus.requirement role-hint="generic"
      */
     private DaemonGenerator genericDaemonGenerator;
 
-    protected AbstractBooterDaemonGenerator( String platformName )
+    protected AbstractBooterDaemonGenerator ( String platformName )
     {
-        super( platformName );
+        super ( platformName );
     }
 
     // -----------------------------------------------------------------------
     // DaemonGenerator Implementation
     // -----------------------------------------------------------------------
 
-    public void generate( DaemonGenerationRequest request )
-        throws DaemonGeneratorException
+    public void generate ( DaemonGenerationRequest request )
+            throws DaemonGeneratorException
     {
-        Daemon daemon = request.getDaemon();
-        JvmSettings jvmSettings = daemon.getJvmSettings();
+        Daemon daemon = request.getDaemon ( );
+        JvmSettings jvmSettings = daemon.getJvmSettings ( );
 
-        File outputDirectory = request.getOutputDirectory();
+        File outputDirectory = request.getOutputDirectory ( );
 
         // -----------------------------------------------------------------------
         // Generate the generic XML file
         // -----------------------------------------------------------------------
 
-        request.setOutputDirectory( new File( outputDirectory, "etc" ) );
+        request.setOutputDirectory ( new File ( outputDirectory, "etc" ) );
 
         // TODO: we're assuming state for things that don't really appear stateful
         /*
          * The JVM settings are written to the script, and do not need to go into
          * the manifest.
          */
-        daemon.setJvmSettings( null );
+        daemon.setJvmSettings ( null );
 
-        genericDaemonGenerator.generate( request );
+        genericDaemonGenerator.generate ( request );
 
         // set back
-        daemon.setJvmSettings( jvmSettings );
+        daemon.setJvmSettings ( jvmSettings );
 
         // -----------------------------------------------------------------------
         // Generate the shell script
         // -----------------------------------------------------------------------
 
-        Daemon booterDaemon = new Daemon();
-        booterDaemon.setId( daemon.getId() );
-        booterDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
-        booterDaemon.setModelEncoding( daemon.getModelEncoding() );
+        Daemon booterDaemon = new Daemon ( );
+        booterDaemon.setId ( daemon.getId ( ) );
+        booterDaemon.setEnvironmentSetupFileName ( daemon.getEnvironmentSetupFileName ( ) );
+        booterDaemon.setModelEncoding ( daemon.getModelEncoding ( ) );
         // TODO: replace with org.codehaus.mojo.appassembler.booter.AppassemblerBooter.class.getName() and test - trygve
-        booterDaemon.setMainClass( "org.codehaus.mojo.appassembler.booter.AppassemblerBooter" );
-        booterDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
+        booterDaemon.setMainClass ( "org.codehaus.mojo.appassembler.booter.AppassemblerBooter" );
+        booterDaemon.setShowConsoleWindow ( daemon.isShowConsoleWindow ( ) );
 
-        booterDaemon.setJvmSettings( jvmSettings );
+        booterDaemon.setJvmSettings ( jvmSettings );
 
-        MavenProject project = request.getMavenProject();
+        MavenProject project = request.getMavenProject ( );
 
-        Classpath classpath = new Classpath();
-        booterDaemon.setClasspath( classpath );
-        classpath.addDirectory( createDirectory( "etc" ) );
-        classpath.addDependency( createDependency( project, "org.codehaus.mojo.appassembler:appassembler-booter",
-                                                   request.getRepositoryLayout() ) );
+        Classpath classpath = new Classpath ( );
+        booterDaemon.setClasspath ( classpath );
+        classpath.addDirectory ( createDirectory ( "etc" ) );
+        classpath.addDependency ( createDependency ( project, "org.codehaus.mojo.appassembler:appassembler-booter",
+                request.getRepositoryLayout ( ) ) );
 
         // TODO: Transitively resolve the dependencies of the booter - for now we're just hardcoding them in
-        classpath.addDependency( createDependency( project, "org.codehaus.mojo.appassembler:appassembler-model",
-                                                   request.getRepositoryLayout() ) );
-        classpath.addDependency( createDependency( project, "org.codehaus.plexus:plexus-utils",
-                                                   request.getRepositoryLayout() ) );
-        classpath.addDependency( createDependency( project, "stax:stax-api",
-                                                   request.getRepositoryLayout() ) );
-        classpath.addDependency( createDependency( project, "stax:stax",
-                                                   request.getRepositoryLayout() ) );
-        
-        //FIXME: Check if this is correct new File("bin") ?
-        scriptGenerator.createBinScript( getPlatformName(), booterDaemon, outputDirectory, "bin" );
+        classpath.addDependency ( createDependency ( project, "org.codehaus.mojo.appassembler:appassembler-model",
+                request.getRepositoryLayout ( ) ) );
+        classpath.addDependency ( createDependency ( project, "org.codehaus.plexus:plexus-utils",
+                request.getRepositoryLayout ( ) ) );
+        classpath.addDependency ( createDependency ( project, "stax:stax-api",
+                request.getRepositoryLayout ( ) ) );
+        classpath.addDependency ( createDependency ( project, "stax:stax",
+                request.getRepositoryLayout ( ) ) );
+
+        // FIXME: Check if this is correct new File("bin") ?
+        scriptGenerator.createBinScript ( getPlatformName ( ), booterDaemon, outputDirectory, "bin" );
     }
 
     // -----------------------------------------------------------------------
     // Private
     // -----------------------------------------------------------------------
 
-    private static Dependency createDependency( MavenProject project, String id,
-                                                ArtifactRepositoryLayout artifactRepositoryLayout )
-        throws DaemonGeneratorException
+    private static Dependency createDependency ( MavenProject project, String id,
+            ArtifactRepositoryLayout artifactRepositoryLayout )
+            throws DaemonGeneratorException
     {
-        Artifact artifact = (Artifact) project.getArtifactMap().get( id );
+        Artifact artifact = ( Artifact ) project.getArtifactMap ( ).get ( id );
 
         if ( artifact == null )
         {
-            throw new DaemonGeneratorException( "The project has to have a dependency on '" + id + "'." );
+            throw new DaemonGeneratorException ( "The project has to have a dependency on '" + id + "'." );
         }
 
-        Dependency dependency = new Dependency();
+        Dependency dependency = new Dependency ( );
 
-        dependency.setRelativePath( artifactRepositoryLayout.pathOf( artifact ) );
+        dependency.setRelativePath ( artifactRepositoryLayout.pathOf ( artifact ) );
         return dependency;
     }
 
-    private static Directory createDirectory( String relativePath )
+    private static Directory createDirectory ( String relativePath )
     {
-        Directory directory = new Directory();
-        directory.setRelativePath( relativePath );
+        Directory directory = new Directory ( );
+        directory.setRelativePath ( relativePath );
         return directory;
     }
 }

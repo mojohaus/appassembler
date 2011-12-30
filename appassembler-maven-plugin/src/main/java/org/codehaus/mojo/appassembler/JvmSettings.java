@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2008 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler;
 
 public class JvmSettings
 {
@@ -36,27 +36,27 @@ public class JvmSettings
 
     private String[] extraArguments;
 
-    public String getInitialMemorySize()
+    public String getInitialMemorySize ()
     {
         return initialMemorySize;
     }
 
-    public String getMaxMemorySize()
+    public String getMaxMemorySize ()
     {
         return maxMemorySize;
     }
 
-    public String getMaxStackSize()
+    public String getMaxStackSize ()
     {
         return maxStackSize;
     }
 
-    public String[] getSystemProperties()
+    public String[] getSystemProperties ()
     {
         return systemProperties;
     }
 
-    public String[] getExtraArguments()
+    public String[] getExtraArguments ()
     {
         return extraArguments;
     }

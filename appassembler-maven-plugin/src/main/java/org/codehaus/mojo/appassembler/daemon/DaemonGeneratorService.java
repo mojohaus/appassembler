@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler.daemon;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2007 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler.daemon;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler.daemon;
 
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.project.MavenProject;
@@ -36,30 +36,32 @@ import java.io.File;
  */
 public interface DaemonGeneratorService
 {
-    String ROLE = DaemonGeneratorService.class.getName();
+    String ROLE = DaemonGeneratorService.class.getName ( );
 
-    void generateDaemon( String platform, File stubDescriptor, File outputDirectory, MavenProject mavenProject,
-                         ArtifactRepository localRepository )
-        throws DaemonGeneratorException;
+    void generateDaemon ( String platform, File stubDescriptor, File outputDirectory, MavenProject mavenProject,
+            ArtifactRepository localRepository )
+            throws DaemonGeneratorException;
 
-    void generateDaemon( String platform, File stubDescriptor, Daemon stubDaemon, File outputDirectory,
-                         MavenProject mavenProject, ArtifactRepository localRepository )
-        throws DaemonGeneratorException;
+    void generateDaemon ( String platform, File stubDescriptor, Daemon stubDaemon, File outputDirectory,
+            MavenProject mavenProject, ArtifactRepository localRepository )
+            throws DaemonGeneratorException;
 
-    void generateDaemon( DaemonGenerationRequest generationRequest )
-        throws DaemonGeneratorException;
+    void generateDaemon ( DaemonGenerationRequest generationRequest )
+            throws DaemonGeneratorException;
 
-    Daemon mergeDaemons( Daemon dominant, Daemon recessive )
-        throws DaemonGeneratorException;
+    Daemon mergeDaemons ( Daemon dominant, Daemon recessive )
+            throws DaemonGeneratorException;
 
-    Daemon loadModel( File stubDescriptor )
-        throws DaemonGeneratorException;
+    Daemon loadModel ( File stubDescriptor )
+            throws DaemonGeneratorException;
 
     /**
-     * @param daemon     The daemon to validate
-     * @param descriptor An optional file reference that will be used in the exception messages.
+     * @param daemon
+     *            The daemon to validate
+     * @param descriptor
+     *            An optional file reference that will be used in the exception messages.
      * @throws DaemonGeneratorException
      */
-    void validateDaemon( Daemon daemon, File descriptor )
-        throws DaemonGeneratorException;
+    void validateDaemon ( Daemon daemon, File descriptor )
+            throws DaemonGeneratorException;
 }

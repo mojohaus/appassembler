@@ -1,9 +1,8 @@
-package org.codehaus.mojo.appassembler.daemon.jsw;
-
-/*
+/**
+ *
  * The MIT License
  *
- * Copyright 2005-2007 The Codehaus.
+ * Copyright 2006-2011 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +22,7 @@ package org.codehaus.mojo.appassembler.daemon.jsw;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler.daemon.jsw;
 
 import org.codehaus.mojo.appassembler.daemon.AbstractDaemonGeneratorTest;
 import org.codehaus.plexus.util.FileUtils;
