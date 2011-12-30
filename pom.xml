@@ -149,6 +149,51 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <!-- All the following tags are Mojo specific -->
+        <configuration>
+          <tags>
+            <tag>
+              <name>goal</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>phase</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>requiresDependencyResolution</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>parameter</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>required</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>readonly</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>requiresProject</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>component</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>threadsafe</name>
+              <placement>X</placement>
+            </tag>
+            <tag>
+              <name>todo</name>
+              <placement>X</placement>
+            </tag>
+          </tags>
+        </configuration>
         <reportSets>
           <reportSet>
             <reports>
@@ -158,6 +203,36 @@
           </reportSet>
         </reportSets>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <tagListOptions>
+            <tagClasses>
+              <tagClass>
+                <displayName>Todo Work</displayName>
+                <tags>
+                  <tag>
+                    <matchString>todo</matchString>
+                    <matchType>ignoreCase</matchType>
+                  </tag>
+                </tags>
+              </tagClass>
+              <tagClass>
+                <displayName>FIXME</displayName>
+                <tags>
+                  <tag>
+                    <matchString>FIXME</matchString>
+                    <matchType>exact</matchType>
+                  </tag>
+                </tags>
+              </tagClass>
+            </tagClasses>
+          </tagListOptions>
+        </configuration>
+      </plugin>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
