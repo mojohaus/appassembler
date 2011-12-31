@@ -85,7 +85,7 @@ def scriptfile_program_03_test = new File( fileBinFolder, 'program-03-test');
 
 t.checkExistenceAndContentOfAFile(scriptfile_program_03_test, [
     'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/programJvmArguments-test/1.0-SNAPSHOT/programJvmArguments-test-1.0-SNAPSHOT.jar',
-    'EXTRA_JVM_ARGUMENTS="-Xms16m"',
+    'EXTRA_JVM_ARGUMENTS="-Xms20m -Xmx256m -Xss128m -Dtest=false -Dlog4j.properties=false -Danton=2345 -Dberta="xaz""',
     '  $EXTRA_JVM_ARGUMENTS \\',
     '  -classpath "$CLASSPATH" \\',
     '  -Dapp.name="program-03-test" \\',
@@ -101,7 +101,7 @@ def scriptfile_program_03_test_bat = new File( fileBinFolder, 'program-03-test.b
 
 t.checkExistenceAndContentOfAFile(scriptfile_program_03_test_bat, [
     'set CLASSPATH="%BASEDIR%"\\etc;"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\programJvmArguments-test\\1.0-SNAPSHOT\\programJvmArguments-test-1.0-SNAPSHOT.jar',
-    'set EXTRA_JVM_ARGUMENTS=-Xms16m',
+    'set EXTRA_JVM_ARGUMENTS=-Xms20m -Xmx256m -Xss128m -Dtest=false -Dlog4j.properties=false -Danton=2345 -Dberta="xaz"',
     '%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="program-03-test" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld test-environment %CMD_LINE_ARGS%',
 ]);
 

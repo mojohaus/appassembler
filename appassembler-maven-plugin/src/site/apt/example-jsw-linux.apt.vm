@@ -49,7 +49,7 @@ Example: Linux daemon based on Java Service Wrapper
         <configuration>
           <repositoryLayout>flat</repositoryLayout>
           <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-          <target>${project.build.directory}</target>
+          <target>\${project.build.directory}</target>
           <daemons>
             <daemon>
               <id>app1</id>
