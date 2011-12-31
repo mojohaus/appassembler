@@ -14,7 +14,7 @@
 @REM  limitations under the License.
 @REM ----------------------------------------------------------------------------
 @REM
-@REM   Copyright (c) 2001-2002 The Apache Software Foundation.  All rights
+@REM   Copyright (c) 2001-2006 The Apache Software Foundation.  All rights
 @REM   reserved.
 
 @echo off
