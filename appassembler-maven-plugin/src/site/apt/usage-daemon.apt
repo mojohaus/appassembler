@@ -1,27 +1,28 @@
-#*
- *
- * The MIT License
- *
- * Copyright 2006-2011 The Codehaus.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *#
+~~
+~~
+~~ The MIT License
+~~
+~~ Copyright 2006-2011 The Codehaus.
+~~
+~~ Permission is hereby granted, free of charge, to any person obtaining a copy of
+~~ this software and associated documentation files (the "Software"), to deal in
+~~ the Software without restriction, including without limitation the rights to
+~~ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+~~ of the Software, and to permit persons to whom the Software is furnished to do
+~~ so, subject to the following conditions:
+~~
+~~ The above copyright notice and this permission notice shall be included in all
+~~ copies or substantial portions of the Software.
+~~
+~~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+~~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+~~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+~~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+~~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+~~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+~~ SOFTWARE.
+~~
+
   ------
   Using the Application Assembler Plugin
   ------
@@ -55,20 +56,31 @@ The 'daemon' Mechanism
  The available platforms are different and some configuration options does not apply to all of them. For their specific
  usage and possible values see the usage page.
 
+
 *-------------------------------------+-----+-----+-----+-----+-----+
-| Option                              | win |unix | b-w | b-u | jsw |
+|| Option                              || win ||unix || b-w || b-u || jsw ||
 *-------------------------------------+-----+-----+-----+-----+-----+
 | id                                  |  X  |  X  |  X  |  X  |  X  |
+*-------------------------------------+-----+-----+-----+-----+-----+
 | Main class                          |  X  |  X  |  X  |  X  |  X  |
-| Command line arguments              |  X  |  X  |  X  |  X  |  X  | 
+*-------------------------------------+-----+-----+-----+-----+-----+
+| Command line arguments              |  X  |  X  |  X  |  X  |  X  |
+*-------------------------------------+-----+-----+-----+-----+-----+
 | Show console window                 |  X  | N/A |  X  | N/A |  ?  |
+*-------------------------------------+-----+-----+-----+-----+-----+
 | Environment setup file name         |  X  |  X  |  X  |  X  |  ?  |
+*-------------------------------------+-----+-----+-----+-----+-----+
 | JVM: Initial memory size            |  X  |  X  |  X  |  X  |  ?  |
+*-------------------------------------+-----+-----+-----+-----+-----+
 | JVM: Max memory size                |  X  |  X  |  X  |  X  |  ?  |
+*-------------------------------------+-----+-----+-----+-----+-----+
 | JVM: Max stack size                 |  X  |  X  |  X  |  X  |  ?  |
+*-------------------------------------+-----+-----+-----+-----+-----+
 | JVM: System properties              |  X  |  X  |  X  |  X  |  ?  |
+*-------------------------------------+-----+-----+-----+-----+-----+
 | JVM: Extra arguments                |  X  |  X  |  X  |  X  |  ?  |
 *-------------------------------------+-----+-----+-----+-----+-----+
+
 
  * Legend:
 
@@ -91,3 +103,6 @@ The 'daemon' Mechanism
    * X: Supported
 
    * JVM: These options apply within the <jvmSettings>
+   
+   []
+
