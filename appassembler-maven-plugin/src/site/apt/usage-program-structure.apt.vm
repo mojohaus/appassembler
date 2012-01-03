@@ -57,9 +57,11 @@ Generated Structure
 +--------------------------
 
   The generated folder structure look like the following. There you have the <<<appassembler>>> folder
-  which is defined by the <<<assembleDirectory>>> parameter and the <<<bin>>> folder which is defined
-  by <<<binFolder>>> parameter. The <<<repo>>> folder contains the dependencies of the current project which
-  can be named by the <<<repositoryName>>> parameter.
+  which is defined by the <<<{{{./assemble-mojo.html#assembleDirectory}assembleDirectory}}>>> parameter 
+  and the <<<bin>>> folder which is defined by <<<{{{./assemble-mojo.html#binFolder}binFolder}}>>> parameter. 
+  The <<<repo>>> folder contains the dependencies of the current project. The name of the repository can be
+  changed by the <<<{{{./assemble-mojo.html#repositoryName}repositoryName}}>>> parameter whereas the layout
+  of the repository within can be influenced by using <<<{{{./assemble-mojo.html#repositoryLayout}repositoryLayout}}>>>.
   
 +--------------------------
 .

@@ -33,8 +33,8 @@ License Header
 
 * Default Header
 
-  If you don't define the <<<licenseHeaderFile>>> the generated scripts contain a default license header like the
-  following:
+  If you don't define the <<<{{{./assemble-mojo.html#licenseHeaderFile}licenseHeaderFile}}>>> 
+  the generated scripts contain a default license header like the following:
  
 +--------------------------
 #!/bin/sh
@@ -65,8 +65,9 @@ BASEDIR=`(cd "$BASEDIR"; pwd)`
 * Change The License Header Globally
 
   Sometimes you need to change that to fit in your project environment which can
-  be done by using the <<<licenseHeaderFile>>> definition.
-  
+  be done by using the <<<{{{./assemble-mojo.html#licenseHeaderFile}licenseHeaderFile}}>>>
+  definition.
+
 +--------------------------
 <project>
   ...

@@ -48,12 +48,13 @@
     <menu name="Program">
       <item name="Scripts" href="usage-program-scripts.html" />
       <item name="Platforms" href="usage-program-platform.html" />
-      <item name="License" href="usage-program-license.html" />
+      <item name="License Header" href="usage-program-license.html" />
       <item name="JVM Settings" href="usage-program-jvmsettings.html" />
       <item name="Arguments" href="usage-program-arguments.html" />
-      <item name="Structure" href="usage-program-structure.html" />
+      <item name="Generated Structure" href="usage-program-structure.html" />
     </menu>
-    <menu name="Examples">
+    <menu name="Java Service Wrapper">
+      <item name="License" href="jsw-license.html" />
     </menu>
     
   </body>

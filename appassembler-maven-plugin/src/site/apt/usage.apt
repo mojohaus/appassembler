@@ -44,7 +44,7 @@ Usage
 
     * {{{./usage-daemon.html} generate advanced and/or customizable wrapper scripts}} including:
 
-      * {{{./usage_jsw.html} Java Service Wrapper scripts}}
+      * {{{./usage-jsw.html} Java Service Wrapper scripts}}
 
       * {{{./usage-script.html} Unix shell scripts and Windows bat files}}
 
