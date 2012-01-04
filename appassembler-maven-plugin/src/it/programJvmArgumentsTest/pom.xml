@@ -66,13 +66,6 @@
             <program>
               <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
               <name>program-03-test</name>
-              <commandLineArguments>
-                <commandLineArgument>test-environment</commandLineArgument>
-              </commandLineArguments>
-            </program>
-            <program>
-              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
-              <name>program-03-test</name>
               <jvmSettings>
                 <initialMemorySize>20m</initialMemorySize>
                 <maxMemorySize>256m</maxMemorySize>
