@@ -289,6 +289,8 @@ public class AssembleMojo
         // Validate Programs
         // ----------------------------------------------------------------------
 
+        ArrayList programNames = new ArrayList();
+
         for ( Iterator i = programs.iterator ( ); i.hasNext ( ); )
         {
             Program program = ( Program ) i.next ( );
@@ -298,9 +300,21 @@ public class AssembleMojo
                 throw new MojoFailureException ( "Missing main class in Program configuration" );
             }
 
+            //FIXME: After migration to Java 1.5 the following check could be done simpler!
+            if (!programNames.contains(program.getName())) 
+            {
+                programNames.add(program.getName());
+            }
+            else
+            {
+                throw new MojoFailureException ( "The program name: " + program.getName() + " exists more than once!" );
+            }
+
             // platforms
             program.setPlatforms ( validatePlatforms ( program.getPlatforms ( ), defaultPlatforms ) );
         }
+        
+        
     }
 
     // ----------------------------------------------------------------------
