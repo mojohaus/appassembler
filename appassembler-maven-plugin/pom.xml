@@ -267,6 +267,15 @@
           </plugin>
         </plugins>
       </build>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <version>1.5</version>
+          </plugin>
+        </plugins>
+      </reporting>
     </profile>
 
   </profiles>
