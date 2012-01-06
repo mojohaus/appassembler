@@ -1,5 +1,4 @@
 /**
- *
  * The MIT License
  *
  * Copyright 2006-2011 The Codehaus.
@@ -8,7 +7,7 @@
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
+ *  of the Software, and to permit persons to whom the Software is furnished to do
  * so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
@@ -269,14 +268,14 @@ public class CreateRepositoryMojo
         this.availableRepositoryLayouts = availableRepositoryLayouts;
     }
 
-    private void install ( File source, Artifact artifact, ArtifactRepository localRepository )
+    private void install ( File source, Artifact artifact, ArtifactRepository destinationRepository )
             throws ArtifactInstallationException
     {
         try
         {
-            String localPath = localRepository.pathOf ( artifact );
+            String localPath = destinationRepository.pathOf ( artifact );
 
-            File destination = new File ( localRepository.getBasedir ( ), localPath );
+            File destination = new File ( destinationRepository.getBasedir ( ), localPath );
             if ( !destination.getParentFile ( ).exists ( ) )
             {
                 destination.getParentFile ( ).mkdirs ( );

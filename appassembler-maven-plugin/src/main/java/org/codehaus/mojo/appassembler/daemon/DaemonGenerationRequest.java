@@ -1,5 +1,4 @@
 /**
- *
  * The MIT License
  *
  * Copyright 2006-2011 The Codehaus.
@@ -36,6 +35,10 @@ import org.codehaus.mojo.appassembler.model.Daemon;
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */
+/**
+ * @author kama
+ *
+ */
 public class DaemonGenerationRequest
 {
     private String platform;
@@ -61,6 +64,14 @@ public class DaemonGenerationRequest
     {
     }
 
+    /**
+     * Request with the given parameters.
+     * @param daemon The Daemon to use.
+     * @param project The Maven Project
+     * @param localRepository The local repository.
+     * @param outputDir The output directory.
+     * @param binFolder The binary folder.
+     */
     public DaemonGenerationRequest ( Daemon daemon, MavenProject project, ArtifactRepository localRepository,
             File outputDir, String binFolder )
     {
@@ -75,91 +86,164 @@ public class DaemonGenerationRequest
         this.binFolder = binFolder;
     }
 
+    /**
+     * Get the Plaform.
+     * @return the Platform.
+     */
     public String getPlatform ()
     {
         return platform;
     }
 
+    /**
+     * @param platform Set the platform.
+     */
     public void setPlatform ( String platform )
     {
         this.platform = platform;
     }
 
+    /**
+     * Get the StubDescriptor
+     * FIXME: What for is this needed?
+     * @return The Stub Descriptor file.
+     */
     public File getStubDescriptor ()
     {
         return stubDescriptor;
     }
 
+    /**
+     * Set the StubDescriptor.
+     * FIXME: What for is this needed?
+     * @param stubDescriptor
+     */
     public void setStubDescriptor ( File stubDescriptor )
     {
         this.stubDescriptor = stubDescriptor;
     }
 
+    /**
+     * Get the StubDaemon
+     * FIXME: Is this needed?
+     * @return The set stub Daemon
+     */
     public Daemon getStubDaemon ()
     {
         return stubDaemon;
     }
 
+    /**
+     * Set the StubDaemon.
+     * FIXME: Is this needed?
+     * @param stubDaemon This will be set.
+     */
     public void setStubDaemon ( Daemon stubDaemon )
     {
         this.stubDaemon = stubDaemon;
     }
 
+    /**
+     * Get the Daemon of the current request.
+     * @return
+     */
     public Daemon getDaemon ()
     {
         return daemon;
     }
 
+    /**
+     * Set the daemon.
+     * @param daemon
+     */
     public void setDaemon ( Daemon daemon )
     {
         this.daemon = daemon;
     }
 
+    /**
+     * Get the current outputDirectory.
+     * @return
+     */
     public File getOutputDirectory ()
     {
         return outputDirectory;
     }
 
+    /**
+     * Set the current output directory.
+     * @param outputDirectory
+     */
     public void setOutputDirectory ( File outputDirectory )
     {
         this.outputDirectory = outputDirectory;
     }
 
+    /**
+     * Get the use MavenProject.
+     * @return
+     */
     public MavenProject getMavenProject ()
     {
         return mavenProject;
     }
 
+    /**
+     * Set the Maven Project.
+     * @param mavenProject
+     */
     public void setMavenProject ( MavenProject mavenProject )
     {
         this.mavenProject = mavenProject;
     }
 
+    /**
+     * Get the local repository.
+     * @return
+     */
     public ArtifactRepository getLocalRepository ()
     {
         return localRepository;
     }
 
+    /**
+     * @param localRepository Set the local repositoy.
+     */
     public void setLocalRepository ( ArtifactRepository localRepository )
     {
         this.localRepository = localRepository;
     }
 
+    /**
+     * @return The current repository layout.
+     */
     public ArtifactRepositoryLayout getRepositoryLayout ()
     {
         return repositoryLayout;
     }
 
+    /**
+     * Set the current repository layout.
+     * @param repositoryLayout The repositoryLayout which will be set.
+     */
     public void setRepositoryLayout ( ArtifactRepositoryLayout repositoryLayout )
     {
         this.repositoryLayout = repositoryLayout;
     }
 
+    /**
+     * Get the current binary folder.
+     * @return the setting of the binary folder.
+     */
     public String getBinFolder ()
     {
         return binFolder;
     }
 
+    /**
+     * Set the binary folder.
+     * @param binFolder 
+     */
     public void setBinFolder ( String binFolder )
     {
         this.binFolder = binFolder;

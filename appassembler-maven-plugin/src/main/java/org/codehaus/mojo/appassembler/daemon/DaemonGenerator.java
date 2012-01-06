@@ -1,5 +1,4 @@
 /**
- *
  * The MIT License
  *
  * Copyright 2006-2011 The Codehaus.
@@ -30,8 +29,15 @@ package org.codehaus.mojo.appassembler.daemon;
  */
 public interface DaemonGenerator
 {
+    /**
+     * The Plexus role.
+     */
     String ROLE = DaemonGenerator.class.getName ( );
 
+    /**
+     * @param generationRequest The request to which is used for the Daemon.
+     * @throws DaemonGeneratorException
+     */
     void generate ( DaemonGenerationRequest generationRequest )
             throws DaemonGeneratorException;
 }

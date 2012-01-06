@@ -1,5 +1,4 @@
 /**
- *
  * The MIT License
  *
  * Copyright 2006-2011 The Codehaus.
@@ -144,6 +143,9 @@ public class DefaultScriptGenerator
     // ScriptGenerator Implementation
     // -----------------------------------------------------------------------
 
+    /* (non-Javadoc)
+     * @see org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator#createBinScript(java.lang.String, org.codehaus.mojo.appassembler.model.Daemon, java.io.File, java.lang.String)
+     */
     public void createBinScript ( String platformName, Daemon daemon, File outputDirectory, String binFolder )
             throws DaemonGeneratorException
     {

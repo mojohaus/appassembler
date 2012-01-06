@@ -1,5 +1,4 @@
 /**
- *
  * The MIT License
  *
  * Copyright 2006-2011 The Codehaus.
@@ -27,6 +26,12 @@ package org.codehaus.mojo.appassembler;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * This class contains the generator configuration.
+ * 
+ * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
+ *
+ */
 public class GeneratorConfiguration
 {
     private String generator;

@@ -1,5 +1,4 @@
 /**
- *
  * The MIT License
  *
  * Copyright 2006-2011 The Codehaus.
@@ -51,8 +50,14 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class Platform
 {
+    /**
+     * Unix as Platform name.
+     */
     public static final String UNIX_NAME = "unix";
 
+    /**
+     * Windows Platform name.
+     */
     public static final String WINDOWS_NAME = "windows";
 
     private static final Map ALL_PLATFORMS;
@@ -85,6 +90,12 @@ public class Platform
         return platform;
     }
 
+    /**
+     * Get an instance of the named platform.
+     * @param platformName The name of the wished platform.
+     * @return Instance of the platform.
+     * @throws DaemonGeneratorException in case of an wrong platformname.
+     */
     public static Platform getInstance ( String platformName )
             throws DaemonGeneratorException
     {
@@ -98,22 +109,43 @@ public class Platform
         return platform;
     }
 
+    /**
+     * Get the names of all available platforms.
+     * @return The names of the platform.
+     */
     public static Set getAllPlatformNames ()
     {
         return ALL_PLATFORMS.keySet ( );
     }
 
+    /**
+     * Get all platforms.
+     * @return All platforms.
+     */
     public static Set getAllPlatforms ()
     {
         return new HashSet ( ALL_PLATFORMS.values ( ) );
     }
 
+    /**
+     * Redefine the list of platforms with the given one.
+     * @param platformList The new list of platforms.
+     * @return 
+     * @throws DaemonGeneratorException in case of an error.
+     */
     public static Set getPlatformSet ( List platformList )
             throws DaemonGeneratorException
     {
         return getPlatformSet ( platformList, new HashSet ( ALL_PLATFORMS.values ( ) ) );
     }
 
+    /**
+     * Get back all platforms.
+     * @param platformList
+     * @param allSet
+     * @return
+     * @throws DaemonGeneratorException
+     */
     public static Set getPlatformSet ( List platformList, Set allSet )
             throws DaemonGeneratorException
     {
@@ -170,36 +202,58 @@ public class Platform
     // The platform-specific bits
     // -----------------------------------------------------------------------
 
+    /**
+     * The interpolation token either for windows or unix.
+     * @return The token which is used.
+     */
     public String getInterpolationToken ()
     {
         return isWindows ? "#" : "@";
     }
 
+    /**
+     * @return The binary extension.
+     */
     public String getBinFileExtension ()
     {
         return binFileExtension;
     }
 
+    /**
+     * @return BASEDIR representation for windows or unix.
+     */
     public String getBasedir ()
     {
         return isWindows ? "\"%BASEDIR%\"" : "\"$BASEDIR\"";
     }
 
+    /**
+     * @return REPO representation for windows or unix.
+     */
     public String getRepo ()
     {
         return isWindows ? "\"%REPO%\"" : "\"$REPO\"";
     }
 
+    /**
+     * @return The separator for windows or unix.
+     */
     public String getSeparator ()
     {
         return isWindows ? "\\" : "/";
     }
 
+    /**
+     * @return The path separator for windows or unix.
+     */
     public String getPathSeparator ()
     {
         return isWindows ? ";" : ":";
     }
 
+    /**
+     * @return Comment prefix for windows or unix.
+     */
     public String getCommentPrefix ()
     {
         return isWindows ? "@REM " : "# ";
@@ -214,6 +268,13 @@ public class Platform
     // This part depend on the platform-specific parts
     // -----------------------------------------------------------------------
 
+    /**
+     * Get the ClassPath based on the given Daemon.
+     * 
+     * @param daemon 
+     * @return The classpath as a string.
+     * @throws DaemonGeneratorException
+     */
     public String getClassPath ( Daemon daemon )
             throws DaemonGeneratorException
     {
@@ -298,6 +359,12 @@ public class Platform
         return result;
     }
 
+    /**
+     * Get the extra JVMArguments.
+     * @param jvmSettings
+     * @return
+     * @throws IOException
+     */
     public String getExtraJvmArguments ( JvmSettings jvmSettings ) throws IOException
     {
         if ( jvmSettings == null )
@@ -343,6 +410,11 @@ public class Platform
         return string;
     }
 
+    /**
+     * Get the application arguments.
+     * @param descriptor
+     * @return The list of application arguments.
+     */
     public String getAppArguments ( Daemon descriptor )
     {
         List commandLineArguments = convertArguments ( descriptor.getCommandLineArguments ( ) );
@@ -379,6 +451,11 @@ public class Platform
         return vmArgs + " " + argType + extraJvmArgument;
     }
 
+    /**
+     * Get the environment setup file.
+     * @param daemon
+     * @return
+     */
     public String getEnvSetup ( Daemon daemon )
     {
         String envSetup = "";
@@ -434,6 +511,11 @@ public class Platform
         return name;
     }
 
+    /**
+     * ShowConsole window.
+     * @param daemon
+     * @return true yes false otherwise.
+     */
     public boolean isShowConsoleWindow ( Daemon daemon )
     {
         return daemon.isShowConsoleWindow ( ) && isWindows;
@@ -443,6 +525,10 @@ public class Platform
     // Setters for the platform-specific bits
     // -----------------------------------------------------------------------
 
+    /**
+     * Set the bin file extension.
+     * @param binFileExtension
+     */
     public void setBinFileExtension ( String binFileExtension )
     {
         // We can't have a null extension

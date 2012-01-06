@@ -64,7 +64,7 @@ public class JavaServiceWrapperDaemonGenerator
         extends AbstractLogEnabled
         implements DaemonGenerator
 {
-    private static final Map jswPlatformsMap = new HashMap ( ) {
+    private static final Map JSW_PLATFORMS_MAP = new HashMap ( ) {
         {
             put ( "linux-x86-32-lib", "lib/libwrapper-linux-x86-32.so" );
             put ( "linux-x86-32-exec", "bin/wrapper-linux-x86-32" );
@@ -397,7 +397,7 @@ public class JavaServiceWrapperDaemonGenerator
         for ( Iterator iter = jswPlatformIncludes.iterator ( ); iter.hasNext ( ); )
         {
             String platform = ( String ) iter.next ( );
-            String libFile = ( String ) jswPlatformsMap.get ( platform + "-lib" );
+            String libFile = ( String ) JSW_PLATFORMS_MAP.get ( platform + "-lib" );
             if ( libFile != null )
             {
                 copyResourceFile ( outputDirectory, libFile );
@@ -415,7 +415,7 @@ public class JavaServiceWrapperDaemonGenerator
         for ( Iterator iter = jswPlatformIncludes.iterator ( ); iter.hasNext ( ); )
         {
             String platform = ( String ) iter.next ( );
-            String execFile = ( String ) jswPlatformsMap.get ( platform + "-exec" );
+            String execFile = ( String ) JSW_PLATFORMS_MAP.get ( platform + "-exec" );
             if ( execFile != null )
             {
                 copyResourceFile ( outputDirectory, execFile );

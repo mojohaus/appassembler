@@ -1,5 +1,4 @@
 /**
- *
  * The MIT License
  *
  * Copyright 2006-2011 The Codehaus.
@@ -36,6 +35,9 @@ import java.io.File;
  */
 public interface DaemonGeneratorService
 {
+    /**
+     * The plexus role.
+     */
     String ROLE = DaemonGeneratorService.class.getName ( );
 
     void generateDaemon ( String platform, File stubDescriptor, File outputDirectory, MavenProject mavenProject,

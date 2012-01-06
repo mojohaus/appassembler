@@ -1,5 +1,4 @@
 /**
- *
  * The MIT License
  *
  * Copyright 2006-2011 The Codehaus.
@@ -8,7 +7,7 @@
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
+ *  of the Software, and to permit persons to whom the Software is furnished to do
  * so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
@@ -289,7 +288,7 @@ public class AssembleMojo
         // Validate Programs
         // ----------------------------------------------------------------------
 
-        ArrayList programNames = new ArrayList();
+        ArrayList programNames = new ArrayList ( );
 
         for ( Iterator i = programs.iterator ( ); i.hasNext ( ); )
         {
@@ -300,28 +299,28 @@ public class AssembleMojo
                 throw new MojoFailureException ( "Missing main class in Program configuration" );
             }
 
-            //FIXME: After migration to Java 1.5 the following check could be done simpler!
-            if (!programNames.contains(program.getName())) 
+            // FIXME: After migration to Java 1.5 the following check could be done simpler!
+            if ( !programNames.contains ( program.getName ( ) ) )
             {
-                programNames.add(program.getName());
+                programNames.add ( program.getName ( ) );
             }
             else
             {
-                throw new MojoFailureException ( "The program name: " + program.getName() + " exists more than once!" );
+                throw new MojoFailureException ( "The program name: " + program.getName ( ) + " exists more than once!" );
             }
 
             // platforms
             program.setPlatforms ( validatePlatforms ( program.getPlatforms ( ), defaultPlatforms ) );
         }
-        
-        
+
     }
 
     // ----------------------------------------------------------------------
     // Execute
     // ----------------------------------------------------------------------
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
     public void execute ()
@@ -377,9 +376,9 @@ public class AssembleMojo
         {
             Program program = ( Program ) it.next ( );
 
-            Set platforms = validatePlatforms ( program.getPlatforms ( ), defaultPlatforms );
+            Set validatedPlatforms = validatePlatforms ( program.getPlatforms ( ), defaultPlatforms );
 
-            for ( Iterator platformIt = platforms.iterator ( ); platformIt.hasNext ( ); )
+            for ( Iterator platformIt = validatedPlatforms.iterator ( ); platformIt.hasNext ( ); )
             {
                 String platform = ( String ) platformIt.next ( );
 
@@ -606,34 +605,34 @@ public class AssembleMojo
         return defaultExcludes.toString ( );
     }
 
-    private Set validatePlatforms ( Set platforms, Set defaultPlatforms )
+    private Set validatePlatforms ( Set platformsToValidate, Set defaultPlatforms )
             throws MojoFailureException
     {
-        if ( platforms == null )
+        if ( platformsToValidate == null )
         {
             return defaultPlatforms;
         }
 
-        if ( platforms.size ( ) == 1 && platforms.iterator ( ).next ( ).equals ( "all" ) )
+        if ( platformsToValidate.size ( ) == 1 && platformsToValidate.iterator ( ).next ( ).equals ( "all" ) )
         {
             return VALID_PLATFORMS;
         }
 
-        if ( !VALID_PLATFORMS.containsAll ( platforms ) )
+        if ( !VALID_PLATFORMS.containsAll ( platformsToValidate ) )
         {
             throw new MojoFailureException (
                     "Non-valid default platform declared, supported types are: " + VALID_PLATFORMS );
         }
 
-        return platforms;
+        return platformsToValidate;
     }
 
     /**
-     * This will tokenize the given argument or 
+     * This will tokenize the given argument or
      * give the extraJvmArguments back if the given
      * argument is empty.
      * 
-     * @param arg
+     * @param arg The argument to parse.
      * @return List of arguments.
      */
     public static List parseTokens ( String arg )

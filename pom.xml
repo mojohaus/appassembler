@@ -102,7 +102,6 @@
     </license>
   </licenses>
   <modules>
-    <module>appassembler-checkstyle</module>
     <module>appassembler-model</module>
     <module>appassembler-booter</module>
     <module>appassembler-maven-plugin</module>
@@ -254,7 +253,7 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>2.8</version>
         <configuration>
-          <headerLocation>appassembler/LICENSE.txt</headerLocation>
+          <headerLocation>${basedir}/LICENSE.txt</headerLocation>
         </configuration>
       </plugin>
     </plugins>
@@ -288,6 +287,9 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <version>2.8</version>
+          <configuration>
+            <headerLocation>${basedir}/LICENSE.txt</headerLocation>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -295,13 +297,6 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <dependencies>
-            <dependency>
-              <groupId>org.codehaus.mojo.appassembler</groupId>
-              <artifactId>appassembler-checkstyle</artifactId>
-              <version>${project.version}</version>
-            </dependency>
-          </dependencies>
         </plugin>
 <!--         <plugin> -->
 <!--           <inherited>false</inherited> -->
