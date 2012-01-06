@@ -53,6 +53,9 @@
     <contributor>
       <name>Mathieu Champlon</name>
     </contributor>
+    <contributor>
+      <name>Andreas Kohn</name>
+    </contributor>
   </contributors>
   <dependencies>
     <dependency>
