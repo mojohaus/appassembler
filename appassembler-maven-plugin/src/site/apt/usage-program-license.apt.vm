@@ -64,8 +64,9 @@ BASEDIR=`(cd "$BASEDIR"; pwd)`
 
 * Change The License Header Globally
 
-  Sometimes you need to change that to fit in your project environment which can
-  be done by using the <<<{{{./assemble-mojo.html#licenseHeaderFile}licenseHeaderFile}}>>>
+  Sometimes you need to change the license header to fit in your project 
+  environment which can be done by using the 
+  <<<{{{./assemble-mojo.html#licenseHeaderFile}licenseHeaderFile}}>>>
   definition.
 
 +--------------------------
@@ -100,7 +101,8 @@ BASEDIR=`(cd "$BASEDIR"; pwd)`
 * License Header for Particular Scripts
 
   You can also change the license header for every program separately if you need. The
-  second app  (<<<app2>>>) will use the default license header.
+  second app  (<<<app2>>>) will use the default license header whereas the 
+  <<<App1>>> will use the given license header <<<license-header-1.txt>>>.
   
 +--------------------------
 <project>
@@ -132,4 +134,4 @@ BASEDIR=`(cd "$BASEDIR"; pwd)`
 </project>
 +--------------------------
 
-  
+  []

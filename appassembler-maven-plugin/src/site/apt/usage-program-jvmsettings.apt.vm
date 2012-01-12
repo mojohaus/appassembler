@@ -177,7 +177,7 @@ exec "$JAVACMD" $JAVA_OPTS \
   The settings of the extraJvmArguments is not limited to memory settings. You can
   use any kind of definition for the Jvm. It's more important that you can use
   place holders for the <<@REPO@>> and for the <<@BASEDIR@>>. They are also
-  given to the application by the following lines by default.
+  given to the application by the following system properties by default.
 
 +--------------------------
   -Dapp.repo="$REPO" \

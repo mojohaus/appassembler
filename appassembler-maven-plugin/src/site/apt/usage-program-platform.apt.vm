@@ -33,8 +33,8 @@ Platforms
 
 * All Platforms
 
-  The default is to generate for all platforms which means to generate Windows and shell script.
-  So the following example is equivalent to the first example.
+  The default is to generate scripts for all platforms which means to generate 
+  Windows and shell scripts.
 
 +--------------------------
 <project>
@@ -47,7 +47,6 @@ Platforms
           <platforms>
            <platform>all</platform>
           </platforms>
-
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
@@ -64,8 +63,9 @@ Platforms
 
 * Single Platform
 
-  The generation supports Windows as well as Unix platforms. If you like to generate a script for one platform only
-  you can simply define the platform in the <<program>> block of the script part.
+  The generation supports Windows as platform as well as Unix as platform. 
+  If you like to generate a script for one platform you can simply define 
+  the platform in the <<program>> block of the script part.
 
 +--------------------------
 <project>
@@ -94,7 +94,8 @@ Platforms
 
 * Single Platform Multiple Classes
 
-  If you like to generate for a single platform but multiple classes this can done by using the following:
+  If you like to generate for a single platform but multiple classes which contain
+  a main method this can done by using the following:
 
 +--------------------------
 <project>
@@ -126,8 +127,9 @@ Platforms
 
 * Combine Platforms and Multiple Classes
 
-  Supose you would like to create a part of you Java program for Unix but an other part for Windows? So this
-  can be done using the following configuration:
+  Suppose you would like to create a part of you Java program for 
+  Unix but an other part for Windows? So this can be done using the
+  following configuration:
 
 +--------------------------
 <project>
@@ -159,4 +161,5 @@ Platforms
   </build>
 </project>
 +--------------------------
-  
+
+  []

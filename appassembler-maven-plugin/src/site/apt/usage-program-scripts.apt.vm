@@ -91,6 +91,8 @@ Scripts
               <mainClass>com.mycompany.app.App1</mainClass>
               <name>app1</name>
             </program>
+            .
+            .
           </programs>
         </configuration>
       </plugin>
@@ -100,4 +102,4 @@ Scripts
 </project>
 +--------------------------
 
-  
+  []

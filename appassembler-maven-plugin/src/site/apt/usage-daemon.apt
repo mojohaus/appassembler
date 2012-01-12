@@ -56,6 +56,7 @@ The 'daemon' Mechanism
  The available platforms are different and some configuration options does not apply to all of them. For their specific
  usage and possible values see the usage page.
 
+~~ TODO: I have to check the matrix if it is ok or contains mistakes..
 
 *-------------------------------------+-----+-----+-----+-----+-----+
 || Option                              || win ||unix || b-w || b-u || jsw ||

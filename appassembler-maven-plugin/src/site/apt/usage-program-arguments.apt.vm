@@ -34,7 +34,7 @@ Program Arguments
 * Arguments for Program
 
   If you have created a script it's sometimes useful to have supplemental arguments
-  which can be given to the Java application.
+  which can be given to the Java application by using the following configuration.
 
 +--------------------------
 <project>
