@@ -52,6 +52,8 @@
       <name>Karl Heinz Marbaise</name>
       <email>codehaus@soebes.de</email>
       <timezone>+1</timezone>
+      <organization>SoftwareEntwicklung Beratung Schulung</organization>
+      <organizationUrl>http://www.soebes.de</organizationUrl>
     </developer>
     <developer>
       <id>trygvis</id>
