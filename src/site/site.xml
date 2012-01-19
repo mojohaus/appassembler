@@ -26,11 +26,6 @@
 
 -->
 <project name="Maven Application Assembler">
- <skin>
-    <groupId>org.apache.maven.skins</groupId>
-    <artifactId>maven-fluido-skin</artifactId>
-    <version>1.0</version>
-  </skin>
   <body>
     <menu name="Appassembler">
       <item name="About" href="/index.html" />
