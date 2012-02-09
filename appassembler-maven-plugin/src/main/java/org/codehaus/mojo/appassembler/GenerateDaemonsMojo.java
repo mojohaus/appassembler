@@ -116,6 +116,7 @@ public class GenerateDaemonsMojo
      * instead the default header in the generated scripts.
      * 
      * @parameter
+     * @since 1.2
      */
     private File licenseHeaderFile;
 

@@ -49,6 +49,7 @@ public class Program
      * The License header which can be used instead of the default header.
      * 
      * @parameter
+     * @since 1.2
      */
     private File licenseHeaderFile;
 
@@ -56,6 +57,7 @@ public class Program
      * Define the name of binary folder.
      * 
      * @parameter default-value="bin"
+     * @since 1.2
      */
     private File binFolder;
 
@@ -63,6 +65,7 @@ public class Program
      * JvmSettings for every program.
      * 
      * @parameter
+     * @since 1.2
      */
     private org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings;
 

@@ -95,6 +95,7 @@ public class AssembleMojo
      * Define the name of binary folder.
      * 
      * @parameter default-value="bin"
+     * @since 1.2
      */
     private String binFolder;
 
@@ -241,6 +242,7 @@ public class AssembleMojo
      * instead the default header in the generated scripts.
      * 
      * @parameter
+     * @since 1.2
      */
     private File licenseHeaderFile;
 
