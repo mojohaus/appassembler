@@ -185,6 +185,18 @@ public class AssembleMojo
      * @parameter default-value="repo"
      */
     private String repositoryName;
+    
+    /**
+     * This can be used to put the project artifact as the first
+     * entry in the classpath after the configuration folder 
+     * (<code>etc</code> by default).
+     * The default behavior is to have the project artifact at the 
+     * last position in classpath.
+     * 
+     * @since 1.2.1
+     * @parameter default-value="false"
+     */
+    private boolean projectArtifactFirstInClassPath;
 
     /**
      * The file extensions to use for bin files.
@@ -457,13 +469,24 @@ public class AssembleMojo
         {
             daemon.setClasspath ( new Classpath ( ) );
         }
+
         daemon.getClasspath ( ).setDirectories ( directories );
         daemon.setRepositoryName ( repositoryName );
 
         List dependencies = new ArrayList ( );
 
-        List classPathArtifacts = new ArrayList ( artifacts );
-        classPathArtifacts.add ( projectArtifact );
+        List classPathArtifacts = new ArrayList ( );
+
+        if ( isProjectArtifactFirstInClassPath ( ) )
+        {
+            classPathArtifacts.add ( projectArtifact );
+            classPathArtifacts.addAll ( artifacts );
+        }
+        else
+        {
+            classPathArtifacts.addAll ( artifacts );
+            classPathArtifacts.add ( projectArtifact );
+        }
 
         for ( Iterator it = classPathArtifacts.iterator ( ); it.hasNext ( ); )
         {
@@ -730,4 +753,13 @@ public class AssembleMojo
             }
         }
     }
+
+	public boolean isProjectArtifactFirstInClassPath() {
+		return projectArtifactFirstInClassPath;
+	}
+
+	public void setProjectArtifactFirstInClassPath(
+			boolean projectArtifactFirstInClassPath) {
+		this.projectArtifactFirstInClassPath = projectArtifactFirstInClassPath;
+	}
 }
