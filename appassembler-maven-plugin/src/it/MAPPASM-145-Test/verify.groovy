@@ -90,12 +90,11 @@ unixScriptFile.eachLine {
  * Check the order and the elements itself.
  */
 def elements_in_classpath = line_unix_script_with_classpath.substring (10).split (":")
-list_of_files_which_must_be_in_classpath.eachWithIndex {
-    lib_file, index -> if (!lib_file.equals (elements_in_classpath[index])) {
-        throw new FileNotFoundException("We couldn't find " + lib_file + " in classpath (unix script).");
-   }
+elements_in_classpath.each {
+	element -> if (!list_of_files_which_must_be_in_classpath.contains(element)) {
+		throw new FileNotFoundException("We couldn't find " + element + " in expected list (unix script).");
+	}
 }
-
 
 def list_of_files_which_must_be_in_classpath_windows = [
     '"%BASEDIR%"\\etc',
@@ -138,10 +137,11 @@ windowsBatchFile.eachLine {
 * Check the order and the elements itself.
 */
 def elements_in_classpath_windows = line_windows_script_with_classpath.substring (14).split (";")
-list_of_files_which_must_be_in_classpath_windows.eachWithIndex {
-   lib_file, index -> if (!lib_file.equals (elements_in_classpath_windows[index])) {
-       throw new FileNotFoundException("We couldn't find " + lib_file + " in classpath (windows script).");
-  }
+elements_in_classpath_windows.each {
+	element -> if (!list_of_files_which_must_be_in_classpath_windows.contains(element)) {
+		throw new FileNotFoundException("We couldn't find " + element + " in expected list (windows script).");
+		
+	} 
 }
 
 def list_of_files_which_must_be_existing_in_repository = [
