@@ -33,7 +33,7 @@
   <artifactId>appassembler</artifactId>
   <packaging>pom</packaging>
   <groupId>org.codehaus.mojo.appassembler</groupId>
-  <version>1.3-SNAPSHOT</version>
+  <version>1.2.1-SNAPSHOT</version>
   <name>Appassembler</name>
   <inceptionYear>2006</inceptionYear>
   <issueManagement>
