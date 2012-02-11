@@ -197,6 +197,14 @@ public class AssembleMojo
      * @parameter default-value="false"
      */
     private boolean projectArtifactFirstInClassPath;
+    
+    /**
+     * The following can be used to use all dependencies instead of the default
+     * behavior which represents runtime dependencies only.
+     * @since 1.2.1
+     * @parameter default-value="false"
+     */
+    private boolean useAllDependencies;
 
     /**
      * The file extensions to use for bin files.
@@ -355,6 +363,17 @@ public class AssembleMojo
             throw new MojoFailureException ( "Unknown repository layout '" + repositoryLayout + "'." );
         }
 
+
+        if (isUseAllDependencies()) {
+        	//TODO: This should be made different. We have to think about using a default ArtifactFilter
+        	Set dependencyArtifacts = mavenProject.getDependencyArtifacts();
+        	artifacts = new ArrayList();
+        	for ( Iterator it = dependencyArtifacts.iterator(); it.hasNext(); ) {
+        		Artifact artifact = (Artifact) it.next();
+        		artifacts.add(artifact);
+        	}
+        }
+        
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
         // ----------------------------------------------------------------------
@@ -544,6 +563,7 @@ public class AssembleMojo
 
             if ( artifact.getFile ( ) != null )
             {
+            	getLog().debug("installArtifact: scope:" + artifact.getScope() + " id:" + artifact.getId());
                 artifactInstaller.install ( artifact.getFile ( ), artifact, artifactRepository );
             }
         }
@@ -761,5 +781,13 @@ public class AssembleMojo
 	public void setProjectArtifactFirstInClassPath(
 			boolean projectArtifactFirstInClassPath) {
 		this.projectArtifactFirstInClassPath = projectArtifactFirstInClassPath;
+	}
+
+	public boolean isUseAllDependencies() {
+		return useAllDependencies;
+	}
+
+	public void setUseAllDependencies(boolean useAllDependencies) {
+		this.useAllDependencies = useAllDependencies;
 	}
 }
