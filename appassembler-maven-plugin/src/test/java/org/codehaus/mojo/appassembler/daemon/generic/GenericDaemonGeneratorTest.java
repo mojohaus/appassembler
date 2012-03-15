@@ -23,13 +23,13 @@
  */
 package org.codehaus.mojo.appassembler.daemon.generic;
 
-import org.codehaus.mojo.appassembler.daemon.AbstractDaemonGeneratorTest;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
+import java.io.File;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
+
+import org.codehaus.mojo.appassembler.daemon.AbstractDaemonGeneratorTest;
+import org.w3c.dom.Document;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -67,50 +67,12 @@ public class GenericDaemonGeneratorTest
 
     }
 
-    public void testGenerationWithSnapshotDependencies()
-        throws Exception
-    {
-        runTest( "generic", "src/test/resources/project-7/pom.xml", "src/test/resources/project-7/descriptor.xml",
-                 "target/output-7-generic" );
-
-        File actualAppXml = new File( getTestFile( "target/output-7-generic" ), "app.xml" );
-
-        assertTrue( "config file is missing: " + actualAppXml.getAbsolutePath(), actualAppXml.isFile() );
-
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-
-        builderFactory.setIgnoringComments( true );
-        builderFactory.setIgnoringElementContentWhitespace( true );
-        DocumentBuilder builder = builderFactory.newDocumentBuilder();
-
-        Document actual = builder.parse( actualAppXml );
-
-        assertNodeEquals( "org/codehaus/mojo/appassembler/project-7/1.0-SNAPSHOT/project-7-1.0-SNAPSHOT.jar",
-                          "relativePath", actual );
-//        assertNodeContains( "org/springframework/spring-core/2.5.6-SNAPSHOT/spring-core-2.5.6-SNAPSHOT.jar",
-//                          "relativePath", actual );
-
-    }
-
+    //MAPPASM-143. The old unit tests testGenerationWithSnapshotDependencies() has been converted into
+    //a integration tests to get the integration test running after a release change etc.
     private void assertNodeEquals( String expected, String tagName, Document document )
     {
         assertEquals( "Node with tag name " + tagName + " does not match", expected,
                       document.getElementsByTagName( tagName ).item( 0 ).getFirstChild().getNodeValue() );
     }
     
-    private void assertNodeContains( String expected, String tagName, Document document )
-    {
-        boolean result = false;
-        NodeList relativePaths = document.getElementsByTagName( tagName );
-        
-        for ( int i = 0; i < relativePaths.getLength(); i++ )
-        {
-            if (expected.equals( relativePaths.item( i ).getFirstChild().getNodeValue() ))
-            {
-                result = true;
-            }
-        }
-        
-        assertTrue( "expected: " + expected + ", not found in nodes" , result);
-    }
 }

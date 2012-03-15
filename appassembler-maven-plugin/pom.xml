@@ -61,13 +61,8 @@
     <dependency>
       <groupId>org.codehaus.mojo.appassembler</groupId>
       <artifactId>appassembler-model</artifactId>
+      <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.codehaus.mojo.appassembler</groupId>
-      <artifactId>appassembler-booter</artifactId>
-      <scope>test</scope>
-    </dependency>
-
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
@@ -196,6 +191,18 @@
   <profiles>
     <profile>
       <id>run-its</id>
+      <dependencies>
+        <!--
+             This is given as dependencies, cause some integration tests use this artifact. But i don't want
+             to add this as an default dependencies, cause all users will download it with the appassembler-maven-plugin
+             independent if they use it or not.
+        -->
+        <dependency>
+          <groupId>org.codehaus.mojo.appassembler</groupId>
+          <artifactId>appassembler-booter</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
           <plugin>
@@ -207,6 +214,11 @@
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy</artifactId>
                 <version>1.8.4</version>
+              </dependency>
+              <dependency>
+                <groupId>org.codehaus.gmaven.runtime</groupId>
+                <artifactId>gmaven-runtime-1.8</artifactId>
+                <version>1.4</version>
               </dependency>
             </dependencies>
             <configuration>
@@ -233,6 +245,11 @@
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy</artifactId>
                 <version>1.8.4</version>
+              </dependency>
+              <dependency>
+                <groupId>org.codehaus.gmaven.runtime</groupId>
+                <artifactId>gmaven-runtime-1.8</artifactId>
+                <version>1.4</version>
               </dependency>
             </dependencies>
             <configuration>

@@ -22,31 +22,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.codehaus.mojo.appassembler.example.helloworld;
 
-class IntegrationBase {
+public class HelloWorld
+{
+    public static void main( String[] args )
+    {
+        System.out.println( "Hello World!" );
+        System.out.println( "Number of command line arguments: " + args.length );
 
-    void checkExistenceAndContentOfAFile(file, contents) {
-	if (!file.canRead()) {
-	    throw new FileNotFoundException( "Could not find the " + file);
-	}
+        for ( int i = 0; i < args.length; i++ )
+        {
+            System.out.println( "Argument #" + i + ":" + args[ i ] );
+        }
 
-	def lines_to_check_in_unix_script_marker = [:];
-	(1..contents.size()).each { index ->
-	    lines_to_check_in_unix_script_marker[index] = false
-	}
-
-	file.eachLine { file_content, file_line ->
-	    contents.eachWithIndex { contents_expected, index ->
-		if (file_content.equals(contents_expected)) {
-		    lines_to_check_in_unix_script_marker[index] = true;
-		}
-	    }
-	}
-
-	contents.eachWithIndex { value, index ->
-	    if ( lines_to_check_in_unix_script_marker[index] == false ) {
-		throw new Exception("The expected content in " + file + " couldn't be found." + contents[index]);
-	    }
-	}
+        System.out.println( "basedir: " + System.getProperty( "basedir" ) );
     }
 }

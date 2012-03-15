@@ -1,0 +1,89 @@
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.mojo.appassembler</groupId>
+  <artifactId>project-7</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>Test Project</name>
+  <description>This is a test project using snapshots.</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.mojo.appassembler</groupId>
+      <artifactId>appassembler-model</artifactId>
+      <version>@project.version@</version>
+    </dependency>
+  </dependencies>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>@project.groupId@</groupId>
+        <artifactId>@project.artifactId@</artifactId>
+        <version>@project.version@</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>generate-daemons</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <repositoryLayout>flat</repositoryLayout>
+          <daemons>
+            <daemon>
+              <id>daemon-1</id>
+              <mainClass>com.westerngeco.example.App</mainClass>
+              <jvmSettings>
+                <initialMemorySize>345</initialMemorySize>
+                <maxMemorySize>234</maxMemorySize>
+                <maxStackSize>321</maxStackSize>
+                <systemProperties>
+                  <systemProperty>foo=bar</systemProperty>
+                  <systemProperty>bar=foo</systemProperty>
+                </systemProperties>
+                <extraArguments>
+                  <extraArgument>-splash:niceImage.png</extraArgument>
+                </extraArguments>
+              </jvmSettings>
+              <environmentSetupFileName>app-env</environmentSetupFileName>
+              <commandLineArguments>
+                <commandLineArgument>arg1=arg1-value</commandLineArgument>
+              </commandLineArguments>
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>
+              <generatorConfigurations>
+                <generatorConfiguration>
+                  <generator>jsw</generator>
+                  <includes>
+                    <include>linux-x86-32</include>
+                  </includes>
+                  <configuration>
+        <!-- remove a built in one -->
+                    <wrapper.console.format />
+        <!-- change a built in one -->
+                    <wrapper.console.loglevel>WARN</wrapper.console.loglevel>
+                    <app.base.envvar>MY_BASE</app.base.envvar>
+                  </configuration>
+                </generatorConfiguration>
+              </generatorConfigurations>
+            </daemon>
+          </daemons>
+        </configuration>
+      </plugin>
+    </plugins>
+
+  </build>
+
+</project>

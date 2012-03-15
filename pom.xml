@@ -117,17 +117,6 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.codehaus.mojo.appassembler</groupId>
-        <artifactId>appassembler-model</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.mojo.appassembler</groupId>
-        <artifactId>appassembler-booter</artifactId>
-        <version>${project.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
         <version>1.5.6</version>
@@ -301,22 +290,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
         </plugin>
-<!--         <plugin> -->
-<!--           <inherited>false</inherited> -->
-<!--           <groupId>com.mycila.maven-license-plugin</groupId> -->
-<!--           <artifactId>maven-license-plugin</artifactId> -->
-<!--           <version>1.9.0</version> -->
-<!--           <configuration> -->
-<!--             <aggregate>true</aggregate> -->
-<!--             <header>LICENSE.txt</header> -->
-<!--             <excludes> -->
-<!--               <exclude>LICENSE.txt</exclude> -->
-<!--               <exclude>**/src/test/resources/**</exclude> -->
-<!--               <exclude>**/*.in</exclude> -->
-<!--               <exclude>**/src/it/**/license-*</exclude> -->
-<!--             </excludes> -->
-<!--           </configuration> -->
-<!--         </plugin> -->
     </plugins>
   </build>
 
