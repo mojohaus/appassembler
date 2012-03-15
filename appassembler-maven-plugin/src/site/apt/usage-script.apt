@@ -58,6 +58,9 @@ About the Generated Scripts
   * <<app.pid>> - The process ID of the process. NOTE: This applies to unix only.
 
   * <<app.repo>> - The path to the repository that was used to start the application. See REPO
+  
+  * <<app.home>> - The installation directory of the application (see <<basedir>>).
 
   * <<basedir>> - The installation directory of the application, i.e. the directory where bin/ and repo/ exist. Use
-  this if you need to load files relative to your installation directory.
+  this if you need to load files relative to your installation directory. (This is marked as deprecated and will
+  be removed with Release 1.3).
