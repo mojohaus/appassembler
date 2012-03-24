@@ -155,7 +155,7 @@ public class JavaServiceWrapperDaemonGenerator
         confFile.setPropertyAfter ( "wrapper.working.dir", "..", "wrapper.java.command" );
         confFile.setProperty ( "wrapper.java.library.path.1", "lib" );
 
-        confFile.setPropertyAfter ( "set.default.REPO_DIR", "repo", "wrapper.java.mainclass" );
+        confFile.setPropertyAfter ( "set.default.REPO_DIR", "lib", "wrapper.java.mainclass" );
         confFile.setPropertyAfter ( "set.default." + context.getProperty ( "app.base.envvar" ), ".",
                 "wrapper.java.mainclass" );
 
