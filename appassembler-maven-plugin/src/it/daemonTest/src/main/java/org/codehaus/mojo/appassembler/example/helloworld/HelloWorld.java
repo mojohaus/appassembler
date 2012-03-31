@@ -25,42 +25,25 @@
 package org.codehaus.mojo.appassembler.example.helloworld;
 
 import org.apache.log4j.Logger;
-import org.tanukisoftware.wrapper.WrapperListener;
-import org.tanukisoftware.wrapper.WrapperManager;
 
-public class HelloWorld implements WrapperListener {
+public class HelloWorld {
     private static Logger LOGGER = Logger.getLogger(HelloWorld.class);
 
-    private MyApplication myApplication;
+    public static void main(String[] args) throws InterruptedException {
+	LOGGER.info("Hello World!");
+	LOGGER.info("Number of command line arguments: " + args.length);
 
-    private HelloWorld() {
-    }
-
-    public void controlEvent(int event) {
-	if ((event == WrapperManager.WRAPPER_CTRL_LOGOFF_EVENT)
-		&& (WrapperManager.isLaunchedAsService() || WrapperManager.isLaunchedAsService())) {
-	    // Ignore
-	} else {
-	    WrapperManager.stop(0);
-	    // Will not get here.
+	for (int i = 0; i < args.length; i++) {
+	    LOGGER.info("Argument #" + i + ":" + args[i]);
 	}
-    }
 
-    public Integer start(String[] args) {
-	LOGGER.info("Starting application.");
-	myApplication = new MyApplication(args);
-	myApplication.start();
-	return null;
-    }
+	LOGGER.info("basedir: " + System.getProperty("basedir"));
 
-    public int stop(int exitCode) {
-	LOGGER.info("Stopping application.");
-	myApplication.stopWorking();
-
-	return exitCode;
-    }
-
-    public static void main(String[] args) {
-	WrapperManager.start(new HelloWorld(), args);
+	long start = System.currentTimeMillis();
+	while (true) {
+	    Thread.sleep(1000);
+	    long current = System.currentTimeMillis();
+	    LOGGER.info("Vergangene Zeit seit dem Start:" + (current - start) + " ms");
+	}
     }
 }
