@@ -1,0 +1,100 @@
+~~
+~~
+~~ The MIT License
+~~
+~~ Copyright 2006-2011 The Codehaus.
+~~
+~~ Permission is hereby granted, free of charge, to any person obtaining a copy of
+~~ this software and associated documentation files (the "Software"), to deal in
+~~ the Software without restriction, including without limitation the rights to
+~~ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+~~ of the Software, and to permit persons to whom the Software is furnished to do
+~~ so, subject to the following conditions:
+~~
+~~ The above copyright notice and this permission notice shall be included in all
+~~ copies or substantial portions of the Software.
+~~
+~~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+~~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+~~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+~~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+~~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+~~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+~~ SOFTWARE.
+~~
+
+  ------
+  Example how to use Application Assembler Plugin
+  ------
+  ------
+  ------
+
+Daemon JVM Settings
+
+* JvmSettings
+
+  You can also use a complete JvmSettings with different parameters per daemon if 
+  you need to do that.
+
++--------------------------
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        ...
+        <configuration>
+          <daemons>
+            <daemon>
+              <id>daemon-1</id>
+              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+              <commandLineArguments>
+                <commandLineArgument>argument_one</commandLineArgument>
+              </commandLineArguments>
+              <jvmSettings>
+                <initialMemorySize>20M</initialMemorySize>
+                <maxMemorySize>200M</maxMemorySize>
+                <maxStackSize>128M</maxStackSize>
+                <systemProperties>
+                  <systemProperty>test=this</systemProperty>
+                  <systemProperty>xyz=those</systemProperty>
+                </systemProperties>
+                <extraArguments>
+                  <extraArgument>-DTest</extraArgument>
+                  <extraArgument>-DXXX</extraArgument>
+                </extraArguments>
+              </jvmSettings>
+                <platforms>
+                  <platform>jsw</platform>
+                </platforms>
+            </daemon>
+          </daemons>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++--------------------------
+
+
+  The generated daemon in its wrapper.conf file contains now the parameters 
+  for the above information in the following manner (currently the maxStackSize is not
+  supported in that direct way. This can be solved by using -DXms=.. instead):
+
++--------------------------
+# Java Additional Parameters
+#wrapper.java.additional.1=
+wrapper.java.additional.1=-Dtest=this
+wrapper.java.additional.2=-Dxyz=those
+wrapper.java.additional.3=-DTest
+wrapper.java.additional.4=-DXXX
+
+# Initial Java Heap Size (in MB)
+#wrapper.java.initmemory=3
+wrapper.java.initmemory=20M
+
+# Maximum Java Heap Size (in MB)
+#wrapper.java.maxmemory=64
+wrapper.java.maxmemory=200M
++--------------------------
+

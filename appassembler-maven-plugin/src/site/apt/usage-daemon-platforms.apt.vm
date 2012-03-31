@@ -1,0 +1,200 @@
+~~
+~~
+~~ The MIT License
+~~
+~~ Copyright 2006-2011 The Codehaus.
+~~
+~~ Permission is hereby granted, free of charge, to any person obtaining a copy of
+~~ this software and associated documentation files (the "Software"), to deal in
+~~ the Software without restriction, including without limitation the rights to
+~~ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+~~ of the Software, and to permit persons to whom the Software is furnished to do
+~~ so, subject to the following conditions:
+~~
+~~ The above copyright notice and this permission notice shall be included in all
+~~ copies or substantial portions of the Software.
+~~
+~~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+~~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+~~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+~~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+~~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+~~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+~~ SOFTWARE.
+~~
+
+  ------
+  Example how to use Application Assembler Plugin
+  ------
+  ------
+  ------
+
+Daemon Platforms
+
+* Platforms
+
+  Sometimes you might want to define the platforms for which your Java Service Wrapper (JSW) 
+  will run or not or in other words which platform you would like to support.
+  
+  The default is defined by giving within the configuration via the platforms tag: 
+  
++----------------------------
+  <platforms>
+    <platform>jsw</platform>
+  </platforms>
++----------------------------
+
+  which will generate for the following platforms by default:
+  
+  * libwrapper-linux-x86-32
+
+  * libwrapper-linux-x86-64
+
+  * wrapper-windows-x86-32
+  
+  []
+  
+
+  Furthermore its possible to define the platforms via the <<<generatorConfigurations>>> like this:
+  
++----------------------------
+  <generatorConfigurations>
+    <generatorConfiguration>
+      <generator>jsw</generator>
+      <includes>
+        <include>linux-x86-32</include>
+        <include>libwrapper-linux-x86-64</include>
+        <include>wrapper-windows-x86-32</include>
+      </includes>
+    </generatorConfiguration>
+  </generatorConfigurations>
++----------------------------
+
+   
+  To make things a little bit more clear you will in the following example
+  a complete configuration part:
+
++--------------------------
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        ...
+        <configuration>
+          <daemons>
+            <daemon>
+              <id>daemon-1</id>
+              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+              <commandLineArguments>
+                <commandLineArgument>argument_one</commandLineArgument>
+              </commandLineArguments>
+              
+              <generatorConfigurations>
+                <generatorConfiguration>
+                  <generator>jsw</generator>
+                  <includes>
+                    <include>linux-x86-32</include>
+                    <include>libwrapper-linux-x86-64</include>
+                    <include>wrapper-windows-x86-32</include>
+                  </includes>
+                </generatorConfiguration>
+              </generatorConfigurations>
+              
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>
+            </daemon>
+          </daemons>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++--------------------------
+
+  
+  But in some circumstances it might be useful to change the set of supported platforms
+  which can be achieved by using the following configuration. In this case we only support
+  Linux x86 32 bit. 
+  
++--------------------------
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        ...
+        <configuration>
+          <daemons>
+            <daemon>
+              <id>daemon-1</id>
+              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+              <commandLineArguments>
+                <commandLineArgument>argument_one</commandLineArgument>
+              </commandLineArguments>
+              
+              <generatorConfigurations>
+                <generatorConfiguration>
+                  <generator>jsw</generator>
+                  <includes>
+                    <include>linux-x86-32</include>
+                  </includes>
+                </generatorConfiguration>
+              </generatorConfigurations>
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>
+            </daemon>
+          </daemons>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++--------------------------
+
+
+* Avaiable Platforms
+
+
+  Currently the following platforms are available:
+  
+  * linux-x86-32-lib
+
+  * linux-x86-32-exec
+
+  * linux-x86-64-lib
+
+  * linux-x86-64-exec
+  
+  * linux-ppc-64-lib
+  
+  * linux-ppc-64-exec
+  
+  * macosx-ppc-32-lib
+  
+  * macosx-ppc-32-exec
+  
+  * macosx-x86-universal-32-lib
+  
+  * macosx-x86-universal-32-exec
+  
+  * solaris-sparc-32-lib
+  
+  * solaris-sparc-32-exec
+  
+  * solaris-sparc-64-lib
+  
+  * solaris-sparc-64-exec
+  
+  * solaris-x86-32-lib
+  
+  * solaris-x86-32-exec
+  
+  * windows-x86-32-lib
+
+  * windows-x86-32-exec
+  
+  []
+  

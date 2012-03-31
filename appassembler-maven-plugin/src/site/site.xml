@@ -53,6 +53,16 @@
       <item name="Arguments" href="usage-program-arguments.html" />
       <item name="Generated Structure" href="usage-program-structure.html" />
     </menu>
+    <menu name="Deamons">
+      <item name="Scripts" href="usage-daemon-scripts.html" />
+      <item name="Platforms" href="usage-daemon-platforms.html" />
+      <item name="JVM Settings" href="usage-daemon-jvmsettings.html" />
+      <item name="Arguments" href="usage-daemon-arguments.html" />
+      <item name="Logging" href="usage-daemon-logs.html" />
+      <item name="Generator Configuration" href="usage-daemon-generatorconfig.html" />
+      <item name="Generated Structure" href="usage-daemon-structure.html" />
+    </menu>
+
     <menu name="Java Service Wrapper">
       <item name="License" href="jsw-license.html" />
     </menu>

@@ -1,0 +1,114 @@
+~~
+~~
+~~ The MIT License
+~~
+~~ Copyright 2006-2011 The Codehaus.
+~~
+~~ Permission is hereby granted, free of charge, to any person obtaining a copy of
+~~ this software and associated documentation files (the "Software"), to deal in
+~~ the Software without restriction, including without limitation the rights to
+~~ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+~~ of the Software, and to permit persons to whom the Software is furnished to do
+~~ so, subject to the following conditions:
+~~
+~~ The above copyright notice and this permission notice shall be included in all
+~~ copies or substantial portions of the Software.
+~~
+~~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+~~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+~~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+~~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+~~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+~~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+~~ SOFTWARE.
+~~
+
+  ------
+  Daemon Script generation
+  ------
+  ------
+  ------
+
+Daemon Scripts
+
+* The Simplest Case
+
+  The following configuration will generate a daemon <<<daemon-1>>> and 
+  <<<daemon-1.bat>>> script within the 
+  <<<$\{project.build.directory\}/generated-resources/appassembler/jsw/daemon-1/bin/>>> 
+  folder.
+  
++--------------------------
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>generate-daemons</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <daemons>
+            <daemon>
+              <id>daemon-1</id>
+              <mainClass>com.westerngeco.example.App</mainClass>
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>
+            </daemon>
+          </daemons>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++--------------------------
+
+
+* Generate Multiple Daemons
+
+  Suppose you have created two classes for which you like to create two separate scripts. This can simply 
+  be achieved by using the following configuration. There is no limitation how many scripts you can generate 
+  through a configuration like this.
+
++--------------------------
+<project>
+  ...
+  <build>
+    <plugins>
+        ...
+        <configuration>
+          <daemons>
+            <daemon>
+              <id>daemon-1</id>
+              <mainClass>com.westerngeco.example.App1</mainClass>
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>
+            </daemon>
+            <daemon>
+              <id>daemon-2</id>
+              <mainClass>com.westerngeco.example.App2</mainClass>
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>
+            </daemon>
+          </daemons>
+        </configuration>
+      </plugin>
+      ...
+    </plugins>
+  </build>
+</project>
++--------------------------
+
+  
+  []

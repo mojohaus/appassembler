@@ -2,7 +2,7 @@
  *
  * The MIT License
  *
- * Copyright 2006-2011 The Codehaus.
+ * Copyright 2006-2012 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -87,13 +87,19 @@ Usage
 
 ** Using the generated scripts
 
-  * All dependencies and the artifact itself are placed in <<<target/appassembler/repo>>>
-  directory.
+  * All dependencies and the artifact itself are placed in <<<target/appassembler/lib>>> 
+    directory.
 
   * The JSW bin scripts and configuration are placed in <<<target/jsw/app1>>> directory.
+  
+    []
 
 +--------------------------
 $ mvn package
+
+$ chmod +x target/jsw/app1/bin/app1
+
+$ chmod +x target/jsw/app1/bin/wrapper-linux-x86-32
 
 $ target/jsw/app1/bin/app1 start
 
@@ -109,6 +115,7 @@ $ target/jsw/app1/bin/app1 stop
   Use a shutdown hook to override this behaviour with application specific shutdown code.
 
   E.g. add something like the following to your Main method:
+  
 
 +--------------------------
 Runtime.getRuntime().addShutdownHook(new Thread(){

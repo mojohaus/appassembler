@@ -1,0 +1,204 @@
+~~
+~~
+~~ The MIT License
+~~
+~~ Copyright 2006-2011 The Codehaus.
+~~
+~~ Permission is hereby granted, free of charge, to any person obtaining a copy of
+~~ this software and associated documentation files (the "Software"), to deal in
+~~ the Software without restriction, including without limitation the rights to
+~~ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+~~ of the Software, and to permit persons to whom the Software is furnished to do
+~~ so, subject to the following conditions:
+~~
+~~ The above copyright notice and this permission notice shall be included in all
+~~ copies or substantial portions of the Software.
+~~
+~~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+~~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+~~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+~~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+~~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+~~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+~~ SOFTWARE.
+~~
+
+  ------
+  Example how to use Application Assembler Plugin
+  ------
+  ------
+  ------
+
+Daemon Generator Configurations
+
+* Generator Configurations
+
+  The generatorConfigurations give you the flexibility to overwrite any kind 
+  of <<<wrapper.conf>>> entry to your needs.
+
++--------------------------
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        ...
+        <configuration>
+          <daemons>
+            <daemon>
+              <id>daemon-1</id>
+              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+              <commandLineArguments>
+                <commandLineArgument>start</commandLineArgument>
+              </commandLineArguments>
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>
+              <generatorConfigurations>
+                <generatorConfiguration>
+                  <generator>jsw</generator>
+                  <includes>
+                    <include>linux-x86-32</include>
+                    <include>linux-x86-64</include>
+                  </includes>
+                  <configuration>
+                    <property>
+                      <name>configuration.directory.in.classpath.first</name>
+                      <value>etc</value>
+                    </property>
+                    <property>
+                      <name>set.default.REPO_DIR</name>
+                      <value>lib</value>
+                    </property>
+                    <property>
+                      <name>wrapper.logfile</name>
+                      <value>logs/wrapper.log</value>
+                    </property>
+                    <property>
+                      <name>run.as.user.envvar</name>
+                      <value>johndoe</value>
+                    </property>
+                  </configuration>
+                </generatorConfiguration>
+              </generatorConfigurations>
+            </daemon>
+          </daemons>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
++--------------------------
+
+ 
+  Based on the above configuration the entries like <<set.default.REPO_DIR>>,
+  <<wrapper.logfile>> or <<configuration.directory.in.classpath.first>>
+  have been overwritten with their defined values or being added to the configuration.  
+
++--------------------------
+.
+# Java Application
+wrapper.java.command=java
+wrapper.working.dir=..
+
+# Java Main class.  This class must implement the WrapperListener interface
+#  or guarantee that the WrapperManager class is initialized.  Helper
+#  classes are provided to do this for you.  See the Integration section
+#  of the documentation for details.
+wrapper.java.mainclass=org.tanukisoftware.wrapper.WrapperSimpleApp
+set.default.REPO_DIR=lib
+set.default.APP_BASE=.
+
+# Java Classpath (include wrapper.jar)  Add class path elements as
+#  needed starting from 1
+wrapper.java.classpath.1=lib/wrapper.jar
+wrapper.java.classpath.2=etc
+wrapper.java.classpath.3=%REPO_DIR%/daemonRepositoryLayout-test-1.0-SNAPSHOT.jar
+
+# Java Library Path (location of Wrapper.DLL or libwrapper.so)
+wrapper.java.library.path.1=lib
+
+# Java Additional Parameters
+#wrapper.java.additional.1=
+wrapper.java.additional.1=-Djava.security.policy=conf/policy.all
+wrapper.java.additional.2=-Dcom.sun.management.jmxremote
+wrapper.java.additional.3=-Dcom.sun.management.jmxremote.port=8999
+wrapper.java.additional.4=-Dcom.sun.management.jmxremote.authenticate=false
+wrapper.java.additional.5=-Dcom.sun.management.jmxremote.ssl=false
+wrapper.java.additional.6=-server
+
+# Initial Java Heap Size (in MB)
+#wrapper.java.initmemory=3
+wrapper.java.initmemory=256M
+
+# Maximum Java Heap Size (in MB)
+#wrapper.java.maxmemory=64
+wrapper.java.maxmemory=1024M
+
+# Application parameters.  Add parameters as needed starting from 1
+wrapper.app.parameter.1=org.codehaus.mojo.appassembler.example.helloworld.HelloWorld
+wrapper.app.parameter.2=start
+
+.
+# Format of output for the console.  (See docs for formats)
+wrapper.console.format=PM
+
+# Log Level for console output.  (See docs for log levels)
+wrapper.console.loglevel=INFO
+
+# Log file to use for wrapper output logging.
+wrapper.logfile=logs/wrapper.log
+
+# Format of output for the log file.  (See docs for formats)
+wrapper.logfile.format=LPTM
+
+# Log Level for log file output.  (See docs for log levels)
+wrapper.logfile.loglevel=INFO
+
+# Maximum size that the log file will be allowed to grow to before
+#  the log is rolled. Size is specified in bytes.  The default value
+#  of 0, disables log rolling.  May abbreviate with the 'k' (kb) or
+#  'm' (mb) suffix.  For example: 10m = 10 megabytes.
+wrapper.logfile.maxsize=0
+
+# Maximum number of rolled log files which will be allowed before old
+#  files are deleted.  The default value of 0 implies no limit.
+wrapper.logfile.maxfiles=0
+
+# Log Level for sys/event log output.  (See docs for log levels)
+wrapper.syslog.loglevel=NONE
+
+.
+# Title to use when running as a console
+wrapper.console.title=appassembler-maven-plugin daemonRepositoryLayout-test
+
+.
+# WARNING - Do not modify any of these properties when an application
+#  using this configuration file has been installed as a service.
+#  Please uninstall the service before modifying this section.  The
+#  service can then be reinstalled.
+
+# Name of the service
+wrapper.ntservice.name=daemon-1
+
+# Display name of the service
+wrapper.ntservice.displayname=appassembler-maven-plugin daemonRepositoryLayout-test
+
+# Description of the service
+wrapper.ntservice.description=appassembler-maven-plugin daemonRepositoryLayout-test
+
+# Service dependencies.  Add dependencies as needed starting from 1
+wrapper.ntservice.dependency.1=
+
+# Mode in which the service is installed.  AUTO_START or DEMAND_START
+wrapper.ntservice.starttype=AUTO_START
+
+# Allow the service to interact with the desktop.
+wrapper.ntservice.interactive=false
+
+configuration.directory.in.classpath.first=etc
++--------------------------
+
+
+  []
+  
