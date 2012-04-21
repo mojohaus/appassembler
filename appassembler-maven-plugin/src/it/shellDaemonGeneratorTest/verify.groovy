@@ -44,12 +44,18 @@ def fileBinFolder = new File( basedir, "target/appassembler/bin/");
 * @return Version information.
 */
 def getProjectVersion() {
-   def pom = new XmlSlurper().parse(new File('pom.xml'))
-   def version = pom.childNodes().find {
-       item -> item.name().equals("version")
+   def pom = new XmlSlurper().parse(new File(basedir, 'pom.xml'))
+
+   def allDependencies = pom.dependencies;
+
+   def dependencies = allDependencies.dependency
+   
+   def appassemblerModule = dependencies.find {
+       item -> item.groupId.equals("org.codehaus.mojo.appassembler") && item.artifactId.equals("appassembler-model");
    }
-   return version.text()
-}
+   
+   return appassemblerModule.version;
+}           
 
 def projectVersion = getProjectVersion();
 

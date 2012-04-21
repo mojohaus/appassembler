@@ -1,18 +1,18 @@
 /**
  * The MIT License
- *
+ * 
  * Copyright 2006-2011 The Codehaus.
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
  * of the Software, and to permit persons to whom the Software is furnished to do
  * so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -92,9 +92,12 @@ public class Platform
 
     /**
      * Get an instance of the named platform.
-     * @param platformName The name of the wished platform.
+     * 
+     * @param platformName
+     *            The name of the wished platform.
      * @return Instance of the platform.
-     * @throws DaemonGeneratorException in case of an wrong platformname.
+     * @throws DaemonGeneratorException
+     *             in case of an wrong platformname.
      */
     public static Platform getInstance ( String platformName )
             throws DaemonGeneratorException
@@ -111,6 +114,7 @@ public class Platform
 
     /**
      * Get the names of all available platforms.
+     * 
      * @return The names of the platform.
      */
     public static Set getAllPlatformNames ()
@@ -120,6 +124,7 @@ public class Platform
 
     /**
      * Get all platforms.
+     * 
      * @return All platforms.
      */
     public static Set getAllPlatforms ()
@@ -129,9 +134,12 @@ public class Platform
 
     /**
      * Redefine the list of platforms with the given one.
-     * @param platformList The new list of platforms.
-     * @return 
-     * @throws DaemonGeneratorException in case of an error.
+     * 
+     * @param platformList
+     *            The new list of platforms.
+     * @return
+     * @throws DaemonGeneratorException
+     *             in case of an error.
      */
     public static Set getPlatformSet ( List platformList )
             throws DaemonGeneratorException
@@ -141,6 +149,7 @@ public class Platform
 
     /**
      * Get back all platforms.
+     * 
      * @param platformList
      * @param allSet
      * @return
@@ -204,6 +213,7 @@ public class Platform
 
     /**
      * The interpolation token either for windows or unix.
+     * 
      * @return The token which is used.
      */
     public String getInterpolationToken ()
@@ -271,7 +281,7 @@ public class Platform
     /**
      * Get the ClassPath based on the given Daemon.
      * 
-     * @param daemon 
+     * @param daemon
      * @return The classpath as a string.
      * @throws DaemonGeneratorException
      */
@@ -361,6 +371,7 @@ public class Platform
 
     /**
      * Get the extra JVMArguments.
+     * 
      * @param jvmSettings
      * @return
      * @throws IOException
@@ -412,6 +423,7 @@ public class Platform
 
     /**
      * Get the application arguments.
+     * 
      * @param descriptor
      * @return The list of application arguments.
      */
@@ -453,6 +465,7 @@ public class Platform
 
     /**
      * Get the environment setup file.
+     * 
      * @param daemon
      * @return
      */
@@ -513,6 +526,7 @@ public class Platform
 
     /**
      * ShowConsole window.
+     * 
      * @param daemon
      * @return true yes false otherwise.
      */
@@ -527,6 +541,7 @@ public class Platform
 
     /**
      * Set the bin file extension.
+     * 
      * @param binFileExtension
      */
     public void setBinFileExtension ( String binFileExtension )

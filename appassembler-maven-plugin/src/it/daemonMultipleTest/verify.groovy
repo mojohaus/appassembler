@@ -28,23 +28,6 @@ import java.util.*
 
 t = new IntegrationBase();
 
-/**
-* This will filter out the project version out of the
-* pom.xml file, cause currently no opportunity exists to
-* get this information via Maven Invoker Plugin into
-* the Groovy script code.
-* @return Version information.
-*/
-def getProjectVersion() {
-   def pom = new XmlSlurper().parse(new File('pom.xml'))
-   def version = pom.childNodes().find {
-       item -> item.name().equals("version")
-   }
-   return version.text()
-}
-
-def projectVersion = getProjectVersion();
-
 def daemonFolder = new File( basedir, "target/generated-resources/appassembler/jsw/daemon-1/")
 
 //The bin folder where to find the generated scripts.

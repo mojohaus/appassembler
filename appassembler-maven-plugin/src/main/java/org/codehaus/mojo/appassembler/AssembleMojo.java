@@ -1,18 +1,18 @@
 /**
  * The MIT License
- *
+ * 
  * Copyright 2006-2011 The Codehaus.
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- *  of the Software, and to permit persons to whom the Software is furnished to do
+ * of the Software, and to permit persons to whom the Software is furnished to do
  * so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -185,22 +185,23 @@ public class AssembleMojo
      * @parameter default-value="repo"
      */
     private String repositoryName;
-    
+
     /**
      * This can be used to put the project artifact as the first
-     * entry in the classpath after the configuration folder 
+     * entry in the classpath after the configuration folder
      * (<code>etc</code> by default).
-     * The default behavior is to have the project artifact at the 
+     * The default behavior is to have the project artifact at the
      * last position in classpath.
      * 
      * @since 1.2.1
      * @parameter default-value="false"
      */
     private boolean projectArtifactFirstInClassPath;
-    
+
     /**
      * The following can be used to use all dependencies instead of the default
      * behavior which represents runtime dependencies only.
+     * 
      * @since 1.2.1
      * @parameter default-value="false"
      */
@@ -363,17 +364,18 @@ public class AssembleMojo
             throw new MojoFailureException ( "Unknown repository layout '" + repositoryLayout + "'." );
         }
 
-
-        if (isUseAllDependencies()) {
-        	//TODO: This should be made different. We have to think about using a default ArtifactFilter
-        	Set dependencyArtifacts = mavenProject.getDependencyArtifacts();
-        	artifacts = new ArrayList();
-        	for ( Iterator it = dependencyArtifacts.iterator(); it.hasNext(); ) {
-        		Artifact artifact = (Artifact) it.next();
-        		artifacts.add(artifact);
-        	}
+        if ( isUseAllDependencies ( ) )
+        {
+            // TODO: This should be made different. We have to think about using a default ArtifactFilter
+            Set dependencyArtifacts = mavenProject.getDependencyArtifacts ( );
+            artifacts = new ArrayList ( );
+            for ( Iterator it = dependencyArtifacts.iterator ( ); it.hasNext ( ); )
+            {
+                Artifact artifact = ( Artifact ) it.next ( );
+                artifacts.add ( artifact );
+            }
         }
-        
+
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
         // ----------------------------------------------------------------------
@@ -563,7 +565,7 @@ public class AssembleMojo
 
             if ( artifact.getFile ( ) != null )
             {
-            	getLog().debug("installArtifact: scope:" + artifact.getScope() + " id:" + artifact.getId());
+                getLog ( ).debug ( "installArtifact: scope:" + artifact.getScope ( ) + " id:" + artifact.getId ( ) );
                 artifactInstaller.install ( artifact.getFile ( ), artifact, artifactRepository );
             }
         }
@@ -677,7 +679,8 @@ public class AssembleMojo
      * give the extraJvmArguments back if the given
      * argument is empty.
      * 
-     * @param arg The argument to parse.
+     * @param arg
+     *            The argument to parse.
      * @return List of arguments.
      */
     public static List parseTokens ( String arg )
@@ -774,20 +777,24 @@ public class AssembleMojo
         }
     }
 
-	public boolean isProjectArtifactFirstInClassPath() {
-		return projectArtifactFirstInClassPath;
-	}
+    public boolean isProjectArtifactFirstInClassPath ()
+    {
+        return projectArtifactFirstInClassPath;
+    }
 
-	public void setProjectArtifactFirstInClassPath(
-			boolean projectArtifactFirstInClassPath) {
-		this.projectArtifactFirstInClassPath = projectArtifactFirstInClassPath;
-	}
+    public void setProjectArtifactFirstInClassPath (
+            boolean projectArtifactFirstInClassPath )
+    {
+        this.projectArtifactFirstInClassPath = projectArtifactFirstInClassPath;
+    }
 
-	public boolean isUseAllDependencies() {
-		return useAllDependencies;
-	}
+    public boolean isUseAllDependencies ()
+    {
+        return useAllDependencies;
+    }
 
-	public void setUseAllDependencies(boolean useAllDependencies) {
-		this.useAllDependencies = useAllDependencies;
-	}
+    public void setUseAllDependencies ( boolean useAllDependencies )
+    {
+        this.useAllDependencies = useAllDependencies;
+    }
 }
