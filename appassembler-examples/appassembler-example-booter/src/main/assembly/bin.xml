@@ -40,6 +40,9 @@
     <fileSet>
       <directory>target/generated-resources/appassembler/booter-unix/etc</directory>
       <outputDirectory>etc</outputDirectory>
+      <includes>
+        <include>my-server.xml</include>
+      </includes>
     </fileSet>
     <fileSet>
       <directory>target/generated-resources/appassembler/booter-unix/bin</directory>

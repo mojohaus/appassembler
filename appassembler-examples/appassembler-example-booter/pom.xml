@@ -34,7 +34,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.2.1</version>
         <configuration>
           <defaultJvmSettings>
             <initialMemorySize>16m</initialMemorySize>
@@ -53,8 +53,8 @@
         <executions>
           <execution>
             <goals>
-              <goal>generate-daemons</goal>
-              <goal>create-repository</goal>
+		<goal>generate-daemons</goal>
+		<goal>create-repository</goal>
             </goals>
           </execution>
         </executions>
@@ -81,7 +81,7 @@
     <dependency>
       <groupId>org.codehaus.mojo.appassembler</groupId>
       <artifactId>appassembler-booter</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.2.1</version>
     </dependency>
   </dependencies>
 </project>
