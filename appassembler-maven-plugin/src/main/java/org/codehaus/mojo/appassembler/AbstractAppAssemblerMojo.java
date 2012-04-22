@@ -1,7 +1,7 @@
 /**
  * The MIT License
  *
- * Copyright 2006-2011 The Codehaus.
+ * Copyright 2006-2012 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -26,7 +26,7 @@ package org.codehaus.mojo.appassembler;
 /*
  *
  *
- * Copyright 2006-2011 The Codehaus.
+ * Copyright 2006-2012 The Codehaus.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
