@@ -303,6 +303,67 @@
       </reporting>
     </profile>
 
+    <profile>
+      <id>grid</id>
+      <properties>
+        <invokerPluginVersion>1.6-SNAPSHOT</invokerPluginVersion>
+        <itParallelThreads>1</itParallelThreads>
+      </properties>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>apache.snapshots</id>
+          <name>Apache Snapshots</name>
+          <url>https://repository.apache.org/content/repositories/snapshots/</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <version>${invokerPluginVersion}</version>
+            <configuration>
+              <parallelThreads>${itParallelThreads}</parallelThreads>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>1.0</version>
+            <executions>
+              <execution>
+                <id>mojo-enforcer-rules</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requirePluginVersions>
+                       <banSnapshots>false</banSnapshots>
+                       <!--
+                       oups documentation sucks !!
+                       http://maven.apache.org/enforcer/enforcer-rules/requirePluginVersions.html
+                       log says
+                       Cause: Cannot find setter nor field in org.apache.maven.plugins.enforcer.RequirePluginVersions for 'unCheckedPluginsList'
+
+                       <unCheckedPluginsList>org.apache.maven.plugins:maven-invoker-plugin</unCheckedPluginsList>
+                        -->
+                    </requirePluginVersions>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
 
 </project>
