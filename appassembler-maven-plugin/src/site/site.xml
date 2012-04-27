@@ -63,6 +63,11 @@
       <item name="Generated Structure" href="usage-daemon-structure.html" />
     </menu>
 
+    <menu name="Booter">
+      <item name="Scripts" href="usage-daemon-booter.html" />
+      <item name="Arguments" href="usage-daemon-arguments.html" />
+      <item name="Generated Structure" href="usage-booter-structure.html" />
+    </menu>
     <menu name="Java Service Wrapper">
       <item name="License" href="jsw-license.html" />
     </menu>

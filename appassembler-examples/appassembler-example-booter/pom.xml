@@ -53,8 +53,8 @@
         <executions>
           <execution>
             <goals>
-		<goal>generate-daemons</goal>
-		<goal>create-repository</goal>
+              <goal>generate-daemons</goal>
+              <goal>create-repository</goal>
             </goals>
           </execution>
         </executions>

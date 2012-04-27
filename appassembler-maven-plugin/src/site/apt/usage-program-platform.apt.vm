@@ -63,7 +63,7 @@ Platforms
 
 * Single Platform
 
-  The generation supports Windows as platform as well as Unix as platform. 
+  The generation supports Windows as well as Unix as platform. 
   If you like to generate a script for one platform you can simply define 
   the platform in the <<program>> block of the script part.
 

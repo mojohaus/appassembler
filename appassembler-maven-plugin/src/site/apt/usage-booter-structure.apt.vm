@@ -1,0 +1,232 @@
+~~
+~~
+~~ The MIT License
+~~
+~~ Copyright 2006-2012 The Codehaus.
+~~
+~~ Permission is hereby granted, free of charge, to any person obtaining a copy of
+~~ this software and associated documentation files (the "Software"), to deal in
+~~ the Software without restriction, including without limitation the rights to
+~~ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+~~ of the Software, and to permit persons to whom the Software is furnished to do
+~~ so, subject to the following conditions:
+~~
+~~ The above copyright notice and this permission notice shall be included in all
+~~ copies or substantial portions of the Software.
+~~
+~~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+~~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+~~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+~~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+~~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+~~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+~~ SOFTWARE.
+~~
+
+  ------
+  Using the Application Assembler Plugin
+  ------
+  Karl Heinz Marbaise
+  ------
+  2012.04.25
+  ------
+
+Generated Structure
+
+* Directory Structure for Booter
+
+  Based on the following configuration for the plugin:
+
++--------------------------
+  <configuration>
+    <daemons>
+      <daemon>
+      <id>my-server</id>
+      <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+      <platforms>
+        <platform>booter-unix</platform>
+        <platform>booter-windows</platform>
+      </platforms>
+      </daemon>
+    </daemons>
+  </configuration>
+  <executions>
+    <execution>
+      <goals>
+        <goal>generate-daemons</goal>
+        <goal>create-repository</goal>
+      </goals>
+    </execution>
+  </executions>
++--------------------------
+
+  The following structure within the target will be created:
+
++--------------------------
+.
+`-- target
+ ...
++--------------------------
+
+
+  The structure is under target/appassembler/repo.
+
++--------------------------
+.
+`-- repo
+    |-- junit
+    |   `-- junit
+    |       `-- 3.8.1
+    |           `-- junit-3.8.1.jar
+    |-- net
+    |   `-- java
+    |       `-- dev
+    |           `-- stax-utils
+    |               `-- stax-utils
+    |                   `-- 20060502
+    |                       `-- stax-utils-20060502.jar
+    |-- org
+    |   `-- codehaus
+    |       |-- mojo
+    |       |   `-- appassembler
+    |       |       |-- appassembler-booter
+    |       |       |   `-- 1.2.1
+    |       |       |       `-- appassembler-booter-1.2.1.jar
+    |       |       |-- appassembler-model
+    |       |       |   `-- 1.2.1
+    |       |       |       `-- appassembler-model-1.2.1.jar
+    |       |       `-- example
+    |       |           `-- appassembler-example-booter
+    |       |               `-- 1.0-SNAPSHOT
+    |       |                   `-- appassembler-example-booter-1.0-SNAPSHOT.jar
+    |       `-- plexus
+    |           `-- plexus-utils
+    |               `-- 1.5.6
+    |                   `-- plexus-utils-1.5.6.jar
+    `-- stax
+        |-- stax
+        |   `-- 1.1.1-dev
+        |       `-- stax-1.1.1-dev.jar
+        `-- stax-api
+            `-- 1.0.1
+                `-- stax-api-1.0.1.jar
+
++--------------------------
+
+  The following structure can be found under:
+
++--------------------------
+.
+`-- appassembler
+    |-- booter-unix
+    |   |-- bin
+    |   |   `-- my-server
+    |   `-- etc
+    |       |-- my-server
+    |       |   `-- lib
+    |       |       |-- junit
+    |       |       |   `-- junit
+    |       |       |       |-- 3.8.1
+    |       |       |       |   `-- junit-3.8.1.jar
+    |       |       |       `-- maven-metadata-appassembler.xml
+    |       |       |-- net
+    |       |       |   `-- java
+    |       |       |       `-- dev
+    |       |       |           `-- stax-utils
+    |       |       |               `-- stax-utils
+    |       |       |                   |-- 20060502
+    |       |       |                   |   `-- stax-utils-20060502.jar
+    |       |       |                   `-- maven-metadata-appassembler.xml
+    |       |       |-- org
+    |       |       |   `-- codehaus
+    |       |       |       |-- mojo
+    |       |       |       |   `-- appassembler
+    |       |       |       |       |-- appassembler-booter
+    |       |       |       |       |   |-- 1.2.1
+    |       |       |       |       |   |   `-- appassembler-booter-1.2.1.jar
+    |       |       |       |       |   `-- maven-metadata-appassembler.xml
+    |       |       |       |       |-- appassembler-model
+    |       |       |       |       |   |-- 1.2.1
+    |       |       |       |       |   |   `-- appassembler-model-1.2.1.jar
+    |       |       |       |       |   `-- maven-metadata-appassembler.xml
+    |       |       |       |       `-- example
+    |       |       |       |           `-- appassembler-example-booter
+    |       |       |       |               |-- 1.0-SNAPSHOT
+    |       |       |       |               |   |-- appassembler-example-booter-1.0-SNAPSHOT.jar
+    |       |       |       |               |   `-- maven-metadata-appassembler.xml
+    |       |       |       |               `-- maven-metadata-appassembler.xml
+    |       |       |       `-- plexus
+    |       |       |           `-- plexus-utils
+    |       |       |               |-- 1.5.6
+    |       |       |               |   `-- plexus-utils-1.5.6.jar
+    |       |       |               `-- maven-metadata-appassembler.xml
+    |       |       `-- stax
+    |       |           |-- stax
+    |       |           |   |-- 1.1.1-dev
+    |       |           |   |   `-- stax-1.1.1-dev.jar
+    |       |           |   `-- maven-metadata-appassembler.xml
+    |       |           `-- stax-api
+    |       |               |-- 1.0.1
+    |       |               |   `-- stax-api-1.0.1.jar
+    |       |               `-- maven-metadata-appassembler.xml
+    |       `-- my-server.xml
+    `-- booter-windows
+        |-- bin
+        |   `-- my-server.bat
+        `-- etc
+            |-- my-server
+            |   `-- lib
+            |       |-- junit
+            |       |   `-- junit
+            |       |       |-- 3.8.1
+            |       |       |   `-- junit-3.8.1.jar
+            |       |       `-- maven-metadata-appassembler.xml
+            |       |-- net
+            |       |   `-- java
+            |       |       `-- dev
+            |       |           `-- stax-utils
+            |       |               `-- stax-utils
+            |       |                   |-- 20060502
+            |       |                   |   `-- stax-utils-20060502.jar
+            |       |                   `-- maven-metadata-appassembler.xml
+            |       |-- org
+            |       |   `-- codehaus
+            |       |       |-- mojo
+            |       |       |   `-- appassembler
+            |       |       |       |-- appassembler-booter
+            |       |       |       |   |-- 1.2.1
+            |       |       |       |   |   `-- appassembler-booter-1.2.1.jar
+            |       |       |       |   `-- maven-metadata-appassembler.xml
+            |       |       |       |-- appassembler-model
+            |       |       |       |   |-- 1.2.1
+            |       |       |       |   |   `-- appassembler-model-1.2.1.jar
+            |       |       |       |   `-- maven-metadata-appassembler.xml
+            |       |       |       `-- example
+            |       |       |           `-- appassembler-example-booter
+            |       |       |               |-- 1.0-SNAPSHOT
+            |       |       |               |   |-- appassembler-example-booter-1.0-SNAPSHOT.jar
+            |       |       |               |   `-- maven-metadata-appassembler.xml
+            |       |       |               `-- maven-metadata-appassembler.xml
+            |       |       `-- plexus
+            |       |           `-- plexus-utils
+            |       |               |-- 1.5.6
+            |       |               |   `-- plexus-utils-1.5.6.jar
+            |       |               `-- maven-metadata-appassembler.xml
+            |       `-- stax
+            |           |-- stax
+            |           |   |-- 1.1.1-dev
+            |           |   |   `-- stax-1.1.1-dev.jar
+            |           |   `-- maven-metadata-appassembler.xml
+            |           `-- stax-api
+            |               |-- 1.0.1
+            |               |   `-- stax-api-1.0.1.jar
+            |               `-- maven-metadata-appassembler.xml
+            `-- my-server.xml
+
++--------------------------
+
+
+
+
+   []
+
