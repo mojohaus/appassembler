@@ -32,8 +32,18 @@ import org.codehaus.mojo.appassembler.model.Daemon;
  */
 public interface DaemonMerger
 {
+    /**
+     * The role of the merger.
+     */
     String ROLE = DaemonMerger.class.getName ( );
 
+    /**
+     * Merge two Daemons into a single one.
+     * @param dominant
+     * @param recessive
+     * @return The merged Daemon instance.
+     * @throws DaemonGeneratorException
+     */
     Daemon mergeDaemons ( Daemon dominant, Daemon recessive )
             throws DaemonGeneratorException;
 }

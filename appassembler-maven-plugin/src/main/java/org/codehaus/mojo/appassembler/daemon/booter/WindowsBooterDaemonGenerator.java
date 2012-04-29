@@ -26,7 +26,7 @@ package org.codehaus.mojo.appassembler.daemon.booter;
 import org.codehaus.mojo.appassembler.daemon.script.Platform;
 
 /**
- * Generates unix and/or windows wrapperscripts.
+ * Generates windows wrapperscripts.
  * 
  * @author <a href="mailto:kaare.nilsen@gmail.com">Kaare Nilsen</a>
  * @plexus.component role-hint="booter-windows"

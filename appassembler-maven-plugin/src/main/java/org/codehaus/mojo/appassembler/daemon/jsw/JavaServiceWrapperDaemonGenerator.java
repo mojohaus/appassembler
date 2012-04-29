@@ -1,5 +1,4 @@
 /**
- * 
  * The MIT License
  * 
  * Copyright 2006-2012 The Codehaus.
@@ -169,12 +168,14 @@ public class JavaServiceWrapperDaemonGenerator
             confFile.setProperty ( "wrapper.logfile", daemon.getWrapperLogFile ( ) );
         }
 
-        if ( daemon.getJvmSettings ( ) != null && !StringUtils.isEmpty ( daemon.getJvmSettings ( ).getInitialMemorySize ( ) ) )
+        if ( daemon.getJvmSettings ( ) != null
+                && !StringUtils.isEmpty ( daemon.getJvmSettings ( ).getInitialMemorySize ( ) ) )
         {
             confFile.setProperty ( "wrapper.java.initmemory", daemon.getJvmSettings ( ).getInitialMemorySize ( ) );
         }
 
-        if ( daemon.getJvmSettings ( ) != null && !StringUtils.isEmpty ( daemon.getJvmSettings ( ).getMaxMemorySize ( ) ) )
+        if ( daemon.getJvmSettings ( ) != null
+                && !StringUtils.isEmpty ( daemon.getJvmSettings ( ).getMaxMemorySize ( ) ) )
         {
             confFile.setProperty ( "wrapper.java.maxmemory", daemon.getJvmSettings ( ).getMaxMemorySize ( ) );
         }

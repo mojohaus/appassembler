@@ -137,7 +137,7 @@ public class Platform
      * 
      * @param platformList
      *            The new list of platforms.
-     * @return
+     * @return The redefined platforms set.
      * @throws DaemonGeneratorException
      *             in case of an error.
      */
@@ -151,9 +151,12 @@ public class Platform
      * Get back all platforms.
      * 
      * @param platformList
+     *            The list of platforms.
      * @param allSet
-     * @return
+     *            The all set list.
+     * @return Get the platform sets.
      * @throws DaemonGeneratorException
+     *             in case of an error.
      */
     public static Set getPlatformSet ( List platformList, Set allSet )
             throws DaemonGeneratorException
@@ -282,8 +285,10 @@ public class Platform
      * Get the ClassPath based on the given Daemon.
      * 
      * @param daemon
+     *            The Daemon instance.
      * @return The classpath as a string.
      * @throws DaemonGeneratorException
+     *             in case of an error.
      */
     public String getClassPath ( Daemon daemon )
             throws DaemonGeneratorException
@@ -320,7 +325,8 @@ public class Platform
             }
             else
             {
-                throw new DaemonGeneratorException ( "Unknown classpath element type: " + object.getClass ( ).getName ( ) );
+                throw new DaemonGeneratorException ( "Unknown classpath element type: "
+                        + object.getClass ( ).getName ( ) );
             }
 
             classpathBuffer.append ( StringUtils.replace ( ( ( ClasspathElement ) object ).getRelativePath ( ),
@@ -373,8 +379,10 @@ public class Platform
      * Get the extra JVMArguments.
      * 
      * @param jvmSettings
-     * @return
+     *            The JVM settings
+     * @return The created string which contains <code>-X</code> options for the JVM settings.
      * @throws IOException
+     *             in case of an error.
      */
     public String getExtraJvmArguments ( JvmSettings jvmSettings ) throws IOException
     {
@@ -425,6 +433,7 @@ public class Platform
      * Get the application arguments.
      * 
      * @param descriptor
+     *            Instance of the daemon descriptor.
      * @return The list of application arguments.
      */
     public String getAppArguments ( Daemon descriptor )
@@ -467,7 +476,8 @@ public class Platform
      * Get the environment setup file.
      * 
      * @param daemon
-     * @return
+     *            The instance of the Daemon for which this is beeing produced.
+     * @return The created string which contains the path to the setup file.
      */
     public String getEnvSetup ( Daemon daemon )
     {
@@ -497,6 +507,10 @@ public class Platform
     // Object overrides
     // -----------------------------------------------------------------------
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     public boolean equals ( Object o )
     {
         if ( this == o )
@@ -514,11 +528,20 @@ public class Platform
         return name.equals ( platform.name );
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
     public int hashCode ()
     {
         return name.hashCode ( );
     }
 
+    /**
+     * The name of the platform.
+     * 
+     * @return The name of the platform.
+     */
     public String getName ()
     {
         return name;
@@ -542,7 +565,7 @@ public class Platform
     /**
      * Set the bin file extension.
      * 
-     * @param binFileExtension
+     * @param binFileExtension The extension of the binary file.
      */
     public void setBinFileExtension ( String binFileExtension )
     {

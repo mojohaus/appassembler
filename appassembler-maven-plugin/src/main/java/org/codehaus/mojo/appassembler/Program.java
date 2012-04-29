@@ -1,18 +1,18 @@
 /**
  * The MIT License
- *
+ * 
  * Copyright 2006-2012 The Codehaus.
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
  * of the Software, and to permit persons to whom the Software is furnished to do
  * so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -77,86 +77,181 @@ public class Program
      */
     private Set platforms;
 
+    /**
+     * The default constructor.
+     */
     public Program ( )
     {
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param name
+     *            The name of the program.
+     * @param mainClass
+     *            The main class of the program.
+     */
     public Program ( String name, String mainClass )
     {
         this.name = name;
         this.mainClass = mainClass;
     }
 
+    /**
+     * The name.
+     * 
+     * @return The name of the program.
+     */
     public String getName ()
     {
         return name;
     }
 
+    /**
+     * Set the name.
+     * 
+     * @param name
+     *            The name of the program.
+     */
     public void setName ( String name )
     {
         this.name = name;
     }
 
+    /**
+     * Get the main class.
+     * 
+     * @return The name of the main class.
+     */
     public String getMainClass ()
     {
         return mainClass;
     }
 
+    /**
+     * Set the main class.
+     * 
+     * @param mainClass
+     *            The name of the main class.
+     */
     public void setMainClass ( String mainClass )
     {
         this.mainClass = mainClass;
     }
 
+    /**
+     * The platforms.
+     * 
+     * @return The set of platforms.
+     */
     public Set getPlatforms ()
     {
         return platforms;
     }
 
+    /**
+     * The platforms.
+     * 
+     * @param platforms
+     *            The set with the platforms.
+     */
     public void setPlatforms ( Set platforms )
     {
         this.platforms = platforms;
     }
 
+    /**
+     * Get the command line arguments.
+     * 
+     * @return The list of command line arguments.
+     */
     public List getCommandLineArguments ()
     {
         return this.commandLineArguments;
     }
 
+    /**
+     * Set the argument list.
+     * 
+     * @param arguments
+     *            The list of command line arguments.
+     */
     public void setCommandLineArguments ( List arguments )
     {
         this.commandLineArguments = arguments;
     }
 
+    /**
+     * Add an command line arguments.
+     * 
+     * @param argument
+     *            The argument which will be aded to list of arguments.
+     */
     public void addCommandLineArgument ( String argument )
     {
         this.commandLineArguments.add ( argument );
     }
 
+    /**
+     * Get the JVM settings.
+     * 
+     * @return An instance of the JVM settings.
+     * @see JvmSettings
+     */
     public org.codehaus.mojo.appassembler.model.JvmSettings getJvmSettings ()
     {
         return jvmSettings;
     }
 
+    /**
+     * Set the JVM settings.
+     * 
+     * @param jvmSettings
+     *            The instance of the JVM settings which will be used.
+     */
     public void setJvmSettings ( org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings )
     {
         this.jvmSettings = jvmSettings;
     }
 
+    /**
+     * Get the current license header file which is used.
+     * 
+     * @return The file instance of the header file.
+     */
     public File getLicenseHeaderFile ()
     {
         return licenseHeaderFile;
     }
 
+    /**
+     * Set the license header file.
+     * 
+     * @param licenseHeaderFile
+     *            The File instance.
+     */
     public void setLicenseHeaderFile ( File licenseHeaderFile )
     {
         this.licenseHeaderFile = licenseHeaderFile;
     }
 
+    /**
+     * The bin folder.
+     * 
+     * @return The bin folder.
+     */
     public File getBinFolder ()
     {
         return binFolder;
     }
 
+    /**
+     * Set the bin folder.
+     * 
+     * @param binFolder
+     *            The new bin folder name.
+     */
     public void setBinFolder ( File binFolder )
     {
         this.binFolder = binFolder;

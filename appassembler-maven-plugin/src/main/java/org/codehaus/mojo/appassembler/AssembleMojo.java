@@ -211,9 +211,9 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
 
     /**
      * Sometimes it happens that you have many dependencies
-     * which means in other words having a very long classpath. 
+     * which means in other words having a very long classpath.
      * And sometimes the classpath becomes too long (in particular
-     * on Windows based platforms). This option can help in such 
+     * on Windows based platforms). This option can help in such
      * situation. If you activate that your classpath contains only a
      * <a href=
      * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html"
@@ -821,6 +821,12 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
         return extraJvmArguments;
     }
 
+    /**
+     * Set the available repository layouts.
+     * 
+     * @param availableRepositoryLayouts
+     *            The repository layouts which are available.
+     */
     public void setAvailableRepositoryLayouts ( Map availableRepositoryLayouts )
     {
         this.availableRepositoryLayouts = availableRepositoryLayouts;
@@ -866,32 +872,65 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
         }
     }
 
+    /**
+     * Be the project the first artifact in classpath or not.
+     * 
+     * @return true if the project should be the first artifact in classpath false otherwise.
+     */
     public boolean isProjectArtifactFirstInClassPath ()
     {
         return projectArtifactFirstInClassPath;
     }
 
+    /**
+     * Set if the project should be the artifact at first position or not.
+     * 
+     * @param projectArtifactFirstInClassPath
+     *            true if the project artifact will be first false otherwise.
+     */
     public void setProjectArtifactFirstInClassPath (
             boolean projectArtifactFirstInClassPath )
     {
         this.projectArtifactFirstInClassPath = projectArtifactFirstInClassPath;
     }
 
+    /**
+     * Should all dependencies be used incl. system scoped.
+     * 
+     * @return true if set to yes false otherwise.
+     */
     public boolean isUseAllDependencies ()
     {
         return useAllDependencies;
     }
 
+    /**
+     * Define if all dependencies should be used or not.
+     * 
+     * @param useAllDependencies
+     *            true to activate false otherwise.
+     */
     public void setUseAllDependencies ( boolean useAllDependencies )
     {
         this.useAllDependencies = useAllDependencies;
     }
 
+    /**
+     * Should the /* part for the classpath be used or not.
+     * 
+     * @return true if the asterik-classpath will be used false otherwise.
+     */
     public boolean isUseAsterikClassPath ()
     {
         return useAsterikClassPath;
     }
 
+    /**
+     * Use asterik-classpath or not.
+     * 
+     * @param useAsterikClassPath
+     *            true to use asterik classpath false otherwise.
+     */
     public void setUseAsterikClassPath ( boolean useAsterikClassPath )
     {
         this.useAsterikClassPath = useAsterikClassPath;

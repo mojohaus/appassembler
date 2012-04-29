@@ -1,18 +1,18 @@
 /**
  * The MIT License
- *
+ * 
  * Copyright 2006-2012 The Codehaus.
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
  * of the Software, and to permit persons to whom the Software is furnished to do
  * so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -34,16 +34,24 @@ import java.io.File;
  */
 public interface ScriptGenerator
 {
+    /**
+     * Define the role.
+     */
     String ROLE = ScriptGenerator.class.getName ( );
 
     /**
-     * Generate the binary script based on platform, daemon into the given outputDirectory 
+     * Generate the binary script based on platform, daemon into the given outputDirectory
      * and the binFolder.
-     * @param platform The platform.
-     * @param daemon The Daemon.
-     * @param outputDirectory The output folder where the script will be generated into.
-     * @param binFolder The bin folder which will be appended to the outputDirectory.
-     * @throws DaemonGeneratorException
+     * 
+     * @param platform
+     *            The platform.
+     * @param daemon
+     *            The Daemon.
+     * @param outputDirectory
+     *            The output folder where the script will be generated into.
+     * @param binFolder
+     *            The bin folder which will be appended to the outputDirectory.
+     * @throws DaemonGeneratorException in case of an error.
      */
     void createBinScript ( String platform, Daemon daemon, File outputDirectory, String binFolder )
             throws DaemonGeneratorException;

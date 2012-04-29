@@ -139,8 +139,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <!-- All the following tags are Mojo specific -->
         <configuration>
+          <links>
+            <link>http://docs.oracle.com/javaee/1.4/api/</link>
+          </links>
+          <!-- All the following tags are Mojo specific -->
           <tags>
             <tag>
               <name>goal</name>

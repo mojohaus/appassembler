@@ -1,18 +1,18 @@
 /**
  * The MIT License
- *
+ * 
  * Copyright 2006-2012 The Codehaus.
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
  * of the Software, and to permit persons to whom the Software is furnished to do
  * so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -56,17 +56,26 @@ public class DaemonGenerationRequest
 
     private ArtifactRepositoryLayout repositoryLayout = new DefaultRepositoryLayout ( );
 
+    /**
+     * The constructor for the request.
+     */
     public DaemonGenerationRequest ( )
     {
     }
 
     /**
      * Request with the given parameters.
-     * @param daemon The Daemon to use.
-     * @param project The Maven Project
-     * @param localRepository The local repository.
-     * @param outputDir The output directory.
-     * @param binFolder The binary folder.
+     * 
+     * @param daemon
+     *            The Daemon to use.
+     * @param project
+     *            The Maven Project
+     * @param localRepository
+     *            The local repository.
+     * @param outputDir
+     *            The output directory.
+     * @param binFolder
+     *            The binary folder.
      */
     public DaemonGenerationRequest ( Daemon daemon, MavenProject project, ArtifactRepository localRepository,
             File outputDir, String binFolder )
@@ -84,6 +93,7 @@ public class DaemonGenerationRequest
 
     /**
      * Get the Plaform.
+     * 
      * @return the Platform.
      */
     public String getPlatform ()
@@ -92,7 +102,8 @@ public class DaemonGenerationRequest
     }
 
     /**
-     * @param platform Set the platform.
+     * @param platform
+     *            Set the platform.
      */
     public void setPlatform ( String platform )
     {
@@ -102,6 +113,7 @@ public class DaemonGenerationRequest
     /**
      * Get the StubDescriptor
      * FIXME: What for is this needed?
+     * 
      * @return The Stub Descriptor file.
      */
     public File getStubDescriptor ()
@@ -112,7 +124,8 @@ public class DaemonGenerationRequest
     /**
      * Set the StubDescriptor.
      * FIXME: What for is this needed?
-     * @param stubDescriptor
+     * 
+     * @param stubDescriptor The File instance for the descriptor.
      */
     public void setStubDescriptor ( File stubDescriptor )
     {
@@ -122,6 +135,7 @@ public class DaemonGenerationRequest
     /**
      * Get the StubDaemon
      * FIXME: Is this needed?
+     * 
      * @return The set stub Daemon
      */
     public Daemon getStubDaemon ()
@@ -132,7 +146,9 @@ public class DaemonGenerationRequest
     /**
      * Set the StubDaemon.
      * FIXME: Is this needed?
-     * @param stubDaemon This will be set.
+     * 
+     * @param stubDaemon
+     *            This will be set.
      */
     public void setStubDaemon ( Daemon stubDaemon )
     {
@@ -141,7 +157,8 @@ public class DaemonGenerationRequest
 
     /**
      * Get the Daemon of the current request.
-     * @return
+     * 
+     * @return The Daemon instance.
      */
     public Daemon getDaemon ()
     {
@@ -150,7 +167,8 @@ public class DaemonGenerationRequest
 
     /**
      * Set the daemon.
-     * @param daemon
+     * 
+     * @param daemon Instance of a Daemon.
      */
     public void setDaemon ( Daemon daemon )
     {
@@ -159,7 +177,8 @@ public class DaemonGenerationRequest
 
     /**
      * Get the current outputDirectory.
-     * @return
+     * 
+     * @return File instance of the current outputDirectory.
      */
     public File getOutputDirectory ()
     {
@@ -168,7 +187,8 @@ public class DaemonGenerationRequest
 
     /**
      * Set the current output directory.
-     * @param outputDirectory
+     * 
+     * @param outputDirectory The output directory as a File.
      */
     public void setOutputDirectory ( File outputDirectory )
     {
@@ -177,7 +197,8 @@ public class DaemonGenerationRequest
 
     /**
      * Get the use MavenProject.
-     * @return
+     * 
+     * @return MavenProject instance.
      */
     public MavenProject getMavenProject ()
     {
@@ -186,7 +207,9 @@ public class DaemonGenerationRequest
 
     /**
      * Set the Maven Project.
+     * 
      * @param mavenProject
+     *            instance to be set.
      */
     public void setMavenProject ( MavenProject mavenProject )
     {
@@ -195,7 +218,8 @@ public class DaemonGenerationRequest
 
     /**
      * Get the local repository.
-     * @return
+     * 
+     * @return Instance of the ArtifactRepository.
      */
     public ArtifactRepository getLocalRepository ()
     {
@@ -203,7 +227,8 @@ public class DaemonGenerationRequest
     }
 
     /**
-     * @param localRepository Set the local repositoy.
+     * @param localRepository
+     *            Set the local repositoy.
      */
     public void setLocalRepository ( ArtifactRepository localRepository )
     {
@@ -220,7 +245,9 @@ public class DaemonGenerationRequest
 
     /**
      * Set the current repository layout.
-     * @param repositoryLayout The repositoryLayout which will be set.
+     * 
+     * @param repositoryLayout
+     *            The repositoryLayout which will be set.
      */
     public void setRepositoryLayout ( ArtifactRepositoryLayout repositoryLayout )
     {
@@ -229,6 +256,7 @@ public class DaemonGenerationRequest
 
     /**
      * Get the current binary folder.
+     * 
      * @return the setting of the binary folder.
      */
     public String getBinFolder ()
@@ -238,7 +266,8 @@ public class DaemonGenerationRequest
 
     /**
      * Set the binary folder.
-     * @param binFolder 
+     * 
+     * @param binFolder The folder.
      */
     public void setBinFolder ( String binFolder )
     {
