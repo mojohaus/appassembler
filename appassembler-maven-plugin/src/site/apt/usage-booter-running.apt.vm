@@ -61,7 +61,7 @@ The 'Booter' Mechanism
 +-------------------------
   
   and secondly of course the named  
-  {{{http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html}}maven assembly descriptor}}.
+  {{{http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html}maven assembly descriptor}}.
   file <<bin.xml>>: 
 
 +--------------------------
