@@ -28,7 +28,7 @@
   <parent>
     <artifactId>appassembler</artifactId>
     <groupId>org.codehaus.mojo.appassembler</groupId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.2.2</version>
   </parent>
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>appassembler-maven-plugin</artifactId>
