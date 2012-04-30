@@ -1,0 +1,113 @@
+~~
+~~
+~~ The MIT License
+~~
+~~ Copyright 2006-2012 The Codehaus.
+~~
+~~ Permission is hereby granted, free of charge, to any person obtaining a copy of
+~~ this software and associated documentation files (the "Software"), to deal in
+~~ the Software without restriction, including without limitation the rights to
+~~ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+~~ of the Software, and to permit persons to whom the Software is furnished to do
+~~ so, subject to the following conditions:
+~~
+~~ The above copyright notice and this permission notice shall be included in all
+~~ copies or substantial portions of the Software.
+~~
+~~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+~~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+~~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+~~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+~~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+~~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+~~ SOFTWARE.
+~~
+
+  ------
+  Using the Application Assembler Plugin
+  ------
+  Karl Heinz Marbaise
+  ------
+  2012.04.25
+  ------
+
+The 'Booter' Mechanism
+
+* How to get an running application?
+
+  After you have created an appropriate {{{./usage-booter.html}configuration}} 
+  for the booter mechanism it would be helpful if you can package all that stuff
+  together into a single archive which can be shipped to a user. This can be 
+  achieved by using the {{{http://maven.apache.org/plugins/maven-assembly-plugin/}maven-assembly-plugin}}.
+  For this you need two things. First the configuration part in the pom:
+
++-------------------------
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-assembly-plugin</artifactId>
+    <version>2.3</version>
+    <executions>
+      <execution>
+        <phase>package</phase>
+        <goals>
+          <goal>single</goal>
+        </goals>
+      </execution>
+    </executions>
+    <configuration>
+      <descriptor>src/main/assembly/bin.xml</descriptor>
+    </configuration>
+  </plugin>
++-------------------------
+  
+  and secondly of course the named  
+  {{{http://maven.apache.org/plugins/maven-assembly-plugin/assembly.html}}maven assembly descriptor}}.
+  file <<bin.xml>>: 
+
++--------------------------
+<assembly
+  xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2
+  http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+
+  <id>bin</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <fileSets>
+    <fileSet>
+      <directory>target/appassembler/repo</directory>
+      <outputDirectory>repo</outputDirectory>
+      <excludes>
+        <exclude>maven-metadata-appassembler.xml</exclude>
+      </excludes>
+    </fileSet> 
+    <fileSet>
+      <directory>target/generated-resources/appassembler/booter-unix/etc</directory>
+      <outputDirectory>etc</outputDirectory>
+      <includes>
+        <include>my-server.xml</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>target/generated-resources/appassembler/booter-unix/bin</directory>
+      <outputDirectory>bin</outputDirectory>
+      <fileMode>0755</fileMode>
+      <lineEnding>unix</lineEnding>
+    </fileSet>
+    <fileSet>
+      <directory>target/generated-resources/appassembler/booter-windows/bin</directory>
+      <outputDirectory>bin</outputDirectory>
+      <fileMode>0755</fileMode>
+      <lineEnding>dos</lineEnding>
+    </fileSet>
+  </fileSets>
+</assembly>
++--------------------------
+
+  After that you can do a <<mvn clean package>> and as a result you should see a package like
+  <<artifact-version-bin.zip>> which contains all dependencies etc. and could be started 
+  after unpackaging via <<bin/my-server>> or <<bin/my-server.bat>> unix vs. windows.
+
+   []

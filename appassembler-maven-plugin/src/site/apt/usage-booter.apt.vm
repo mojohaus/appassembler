@@ -31,17 +31,19 @@
   2012.04.25
   ------
 
-The 'booter' Mechanism
+The 'Booter' Mechanism
 
- The booter mechanism is a solution to tame long classpath problems. The idea is to have a small main part 
- which will read the different dependency information via an XML file into Java and create a classpath out of 
- it and start your part afterwards.
+* Overview
+
+ The Booter mechanism is a solution to tame long classpath problems. The idea is to 
+ have a small main part which will read the different dependency information via an 
+ XML file into Java and create a classpath out of it and start your part afterwards.
 
 * How to configure the Booter mechanism
 
-  The first thing you have to configure is the main class which contains
-  your main part which should be executed after the booter mechanism
-  has build up the classpath which makes them available for you.
+  The first thing you have to configure is the main class which contains your main
+  part which should be executed after the booter mechanism has built up the classpath
+  which makes it available to you.
   The next thing is you have to give the platforms for which your start scripts has
   to be created. These are the scripts which will start your program from command line.
   An example how an configuration can look like is shown in the excerpt below:
@@ -61,10 +63,11 @@ The 'booter' Mechanism
   </configuration>
 +--------------------------
 
-  The next part is to generate your scripts during the execution of the maven lifecycle. 
-  The goal <<generate-daemons>> is responsible for the creation of the scripts for the
-  appropriate platforms where as the <<create-repository>> goal is responsible to create 
-  a repository which contains all the dependencies you need to run your program.
+  The next part is to generate your scripts during the execution of the maven 
+  lifecycle. The goal <<generate-daemons>> is responsible for the creation of
+  the scripts for their appropriate platforms whereas the <<create-repository>> 
+  goal is responsible to create a repository which contains all the dependencies
+  you need to run your program.
  
 +--------------------------
   <executions>
@@ -77,9 +80,9 @@ The 'booter' Mechanism
   </executions>
 +--------------------------
 
-  A part which is really important that you define the appassembler-booter artifact
+  A part which is really important that you define the <<appassembler-booter>> artifact
   as a dependency to your project cause it contains the part which is executed first
-  and will read the XML file which contains the definions of the dependencies to build
+  and will read the XML file which contains the definitions of the dependencies to build
   the classpath for your program.
 
 +--------------------------
@@ -92,5 +95,7 @@ The 'booter' Mechanism
   </dependencies>
 +--------------------------
 
-   []
+  Based on the above configuration you will find the created structure under <<target>>
+  folder which is described in the {{{./usage-booter-structure.html}booter structure}}.
 
+   []

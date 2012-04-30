@@ -31,45 +31,27 @@
   2012.04.25
   ------
 
-Generated Structure
+The 'Booter' Mechanism
 
-* Directory Structure for Booter
+* Generated Directory Structure
 
-  Based on the following configuration for the plugin:
-
-+--------------------------
-  <configuration>
-    <daemons>
-      <daemon>
-      <id>my-server</id>
-      <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
-      <platforms>
-        <platform>booter-unix</platform>
-        <platform>booter-windows</platform>
-      </platforms>
-      </daemon>
-    </daemons>
-  </configuration>
-  <executions>
-    <execution>
-      <goals>
-        <goal>generate-daemons</goal>
-        <goal>create-repository</goal>
-      </goals>
-    </execution>
-  </executions>
-+--------------------------
-
-  The following structure within the target will be created:
+  Based on the described plugin {{{./usage-booter.html}configuration}} you will
+  find the following structure within the <<target>> folder after doing a
+  <<mvn clean package>> (only excerpts):
 
 +--------------------------
 .
-`-- target
- ...
+|-- appassembler
+|   `-- repo
+.         .
+|-- generated-resources
+|   `-- appassembler
+.         .
 +--------------------------
 
-
-  The structure is under target/appassembler/repo.
+  The structure under <<target/appassembler/repo>> looks like this and contains
+  all dependencies you have defined in your project plus the defined dependency 
+  to the <appassembler-booter> artifact.
 
 +--------------------------
 .
@@ -113,7 +95,11 @@ Generated Structure
 
 +--------------------------
 
-  The following structure can be found under:
+  The following structure can be found under <<target/generated-resources/appassembler>>.
+  The <<booter-unix/bin/my-server>> script is the unix script for running your application whereas
+  the <<booter-windows/bin/my-server.bat>> script is the Windows script.
+  The <<booter-unix/etc/my-server-xml>> file contains all dependencies which is later been read
+  by the booter mechanism to start your application. 
 
 +--------------------------
 .
@@ -124,51 +110,7 @@ Generated Structure
     |   `-- etc
     |       |-- my-server
     |       |   `-- lib
-    |       |       |-- junit
-    |       |       |   `-- junit
-    |       |       |       |-- 3.8.1
-    |       |       |       |   `-- junit-3.8.1.jar
-    |       |       |       `-- maven-metadata-appassembler.xml
-    |       |       |-- net
-    |       |       |   `-- java
-    |       |       |       `-- dev
-    |       |       |           `-- stax-utils
-    |       |       |               `-- stax-utils
-    |       |       |                   |-- 20060502
-    |       |       |                   |   `-- stax-utils-20060502.jar
-    |       |       |                   `-- maven-metadata-appassembler.xml
-    |       |       |-- org
-    |       |       |   `-- codehaus
-    |       |       |       |-- mojo
-    |       |       |       |   `-- appassembler
-    |       |       |       |       |-- appassembler-booter
-    |       |       |       |       |   |-- 1.2.1
-    |       |       |       |       |   |   `-- appassembler-booter-1.2.1.jar
-    |       |       |       |       |   `-- maven-metadata-appassembler.xml
-    |       |       |       |       |-- appassembler-model
-    |       |       |       |       |   |-- 1.2.1
-    |       |       |       |       |   |   `-- appassembler-model-1.2.1.jar
-    |       |       |       |       |   `-- maven-metadata-appassembler.xml
-    |       |       |       |       `-- example
-    |       |       |       |           `-- appassembler-example-booter
-    |       |       |       |               |-- 1.0-SNAPSHOT
-    |       |       |       |               |   |-- appassembler-example-booter-1.0-SNAPSHOT.jar
-    |       |       |       |               |   `-- maven-metadata-appassembler.xml
-    |       |       |       |               `-- maven-metadata-appassembler.xml
-    |       |       |       `-- plexus
-    |       |       |           `-- plexus-utils
-    |       |       |               |-- 1.5.6
-    |       |       |               |   `-- plexus-utils-1.5.6.jar
-    |       |       |               `-- maven-metadata-appassembler.xml
-    |       |       `-- stax
-    |       |           |-- stax
-    |       |           |   |-- 1.1.1-dev
-    |       |           |   |   `-- stax-1.1.1-dev.jar
-    |       |           |   `-- maven-metadata-appassembler.xml
-    |       |           `-- stax-api
-    |       |               |-- 1.0.1
-    |       |               |   `-- stax-api-1.0.1.jar
-    |       |               `-- maven-metadata-appassembler.xml
+    |       .....
     |       `-- my-server.xml
     `-- booter-windows
         |-- bin
@@ -176,57 +118,17 @@ Generated Structure
         `-- etc
             |-- my-server
             |   `-- lib
-            |       |-- junit
-            |       |   `-- junit
-            |       |       |-- 3.8.1
-            |       |       |   `-- junit-3.8.1.jar
-            |       |       `-- maven-metadata-appassembler.xml
-            |       |-- net
-            |       |   `-- java
-            |       |       `-- dev
-            |       |           `-- stax-utils
-            |       |               `-- stax-utils
-            |       |                   |-- 20060502
-            |       |                   |   `-- stax-utils-20060502.jar
-            |       |                   `-- maven-metadata-appassembler.xml
-            |       |-- org
-            |       |   `-- codehaus
-            |       |       |-- mojo
-            |       |       |   `-- appassembler
-            |       |       |       |-- appassembler-booter
-            |       |       |       |   |-- 1.2.1
-            |       |       |       |   |   `-- appassembler-booter-1.2.1.jar
-            |       |       |       |   `-- maven-metadata-appassembler.xml
-            |       |       |       |-- appassembler-model
-            |       |       |       |   |-- 1.2.1
-            |       |       |       |   |   `-- appassembler-model-1.2.1.jar
-            |       |       |       |   `-- maven-metadata-appassembler.xml
-            |       |       |       `-- example
-            |       |       |           `-- appassembler-example-booter
-            |       |       |               |-- 1.0-SNAPSHOT
-            |       |       |               |   |-- appassembler-example-booter-1.0-SNAPSHOT.jar
-            |       |       |               |   `-- maven-metadata-appassembler.xml
-            |       |       |               `-- maven-metadata-appassembler.xml
-            |       |       `-- plexus
-            |       |           `-- plexus-utils
-            |       |               |-- 1.5.6
-            |       |               |   `-- plexus-utils-1.5.6.jar
-            |       |               `-- maven-metadata-appassembler.xml
-            |       `-- stax
-            |           |-- stax
-            |           |   |-- 1.1.1-dev
-            |           |   |   `-- stax-1.1.1-dev.jar
-            |           |   `-- maven-metadata-appassembler.xml
-            |           `-- stax-api
-            |               |-- 1.0.1
-            |               |   `-- stax-api-1.0.1.jar
-            |               `-- maven-metadata-appassembler.xml
+            |.....
             `-- my-server.xml
 
 +--------------------------
 
+  The structures under <<etc/myserver/lib>> is created based on the current 
+  inflexibility of the appassembler-plugin (might be fixed in the future).
 
-
+  And finally you would like to have a running example which can be looked at
+  the {{{./usage-booter-running.html}How to get an running application?}} 
+  section. 
 
    []
 
