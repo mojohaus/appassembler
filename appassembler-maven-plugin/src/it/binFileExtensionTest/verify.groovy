@@ -43,8 +43,8 @@ t.checkExistenceAndContentOfAFile(unixScriptFile, [
 File windowsBatchFile = new File( fileBinFolder, "basic-test.cmd" );
 
 t.checkExistenceAndContentOfAFile(windowsBatchFile, [
-    'set CLASSPATH="%BASEDIR%"\\etc;"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\binFileExtension-test\\1.0-SNAPSHOT\\binFileExtension-test-1.0-SNAPSHOT.jar',
-    'set EXTRA_JVM_ARGUMENTS=-Xms16m',
+    /set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org\codehaus\mojo\appassembler-maven-plugin\it\binFileExtension-test\1.0-SNAPSHOT\binFileExtension-test-1.0-SNAPSHOT.jar/,
+    /set EXTRA_JVM_ARGUMENTS=-Xms16m/,
 ])
 
 //Check the existence of the generated repository.

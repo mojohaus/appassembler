@@ -90,7 +90,7 @@ list_of_files_which_must_be_in_classpath.each {
 
 def line_windows_script_with_classpath = "";
 windowsBatchFile.eachLine {
-    line_content, line_number -> if (line_content.startsWith('set CLASSPATH="%BASEDIR%"\\etc;')) {
+    line_content, line_number -> if (line_content.startsWith(/set CLASSPATH="%BASEDIR%"\etc;/)) {
         line_windows_script_with_classpath = line_content;
     }
 }

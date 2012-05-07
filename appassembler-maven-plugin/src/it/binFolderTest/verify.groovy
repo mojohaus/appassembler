@@ -53,10 +53,10 @@ t.checkExistenceAndContentOfAFile(unixScriptFile, [
 File windowsBatchFile = new File( fileBinFolder, "basic-test.bat" );
 
 t.checkExistenceAndContentOfAFile(windowsBatchFile, [
-    'if exist "%BASEDIR%\\xbin\\setup-env.bat" call "%BASEDIR%\\xbin\\setup-env.bat"',
-    'set CLASSPATH="%BASEDIR%"\\etc;"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\envrionmentSetup-test\\1.0-SNAPSHOT\\envrionmentSetup-test-1.0-SNAPSHOT.jar',
-    'set EXTRA_JVM_ARGUMENTS=-Xms16m',
-    '%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="basic-test" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 %CMD_LINE_ARGS%',
+    /if exist "%BASEDIR%\xbin\setup-env.bat" call "%BASEDIR%\xbin\setup-env.bat"/,
+    /set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org\codehaus\mojo\appassembler-maven-plugin\it\envrionmentSetup-test\1.0-SNAPSHOT\envrionmentSetup-test-1.0-SNAPSHOT.jar/,
+    /set EXTRA_JVM_ARGUMENTS=-Xms16m/,
+    /%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="basic-test" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 %CMD_LINE_ARGS%/,
 ])
 
 //Check the existence of the generated repository.

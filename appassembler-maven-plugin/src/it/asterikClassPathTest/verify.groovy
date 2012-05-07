@@ -42,8 +42,8 @@ t.checkExistenceAndContentOfAFile(unixScriptFile, [
 File windowsBatchFile = new File( fileBinFolder, "basic-test.bat" );
 
 t.checkExistenceAndContentOfAFile(windowsBatchFile, [
-    'set CLASSPATH="%REPO%"\\*',
-    'set EXTRA_JVM_ARGUMENTS=-Xms16m',
+    /set CLASSPATH="%REPO%"\*/,
+    /set EXTRA_JVM_ARGUMENTS=-Xms16m/,
 ])
 
 //Check the existence of the generated repository.
