@@ -42,6 +42,7 @@ t.checkExistenceAndContentOfAFile(new File( fileBinFolder, "programLicenseHeader
     '  -Dapp.name="programLicenseHeader-test" \\',
     '  -Dapp.pid="$$" \\',
     '  -Dapp.repo="$REPO" \\',
+    '  -Dapp.home="$BASEDIR" \\',
     '  -Dbasedir="$BASEDIR" \\',
     '  org.codehaus.mojo.appassembler.example.helloworld.HelloWorld \\',
     '  arg1 arg2 "$@"',
@@ -52,7 +53,7 @@ t.checkExistenceAndContentOfAFile(new File( fileBinFolder, "programLicenseHeader
     '@REM --- This is my own license header file ---',
     '@REM ******************************************',
     'set CLASSPATH="%BASEDIR%"\\etc;"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\programLicenseHeader-test\\1.0-SNAPSHOT\\programLicenseHeader-test-1.0-SNAPSHOT.jar',
-    '%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="programLicenseHeader-test" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 %CMD_LINE_ARGS%',
+    '%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="programLicenseHeader-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 %CMD_LINE_ARGS%',
 ])
 
 t.checkExistenceAndContentOfAFile(new File( fileBinFolder, "programLicenseHeader-01-test"), [
@@ -66,6 +67,7 @@ t.checkExistenceAndContentOfAFile(new File( fileBinFolder, "programLicenseHeader
     '  -Dapp.name="programLicenseHeader-01-test" \\',
     '  -Dapp.pid="$$" \\',
     '  -Dapp.repo="$REPO" \\',
+    '  -Dapp.home="$BASEDIR" \\',
     '  -Dbasedir="$BASEDIR" \\',
     '  org.codehaus.mojo.appassembler.example.helloworld.HelloWorld \\',
     '  "$@"',
@@ -76,7 +78,7 @@ t.checkExistenceAndContentOfAFile(new File( fileBinFolder, "programLicenseHeader
     '@REM --- This is LicenseHeader File 01      ---',
     '@REM ******************************************',
     'set CLASSPATH="%BASEDIR%"\\etc;"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\programLicenseHeader-test\\1.0-SNAPSHOT\\programLicenseHeader-test-1.0-SNAPSHOT.jar',
-    '%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="programLicenseHeader-01-test" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld %CMD_LINE_ARGS%',
+    '%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="programLicenseHeader-01-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld %CMD_LINE_ARGS%',
 ])
 
 //Check the existence of the generated repository.

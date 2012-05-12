@@ -59,7 +59,7 @@ About the Generated Scripts
 
   * <<app.repo>> - The path to the repository that was used to start the application. See REPO
   
-  * <<app.home>> - The installation directory of the application, i.e. the directory where bn/ and repo/
+  * <<app.home>> - The installation directory of the application, i.e. the directory where <bin/> and <repo/>
   exist. Use this if you need to load files relative to your installation directory (see <<basedir>>).
 
   * <<basedir>> - The installation directory of the application, i.e. the directory where bin/ and repo/ exist. Use
