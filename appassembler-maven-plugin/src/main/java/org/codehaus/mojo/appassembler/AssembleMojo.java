@@ -223,8 +223,25 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * 
      * @since 1.2.2
      * @parameter default-value="false"
+     * @deprecated Use useWildcardClassPath instead.
      */
     private boolean useAsterikClassPath;
+    
+    /**
+     * Sometimes it happens that you have many dependencies
+     * which means in other words having a very long classpath.
+     * And sometimes the classpath becomes too long (in particular
+     * on Windows based platforms). This option can help in such
+     * situation. If you activate that your classpath contains only a
+     * <a href=
+     * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html"
+     * >classpath wildcard</a> (REPO/*). But be aware that this works only in combination
+     * with Java 1.6 and above and with {@link #repositoryLayout} <code>flat</code>.
+     * Otherwise this configuration will not work.
+     * @since 1.2.3
+     * @parameter default-value="false"
+     */
+    private boolean useWildcardClassPath;
 
     /**
      * The file extensions to use for bin files. The file extensions are stored
@@ -379,11 +396,12 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
         // validate input and set defaults
         validate ( defaultPlatforms );
 
-        if ( isUseAsterikClassPath ( )
+        if ( (isUseAsterikClassPath ( )
+                || isUseWildcardClassPath())
                 && !repositoryLayout.equalsIgnoreCase ( "flat" ) )
         {
             throw new MojoExecutionException (
-                    "The useAsterikClassPath works only in combination with repositoryLayout flat." );
+                    "The useAsterikClassPath/useWildcardClassPath works only in combination with repositoryLayout flat." );
         }
 
         // Set the extensions for bin files for the different platforms
@@ -548,7 +566,9 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
 
         // TODO: This should be done in a more elegant way for 2.0
         // TODO: Check if the classpath wildcard could be used for Daemons as well?
-        if ( isUseAsterikClassPath ( ) )
+
+        //TODO: Remove the isUseAsterikClassPath with release 1.3 ?
+        if ( isUseAsterikClassPath ( ) || isUseWildcardClassPath() )
         {
             Dependency dependency = new Dependency ( );
             dependency.setGroupId ( "" );
@@ -934,5 +954,25 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
     public void setUseAsterikClassPath ( boolean useAsterikClassPath )
     {
         this.useAsterikClassPath = useAsterikClassPath;
+    }
+    
+    /**
+     * Should the /* part for the classpath be used or not.
+     * 
+     * @return true if the wild card class path will be used false otherwise.
+     */
+    public boolean isUseWildcardClassPath() {
+        return useWildcardClassPath;
+    }
+
+    /**
+     * Use wildcard classpath or not.
+     * 
+     * @param useWildcardClassPath
+     *            true to use wildcard classpath false otherwise.
+     */
+    public void setUseWildcardClassPath ( boolean useWildcardClassPath )
+    {
+        this.useWildcardClassPath = useWildcardClassPath;
     }
 }
