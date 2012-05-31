@@ -206,8 +206,18 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * 
      * @since 1.2.1
      * @parameter default-value="false"
+     * @deprecated Use useallProjectDependencies instead.
      */
     private boolean useAllDependencies;
+
+    /**
+     * The following can be used to use all project dependencies instead of the
+     * default behavior which represents <code>runtime</code> dependencies only.
+     * 
+     * @since 1.2.3
+     * @parameter default-value="false"
+     */
+    private boolean useAllProjectDependencies;
 
     /**
      * Sometimes it happens that you have many dependencies
@@ -226,7 +236,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * @deprecated Use useWildcardClassPath instead.
      */
     private boolean useAsterikClassPath;
-    
+
     /**
      * Sometimes it happens that you have many dependencies
      * which means in other words having a very long classpath.
@@ -238,6 +248,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * >classpath wildcard</a> (REPO/*). But be aware that this works only in combination
      * with Java 1.6 and above and with {@link #repositoryLayout} <code>flat</code>.
      * Otherwise this configuration will not work.
+     * 
      * @since 1.2.3
      * @parameter default-value="false"
      */
@@ -396,8 +407,8 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
         // validate input and set defaults
         validate ( defaultPlatforms );
 
-        if ( (isUseAsterikClassPath ( )
-                || isUseWildcardClassPath())
+        if ( ( isUseAsterikClassPath ( )
+                || isUseWildcardClassPath ( ) )
                 && !repositoryLayout.equalsIgnoreCase ( "flat" ) )
         {
             throw new MojoExecutionException (
@@ -415,7 +426,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
                     + repositoryLayout + "'." );
         }
 
-        if ( isUseAllDependencies ( ) )
+        if ( isUseAllDependencies ( ) || isUseAllProjectDependencies ( ) )
         {
             // TODO: This should be made different. We have to think about using
             // a default ArtifactFilter
@@ -567,8 +578,8 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
         // TODO: This should be done in a more elegant way for 2.0
         // TODO: Check if the classpath wildcard could be used for Daemons as well?
 
-        //TODO: Remove the isUseAsterikClassPath with release 1.3 ?
-        if ( isUseAsterikClassPath ( ) || isUseWildcardClassPath() )
+        // TODO: Remove the isUseAsterikClassPath with release 1.3 ?
+        if ( isUseAsterikClassPath ( ) || isUseWildcardClassPath ( ) )
         {
             Dependency dependency = new Dependency ( );
             dependency.setGroupId ( "" );
@@ -918,6 +929,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * Should all dependencies be used incl. system scoped.
      * 
      * @return true if set to yes false otherwise.
+     * @deprecated use {@link #isUseAllProjectDependencies()} instead.
      */
     public boolean isUseAllDependencies ()
     {
@@ -929,6 +941,8 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * 
      * @param useAllDependencies
      *            true to activate false otherwise.
+     * @deprecated use {@link #setUseAllProjectDependencies(boolean)} instead.
+     *  
      */
     public void setUseAllDependencies ( boolean useAllDependencies )
     {
@@ -936,9 +950,31 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
     }
 
     /**
+     * Should all project dependencies be used incl. system scoped.
+     * 
+     * @return true if we will use all project dependencies false otherwise.
+     */
+    public boolean isUseAllProjectDependencies ()
+    {
+        return useAllProjectDependencies;
+    }
+
+    /**
+     * Define if all project dependencies should be used or not.
+     * 
+     * @param useAllDependencies
+     *            true to activate false otherwise.
+     */
+    public void setUseAllProjectDependencies ( boolean useAllProjectDependencies )
+    {
+        this.useAllProjectDependencies = useAllProjectDependencies;
+    }
+
+    /**
      * Should the /* part for the classpath be used or not.
      * 
      * @return true if the asterik-classpath will be used false otherwise.
+     * @deprecated use {@link #isUseWildcardClassPath()} instead.
      */
     public boolean isUseAsterikClassPath ()
     {
@@ -950,18 +986,20 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * 
      * @param useAsterikClassPath
      *            true to use asterik classpath false otherwise.
+     * @deprecated use {@link #setUseWildcardClassPath(boolean)} instead.
      */
     public void setUseAsterikClassPath ( boolean useAsterikClassPath )
     {
         this.useAsterikClassPath = useAsterikClassPath;
     }
-    
+
     /**
-     * Should the /* part for the classpath be used or not.
+     * Should the <code>/*</code> part for the classpath be used or not.
      * 
      * @return true if the wild card class path will be used false otherwise.
      */
-    public boolean isUseWildcardClassPath() {
+    public boolean isUseWildcardClassPath ()
+    {
         return useWildcardClassPath;
     }
 
