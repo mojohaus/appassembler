@@ -299,7 +299,8 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
     private ArtifactRepository localRepository;
 
     /**
-     * Show console window when execute this application.
+     * Show console window when execute this application. When false, the generated java command runs in background.
+     * This works best for Swing application where the command line invocation is not blocked.
      * 
      * @parameter default-value="true"
      */

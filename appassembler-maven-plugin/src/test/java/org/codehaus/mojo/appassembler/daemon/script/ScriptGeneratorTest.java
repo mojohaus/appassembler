@@ -59,6 +59,7 @@ public class ScriptGeneratorTest
         for ( Iterator it = Platform.getAllPlatforms().iterator(); it.hasNext(); )
         {
             testNormalShellScriptGeneration( (Platform) it.next() );
+            testShellScriptGenerationWithFalseShowConsoleWindow( (Platform) it.next() );
         }
     }
 
@@ -84,4 +85,29 @@ public class ScriptGeneratorTest
 
         assertEquals( FileUtils.fileRead( expectedFile ), FileUtils.fileRead( actualFile ) );
     }
+    
+    private void testShellScriptGenerationWithFalseShowConsoleWindow( Platform platform )
+        throws Exception
+    {
+        ScriptGenerator generator = (ScriptGenerator) lookup( ScriptGenerator.ROLE );
+
+        Daemon daemon = new Daemon();
+        
+        daemon.setShowConsoleWindow( false );
+        daemon.setId( "test" );
+        daemon.setMainClass( "foo.Bar" );
+        daemon.setJvmSettings( new JvmSettings() );
+        daemon.getJvmSettings().setExtraArguments( Arrays.asList( new String[]{"Yo", "dude"} ) );
+        daemon.setEnvironmentSetupFileName( "setup" );
+        daemon.setRepositoryName("repo");
+        File outputDirectory = getTestFile( "target/test-output/normal-shell/" + platform.getName() );
+
+        generator.createBinScript( platform.getName(), daemon, outputDirectory, "bin" );
+
+        File expectedFile = getTestFile( PREFIX + "expected-false-showConsoleWindow-" + daemon.getId() + platform.getBinFileExtension() );
+        File actualFile = new File( outputDirectory, "bin/" + daemon.getId() + platform.getBinFileExtension() );
+
+        assertEquals( FileUtils.fileRead( expectedFile ), FileUtils.fileRead( actualFile ) );
+    }
+    
 }

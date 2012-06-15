@@ -177,10 +177,12 @@ public class DefaultScriptGenerator
             if ( platform.isShowConsoleWindow ( daemon ) )
             {
                 context.put ( "JAVA_BINARY", "java" );
+                context.put(  "UNIX_BACKGROUND", "" );
             }
             else
             {
                 context.put ( "JAVA_BINARY", "start /min javaw" );
+                context.put(  "UNIX_BACKGROUND", " &" );
             }
 
             String appArguments = platform.getAppArguments ( daemon );

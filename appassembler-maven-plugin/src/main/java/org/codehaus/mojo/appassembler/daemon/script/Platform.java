@@ -555,7 +555,7 @@ public class Platform
      */
     public boolean isShowConsoleWindow ( Daemon daemon )
     {
-        return daemon.isShowConsoleWindow ( ) && isWindows;
+        return daemon.isShowConsoleWindow ( );
     }
 
     // -----------------------------------------------------------------------

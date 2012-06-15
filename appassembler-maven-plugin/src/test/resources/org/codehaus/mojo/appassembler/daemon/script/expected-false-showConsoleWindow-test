@@ -1,5 +1,23 @@
 #!/bin/sh
-@LICENSE_HEADER@
+# ----------------------------------------------------------------------------
+#  Copyright 2001-2006 The Apache Software Foundation.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+# ----------------------------------------------------------------------------
+#
+#   Copyright (c) 2001-2006 The Apache Software Foundation.  All rights
+#   reserved.
+
 
 # resolve links - $0 may be a softlink
 PRG="$0"
@@ -17,7 +35,7 @@ done
 PRGDIR=`dirname "$PRG"`
 BASEDIR=`cd "$PRGDIR/.." >/dev/null; pwd`
 
-@ENV_SETUP@
+[ -f "$BASEDIR"/bin/setup ] && . "$BASEDIR"/bin/setup
 
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false;
@@ -70,11 +88,11 @@ fi
 
 if [ -z "$REPO" ]
 then
-  REPO="$BASEDIR"/@REPO@
+  REPO="$BASEDIR"/repo
 fi
 
-CLASSPATH=$CLASSPATH_PREFIX:@CLASSPATH@
-EXTRA_JVM_ARGUMENTS="@EXTRA_JVM_ARGUMENTS@"
+CLASSPATH=$CLASSPATH_PREFIX:
+EXTRA_JVM_ARGUMENTS="Yo dude"
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
@@ -88,10 +106,10 @@ fi
 exec "$JAVACMD" $JAVA_OPTS \
   $EXTRA_JVM_ARGUMENTS \
   -classpath "$CLASSPATH" \
-  -Dapp.name="@APP_NAME@" \
+  -Dapp.name="test" \
   -Dapp.pid="$$" \
   -Dapp.repo="$REPO" \
   -Dapp.home="$BASEDIR" \
   -Dbasedir="$BASEDIR" \
-  @MAINCLASS@ \
-  @APP_ARGUMENTS@"$@"@UNIX_BACKGROUND@
+  foo.Bar \
+  "$@" &
