@@ -58,8 +58,9 @@ public class ScriptGeneratorTest
     {
         for ( Iterator it = Platform.getAllPlatforms().iterator(); it.hasNext(); )
         {
-            testNormalShellScriptGeneration( (Platform) it.next() );
-            testShellScriptGenerationWithFalseShowConsoleWindow( (Platform) it.next() );
+            Platform platform = (Platform) it.next();
+            testNormalShellScriptGeneration( platform );
+            testShellScriptGenerationWithFalseShowConsoleWindow( platform );
         }
     }
 
