@@ -3,9 +3,35 @@
 #
 # Copyright (c) 1999, 2006 Tanuki Software Inc.
 #
+# Permission is hereby granted, free of charge, to any person
+# obtaining a copy of the Java Service Wrapper and associated
+# documentation files (the "Software"), to deal in the Software
+# without  restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sub-license,
+# and/or sell copies of the Software, and to permit persons to
+# whom the Software is furnished to do so, subject to the
+# following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+# NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+
+#
 # Java Service Wrapper sh script.  Suitable for starting and stopping
 #  wrapped Java applications on UNIX platforms.
 #
+# This file is originally from Java Service Wrapper 3.2.3 distribution
+# with alteration to fit the needs of AppAssembler Maven Plugin
+#
+
 
 #-----------------------------------------------------------------------------
 # These settings can be modified to fit the needs of your application
@@ -200,59 +226,35 @@ outputFile() {
 }
 
 # Decide on the wrapper binary to use.
-# If a 32-bit wrapper binary exists then it will work on 32 or 64 bit
-#  platforms, if the 64-bit binary exists then the distribution most
-#  likely wants to use long names.  Otherwise, look for the default.
+# Start with 64 bit wrapper binary, fall back to 32-bit or the default one as needed
+
 # For macosx, we also want to look for universal binaries.
-WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-32"
-if [ -x "$WRAPPER_TEST_CMD" ]
+if [ "$DIST_OS" = "macosx" ]
+then
+    DIST_ARCH="universal"
+fi
+
+WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-64"
+$WRAPPER_TEST_CMD -v > /dev/null 2>&1
+if [ "$?" = "0" ]
 then
     WRAPPER_CMD="$WRAPPER_TEST_CMD"
 else
-    if [ "$DIST_OS" = "macosx" ]
+    WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-32"
+    $WRAPPER_TEST_CMD -v > /dev/null 2>&1
+    if [ "$?" = "0" ]
     then
-        WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-universal-32"
-        if [ -x "$WRAPPER_TEST_CMD" ]
-        then
-            WRAPPER_CMD="$WRAPPER_TEST_CMD"
-        else
-            WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-64"
-            if [ -x "$WRAPPER_TEST_CMD" ]
-            then
-                WRAPPER_CMD="$WRAPPER_TEST_CMD"
-            else
-                WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-universal-64"
-                if [ -x "$WRAPPER_TEST_CMD" ]
-                then
-                    WRAPPER_CMD="$WRAPPER_TEST_CMD"
-                else
-                    if [ ! -x "$WRAPPER_CMD" ]
-                    then
-                        echo "Unable to locate any of the following binaries:"
-                        outputFile "$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-32"
-                        outputFile "$WRAPPER_CMD-$DIST_OS-universal-32"
-                        outputFile "$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-64"
-                        outputFile "$WRAPPER_CMD-$DIST_OS-universal-64"
-                        outputFile "$WRAPPER_CMD"
-                        exit 1
-                    fi
-                fi
-            fi
-        fi
+        WRAPPER_CMD="$WRAPPER_TEST_CMD"
     else
-        WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-64"
-        if [ -x "$WRAPPER_TEST_CMD" ]
+        WRAPPER_TEST_CMD="$WRAPPER_CMD"
+        $WRAPPER_TEST_CMD -v > /dev/null 2>&1
+        if [ "$?" != "0" ]
         then
-            WRAPPER_CMD="$WRAPPER_TEST_CMD"
-        else
-            if [ ! -x "$WRAPPER_CMD" ]
-            then
-                echo "Unable to locate any of the following binaries:"
-                outputFile "$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-32"
-                outputFile "$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-64"
-                outputFile "$WRAPPER_CMD"
-                exit 1
-            fi
+            echo "Unable to locate any of the following operational binaries:"
+            outputFile "$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-64"
+            outputFile "$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-32"
+            outputFile "$WRAPPER_CMD"
+            exit 1
         fi
     fi
 fi
