@@ -75,21 +75,22 @@ public class JavaServiceWrapperDaemonGeneratorTest
         assertFileExists( jswDir, "lib/wrapper.jar" );
         assertFileExists( jswDir, "lib/wrapper-windows-x86-32.dll" );
         assertFileExists( jswDir, "lib/libwrapper-macosx-universal-32.jnilib" );
-        assertFileNotExists( jswDir, "lib/libwrapper-macosx-ppc-32.jnilib" );
-        assertFileNotExists( jswDir, "lib/libwrapper-linux-ppc-64.so" );
         assertFileExists( jswDir, "lib/libwrapper-linux-x86-32.so" );
-        assertFileNotExists( jswDir, "lib/libwrapper-linux-x86-64.so" );
         assertFileExists( jswDir, "lib/libwrapper-solaris-x86-32.so" );
-        assertFileNotExists( jswDir, "lib/libwrapper-solaris-sparc-32.so" );
-        assertFileNotExists( jswDir, "lib/libwrapper-solaris-sparc-64.so" );
 
         assertFileExists( jswDir, "bin/wrapper-windows-x86-32.exe" );
         assertFileExists( jswDir, "bin/wrapper-macosx-universal-32" );
+        assertFileExists( jswDir, "bin/wrapper-solaris-x86-32" );
+        assertFileExists( jswDir, "bin/wrapper-linux-x86-32" );
+        
+        assertFileNotExists( jswDir, "lib/libwrapper-macosx-ppc-32.jnilib" );
+        assertFileNotExists( jswDir, "lib/libwrapper-linux-ppc-64.so" );
+        assertFileNotExists( jswDir, "lib/libwrapper-linux-x86-64.so" );
+        assertFileNotExists( jswDir, "lib/libwrapper-solaris-sparc-32.so" );
+        assertFileNotExists( jswDir, "lib/libwrapper-solaris-sparc-64.so" );
         assertFileNotExists( jswDir, "bin/wrapper-macosx-ppc-32" );
         assertFileNotExists( jswDir, "bin/wrapper-linux-ppc-64" );
-        assertFileExists( jswDir, "bin/wrapper-linux-x86-32" );
         assertFileNotExists( jswDir, "bin/wrapper-linux-x86-64" );
-        assertFileExists( jswDir, "bin/wrapper-solaris-x86-32" );
         assertFileNotExists( jswDir, "bin/wrapper-solaris-sparc-32" );
         assertFileNotExists( jswDir, "bin/wrapper-solaris-sparc-64" );
     }
@@ -222,6 +223,54 @@ public class JavaServiceWrapperDaemonGeneratorTest
            getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-6.conf" ) ),
                      FileUtils.fileRead( wrapper ) );
     }
+    
+    public void testGenerateWithAllKnownPlatforms()
+        throws Exception
+    {
+        runTest( "jsw", "src/test/resources/project-7/pom.xml", "src/test/resources/project-7/descriptor.xml",
+                 "target/output-7-jsw" );
+
+        File jswDir = getTestFile( "target/output-7-jsw/app" );
+        File wrapper = new File( jswDir, "conf/wrapper.conf" );
+
+        assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
+
+        assertEquals( FileUtils.fileRead(
+           getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-7.conf" ) ),
+                     FileUtils.fileRead( wrapper ) );
+        
+        assertFileExists( jswDir, "lib/wrapper.jar" );
+        assertFileExists( jswDir, "lib/libwrapper-aix-ppc-32.a" );
+        assertFileExists( jswDir, "lib/libwrapper-aix-ppc-64.a" );
+        assertFileExists( jswDir, "lib/libwrapper-hpux-parisc-64.sl" );
+        assertFileExists( jswDir, "lib/libwrapper-macosx-universal-32.jnilib" );
+        assertFileExists( jswDir, "lib/libwrapper-macosx-universal-64.jnilib" );
+        assertFileExists( jswDir, "lib/libwrapper-linux-ppc-64.so" );        
+        assertFileExists( jswDir, "lib/libwrapper-linux-x86-32.so" );
+        assertFileExists( jswDir, "lib/libwrapper-linux-x86-64.so" );
+        assertFileExists( jswDir, "lib/libwrapper-solaris-x86-32.so" );
+        assertFileExists( jswDir, "lib/libwrapper-solaris-sparc-32.so" );
+        assertFileExists( jswDir, "lib/libwrapper-solaris-sparc-64.so" );
+        assertFileExists( jswDir, "lib/wrapper-windows-x86-32.dll" );
+        assertFileExists( jswDir, "lib/wrapper-windows-x86-64.dll" );
+        
+        assertFileExists( jswDir, "bin/wrapper-aix-ppc-32" );
+        assertFileExists( jswDir, "bin/wrapper-aix-ppc-64" );
+        assertFileExists( jswDir, "bin/wrapper-hpux-parisc-64" );
+        assertFileExists( jswDir, "bin/wrapper-macosx-universal-32" );
+        assertFileExists( jswDir, "bin/wrapper-macosx-universal-64" );
+        assertFileExists( jswDir, "bin/wrapper-linux-ppc-64" );        
+        assertFileExists( jswDir, "bin/wrapper-linux-x86-32" );
+        assertFileExists( jswDir, "bin/wrapper-linux-x86-64" );
+        assertFileExists( jswDir, "bin/wrapper-solaris-x86-32" );
+        assertFileExists( jswDir, "bin/wrapper-solaris-sparc-32" );
+        assertFileExists( jswDir, "bin/wrapper-solaris-sparc-64" );
+        assertFileExists( jswDir, "bin/wrapper-windows-x86-32.exe" );
+        assertFileExists( jswDir, "bin/wrapper-windows-x86-64.exe" );
+        
+        
+    }
+    
 
 
     public void testGenerationWithRunAsUserEnvVar()

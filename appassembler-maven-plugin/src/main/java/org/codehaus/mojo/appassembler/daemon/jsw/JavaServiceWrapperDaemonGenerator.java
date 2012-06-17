@@ -65,12 +65,12 @@ public class JavaServiceWrapperDaemonGenerator
 {
     private static final Map JSW_PLATFORMS_MAP = new HashMap ( ) {
         {
-            put ( "aix-ppc-32-lib", "lib/libwrapper-aix-ppc-32.so" );
+            put ( "aix-ppc-32-lib", "lib/libwrapper-aix-ppc-32.a" );
             put ( "aix-ppc-32-exec", "bin/wrapper-aix-ppc-32" );
             put ( "aix-ppc-64-lib", "lib/libwrapper-aix-ppc-64.a" );
             put ( "aix-ppc-64-exec", "bin/wrapper-aix-ppc-64" );
-            put ( "hpux-risc-64-lib", "lib/libwrapper-hpux-risc-64.sl" );
-            put ( "hpux-risc-64-exec", "bin/wrapper-hpux-risc-64" );
+            put ( "hpux-parisc-64-lib", "lib/libwrapper-hpux-parisc-64.sl" );
+            put ( "hpux-parisc-64-exec", "bin/wrapper-hpux-parisc-64" );
             put ( "linux-x86-32-lib", "lib/libwrapper-linux-x86-32.so" );
             put ( "linux-x86-32-exec", "bin/wrapper-linux-x86-32" );
             put ( "linux-x86-64-lib", "lib/libwrapper-linux-x86-64.so" );
