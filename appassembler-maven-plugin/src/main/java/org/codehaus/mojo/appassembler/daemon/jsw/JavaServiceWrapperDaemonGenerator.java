@@ -65,6 +65,12 @@ public class JavaServiceWrapperDaemonGenerator
 {
     private static final Map JSW_PLATFORMS_MAP = new HashMap ( ) {
         {
+            put ( "aix-ppc-32-lib", "lib/libwrapper-aix-ppc-32.so" );
+            put ( "aix-ppc-32-exec", "bin/wrapper-aix-ppc-32" );
+            put ( "aix-ppc-64-lib", "lib/libwrapper-aix-ppc-64.a" );
+            put ( "aix-ppc-64-exec", "bin/wrapper-aix-ppc-64" );
+            put ( "hpux-risc-64-lib", "lib/libwrapper-hpux-risc-64.sl" );
+            put ( "hpux-risc-64-exec", "bin/wrapper-hpux-risc-64" );
             put ( "linux-x86-32-lib", "lib/libwrapper-linux-x86-32.so" );
             put ( "linux-x86-32-exec", "bin/wrapper-linux-x86-32" );
             put ( "linux-x86-64-lib", "lib/libwrapper-linux-x86-64.so" );
@@ -75,6 +81,10 @@ public class JavaServiceWrapperDaemonGenerator
             put ( "macosx-ppc-32-exec", "bin/wrapper-macosx-ppc-32" );
             put ( "macosx-x86-universal-32-lib", "lib/libwrapper-macosx-universal-32.jnilib" );
             put ( "macosx-x86-universal-32-exec", "bin/wrapper-macosx-universal-32" );
+            put ( "macosx-universal-32-lib", "lib/libwrapper-macosx-universal-32.jnilib" );
+            put ( "macosx-universal-32-exec", "bin/wrapper-macosx-universal-32" );
+            put ( "macosx-universal-64-lib", "lib/libwrapper-macosx-universal-64.jnilib" );
+            put ( "macosx-universal-64-exec", "bin/wrapper-macosx-universal-64" );
             put ( "solaris-sparc-32-lib", "lib/libwrapper-solaris-sparc-32.so" );
             put ( "solaris-sparc-32-exec", "bin/wrapper-solaris-sparc-32" );
             put ( "solaris-sparc-64-lib", "lib/libwrapper-solaris-sparc-64.so" );
@@ -83,6 +93,8 @@ public class JavaServiceWrapperDaemonGenerator
             put ( "solaris-x86-32-exec", "bin/wrapper-solaris-x86-32" );
             put ( "windows-x86-32-lib", "lib/wrapper-windows-x86-32.dll" );
             put ( "windows-x86-32-exec", "bin/wrapper-windows-x86-32.exe" );
+            put ( "windows-x86-64-lib", "lib/wrapper-windows-x86-64.dll" );
+            put ( "windows-x86-64-exec", "bin/wrapper-windows-x86-64.exe" );
         }
     };
 

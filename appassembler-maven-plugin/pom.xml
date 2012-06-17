@@ -140,6 +140,20 @@
                   <version>3.2.3</version>
                   <type>tar.gz</type>
                 </artifactItem>
+                <artifactItem>
+                  <groupId>org.sonatype.jsw-binaries</groupId>
+                  <artifactId>jsw-binaries</artifactId>
+                  <version>3.2.3.6</version>
+                  <type>tar.gz</type>
+                  <outputDirectory>${project.build.directory}/dependency/sonatype-jsw-binaries</outputDirectory>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.apache.karaf.shell</groupId>
+                  <artifactId>org.apache.karaf.shell.wrapper</artifactId>
+                  <version>2.2.7</version>
+                  <type>jar</type>
+                  <outputDirectory>${project.build.directory}/dependency/karaf-jsw-binaries</outputDirectory>
+                </artifactItem>
               </artifactItems>
             </configuration>
             <goals>
@@ -148,6 +162,50 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+              
+                <copy file="${project.build.directory}/dependency/sonatype-jsw-binaries/windows-x86-64/lib/wrapper.dll" 
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/wrapper-windows-x86-64.dll" />
+                <copy file="${project.build.directory}/dependency/sonatype-jsw-binaries/windows-x86-64/wrapper.exe" 
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-windows-x86-64.exe" />
+                  
+                <copy file="${project.build.directory}/dependency/sonatype-jsw-binaries/macosx-universal-64/lib/libwrapper.jnilib" 
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-macosx-universal-64.jnilib" />
+                <copy file="${project.build.directory}/dependency/sonatype-jsw-binaries/macosx-universal-64/wrapper" 
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-macosx-universal-64" />
+
+                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc32/libwrapper.a" 
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-aix-ppc-32.a" />
+                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc32/karaf-wrapper" 
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-aix-ppc-32" />
+
+                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc64/libwrapper.a" 
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-aix-ppc-64.a" />
+                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc64/karaf-wrapper" 
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-aix-ppc-64" />
+
+                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/hpux/parisc64/libwrapper.sl" 
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-hpux-parisc-64.sl" />
+                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/hpux/parisc64/karaf-wrapper" 
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-hpux-parisc-64" />
+                  
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
     </plugins>
     <resources>
       <resource>
