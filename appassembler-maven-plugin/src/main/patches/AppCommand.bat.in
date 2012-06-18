@@ -35,7 +35,7 @@ rem
 
 if "%OS%"=="Windows_NT" goto nt
 echo This script only works with NT-based versions of Windows.
-goto :eof
+exit /b 1
 
 :nt
 rem
@@ -63,8 +63,7 @@ echo Unable to locate a Wrapper executable using any of the following names:
 echo %_REALPATH%%_WRAPPER_BASE%-windows-x86-64.exe
 echo %_REALPATH%%_WRAPPER_BASE%-windows-x86-32.exe
 echo %_REALPATH%%_WRAPPER_BASE%.exe
-pause
-goto :eof
+exit /b 1
 
 :validate
 rem Find the requested command.
@@ -72,8 +71,7 @@ for /F %%v in ('echo %1^|findstr "^console$ ^start$ ^pause$ ^resume$ ^stop$ ^res
 
 if "%COMMAND%" == "" (
     echo Usage: %0 { console : start : pause : resume : stop : restart : install : remove : status }
-    pause
-    goto :eof
+    exit /b 1
 ) else (
     shift
 )
@@ -89,7 +87,6 @@ rem Run the application.
 rem At runtime, the current directory will be that of wrapper.exe
 rem
 call :%COMMAND%
-if errorlevel 1 pause
 goto :eof
 
 :console
