@@ -235,19 +235,19 @@ then
 fi
 
 WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-64"
-$WRAPPER_TEST_CMD -v > /dev/null 2>&1
+"$WRAPPER_TEST_CMD" -v > /dev/null 2>&1
 if [ "$?" = "0" ]
 then
     WRAPPER_CMD="$WRAPPER_TEST_CMD"
 else
     WRAPPER_TEST_CMD="$WRAPPER_CMD-$DIST_OS-$DIST_ARCH-32"
-    $WRAPPER_TEST_CMD -v > /dev/null 2>&1
+    "$WRAPPER_TEST_CMD" -v > /dev/null 2>&1
     if [ "$?" = "0" ]
     then
         WRAPPER_CMD="$WRAPPER_TEST_CMD"
     else
         WRAPPER_TEST_CMD="$WRAPPER_CMD"
-        $WRAPPER_TEST_CMD -v > /dev/null 2>&1
+        "$WRAPPER_TEST_CMD" -v > /dev/null 2>&1
         if [ "$?" != "0" ]
         then
             echo "Unable to locate any of the following operational binaries:"
