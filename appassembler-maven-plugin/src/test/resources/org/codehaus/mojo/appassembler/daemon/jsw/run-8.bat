@@ -1,9 +1,36 @@
 @echo off
 setlocal
 
+rem
 rem Copyright (c) 1999, 2006 Tanuki Software Inc.
 rem
-rem Java Service Wrapper command based script
+rem Permission is hereby granted, free of charge, to any person
+rem obtaining a copy of the Java Service Wrapper and associated
+rem documentation files (the "Software"), to deal in the Software
+rem without  restriction, including without limitation the rights
+rem to use, copy, modify, merge, publish, distribute, sub-license,
+rem and/or sell copies of the Software, and to permit persons to
+rem whom the Software is furnished to do so, subject to the
+rem following conditions:
+rem
+rem The above copyright notice and this permission notice shall be
+rem included in all copies or substantial portions of the Software.
+rem
+rem THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+rem EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+rem OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+rem NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
+rem HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+rem WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+rem FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+rem OTHER DEALINGS IN THE SOFTWARE.
+
+rem
+rem Java Service Wrapper sh script.  Suitable for starting and stopping
+rem  wrapped Java applications on UNIX platforms.
+rem
+rem This file is originally from Java Service Wrapper 3.2.3 distribution
+rem with alteration to fit the needs of AppAssembler Maven Plugin
 rem
 
 if "%OS%"=="Windows_NT" goto nt
@@ -34,10 +61,10 @@ goto :eof
 
 :validate
 rem Find the requested command.
-for /F %%v in ('echo %1^|findstr "^console$ ^start$ ^pause$ ^resume$ ^stop$ ^restart$ ^install$ ^remove"') do call :exec set COMMAND=%%v
+for /F %%v in ('echo %1^|findstr "^console$ ^start$ ^pause$ ^resume$ ^stop$ ^restart$ ^install$ ^remove ^status"') do call :exec set COMMAND=%%v
 
 if "%COMMAND%" == "" (
-    echo Usage: %0 { console : start : pause : resume : stop : restart : install : remove }
+    echo Usage: %0 { console : start : pause : resume : stop : restart : install : remove : status }
     pause
     goto :eof
 ) else (
@@ -84,6 +111,10 @@ goto :eof
 
 :remove
 "%_WRAPPER_EXE%" -r %_WRAPPER_CONF%
+goto :eof
+
+:status
+"%_WRAPPER_EXE%" -q %_WRAPPER_CONF%
 goto :eof
 
 :restart

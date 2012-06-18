@@ -217,12 +217,6 @@
         <targetPath>org/codehaus/mojo/appassembler/daemon/jsw/bin</targetPath>
         <includes>
           <include>sh.script.in</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>target/dependency/wrapper-delta-pack-3.2.3/src/bin</directory>
-        <targetPath>org/codehaus/mojo/appassembler/daemon/jsw/bin</targetPath>
-        <includes>
           <include>AppCommand.bat.in</include>
         </includes>
       </resource>
