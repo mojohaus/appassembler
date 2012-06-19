@@ -34,7 +34,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
-        <version>1.2.1</version>
         <configuration>
           <defaultJvmSettings>
             <initialMemorySize>16m</initialMemorySize>
@@ -83,10 +82,10 @@
       <artifactId>appassembler-booter</artifactId>
       <version>1.2.1</version>
     </dependency>
-<dependency>
-    <groupId>com.soebes.subversion.sapm</groupId>
-    <artifactId>sapm</artifactId>
-    <version>0.4</version>
-</dependency>
+    <dependency>
+      <groupId>com.soebes.subversion.sapm</groupId>
+      <artifactId>sapm</artifactId>
+      <version>0.4</version>
+    </dependency>
   </dependencies>
 </project>
