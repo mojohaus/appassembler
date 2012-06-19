@@ -24,11 +24,19 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.codehaus.mojo.appassembler.example</groupId>
+  
+  <parent>
+    <groupId>org.codehaus.mojo.appassembler.example</groupId>
+    <artifactId>appassembler-examples</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  
   <artifactId>appassembler-example-jsw</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  
   <name>Application Assembler Java Service Wrapper Example</name>
+  
   <dependencies>
     <dependency>
       <groupId>org.codehaus.mojo.appassembler.example</groupId>
@@ -68,6 +76,64 @@
               <platforms>
                 <platform>jsw</platform>
               </platforms>
+              <generatorConfigurations>
+                <generatorConfiguration>
+                  <generator>jsw</generator>
+                      <configuration>
+                        <property>
+                          <name>app.base.envvar</name>
+                          <value>BASEDIR</value>
+                        </property>
+                        <property>
+                          <name>set.default.REPO_DIR</name>
+                          <value>./lib</value>
+                        </property>
+                        <property>
+                          <name>wrapper.logfile</name>
+                          <value>%BASEDIR%/logs/wrapper.log</value>
+                        </property>
+                        <property>
+                        </property>
+                        <property>
+                          <name>wrapper.java.maxmemory</name>
+                          <value>128</value>
+                        </property>
+                        <property>
+                          <name>wrapper.console.title</name>
+                          <value>${appName}</value>
+                        </property>
+                        <property>
+                          <name>wrapper.ntservice.name</name>
+                          <value>${appName}</value>
+                        </property>
+                        <property>
+                          <name>wrapper.ntservice.displayname</name>
+                          <value>${appName}</value>
+                        </property>
+                        <property>
+                          <name>wrapper.console.loglevel</name>
+                          <value>INFO</value>
+                        </property>
+                      </configuration>
+                      <includes>
+                        <include>linux-x86-32</include>
+                        <include>linux-x86-64</include>
+                        <include>windows-x86-32</include>
+                        <include>windows-x86-64</include>
+                        <include>macosx-universal-64</include>
+                      </includes>
+                    </generatorConfiguration>
+                  </generatorConfigurations>
+                  <jvmSettings>
+                    <initialMemorySize>128M</initialMemorySize>
+                    <maxMemorySize>128M</maxMemorySize>
+                    <extraArguments>
+                      <extraArgument>-Xrs</extraArgument>
+                    </extraArguments>
+                    <systemProperties>
+                      <systemProperty>basedir=%BASEDIR%</systemProperty>
+                    </systemProperties>
+                  </jvmSettings>
             </daemon>
           </daemons>
         </configuration>
