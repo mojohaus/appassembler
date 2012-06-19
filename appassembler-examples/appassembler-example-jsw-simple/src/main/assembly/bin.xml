@@ -12,10 +12,14 @@
     <fileSet>
       <directory>${appassembler.directory}/jsw/${appName}</directory>
       <outputDirectory/>
+      <fileMode>0755</fileMode>
+      <directoryMode>0755</directoryMode>
     </fileSet>
     <fileSet>
       <directory>${project.basedir}/src/main/runtime</directory>
       <outputDirectory/>
+      <fileMode>0755</fileMode>
+      <directoryMode>0755</directoryMode>
     </fileSet>
   </fileSets>
 
