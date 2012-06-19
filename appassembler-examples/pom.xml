@@ -42,8 +42,9 @@
   <modules>
     <module>appassembler-example-helloworld</module>
     <module>appassembler-example-booter</module>
-    <module>appassembler-example-jsw</module>
     <module>appassembler-example-webapp</module>
+    <module>appassembler-example-jsw</module>
+    <module>appassembler-example-jsw-simple</module>
   </modules>
   
   <build>
