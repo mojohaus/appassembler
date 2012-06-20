@@ -47,21 +47,19 @@ set _REALPATH=%~dp0
 rem Decide on the wrapper binary.
 set _WRAPPER_BASE=wrapper
 
-set _WRAPPER_EXE=%_REALPATH%%_WRAPPER_BASE%-windows-x86-64.exe
-"%_WRAPPER_EXE%" --version > NUL 2>&1
-if %ERRORLEVEL% equ 0 goto validate
-
+rem 32 bit binary works on both 32 and 64 windows
 set _WRAPPER_EXE=%_REALPATH%%_WRAPPER_BASE%-windows-x86-32.exe
-"%_WRAPPER_EXE%" --version > NUL 2>&1
-if %ERRORLEVEL% equ 0 goto validate
+if exist "%_WRAPPER_EXE%" goto validate
+
+set _WRAPPER_EXE=%_REALPATH%%_WRAPPER_BASE%-windows-x86-64.exe
+if exist "%_WRAPPER_EXE%" goto validate
 
 set _WRAPPER_EXE=%_REALPATH%%_WRAPPER_BASE%.exe
-"%_WRAPPER_EXE%" --version > NUL 2>&1
-if %ERRORLEVEL% equ 0 goto validate
+if exist "%_WRAPPER_EXE%" goto validate
 
 echo Unable to locate a Wrapper executable using any of the following names:
-echo %_REALPATH%%_WRAPPER_BASE%-windows-x86-64.exe
 echo %_REALPATH%%_WRAPPER_BASE%-windows-x86-32.exe
+echo %_REALPATH%%_WRAPPER_BASE%-windows-x86-64.exe
 echo %_REALPATH%%_WRAPPER_BASE%.exe
 exit /b 1
 
