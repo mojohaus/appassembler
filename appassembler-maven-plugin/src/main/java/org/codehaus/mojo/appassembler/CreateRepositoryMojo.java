@@ -1,25 +1,22 @@
 /**
  * The MIT License
- *
+ * 
  * Copyright 2006-2012 The Codehaus.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- *  of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package org.codehaus.mojo.appassembler;
 
@@ -61,7 +58,7 @@ import org.codehaus.plexus.util.FileUtils;
  * @threadsafe
  */
 public class CreateRepositoryMojo
-        extends AbstractMojo
+    extends AbstractMojo
 {
     // -----------------------------------------------------------------------
     // Parameters
@@ -129,6 +126,14 @@ public class CreateRepositoryMojo
      */
     private boolean installBooterArtifacts;
 
+    /**
+     * For those snapshots download from remote repo, replace the timestamp part with "SNAPSHOT" instead
+     * 
+     * @parameter default-value="true"
+     * @since 1.2.3
+     */
+    private boolean useTimestampInSnaphostFileName;
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -155,46 +160,45 @@ public class CreateRepositoryMojo
     /* (non-Javadoc)
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
-    public void execute ()
-            throws MojoExecutionException, MojoFailureException
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
     {
         // ----------------------------------------------------------------------
         // Create new repository for dependencies
         // ----------------------------------------------------------------------
 
-        ArtifactRepositoryLayout artifactRepositoryLayout =
-                ( ArtifactRepositoryLayout ) availableRepositoryLayouts.get ( repositoryLayout );
+        ArtifactRepositoryLayout artifactRepositoryLayout = (ArtifactRepositoryLayout) availableRepositoryLayouts
+            .get( repositoryLayout );
         if ( artifactRepositoryLayout == null )
         {
-            throw new MojoFailureException ( "Unknown repository layout '" + repositoryLayout + "'." );
+            throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
         }
 
         // -----------------------------------------------------------------------
         // Initialize
         // -----------------------------------------------------------------------
 
-        String path = "file://" + assembleDirectory.getAbsolutePath ( ) + "/" + repoPath;
+        String path = "file://" + assembleDirectory.getAbsolutePath() + "/" + repoPath;
 
-        ArtifactRepository artifactRepository =
-                artifactRepositoryFactory.createDeploymentArtifactRepository ( "appassembler", path,
-                        artifactRepositoryLayout, true );
+        ArtifactRepository artifactRepository = artifactRepositoryFactory
+            .createDeploymentArtifactRepository( "appassembler", path, artifactRepositoryLayout, true );
 
         // -----------------------------------------------------------------------
         // Install the project's artifact in the new repository
         // -----------------------------------------------------------------------
 
-        installArtifact ( projectArtifact, artifactRepository );
+        installArtifact( projectArtifact, artifactRepository );
 
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
         // ----------------------------------------------------------------------
 
         // TODO: merge with the artifacts below so no duplicate versions included
-        for ( Iterator it = artifacts.iterator ( ); it.hasNext ( ); )
+        for ( Iterator it = artifacts.iterator(); it.hasNext(); )
         {
-            Artifact artifact = ( Artifact ) it.next ( );
+            Artifact artifact = (Artifact) it.next();
 
-            installArtifact ( artifact, artifactRepository );
+            installArtifact( artifact, artifactRepository );
         }
 
         if ( installBooterArtifacts )
@@ -202,59 +206,59 @@ public class CreateRepositoryMojo
             // ----------------------------------------------------------------------
             // Install appassembler booter in the new repos
             // ----------------------------------------------------------------------
-            installBooterArtifacts ( artifactRepository );
+            installBooterArtifacts( artifactRepository );
         }
     }
 
-    private void installBooterArtifacts ( ArtifactRepository artifactRepository )
-            throws MojoExecutionException
+    private void installBooterArtifacts( ArtifactRepository artifactRepository )
+        throws MojoExecutionException
     {
-        Artifact artifact =
-                artifactFactory.createDependencyArtifact ( "org.codehaus.mojo.appassembler", "appassembler-booter",
-                        VersionRange.createFromVersion ( pluginVersion ), "jar", null,
-                        Artifact.SCOPE_RUNTIME );
+        Artifact artifact = artifactFactory.createDependencyArtifact( "org.codehaus.mojo.appassembler",
+                                                                      "appassembler-booter",
+                                                                      VersionRange.createFromVersion( pluginVersion ),
+                                                                      "jar", null, Artifact.SCOPE_RUNTIME );
         try
         {
-            Artifact p =
-                    artifactFactory.createBuildArtifact ( "org.codehaus.mojo.appassembler", "appassembler-maven-plugin",
-                            pluginVersion, "jar" );
+            Artifact p = artifactFactory.createBuildArtifact( "org.codehaus.mojo.appassembler",
+                                                              "appassembler-maven-plugin", pluginVersion, "jar" );
 
-            ArtifactFilter filter = new ExcludesArtifactFilter ( Collections.singletonList ( "junit:junit" ) );
-            ArtifactResolutionResult result =
-                    artifactResolver.resolveTransitively ( Collections.singleton ( artifact ), p, localRepository,
-                            Collections.EMPTY_LIST, metadataSource, filter );
-            for ( Iterator i = result.getArtifacts ( ).iterator ( ); i.hasNext ( ); )
+            ArtifactFilter filter = new ExcludesArtifactFilter( Collections.singletonList( "junit:junit" ) );
+            ArtifactResolutionResult result = artifactResolver.resolveTransitively( Collections.singleton( artifact ),
+                                                                                    p, localRepository,
+                                                                                    Collections.EMPTY_LIST,
+                                                                                    metadataSource, filter );
+            for ( Iterator i = result.getArtifacts().iterator(); i.hasNext(); )
             {
-                Artifact a = ( Artifact ) i.next ( );
-                installArtifact ( a, artifactRepository );
+                Artifact a = (Artifact) i.next();
+                installArtifact( a, artifactRepository );
             }
         }
         catch ( ArtifactResolutionException e )
         {
-            throw new MojoExecutionException ( "Failed to copy artifact.", e );
+            throw new MojoExecutionException( "Failed to copy artifact.", e );
         }
         catch ( ArtifactNotFoundException e )
         {
-            throw new MojoExecutionException ( "Failed to copy artifact.", e );
+            throw new MojoExecutionException( "Failed to copy artifact.", e );
         }
     }
 
-    private void installArtifact ( Artifact artifact, ArtifactRepository artifactRepository )
-            throws MojoExecutionException
+    private void installArtifact( Artifact artifact, ArtifactRepository artifactRepository )
+        throws MojoExecutionException
     {
-        if ( artifact.getFile ( ) != null )
+        if ( artifact.getFile() != null )
         {
             try
             {
                 // Necessary for the artifact's baseVersion to be set correctly
                 // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
-                artifact.isSnapshot ( );
+                artifact.isSnapshot();
 
-                install ( artifact.getFile ( ), artifact, artifactRepository );
+                install( artifact.getFile(), artifact, artifactRepository );
             }
             catch ( ArtifactInstallationException e )
             {
-                throw new MojoExecutionException ( "Failed to copy artifact.", e );
+                throw new MojoExecutionException( "Failed to copy artifact.", e );
             }
         }
     }
@@ -263,32 +267,41 @@ public class CreateRepositoryMojo
      * Set the available repository layouts.
      * @param availableRepositoryLayouts
      */
-    public void setAvailableRepositoryLayouts ( Map availableRepositoryLayouts )
+    public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )
     {
         this.availableRepositoryLayouts = availableRepositoryLayouts;
     }
 
-    private void install ( File source, Artifact artifact, ArtifactRepository destinationRepository )
-            throws ArtifactInstallationException
+    private void install( File source, Artifact artifact, ArtifactRepository destinationRepository )
+        throws ArtifactInstallationException
     {
         try
         {
-            String localPath = destinationRepository.pathOf ( artifact );
+            String localPath = destinationRepository.pathOf( artifact );
 
-            File destination = new File ( destinationRepository.getBasedir ( ), localPath );
-            if ( !destination.getParentFile ( ).exists ( ) )
+            File destination = new File( destinationRepository.getBasedir(), localPath );
+            if ( !destination.getParentFile().exists() )
             {
-                destination.getParentFile ( ).mkdirs ( );
+                destination.getParentFile().mkdirs();
             }
 
-            getLog ( ).info ( "Installing artifact " + source.getPath ( ) + " to " + destination );
+            if ( artifact.isSnapshot() )
+            {
+                if ( !useTimestampInSnaphostFileName )
+                {
+                    //dont want timestamp in the snapshot file during copy
+                    destination = new File( destination.getParentFile(), source.getName() );
+                }
+            }
 
-            FileUtils.copyFile ( source, destination );
+            getLog().info( "Installing artifact " + source.getPath() + " to " + destination );
+
+            FileUtils.copyFile( source, destination );
 
         }
         catch ( IOException e )
         {
-            throw new ArtifactInstallationException ( "Error installing artifact: " + e.getMessage ( ), e );
+            throw new ArtifactInstallationException( "Error installing artifact: " + e.getMessage(), e );
         }
     }
 }
