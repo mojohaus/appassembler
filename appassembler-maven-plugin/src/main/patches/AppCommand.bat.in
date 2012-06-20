@@ -38,6 +38,10 @@ echo This script only works with NT-based versions of Windows.
 exit /b 1
 
 :nt
+
+set BASEDIR=%~dp0\..
+@env.setup.windows@
+
 rem
 rem Find the application home.
 rem
@@ -88,35 +92,35 @@ call :%COMMAND%
 goto :eof
 
 :console
-"%_WRAPPER_EXE%" -c %_WRAPPER_CONF%
+"%_WRAPPER_EXE%" -c %_WRAPPER_CONF% %WRAPPER_CONF_OVERRIDES%
 goto :eof
 
 :start
-"%_WRAPPER_EXE%" -t %_WRAPPER_CONF%
+"%_WRAPPER_EXE%" -t %_WRAPPER_CONF% %WRAPPER_CONF_OVERRIDES%
 goto :eof
 
 :pause
-"%_WRAPPER_EXE%" -a %_WRAPPER_CONF%
+"%_WRAPPER_EXE%" -a %_WRAPPER_CONF% %WRAPPER_CONF_OVERRIDES%
 goto :eof
 
 :resume
-"%_WRAPPER_EXE%" -e %_WRAPPER_CONF%
+"%_WRAPPER_EXE%" -e %_WRAPPER_CONF% %WRAPPER_CONF_OVERRIDES%
 goto :eof
 
 :stop
-"%_WRAPPER_EXE%" -p %_WRAPPER_CONF%
+"%_WRAPPER_EXE%" -p %_WRAPPER_CONF% %WRAPPER_CONF_OVERRIDES%
 goto :eof
 
 :install
-"%_WRAPPER_EXE%" -i %_WRAPPER_CONF%
+"%_WRAPPER_EXE%" -i %_WRAPPER_CONF% %WRAPPER_CONF_OVERRIDES%
 goto :eof
 
 :remove
-"%_WRAPPER_EXE%" -r %_WRAPPER_CONF%
+"%_WRAPPER_EXE%" -r %_WRAPPER_CONF% %WRAPPER_CONF_OVERRIDES%
 goto :eof
 
 :status
-"%_WRAPPER_EXE%" -q %_WRAPPER_CONF%
+"%_WRAPPER_EXE%" -q %_WRAPPER_CONF% %WRAPPER_CONF_OVERRIDES%
 goto :eof
 
 :restart
