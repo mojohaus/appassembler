@@ -26,8 +26,8 @@ rem FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 rem OTHER DEALINGS IN THE SOFTWARE.
 
 rem
-rem Java Service Wrapper sh script.  Suitable for starting and stopping
-rem  wrapped Java applications on UNIX platforms.
+rem Java Service Wrapper script.  Suitable for starting and stopping
+rem  wrapped Java applications on Windows platforms.
 rem
 rem This file is originally from Java Service Wrapper 3.2.3 distribution
 rem with alteration to fit the needs of AppAssembler Maven Plugin
