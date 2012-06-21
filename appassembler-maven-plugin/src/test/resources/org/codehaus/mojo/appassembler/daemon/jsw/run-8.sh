@@ -404,7 +404,7 @@ console() {
     then
         # The string passed to eval must handles spaces in paths correctly.
         COMMAND_LINE="$CMDNICE \"$WRAPPER_CMD\" \"$WRAPPER_CONF\" wrapper.syslog.ident=$APP_NAME wrapper.pidfile=\"$PIDFILE\" $ANCHORPROP $LOCKPROP"
-        eval $COMMAND_LINE $WRAPPER_CONF_OVERRIDES
+        eval $COMMAND_LINE "$WRAPPER_CONF_OVERRIDES"
     else
         echo "$APP_LONG_NAME is already running."
         exit 1
@@ -418,7 +418,7 @@ start() {
     then
         # The string passed to eval must handles spaces in paths correctly.
         COMMAND_LINE="$CMDNICE \"$WRAPPER_CMD\" \"$WRAPPER_CONF\" wrapper.syslog.ident=$APP_NAME wrapper.pidfile=\"$PIDFILE\" wrapper.daemonize=TRUE $ANCHORPROP $IGNOREPROP $LOCKPROP"
-        eval $COMMAND_LINE $WRAPPER_CONF_OVERRIDES
+        eval $COMMAND_LINE "$WRAPPER_CONF_OVERRIDES"
     else
         echo "$APP_LONG_NAME is already running."
         exit 1
