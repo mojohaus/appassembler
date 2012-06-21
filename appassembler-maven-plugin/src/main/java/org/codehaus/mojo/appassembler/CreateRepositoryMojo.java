@@ -132,7 +132,7 @@ public class CreateRepositoryMojo
      * @parameter default-value="true"
      * @since 1.2.3
      */
-    private boolean useTimestampInSnaphostFileName;
+    private boolean useTimestampInSnapshotFileName;
 
     // -----------------------------------------------------------------------
     // Components
@@ -287,7 +287,7 @@ public class CreateRepositoryMojo
 
             if ( artifact.isSnapshot() )
             {
-                if ( !useTimestampInSnaphostFileName )
+                if ( !useTimestampInSnapshotFileName )
                 {
                     //dont want timestamp in the snapshot file during copy
                     destination = new File( destination.getParentFile(), source.getName() );
