@@ -322,6 +322,8 @@
                 <!--  Currently not correctly working. -->
                 <pomExclude>daemonWrapperManagerTest/pom.xml</pomExclude>
                 <pomExclude>daemonRepositoryLayoutTest/pom.xml</pomExclude>
+                <!-- this test, use snapshot artifact and therefore requires manual inspection -->
+                <pomExclude>useTimestampInSnapshotFileNameTest/pom.xml</pomExclude>
               </pomExcludes>
               <preBuildHookScript>setup</preBuildHookScript>
               <postBuildHookScript>verify</postBuildHookScript>
