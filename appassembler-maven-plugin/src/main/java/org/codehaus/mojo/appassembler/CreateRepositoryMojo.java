@@ -254,7 +254,7 @@ public class CreateRepositoryMojo
                 // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
                 artifact.isSnapshot();
 
-                install( artifact.getFile(), artifact, artifactRepository );
+                install( artifactRepository, artifact );
             }
             catch ( ArtifactInstallationException e )
             {
@@ -272,9 +272,11 @@ public class CreateRepositoryMojo
         this.availableRepositoryLayouts = availableRepositoryLayouts;
     }
 
-    private void install( File source, Artifact artifact, ArtifactRepository destinationRepository )
+    private void install( ArtifactRepository destinationRepository, Artifact artifact )
         throws ArtifactInstallationException
     {
+        File source = artifact.getFile();
+
         try
         {
             String localPath = destinationRepository.pathOf( artifact );
