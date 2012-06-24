@@ -1,25 +1,22 @@
 /**
  * The MIT License
- *
+ * 
  * Copyright 2006-2012 The Codehaus.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package org.codehaus.mojo.appassembler.daemon;
 
@@ -71,15 +68,13 @@ public abstract class AbstractDaemonGeneratorTest
 
         MavenSettingsBuilder settingsBuilder = (MavenSettingsBuilder) lookup( MavenSettingsBuilder.ROLE );
         Settings settings = settingsBuilder.buildSettings();
-        
-        ArtifactRepositoryFactory artifactRepositoryFactory =
-            (ArtifactRepositoryFactory) lookup( ArtifactRepositoryFactory.ROLE );
+
+        ArtifactRepositoryFactory artifactRepositoryFactory = (ArtifactRepositoryFactory) lookup( ArtifactRepositoryFactory.ROLE );
 
         String localRepoUrl = new File( settings.getLocalRepository() ).toURL().toExternalForm();
 
-        ArtifactRepository localRepository =
-            artifactRepositoryFactory.createDeploymentArtifactRepository( "local", localRepoUrl,
-                                                                          new DefaultRepositoryLayout(), false );
+        ArtifactRepository localRepository = artifactRepositoryFactory
+            .createDeploymentArtifactRepository( "local", localRepoUrl, new DefaultRepositoryLayout(), false );
 
         ProfileManager profileManager = new DefaultProfileManager( getContainer() );
 
@@ -115,8 +110,8 @@ public abstract class AbstractDaemonGeneratorTest
         File tempPom = File.createTempFile( "appassembler", "tmp" );
         tempPom.deleteOnExit();
 
-        InterpolationFilterReader reader =
-            new InterpolationFilterReader( new FileReader( getTestFile( file ) ), context, "@", "@" );
+        InterpolationFilterReader reader = new InterpolationFilterReader( new FileReader( getTestFile( file ) ),
+                                                                          context, "@", "@" );
         FileWriter out = null;
 
         try

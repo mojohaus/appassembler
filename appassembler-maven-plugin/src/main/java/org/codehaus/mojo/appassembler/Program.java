@@ -3,23 +3,20 @@
  * 
  * Copyright 2006-2012 The Codehaus.
  * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package org.codehaus.mojo.appassembler;
 
@@ -80,7 +77,7 @@ public class Program
     /**
      * The default constructor.
      */
-    public Program ( )
+    public Program()
     {
     }
 
@@ -92,7 +89,7 @@ public class Program
      * @param mainClass
      *            The main class of the program.
      */
-    public Program ( String name, String mainClass )
+    public Program( String name, String mainClass )
     {
         this.name = name;
         this.mainClass = mainClass;
@@ -103,7 +100,7 @@ public class Program
      * 
      * @return The name of the program.
      */
-    public String getName ()
+    public String getName()
     {
         return name;
     }
@@ -114,7 +111,7 @@ public class Program
      * @param name
      *            The name of the program.
      */
-    public void setName ( String name )
+    public void setName( String name )
     {
         this.name = name;
     }
@@ -124,7 +121,7 @@ public class Program
      * 
      * @return The name of the main class.
      */
-    public String getMainClass ()
+    public String getMainClass()
     {
         return mainClass;
     }
@@ -135,7 +132,7 @@ public class Program
      * @param mainClass
      *            The name of the main class.
      */
-    public void setMainClass ( String mainClass )
+    public void setMainClass( String mainClass )
     {
         this.mainClass = mainClass;
     }
@@ -145,7 +142,7 @@ public class Program
      * 
      * @return The set of platforms.
      */
-    public Set getPlatforms ()
+    public Set getPlatforms()
     {
         return platforms;
     }
@@ -156,7 +153,7 @@ public class Program
      * @param platforms
      *            The set with the platforms.
      */
-    public void setPlatforms ( Set platforms )
+    public void setPlatforms( Set platforms )
     {
         this.platforms = platforms;
     }
@@ -166,7 +163,7 @@ public class Program
      * 
      * @return The list of command line arguments.
      */
-    public List getCommandLineArguments ()
+    public List getCommandLineArguments()
     {
         return this.commandLineArguments;
     }
@@ -177,7 +174,7 @@ public class Program
      * @param arguments
      *            The list of command line arguments.
      */
-    public void setCommandLineArguments ( List arguments )
+    public void setCommandLineArguments( List arguments )
     {
         this.commandLineArguments = arguments;
     }
@@ -188,9 +185,9 @@ public class Program
      * @param argument
      *            The argument which will be aded to list of arguments.
      */
-    public void addCommandLineArgument ( String argument )
+    public void addCommandLineArgument( String argument )
     {
-        this.commandLineArguments.add ( argument );
+        this.commandLineArguments.add( argument );
     }
 
     /**
@@ -199,7 +196,7 @@ public class Program
      * @return An instance of the JVM settings.
      * @see JvmSettings
      */
-    public org.codehaus.mojo.appassembler.model.JvmSettings getJvmSettings ()
+    public org.codehaus.mojo.appassembler.model.JvmSettings getJvmSettings()
     {
         return jvmSettings;
     }
@@ -210,7 +207,7 @@ public class Program
      * @param jvmSettings
      *            The instance of the JVM settings which will be used.
      */
-    public void setJvmSettings ( org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings )
+    public void setJvmSettings( org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings )
     {
         this.jvmSettings = jvmSettings;
     }
@@ -220,7 +217,7 @@ public class Program
      * 
      * @return The file instance of the header file.
      */
-    public File getLicenseHeaderFile ()
+    public File getLicenseHeaderFile()
     {
         return licenseHeaderFile;
     }
@@ -231,7 +228,7 @@ public class Program
      * @param licenseHeaderFile
      *            The File instance.
      */
-    public void setLicenseHeaderFile ( File licenseHeaderFile )
+    public void setLicenseHeaderFile( File licenseHeaderFile )
     {
         this.licenseHeaderFile = licenseHeaderFile;
     }
@@ -241,7 +238,7 @@ public class Program
      * 
      * @return The bin folder.
      */
-    public File getBinFolder ()
+    public File getBinFolder()
     {
         return binFolder;
     }
@@ -252,7 +249,7 @@ public class Program
      * @param binFolder
      *            The new bin folder name.
      */
-    public void setBinFolder ( File binFolder )
+    public void setBinFolder( File binFolder )
     {
         this.binFolder = binFolder;
     }

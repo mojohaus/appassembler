@@ -3,23 +3,20 @@
  * 
  * Copyright 2006-2012 The Codehaus.
  * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package org.codehaus.mojo.appassembler.daemon;
 
@@ -54,12 +51,12 @@ public class DaemonGenerationRequest
 
     private ArtifactRepository localRepository;
 
-    private ArtifactRepositoryLayout repositoryLayout = new DefaultRepositoryLayout ( );
+    private ArtifactRepositoryLayout repositoryLayout = new DefaultRepositoryLayout();
 
     /**
      * The constructor for the request.
      */
-    public DaemonGenerationRequest ( )
+    public DaemonGenerationRequest()
     {
     }
 
@@ -77,8 +74,8 @@ public class DaemonGenerationRequest
      * @param binFolder
      *            The binary folder.
      */
-    public DaemonGenerationRequest ( Daemon daemon, MavenProject project, ArtifactRepository localRepository,
-            File outputDir, String binFolder )
+    public DaemonGenerationRequest( Daemon daemon, MavenProject project, ArtifactRepository localRepository,
+                                    File outputDir, String binFolder )
     {
         this.daemon = daemon;
 
@@ -96,7 +93,7 @@ public class DaemonGenerationRequest
      * 
      * @return the Platform.
      */
-    public String getPlatform ()
+    public String getPlatform()
     {
         return platform;
     }
@@ -105,7 +102,7 @@ public class DaemonGenerationRequest
      * @param platform
      *            Set the platform.
      */
-    public void setPlatform ( String platform )
+    public void setPlatform( String platform )
     {
         this.platform = platform;
     }
@@ -116,7 +113,7 @@ public class DaemonGenerationRequest
      * 
      * @return The Stub Descriptor file.
      */
-    public File getStubDescriptor ()
+    public File getStubDescriptor()
     {
         return stubDescriptor;
     }
@@ -127,7 +124,7 @@ public class DaemonGenerationRequest
      * 
      * @param stubDescriptor The File instance for the descriptor.
      */
-    public void setStubDescriptor ( File stubDescriptor )
+    public void setStubDescriptor( File stubDescriptor )
     {
         this.stubDescriptor = stubDescriptor;
     }
@@ -138,7 +135,7 @@ public class DaemonGenerationRequest
      * 
      * @return The set stub Daemon
      */
-    public Daemon getStubDaemon ()
+    public Daemon getStubDaemon()
     {
         return stubDaemon;
     }
@@ -150,7 +147,7 @@ public class DaemonGenerationRequest
      * @param stubDaemon
      *            This will be set.
      */
-    public void setStubDaemon ( Daemon stubDaemon )
+    public void setStubDaemon( Daemon stubDaemon )
     {
         this.stubDaemon = stubDaemon;
     }
@@ -160,7 +157,7 @@ public class DaemonGenerationRequest
      * 
      * @return The Daemon instance.
      */
-    public Daemon getDaemon ()
+    public Daemon getDaemon()
     {
         return daemon;
     }
@@ -170,7 +167,7 @@ public class DaemonGenerationRequest
      * 
      * @param daemon Instance of a Daemon.
      */
-    public void setDaemon ( Daemon daemon )
+    public void setDaemon( Daemon daemon )
     {
         this.daemon = daemon;
     }
@@ -180,7 +177,7 @@ public class DaemonGenerationRequest
      * 
      * @return File instance of the current outputDirectory.
      */
-    public File getOutputDirectory ()
+    public File getOutputDirectory()
     {
         return outputDirectory;
     }
@@ -190,7 +187,7 @@ public class DaemonGenerationRequest
      * 
      * @param outputDirectory The output directory as a File.
      */
-    public void setOutputDirectory ( File outputDirectory )
+    public void setOutputDirectory( File outputDirectory )
     {
         this.outputDirectory = outputDirectory;
     }
@@ -200,7 +197,7 @@ public class DaemonGenerationRequest
      * 
      * @return MavenProject instance.
      */
-    public MavenProject getMavenProject ()
+    public MavenProject getMavenProject()
     {
         return mavenProject;
     }
@@ -211,7 +208,7 @@ public class DaemonGenerationRequest
      * @param mavenProject
      *            instance to be set.
      */
-    public void setMavenProject ( MavenProject mavenProject )
+    public void setMavenProject( MavenProject mavenProject )
     {
         this.mavenProject = mavenProject;
     }
@@ -221,7 +218,7 @@ public class DaemonGenerationRequest
      * 
      * @return Instance of the ArtifactRepository.
      */
-    public ArtifactRepository getLocalRepository ()
+    public ArtifactRepository getLocalRepository()
     {
         return localRepository;
     }
@@ -230,7 +227,7 @@ public class DaemonGenerationRequest
      * @param localRepository
      *            Set the local repositoy.
      */
-    public void setLocalRepository ( ArtifactRepository localRepository )
+    public void setLocalRepository( ArtifactRepository localRepository )
     {
         this.localRepository = localRepository;
     }
@@ -238,7 +235,7 @@ public class DaemonGenerationRequest
     /**
      * @return The current repository layout.
      */
-    public ArtifactRepositoryLayout getRepositoryLayout ()
+    public ArtifactRepositoryLayout getRepositoryLayout()
     {
         return repositoryLayout;
     }
@@ -249,7 +246,7 @@ public class DaemonGenerationRequest
      * @param repositoryLayout
      *            The repositoryLayout which will be set.
      */
-    public void setRepositoryLayout ( ArtifactRepositoryLayout repositoryLayout )
+    public void setRepositoryLayout( ArtifactRepositoryLayout repositoryLayout )
     {
         this.repositoryLayout = repositoryLayout;
     }
@@ -259,7 +256,7 @@ public class DaemonGenerationRequest
      * 
      * @return the setting of the binary folder.
      */
-    public String getBinFolder ()
+    public String getBinFolder()
     {
         return binFolder;
     }
@@ -269,7 +266,7 @@ public class DaemonGenerationRequest
      * 
      * @param binFolder The folder.
      */
-    public void setBinFolder ( String binFolder )
+    public void setBinFolder( String binFolder )
     {
         this.binFolder = binFolder;
     }

@@ -1,36 +1,33 @@
 /**
  * The MIT License
- *
+ * 
  * Copyright 2006-2012 The Codehaus.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package org.codehaus.mojo.appassembler.daemon.merge;
 
+import java.util.List;
+
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
+import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
-import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.util.List;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
@@ -38,15 +35,15 @@ import java.util.List;
  * @plexus.component
  */
 public class DefaultDaemonMerger
-        extends AbstractLogEnabled
-        implements DaemonMerger
+    extends AbstractLogEnabled
+    implements DaemonMerger
 {
     // -----------------------------------------------------------------------
     // DaemonMerger Implementation
     // -----------------------------------------------------------------------
 
-    public Daemon mergeDaemons ( Daemon dominant, Daemon recessive )
-            throws DaemonGeneratorException
+    public Daemon mergeDaemons( Daemon dominant, Daemon recessive )
+        throws DaemonGeneratorException
     {
         if ( dominant == null )
         {
@@ -58,16 +55,16 @@ public class DefaultDaemonMerger
             return dominant;
         }
 
-        Daemon result = new Daemon ( );
+        Daemon result = new Daemon();
 
-        result.setId ( select ( dominant.getId ( ), recessive.getId ( ) ) );
-        result.setMainClass ( select ( dominant.getMainClass ( ), recessive.getMainClass ( ) ) );
-        result.setClasspath ( ( Classpath ) select ( dominant.getClasspath ( ), recessive.getClasspath ( ) ) );
-        result.setCommandLineArguments (
-                select ( dominant.getCommandLineArguments ( ), recessive.getCommandLineArguments ( ) ) );
+        result.setId( select( dominant.getId(), recessive.getId() ) );
+        result.setMainClass( select( dominant.getMainClass(), recessive.getMainClass() ) );
+        result.setClasspath( (Classpath) select( dominant.getClasspath(), recessive.getClasspath() ) );
+        result
+            .setCommandLineArguments( select( dominant.getCommandLineArguments(), recessive.getCommandLineArguments() ) );
         // This should probably be improved
-        result.setJvmSettings ( ( JvmSettings ) select ( dominant.getJvmSettings ( ), recessive.getJvmSettings ( ) ) );
-        result.setShowConsoleWindow ( dominant.isShowConsoleWindow ( ) );
+        result.setJvmSettings( (JvmSettings) select( dominant.getJvmSettings(), recessive.getJvmSettings() ) );
+        result.setShowConsoleWindow( dominant.isShowConsoleWindow() );
 
         return result;
     }
@@ -76,9 +73,9 @@ public class DefaultDaemonMerger
     // Private
     // -----------------------------------------------------------------------
 
-    private String select ( String dominant, String recessive )
+    private String select( String dominant, String recessive )
     {
-        if ( StringUtils.isNotEmpty ( dominant ) )
+        if ( StringUtils.isNotEmpty( dominant ) )
         {
             return dominant;
         }
@@ -88,13 +85,13 @@ public class DefaultDaemonMerger
         }
     }
 
-    private List select ( List dominant, List recessive )
+    private List select( List dominant, List recessive )
     {
         // Even if the list is empty, return it. This makes it possible to clear the default list.
 
         // TODO: The above is not possible as long as the modello generated stuff returns an empty list on not set
         // fields.
-        if ( dominant != null && dominant.size ( ) > 0 )
+        if ( dominant != null && dominant.size() > 0 )
         {
             return dominant;
         }
@@ -104,7 +101,7 @@ public class DefaultDaemonMerger
         }
     }
 
-    private Object select ( Object dominant, Object recessive )
+    private Object select( Object dominant, Object recessive )
     {
         if ( dominant != null )
         {

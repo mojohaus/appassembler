@@ -3,23 +3,20 @@
  * 
  * Copyright 2006-2012 The Codehaus.
  * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package org.codehaus.mojo.appassembler;
 
@@ -55,7 +52,7 @@ public class Daemon
      * 
      * @return The name of the id.
      */
-    public String getId ()
+    public String getId()
     {
         return id;
     }
@@ -65,7 +62,7 @@ public class Daemon
      * 
      * @return The name of the main class.
      */
-    public String getMainClass ()
+    public String getMainClass()
     {
         return mainClass;
     }
@@ -75,7 +72,7 @@ public class Daemon
      * 
      * @return The descriptor string.
      */
-    public String getDescriptor ()
+    public String getDescriptor()
     {
         return descriptor;
     }
@@ -85,11 +82,11 @@ public class Daemon
      * 
      * @return The list of platforms or an empty list if non have been defined before.
      */
-    public List getPlatforms ()
+    public List getPlatforms()
     {
         if ( platforms == null )
         {
-            platforms = new ArrayList ( );
+            platforms = new ArrayList();
         }
 
         return platforms;
@@ -100,7 +97,7 @@ public class Daemon
      * 
      * @return The list of command line arguments.
      */
-    public List getCommandLineArguments ()
+    public List getCommandLineArguments()
     {
         return commandLineArguments;
     }
@@ -110,7 +107,7 @@ public class Daemon
      * 
      * @return The instance with the current JVM settings back.
      */
-    public JvmSettings getJvmSettings ()
+    public JvmSettings getJvmSettings()
     {
         return jvmSettings;
     }
@@ -120,7 +117,7 @@ public class Daemon
      * 
      * @return The list of generator configurations.
      */
-    public List getGeneratorConfigurations ()
+    public List getGeneratorConfigurations()
     {
         return generatorConfigurations;
     }
@@ -130,7 +127,7 @@ public class Daemon
      * 
      * @return true if ShowConsoleWindow is active false otherwise.
      */
-    public boolean isShowConsoleWindow ()
+    public boolean isShowConsoleWindow()
     {
         return showConsoleWindow;
     }
@@ -140,7 +137,7 @@ public class Daemon
      * 
      * @return The environment setup file name.
      */
-    public String getEnvironmentSetupFileName ()
+    public String getEnvironmentSetupFileName()
     {
         return environmentSetupFileName;
     }
@@ -151,7 +148,7 @@ public class Daemon
      * @param environmentSetupFileName
      *            The filename as string.
      */
-    public void setEnvironmentSetupFileName ( String environmentSetupFileName )
+    public void setEnvironmentSetupFileName( String environmentSetupFileName )
     {
         this.environmentSetupFileName = environmentSetupFileName;
     }

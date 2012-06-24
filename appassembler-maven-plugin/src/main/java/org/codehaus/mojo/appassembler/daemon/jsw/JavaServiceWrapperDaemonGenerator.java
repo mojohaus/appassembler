@@ -47,7 +47,6 @@ import org.codehaus.mojo.appassembler.util.FormattedProperties;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.Os;
 import org.codehaus.plexus.util.StringInputStream;
 import org.codehaus.plexus.util.StringOutputStream;
 import org.codehaus.plexus.util.StringUtils;
@@ -269,7 +268,8 @@ public class JavaServiceWrapperDaemonGenerator
             envSetup = "[ -f " + envScriptPath + " ] && . " + envScriptPath;
             context.put( "env.setup.unix", envSetup );
         }
-        else {
+        else
+        {
             context.put( "env.setup.windows", envSetup );
             context.put( "env.setup.unix", envSetup );
         }

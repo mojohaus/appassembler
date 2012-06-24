@@ -3,23 +3,20 @@
  * 
  * Copyright 2006-2012 The Codehaus.
  * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package org.codehaus.mojo.appassembler;
 
@@ -68,7 +65,8 @@ import org.codehaus.plexus.util.StringUtils;
  * @phase package
  * @threadsafe
  */
-public class AssembleMojo extends AbstractAppAssemblerMojo
+public class AssembleMojo
+    extends AbstractAppAssemblerMojo
 {
     // -----------------------------------------------------------------------
     // Parameters
@@ -344,51 +342,45 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
     // CONSTANTS
     // ----------------------------------------------------------------------
 
-    private static final Set VALID_PLATFORMS = Collections
-            .unmodifiableSet ( new HashSet ( Arrays.asList ( new String[] {
-                    "unix",
-                    "windows"
-            } ) ) );
+    private static final Set VALID_PLATFORMS = Collections.unmodifiableSet( new HashSet( Arrays.asList( new String[] {
+        "unix",
+        "windows" } ) ) );
 
     // ----------------------------------------------------------------------
     // Validate
     // ----------------------------------------------------------------------
 
-    private void validate ( Set defaultPlatforms ) throws MojoFailureException,
-            MojoExecutionException
+    private void validate( Set defaultPlatforms )
+        throws MojoFailureException, MojoExecutionException
     {
         // ----------------------------------------------------------------------
         // Validate Programs
         // ----------------------------------------------------------------------
 
-        ArrayList programNames = new ArrayList ( );
+        ArrayList programNames = new ArrayList();
 
-        for ( Iterator i = programs.iterator ( ); i.hasNext ( ); )
+        for ( Iterator i = programs.iterator(); i.hasNext(); )
         {
-            Program program = ( Program ) i.next ( );
+            Program program = (Program) i.next();
 
-            if ( program.getMainClass ( ) == null
-                    || program.getMainClass ( ).trim ( ).equals ( "" ) )
+            if ( program.getMainClass() == null || program.getMainClass().trim().equals( "" ) )
             {
-                throw new MojoFailureException (
-                        "Missing main class in Program configuration" );
+                throw new MojoFailureException( "Missing main class in Program configuration" );
             }
 
             // FIXME: After migration to Java 1.5 the following check could be
             // done simpler!
-            if ( !programNames.contains ( program.getName ( ) ) )
+            if ( !programNames.contains( program.getName() ) )
             {
-                programNames.add ( program.getName ( ) );
+                programNames.add( program.getName() );
             }
             else
             {
-                throw new MojoFailureException ( "The program name: "
-                        + program.getName ( ) + " exists more than once!" );
+                throw new MojoFailureException( "The program name: " + program.getName() + " exists more than once!" );
             }
 
             // platforms
-            program.setPlatforms ( validatePlatforms ( program.getPlatforms ( ),
-                    defaultPlatforms ) );
+            program.setPlatforms( validatePlatforms( program.getPlatforms(), defaultPlatforms ) );
         }
 
     }
@@ -401,42 +393,40 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * (non-Javadoc)
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
-    public void execute () throws MojoExecutionException, MojoFailureException
+    public void execute()
+        throws MojoExecutionException, MojoFailureException
     {
-        Set defaultPlatforms = validatePlatforms ( platforms, VALID_PLATFORMS );
+        Set defaultPlatforms = validatePlatforms( platforms, VALID_PLATFORMS );
 
         // validate input and set defaults
-        validate ( defaultPlatforms );
+        validate( defaultPlatforms );
 
-        if ( ( isUseAsterikClassPath ( )
-                || isUseWildcardClassPath ( ) )
-                && !repositoryLayout.equalsIgnoreCase ( "flat" ) )
+        if ( ( isUseAsterikClassPath() || isUseWildcardClassPath() ) && !repositoryLayout.equalsIgnoreCase( "flat" ) )
         {
-            throw new MojoExecutionException (
-                    "The useAsterikClassPath/useWildcardClassPath works only in combination with repositoryLayout flat." );
+            throw new MojoExecutionException(
+                                              "The useAsterikClassPath/useWildcardClassPath works only in combination with repositoryLayout flat." );
         }
 
         // Set the extensions for bin files for the different platforms
-        setBinFileExtensions ( );
+        setBinFileExtensions();
 
-        ArtifactRepositoryLayout artifactRepositoryLayout = ( ArtifactRepositoryLayout ) availableRepositoryLayouts
-                .get ( repositoryLayout );
+        ArtifactRepositoryLayout artifactRepositoryLayout = (ArtifactRepositoryLayout) availableRepositoryLayouts
+            .get( repositoryLayout );
         if ( artifactRepositoryLayout == null )
         {
-            throw new MojoFailureException ( "Unknown repository layout '"
-                    + repositoryLayout + "'." );
+            throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
         }
 
-        if ( isUseAllDependencies ( ) || isUseAllProjectDependencies ( ) )
+        if ( isUseAllDependencies() || isUseAllProjectDependencies() )
         {
             // TODO: This should be made different. We have to think about using
             // a default ArtifactFilter
-            Set dependencyArtifacts = mavenProject.getDependencyArtifacts ( );
-            artifacts = new ArrayList ( );
-            for ( Iterator it = dependencyArtifacts.iterator ( ); it.hasNext ( ); )
+            Set dependencyArtifacts = mavenProject.getDependencyArtifacts();
+            artifacts = new ArrayList();
+            for ( Iterator it = dependencyArtifacts.iterator(); it.hasNext(); )
             {
-                Artifact artifact = ( Artifact ) it.next ( );
-                artifacts.add ( artifact );
+                Artifact artifact = (Artifact) it.next();
+                artifacts.add( artifact );
             }
         }
 
@@ -447,66 +437,57 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
         {
             // The repo where the jar files will be installed
             ArtifactRepository artifactRepository = artifactRepositoryFactory
-                    .createDeploymentArtifactRepository ( "appassembler",
-                            "file://" + assembleDirectory.getAbsolutePath ( )
-                                    + "/" + repositoryName,
-                            artifactRepositoryLayout, false );
+                .createDeploymentArtifactRepository( "appassembler", "file://" + assembleDirectory.getAbsolutePath()
+                    + "/" + repositoryName, artifactRepositoryLayout, false );
 
-            for ( Iterator it = artifacts.iterator ( ); it.hasNext ( ); )
+            for ( Iterator it = artifacts.iterator(); it.hasNext(); )
             {
-                Artifact artifact = ( Artifact ) it.next ( );
+                Artifact artifact = (Artifact) it.next();
 
-                installArtifact ( artifactRepository, artifact );
+                installArtifact( artifactRepository, artifact );
             }
 
             // install the project's artifact in the new repository
-            installArtifact ( artifactRepository, projectArtifact );
+            installArtifact( artifactRepository, projectArtifact );
         }
 
         // ----------------------------------------------------------------------
         // Setup
         // ----------------------------------------------------------------------
 
-        setUpWorkingArea ( );
+        setUpWorkingArea();
 
         // ----------------------------------------------------------------------
         // Create bin files
         // ----------------------------------------------------------------------
 
-        for ( Iterator it = programs.iterator ( ); it.hasNext ( ); )
+        for ( Iterator it = programs.iterator(); it.hasNext(); )
         {
-            Program program = ( Program ) it.next ( );
+            Program program = (Program) it.next();
 
-            Set validatedPlatforms = validatePlatforms ( program.getPlatforms ( ),
-                    defaultPlatforms );
+            Set validatedPlatforms = validatePlatforms( program.getPlatforms(), defaultPlatforms );
 
-            for ( Iterator platformIt = validatedPlatforms.iterator ( ); platformIt
-                    .hasNext ( ); )
+            for ( Iterator platformIt = validatedPlatforms.iterator(); platformIt.hasNext(); )
             {
-                String platform = ( String ) platformIt.next ( );
+                String platform = (String) platformIt.next();
 
                 // TODO: seems like a bug in the generator that the request is
                 // modified
-                org.codehaus.mojo.appassembler.model.Daemon daemon = programToDaemon (
-                        program, artifactRepositoryLayout );
-                DaemonGenerationRequest request = new DaemonGenerationRequest (
-                        daemon, mavenProject, localRepository,
-                        assembleDirectory, binFolder );
-                request.setStubDaemon ( request.getDaemon ( ) );
+                org.codehaus.mojo.appassembler.model.Daemon daemon = programToDaemon( program, artifactRepositoryLayout );
+                DaemonGenerationRequest request = new DaemonGenerationRequest( daemon, mavenProject, localRepository,
+                                                                               assembleDirectory, binFolder );
+                request.setStubDaemon( request.getDaemon() );
 
-                request.setPlatform ( platform );
+                request.setPlatform( platform );
 
                 try
                 {
-                    daemonGeneratorService.generateDaemon ( request );
+                    daemonGeneratorService.generateDaemon( request );
                 }
                 catch ( DaemonGeneratorException e )
                 {
-                    throw new MojoExecutionException (
-                            "Error while generating script for the program '"
-                                    + program.getName ( )
-                                    + "' for the platform '" + platform + "': "
-                                    + e.getMessage ( ), e );
+                    throw new MojoExecutionException( "Error while generating script for the program '"
+                        + program.getName() + "' for the platform '" + platform + "': " + e.getMessage(), e );
                 }
             }
         }
@@ -517,133 +498,125 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
 
         if ( copyConfigurationDirectory )
         {
-            copyConfigurationDirectory ( );
+            copyConfigurationDirectory();
         }
     }
 
-    private org.codehaus.mojo.appassembler.model.Daemon programToDaemon (
-            Program program, ArtifactRepositoryLayout artifactRepositoryLayout )
+    private org.codehaus.mojo.appassembler.model.Daemon programToDaemon( Program program,
+                                                                         ArtifactRepositoryLayout artifactRepositoryLayout )
     {
-        org.codehaus.mojo.appassembler.model.Daemon daemon = new org.codehaus.mojo.appassembler.model.Daemon ( );
+        org.codehaus.mojo.appassembler.model.Daemon daemon = new org.codehaus.mojo.appassembler.model.Daemon();
 
-        daemon.setId ( program.getName ( ) );
-        daemon.setMainClass ( program.getMainClass ( ) );
-        daemon.setShowConsoleWindow ( showConsoleWindow );
-        daemon.setCommandLineArguments ( program.getCommandLineArguments ( ) );
+        daemon.setId( program.getName() );
+        daemon.setMainClass( program.getMainClass() );
+        daemon.setShowConsoleWindow( showConsoleWindow );
+        daemon.setCommandLineArguments( program.getCommandLineArguments() );
 
-        if ( program.getLicenseHeaderFile ( ) != null )
+        if ( program.getLicenseHeaderFile() != null )
         {
-            getLog ( ).debug (
-                    "Using the program specific license header. :"
-                            + program.getLicenseHeaderFile ( ) );
-            daemon.setLicenseHeaderFile ( program.getLicenseHeaderFile ( )
-                    .getPath ( ) );
+            getLog().debug( "Using the program specific license header. :" + program.getLicenseHeaderFile() );
+            daemon.setLicenseHeaderFile( program.getLicenseHeaderFile().getPath() );
         }
         else
         {
-            getLog ( ).debug (
-                    "Using the global defined license header. :"
-                            + licenseHeaderFile );
+            getLog().debug( "Using the global defined license header. :" + licenseHeaderFile );
 
             if ( licenseHeaderFile != null )
             {
-                daemon.setLicenseHeaderFile ( this.licenseHeaderFile
-                        .getAbsolutePath ( ) );
+                daemon.setLicenseHeaderFile( this.licenseHeaderFile.getAbsolutePath() );
             }
             else
             {
-                daemon.setLicenseHeaderFile ( null );
+                daemon.setLicenseHeaderFile( null );
             }
         }
 
-        List directories = new ArrayList ( );
+        List directories = new ArrayList();
 
         if ( includeConfigurationDirectoryInClasspath )
         {
-            Directory directory = new Directory ( );
-            directory.setRelativePath ( configurationDirectory );
-            directories.add ( directory );
+            Directory directory = new Directory();
+            directory.setRelativePath( configurationDirectory );
+            directories.add( directory );
         }
 
-        if ( daemon.getClasspath ( ) == null )
+        if ( daemon.getClasspath() == null )
         {
-            daemon.setClasspath ( new Classpath ( ) );
+            daemon.setClasspath( new Classpath() );
         }
 
-        daemon.getClasspath ( ).setDirectories ( directories );
+        daemon.getClasspath().setDirectories( directories );
 
-        daemon.setRepositoryName ( repositoryName );
+        daemon.setRepositoryName( repositoryName );
 
-        List dependencies = new ArrayList ( );
+        List dependencies = new ArrayList();
 
         // TODO: This should be done in a more elegant way for 2.0
         // TODO: Check if the classpath wildcard could be used for Daemons as well?
 
         // TODO: Remove the isUseAsterikClassPath with release 1.3 ?
-        if ( isUseAsterikClassPath ( ) || isUseWildcardClassPath ( ) )
+        if ( isUseAsterikClassPath() || isUseWildcardClassPath() )
         {
-            Dependency dependency = new Dependency ( );
-            dependency.setGroupId ( "" );
-            dependency.setArtifactId ( "" );
-            dependency.setVersion ( "" );
-            dependency.setRelativePath ( "*" );
-            dependencies.add ( dependency );
+            Dependency dependency = new Dependency();
+            dependency.setGroupId( "" );
+            dependency.setArtifactId( "" );
+            dependency.setVersion( "" );
+            dependency.setRelativePath( "*" );
+            dependencies.add( dependency );
         }
         else
         {
-            List classPathArtifacts = new ArrayList ( );
+            List classPathArtifacts = new ArrayList();
 
-            if ( isProjectArtifactFirstInClassPath ( ) )
+            if ( isProjectArtifactFirstInClassPath() )
             {
-                classPathArtifacts.add ( projectArtifact );
-                classPathArtifacts.addAll ( artifacts );
+                classPathArtifacts.add( projectArtifact );
+                classPathArtifacts.addAll( artifacts );
             }
             else
             {
-                classPathArtifacts.addAll ( artifacts );
-                classPathArtifacts.add ( projectArtifact );
+                classPathArtifacts.addAll( artifacts );
+                classPathArtifacts.add( projectArtifact );
             }
 
-            for ( Iterator it = classPathArtifacts.iterator ( ); it.hasNext ( ); )
+            for ( Iterator it = classPathArtifacts.iterator(); it.hasNext(); )
             {
-                Artifact artifact = ( Artifact ) it.next ( );
-                Dependency dependency = new Dependency ( );
-                dependency.setGroupId ( artifact.getGroupId ( ) );
-                dependency.setArtifactId ( artifact.getArtifactId ( ) );
-                dependency.setVersion ( artifact.getVersion ( ) );
-                dependency.setRelativePath ( artifactRepositoryLayout
-                        .pathOf ( artifact ) );
-                dependencies.add ( dependency );
+                Artifact artifact = (Artifact) it.next();
+                Dependency dependency = new Dependency();
+                dependency.setGroupId( artifact.getGroupId() );
+                dependency.setArtifactId( artifact.getArtifactId() );
+                dependency.setVersion( artifact.getVersion() );
+                dependency.setRelativePath( artifactRepositoryLayout.pathOf( artifact ) );
+                dependencies.add( dependency );
             }
 
         }
 
-        daemon.getClasspath ( ).setDependencies ( dependencies );
+        daemon.getClasspath().setDependencies( dependencies );
 
-        daemon.setJvmSettings ( convertToJvmSettingsWithDefaultHandling ( program ) );
+        daemon.setJvmSettings( convertToJvmSettingsWithDefaultHandling( program ) );
 
-        daemon.setEnvironmentSetupFileName ( this.environmentSetupFileName );
+        daemon.setEnvironmentSetupFileName( this.environmentSetupFileName );
 
         return daemon;
     }
 
-    private JvmSettings convertToJvmSettingsWithDefaultHandling ( Program program )
+    private JvmSettings convertToJvmSettingsWithDefaultHandling( Program program )
     {
-        JvmSettings jvmSettings = new JvmSettings ( );
+        JvmSettings jvmSettings = new JvmSettings();
 
-        if ( program.getJvmSettings ( ) != null )
+        if ( program.getJvmSettings() != null )
         {
             // Some kind of settings done on per program base so they take
             // precendence.
-            jvmSettings = program.getJvmSettings ( );
+            jvmSettings = program.getJvmSettings();
         }
         else
         {
             // No settings in the program done so we use the default behaviour
-            if ( StringUtils.isNotBlank ( this.extraJvmArguments ) )
+            if ( StringUtils.isNotBlank( this.extraJvmArguments ) )
             {
-                jvmSettings
-                        .setExtraArguments ( parseTokens ( this.extraJvmArguments ) );
+                jvmSettings.setExtraArguments( parseTokens( this.extraJvmArguments ) );
             }
         }
 
@@ -654,28 +627,25 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
     // Install artifacts into the assemble repository
     // ----------------------------------------------------------------------
 
-    private void installArtifact ( ArtifactRepository artifactRepository,
-            Artifact artifact ) throws MojoExecutionException
+    private void installArtifact( ArtifactRepository artifactRepository, Artifact artifact )
+        throws MojoExecutionException
     {
         try
         {
             // Necessary for the artifact's baseVersion to be set correctly
             // See:
             // http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
-            artifact.isSnapshot ( );
+            artifact.isSnapshot();
 
-            if ( artifact.getFile ( ) != null )
+            if ( artifact.getFile() != null )
             {
-                getLog ( ).debug (
-                        "installArtifact: scope:" + artifact.getScope ( )
-                                + " id:" + artifact.getId ( ) );
-                artifactInstaller.install ( artifact.getFile ( ), artifact,
-                        artifactRepository );
+                getLog().debug( "installArtifact: scope:" + artifact.getScope() + " id:" + artifact.getId() );
+                artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
             }
         }
         catch ( ArtifactInstallationException e )
         {
-            throw new MojoExecutionException ( "Failed to copy artifact.", e );
+            throw new MojoExecutionException( "Failed to copy artifact.", e );
         }
     }
 
@@ -683,108 +653,96 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
     // Set up the assemble environment
     // ----------------------------------------------------------------------
 
-    private void setUpWorkingArea () throws MojoFailureException
+    private void setUpWorkingArea()
+        throws MojoFailureException
     {
         // create (if necessary) directory for bin files
-        File binDir = new File ( assembleDirectory.getAbsolutePath ( ),
-                binFolder.toString ( ) );
+        File binDir = new File( assembleDirectory.getAbsolutePath(), binFolder.toString() );
 
-        if ( !binDir.exists ( ) )
+        if ( !binDir.exists() )
         {
 
-            boolean success = binDir.mkdirs ( );
+            boolean success = binDir.mkdirs();
 
             if ( !success )
             {
-                throw new MojoFailureException (
-                        "Failed to create directory for bin files." );
+                throw new MojoFailureException( "Failed to create directory for bin files." );
             }
         }
     }
 
-    private void copyConfigurationDirectory () throws MojoFailureException
+    private void copyConfigurationDirectory()
+        throws MojoFailureException
     {
-        if ( !configurationSourceDirectory.exists ( ) )
+        if ( !configurationSourceDirectory.exists() )
         {
-            throw new MojoFailureException (
-                    "The source directory for configuration files does not exist: "
-                            + configurationSourceDirectory.getAbsolutePath ( ) );
+            throw new MojoFailureException( "The source directory for configuration files does not exist: "
+                + configurationSourceDirectory.getAbsolutePath() );
         }
 
-        File configurationTargetDirectory = new File (
-                assembleDirectory.getAbsolutePath ( ), configurationDirectory );
-        if ( !configurationTargetDirectory.exists ( ) )
+        File configurationTargetDirectory = new File( assembleDirectory.getAbsolutePath(), configurationDirectory );
+        if ( !configurationTargetDirectory.exists() )
         {
             // Create (if necessary) target directory for configuration files
-            boolean success = configurationTargetDirectory.mkdirs ( );
+            boolean success = configurationTargetDirectory.mkdirs();
 
             if ( !success )
             {
-                throw new MojoFailureException (
-                        "Failed to create the target directory for configuration files: "
-                                + configurationTargetDirectory
-                                        .getAbsolutePath ( ) );
+                throw new MojoFailureException( "Failed to create the target directory for configuration files: "
+                    + configurationTargetDirectory.getAbsolutePath() );
             }
 
             try
             {
-                getLog ( ).debug (
-                        "Will try to copy configuration files from "
-                                + configurationSourceDirectory
-                                        .getAbsolutePath ( )
-                                + " to "
-                                + configurationTargetDirectory
-                                        .getAbsolutePath ( ) );
-                FileUtils.copyDirectory ( configurationSourceDirectory,
-                        configurationTargetDirectory, null,
-                        getDefaultExcludesAsCommaSeparatedString ( ) );
+                getLog().debug( "Will try to copy configuration files from "
+                                    + configurationSourceDirectory.getAbsolutePath() + " to "
+                                    + configurationTargetDirectory.getAbsolutePath() );
+                FileUtils.copyDirectory( configurationSourceDirectory, configurationTargetDirectory, null,
+                                         getDefaultExcludesAsCommaSeparatedString() );
             }
             catch ( IOException e )
             {
-                throw new MojoFailureException (
-                        "Failed to copy the configuration files." );
+                throw new MojoFailureException( "Failed to copy the configuration files." );
             }
         }
     }
 
-    private String getDefaultExcludesAsCommaSeparatedString ()
+    private String getDefaultExcludesAsCommaSeparatedString()
     {
-        StringBuffer defaultExcludes = new StringBuffer ( );
+        StringBuffer defaultExcludes = new StringBuffer();
 
-        List defaultExcludesAsList = FileUtils.getDefaultExcludesAsList ( );
-        Iterator iterator = defaultExcludesAsList.iterator ( );
-        while ( iterator.hasNext ( ) )
+        List defaultExcludesAsList = FileUtils.getDefaultExcludesAsList();
+        Iterator iterator = defaultExcludesAsList.iterator();
+        while ( iterator.hasNext() )
         {
-            String exclude = ( String ) iterator.next ( );
-            defaultExcludes.append ( exclude );
-            if ( iterator.hasNext ( ) )
+            String exclude = (String) iterator.next();
+            defaultExcludes.append( exclude );
+            if ( iterator.hasNext() )
             {
-                defaultExcludes.append ( "," );
+                defaultExcludes.append( "," );
             }
         }
 
-        return defaultExcludes.toString ( );
+        return defaultExcludes.toString();
     }
 
-    private Set validatePlatforms ( Set platformsToValidate, Set defaultPlatforms )
-            throws MojoFailureException
+    private Set validatePlatforms( Set platformsToValidate, Set defaultPlatforms )
+        throws MojoFailureException
     {
         if ( platformsToValidate == null )
         {
             return defaultPlatforms;
         }
 
-        if ( platformsToValidate.size ( ) == 1
-                && platformsToValidate.iterator ( ).next ( ).equals ( "all" ) )
+        if ( platformsToValidate.size() == 1 && platformsToValidate.iterator().next().equals( "all" ) )
         {
             return VALID_PLATFORMS;
         }
 
-        if ( !VALID_PLATFORMS.containsAll ( platformsToValidate ) )
+        if ( !VALID_PLATFORMS.containsAll( platformsToValidate ) )
         {
-            throw new MojoFailureException (
-                    "Non-valid default platform declared, supported types are: "
-                            + VALID_PLATFORMS );
+            throw new MojoFailureException( "Non-valid default platform declared, supported types are: "
+                + VALID_PLATFORMS );
         }
 
         return platformsToValidate;
@@ -798,37 +756,36 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      *            The argument to parse.
      * @return List of arguments.
      */
-    public static List parseTokens ( String arg )
+    public static List parseTokens( String arg )
     {
-        List extraJvmArguments = new ArrayList ( );
+        List extraJvmArguments = new ArrayList();
 
-        if ( StringUtils.isEmpty ( arg ) )
+        if ( StringUtils.isEmpty( arg ) )
         {
             return extraJvmArguments;
         }
 
-        StringTokenizer tokenizer = new StringTokenizer ( arg );
+        StringTokenizer tokenizer = new StringTokenizer( arg );
 
         String argument = null;
 
-        while ( tokenizer.hasMoreTokens ( ) )
+        while ( tokenizer.hasMoreTokens() )
         {
-            String token = tokenizer.nextToken ( );
+            String token = tokenizer.nextToken();
 
             if ( argument != null )
             {
-                if ( token.length ( ) == 0 )
+                if ( token.length() == 0 )
                 {
                     // ignore it
                     continue;
                 }
 
-                int length = token.length ( );
+                int length = token.length();
 
-                if ( token.charAt ( length - 1 ) == '\"' )
+                if ( token.charAt( length - 1 ) == '\"' )
                 {
-                    extraJvmArguments.add ( argument + " "
-                            + token.substring ( 0, length - 1 ) );
+                    extraJvmArguments.add( argument + " " + token.substring( 0, length - 1 ) );
                     argument = null;
                 }
                 else
@@ -839,13 +796,13 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
             else
             {
                 // If the token starts with a ", save it
-                if ( token.charAt ( 0 ) == '\"' )
+                if ( token.charAt( 0 ) == '\"' )
                 {
-                    argument = token.substring ( 1 );
+                    argument = token.substring( 1 );
                 }
                 else
                 {
-                    extraJvmArguments.add ( token );
+                    extraJvmArguments.add( token );
                 }
             }
         }
@@ -859,7 +816,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * @param availableRepositoryLayouts
      *            The repository layouts which are available.
      */
-    public void setAvailableRepositoryLayouts ( Map availableRepositoryLayouts )
+    public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )
     {
         this.availableRepositoryLayouts = availableRepositoryLayouts;
     }
@@ -868,36 +825,31 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * Set the extensions for bin files for the supported platforms. The values
      * are taken from the Mojo's <code>binFileExtensions</code> parameter.
      */
-    private void setBinFileExtensions () throws MojoFailureException
+    private void setBinFileExtensions()
+        throws MojoFailureException
     {
         if ( binFileExtensions != null )
         {
-            Set keySet = binFileExtensions.keySet ( );
-            Iterator iterator = keySet.iterator ( );
-            while ( iterator.hasNext ( ) )
+            Set keySet = binFileExtensions.keySet();
+            Iterator iterator = keySet.iterator();
+            while ( iterator.hasNext() )
             {
-                String platformName = ( String ) iterator.next ( );
-                if ( !VALID_PLATFORMS.contains ( platformName ) )
+                String platformName = (String) iterator.next();
+                if ( !VALID_PLATFORMS.contains( platformName ) )
                 {
-                    getLog ( ).warn (
-                            "Bin file extension configured for a non-valid platform ("
-                                    + platformName
-                                    + "), supported platforms are: "
-                                    + VALID_PLATFORMS );
+                    getLog().warn( "Bin file extension configured for a non-valid platform (" + platformName
+                                       + "), supported platforms are: " + VALID_PLATFORMS );
                 }
                 else
                 {
                     try
                     {
-                        Platform platform = Platform.getInstance ( platformName );
-                        platform.setBinFileExtension ( ( String ) binFileExtensions
-                                .get ( platformName ) );
+                        Platform platform = Platform.getInstance( platformName );
+                        platform.setBinFileExtension( (String) binFileExtensions.get( platformName ) );
                     }
                     catch ( DaemonGeneratorException e )
                     {
-                        getLog ( ).warn (
-                                "Unable to set the bin file extension for "
-                                        + platformName, e );
+                        getLog().warn( "Unable to set the bin file extension for " + platformName, e );
                     }
                 }
             }
@@ -909,7 +861,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * 
      * @return true if the project should be the first artifact in classpath false otherwise.
      */
-    public boolean isProjectArtifactFirstInClassPath ()
+    public boolean isProjectArtifactFirstInClassPath()
     {
         return projectArtifactFirstInClassPath;
     }
@@ -920,8 +872,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * @param projectArtifactFirstInClassPath
      *            true if the project artifact will be first false otherwise.
      */
-    public void setProjectArtifactFirstInClassPath (
-            boolean projectArtifactFirstInClassPath )
+    public void setProjectArtifactFirstInClassPath( boolean projectArtifactFirstInClassPath )
     {
         this.projectArtifactFirstInClassPath = projectArtifactFirstInClassPath;
     }
@@ -932,7 +883,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * @return true if set to yes false otherwise.
      * @deprecated use {@link #isUseAllProjectDependencies()} instead.
      */
-    public boolean isUseAllDependencies ()
+    public boolean isUseAllDependencies()
     {
         return useAllDependencies;
     }
@@ -945,7 +896,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * @deprecated use {@link #setUseAllProjectDependencies(boolean)} instead.
      *  
      */
-    public void setUseAllDependencies ( boolean useAllDependencies )
+    public void setUseAllDependencies( boolean useAllDependencies )
     {
         this.useAllDependencies = useAllDependencies;
     }
@@ -955,7 +906,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * 
      * @return true if we will use all project dependencies false otherwise.
      */
-    public boolean isUseAllProjectDependencies ()
+    public boolean isUseAllProjectDependencies()
     {
         return useAllProjectDependencies;
     }
@@ -966,7 +917,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * @param useAllDependencies
      *            true to activate false otherwise.
      */
-    public void setUseAllProjectDependencies ( boolean useAllProjectDependencies )
+    public void setUseAllProjectDependencies( boolean useAllProjectDependencies )
     {
         this.useAllProjectDependencies = useAllProjectDependencies;
     }
@@ -977,7 +928,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * @return true if the asterik-classpath will be used false otherwise.
      * @deprecated use {@link #isUseWildcardClassPath()} instead.
      */
-    public boolean isUseAsterikClassPath ()
+    public boolean isUseAsterikClassPath()
     {
         return useAsterikClassPath;
     }
@@ -989,7 +940,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      *            true to use asterik classpath false otherwise.
      * @deprecated use {@link #setUseWildcardClassPath(boolean)} instead.
      */
-    public void setUseAsterikClassPath ( boolean useAsterikClassPath )
+    public void setUseAsterikClassPath( boolean useAsterikClassPath )
     {
         this.useAsterikClassPath = useAsterikClassPath;
     }
@@ -999,7 +950,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * 
      * @return true if the wild card class path will be used false otherwise.
      */
-    public boolean isUseWildcardClassPath ()
+    public boolean isUseWildcardClassPath()
     {
         return useWildcardClassPath;
     }
@@ -1010,7 +961,7 @@ public class AssembleMojo extends AbstractAppAssemblerMojo
      * @param useWildcardClassPath
      *            true to use wildcard classpath false otherwise.
      */
-    public void setUseWildcardClassPath ( boolean useWildcardClassPath )
+    public void setUseWildcardClassPath( boolean useWildcardClassPath )
     {
         this.useWildcardClassPath = useWildcardClassPath;
     }
