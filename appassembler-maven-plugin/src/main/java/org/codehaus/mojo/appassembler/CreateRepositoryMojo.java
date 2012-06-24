@@ -29,7 +29,6 @@ import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
@@ -254,9 +253,31 @@ public class CreateRepositoryMojo
                 // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
                 artifact.isSnapshot();
 
-                install( artifactRepository, artifact );
+                File source = artifact.getFile();
+
+                String localPath = artifactRepository.pathOf( artifact );
+
+                File destination = new File( artifactRepository.getBasedir(), localPath );
+                if ( !destination.getParentFile().exists() )
+                {
+                    destination.getParentFile().mkdirs();
+                }
+
+                if ( artifact.isSnapshot() )
+                {
+                    if ( !useTimestampInSnapshotFileName )
+                    {
+                        //dont want timestamp in the snapshot file during copy
+                        destination = new File( destination.getParentFile(), source.getName() );
+                    }
+                }
+
+                getLog().info( "Installing artifact " + source.getPath() + " to " + destination );
+
+                FileUtils.copyFile( source, destination );
+
             }
-            catch ( ArtifactInstallationException e )
+            catch ( IOException e )
             {
                 throw new MojoExecutionException( "Failed to copy artifact.", e );
             }
@@ -272,38 +293,4 @@ public class CreateRepositoryMojo
         this.availableRepositoryLayouts = availableRepositoryLayouts;
     }
 
-    private void install( ArtifactRepository destinationRepository, Artifact artifact )
-        throws ArtifactInstallationException
-    {
-        File source = artifact.getFile();
-
-        try
-        {
-            String localPath = destinationRepository.pathOf( artifact );
-
-            File destination = new File( destinationRepository.getBasedir(), localPath );
-            if ( !destination.getParentFile().exists() )
-            {
-                destination.getParentFile().mkdirs();
-            }
-
-            if ( artifact.isSnapshot() )
-            {
-                if ( !useTimestampInSnapshotFileName )
-                {
-                    //dont want timestamp in the snapshot file during copy
-                    destination = new File( destination.getParentFile(), source.getName() );
-                }
-            }
-
-            getLog().info( "Installing artifact " + source.getPath() + " to " + destination );
-
-            FileUtils.copyFile( source, destination );
-
-        }
-        catch ( IOException e )
-        {
-            throw new ArtifactInstallationException( "Error installing artifact: " + e.getMessage(), e );
-        }
-    }
 }
