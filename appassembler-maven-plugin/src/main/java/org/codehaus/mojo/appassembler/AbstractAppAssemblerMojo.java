@@ -65,7 +65,6 @@ public abstract class AbstractAppAssemblerMojo
      * @param artifact
      * @param artifactRepository
      * @param useTimestampInSnapshotFileName
-     * @param log
      * @throws MojoExecutionException
      */
     protected void installArtifact( Artifact artifact, ArtifactRepository artifactRepository,
@@ -112,11 +111,9 @@ public abstract class AbstractAppAssemblerMojo
     }
 
     /**
-     * Copy artifact to another repository with option not to use timestamp in the snapshot filename
+     * Copy artifact to another repository 
      * @param artifact
      * @param artifactRepository
-     * @param useTimestampInSnapshotFileName
-     * @param log
      * @throws MojoExecutionException
      */
     protected void installArtifact( Artifact artifact, ArtifactRepository artifactRepository )
