@@ -456,7 +456,7 @@ public class AssembleMojo
             }
 
             // install the project's artifact in the new repository
-            installArtifact( projectArtifact, artifactRepository, false );
+            installArtifact( projectArtifact, artifactRepository );
         }
 
         // ----------------------------------------------------------------------

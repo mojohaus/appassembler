@@ -183,7 +183,7 @@ public class CreateRepositoryMojo
         // Install the project's artifact in the new repository
         // -----------------------------------------------------------------------
 
-        installArtifact( projectArtifact, artifactRepository, false );
+        installArtifact( projectArtifact, artifactRepository );
 
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository

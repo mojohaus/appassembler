@@ -69,7 +69,7 @@ public abstract class AbstractAppAssemblerMojo
      * @throws MojoExecutionException
      */
     protected void installArtifact( Artifact artifact, ArtifactRepository artifactRepository,
-                                        boolean useTimestampInSnapshotFileName )
+                                    boolean useTimestampInSnapshotFileName )
         throws MojoExecutionException
     {
         if ( artifact.getFile() != null )
@@ -109,5 +109,20 @@ public abstract class AbstractAppAssemblerMojo
                 throw new MojoExecutionException( "Failed to copy artifact.", e );
             }
         }
-    }    
+    }
+
+    /**
+     * Copy artifact to another repository with option not to use timestamp in the snapshot filename
+     * @param artifact
+     * @param artifactRepository
+     * @param useTimestampInSnapshotFileName
+     * @param log
+     * @throws MojoExecutionException
+     */
+    protected void installArtifact( Artifact artifact, ArtifactRepository artifactRepository )
+        throws MojoExecutionException
+    {
+        installArtifact( artifact, artifactRepository, true );
+    }
+
 }
