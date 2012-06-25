@@ -132,11 +132,6 @@ public class GenerateDaemonsMojo
      */
     private ArtifactRepositoryFactory artifactRepositoryFactory;
 
-    /**
-     * @component
-     */
-    private ArtifactInstaller artifactInstaller;
-
     // -----------------------------------------------------------------------
     // Read-only parameters
     // -----------------------------------------------------------------------
