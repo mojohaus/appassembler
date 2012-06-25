@@ -82,6 +82,12 @@
           <defaultValue>true</defaultValue>
         </field>
         <field>
+          <name>useTimestampInSnapshotFileName</name>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>true</defaultValue>
+        </field>
+        <field>
           <name>generatorConfigurations</name>
           <version>1.0.0+</version>
           <association>

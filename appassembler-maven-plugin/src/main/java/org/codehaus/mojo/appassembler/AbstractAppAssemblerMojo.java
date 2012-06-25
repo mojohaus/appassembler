@@ -40,7 +40,14 @@ package org.codehaus.mojo.appassembler;
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * This is intended to summarize all generic parts of the Mojos into a single class.
@@ -53,4 +60,54 @@ public abstract class AbstractAppAssemblerMojo
     extends AbstractMojo
 {
 
+    /**
+     * Copy artifact to another repository with option not to use timestamp in the snapshot filename
+     * @param artifact
+     * @param artifactRepository
+     * @param useTimestampInSnapshotFileName
+     * @param log
+     * @throws MojoExecutionException
+     */
+    protected void installArtifact( Artifact artifact, ArtifactRepository artifactRepository,
+                                        boolean useTimestampInSnapshotFileName )
+        throws MojoExecutionException
+    {
+        if ( artifact.getFile() != null )
+        {
+            try
+            {
+                // Necessary for the artifact's baseVersion to be set correctly
+                // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
+                artifact.isSnapshot();
+
+                File source = artifact.getFile();
+
+                String localPath = artifactRepository.pathOf( artifact );
+
+                File destination = new File( artifactRepository.getBasedir(), localPath );
+                if ( !destination.getParentFile().exists() )
+                {
+                    destination.getParentFile().mkdirs();
+                }
+
+                if ( artifact.isSnapshot() )
+                {
+                    if ( !useTimestampInSnapshotFileName )
+                    {
+                        //dont want timestamp in the snapshot file during copy
+                        destination = new File( destination.getParentFile(), source.getName() );
+                    }
+                }
+
+                FileUtils.copyFile( source, destination );
+
+                getLog().info( "Installing artifact " + source.getPath() + " to " + destination );
+
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "Failed to copy artifact.", e );
+            }
+        }
+    }    
 }

@@ -156,7 +156,6 @@ def list_of_files_which_must_be_existing_in_repository = [
     'geronimo-stax-api_1.0_spec-1.0.1.jar',
     'jempbox-1.1.0.jar',
     'log4j-1.2.14.jar',
-    'maven-metadata-appassembler.xml',
     'metadata-extractor-2.4.0-beta-1.jar',
     'pdfbox-1.1.0.jar',
     'poi-3.6.jar',

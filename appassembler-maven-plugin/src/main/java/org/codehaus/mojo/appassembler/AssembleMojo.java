@@ -33,7 +33,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
@@ -49,6 +48,7 @@ import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.mojo.appassembler.util.ArtifactUtils;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -268,6 +268,14 @@ public class AssembleMojo
      */
     protected Map/* <String, String> */binFileExtensions;
 
+    /**
+     * For those snapshots download from remote repo, replace the timestamp part with "SNAPSHOT" instead
+     * 
+     * @parameter default-value="true"
+     * @since 1.2.3
+     */
+    private boolean useTimestampInSnapshotFileName;
+
     // -----------------------------------------------------------------------
     // Read-only Parameters
     // -----------------------------------------------------------------------
@@ -444,11 +452,11 @@ public class AssembleMojo
             {
                 Artifact artifact = (Artifact) it.next();
 
-                installArtifact( artifactRepository, artifact );
+                installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
             }
 
             // install the project's artifact in the new repository
-            installArtifact( artifactRepository, projectArtifact );
+            installArtifact( projectArtifact, artifactRepository, false );
         }
 
         // ----------------------------------------------------------------------
@@ -587,6 +595,11 @@ public class AssembleMojo
                 dependency.setArtifactId( artifact.getArtifactId() );
                 dependency.setVersion( artifact.getVersion() );
                 dependency.setRelativePath( artifactRepositoryLayout.pathOf( artifact ) );
+                if ( artifact.isSnapshot() && !this.useTimestampInSnapshotFileName )
+                {
+                    dependency.setRelativePath( ArtifactUtils.pathBaseVersionOf( artifactRepositoryLayout, artifact ) );
+                }
+
                 dependencies.add( dependency );
             }
 
@@ -621,32 +634,6 @@ public class AssembleMojo
         }
 
         return jvmSettings;
-    }
-
-    // ----------------------------------------------------------------------
-    // Install artifacts into the assemble repository
-    // ----------------------------------------------------------------------
-
-    private void installArtifact( ArtifactRepository artifactRepository, Artifact artifact )
-        throws MojoExecutionException
-    {
-        try
-        {
-            // Necessary for the artifact's baseVersion to be set correctly
-            // See:
-            // http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
-            artifact.isSnapshot();
-
-            if ( artifact.getFile() != null )
-            {
-                getLog().debug( "installArtifact: scope:" + artifact.getScope() + " id:" + artifact.getId() );
-                artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
-            }
-        }
-        catch ( ArtifactInstallationException e )
-        {
-            throw new MojoExecutionException( "Failed to copy artifact.", e );
-        }
     }
 
     // ----------------------------------------------------------------------

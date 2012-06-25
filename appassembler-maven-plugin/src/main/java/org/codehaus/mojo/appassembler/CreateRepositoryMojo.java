@@ -21,7 +21,6 @@
 package org.codehaus.mojo.appassembler;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
@@ -40,10 +39,8 @@ import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ExcludesArtifactFilter;
 import org.apache.maven.artifact.versioning.VersionRange;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Creates an appassembler repository. Note that this is deliberately a bit more specific than the assembly plugin
@@ -57,7 +54,7 @@ import org.codehaus.plexus.util.FileUtils;
  * @threadsafe
  */
 public class CreateRepositoryMojo
-    extends AbstractMojo
+    extends AbstractAppAssemblerMojo
 {
     // -----------------------------------------------------------------------
     // Parameters
@@ -186,7 +183,7 @@ public class CreateRepositoryMojo
         // Install the project's artifact in the new repository
         // -----------------------------------------------------------------------
 
-        installArtifact( projectArtifact, artifactRepository );
+        installArtifact( projectArtifact, artifactRepository, false );
 
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
@@ -197,7 +194,7 @@ public class CreateRepositoryMojo
         {
             Artifact artifact = (Artifact) it.next();
 
-            installArtifact( artifact, artifactRepository );
+            installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
         }
 
         if ( installBooterArtifacts )
@@ -229,7 +226,7 @@ public class CreateRepositoryMojo
             for ( Iterator i = result.getArtifacts().iterator(); i.hasNext(); )
             {
                 Artifact a = (Artifact) i.next();
-                installArtifact( a, artifactRepository );
+                installArtifact( a, artifactRepository, this.useTimestampInSnapshotFileName );
             }
         }
         catch ( ArtifactResolutionException e )
@@ -239,48 +236,6 @@ public class CreateRepositoryMojo
         catch ( ArtifactNotFoundException e )
         {
             throw new MojoExecutionException( "Failed to copy artifact.", e );
-        }
-    }
-
-    private void installArtifact( Artifact artifact, ArtifactRepository artifactRepository )
-        throws MojoExecutionException
-    {
-        if ( artifact.getFile() != null )
-        {
-            try
-            {
-                // Necessary for the artifact's baseVersion to be set correctly
-                // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
-                artifact.isSnapshot();
-
-                File source = artifact.getFile();
-
-                String localPath = artifactRepository.pathOf( artifact );
-
-                File destination = new File( artifactRepository.getBasedir(), localPath );
-                if ( !destination.getParentFile().exists() )
-                {
-                    destination.getParentFile().mkdirs();
-                }
-
-                if ( artifact.isSnapshot() )
-                {
-                    if ( !useTimestampInSnapshotFileName )
-                    {
-                        //dont want timestamp in the snapshot file during copy
-                        destination = new File( destination.getParentFile(), source.getName() );
-                    }
-                }
-
-                getLog().info( "Installing artifact " + source.getPath() + " to " + destination );
-
-                FileUtils.copyFile( source, destination );
-
-            }
-            catch ( IOException e )
-            {
-                throw new MojoExecutionException( "Failed to copy artifact.", e );
-            }
         }
     }
 

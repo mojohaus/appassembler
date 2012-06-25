@@ -43,6 +43,7 @@ import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.GeneratorConfiguration;
+import org.codehaus.mojo.appassembler.util.ArtifactUtils;
 import org.codehaus.mojo.appassembler.util.FormattedProperties;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.IOUtil;
@@ -190,7 +191,7 @@ public class JavaServiceWrapperDaemonGenerator
 
         confFile.setProperty( "wrapper.app.parameter.1", daemon.getMainClass() );
 
-        createClasspath( request, confFile, configuration );
+        createClasspath(  daemon, request, confFile, configuration );
         createAdditional( daemon, confFile );
         createParameters( daemon, confFile );
 
@@ -323,7 +324,7 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
-    private static void createClasspath( DaemonGenerationRequest request, FormattedProperties confFile,
+    private void createClasspath(  Daemon daemon, DaemonGenerationRequest request, FormattedProperties confFile,
                                          Properties configuration )
     {
         final String wrapperClassPathPrefix = "wrapper.java.classpath.";
@@ -341,7 +342,7 @@ public class JavaServiceWrapperDaemonGenerator
         ArtifactRepositoryLayout layout = request.getRepositoryLayout();
 
         confFile.setProperty( wrapperClassPathPrefix + counter++,
-                              "%REPO_DIR%/" + createDependency( layout, project.getArtifact() ).getRelativePath() );
+                              "%REPO_DIR%/" + createDependency( layout, project.getArtifact(), true ).getRelativePath() );
 
         Iterator j = project.getRuntimeArtifacts().iterator();
         while ( j.hasNext() )
@@ -349,7 +350,7 @@ public class JavaServiceWrapperDaemonGenerator
             Artifact artifact = (Artifact) j.next();
 
             confFile.setProperty( wrapperClassPathPrefix + counter, "%REPO_DIR%/"
-                + createDependency( layout, artifact ).getRelativePath() );
+                + createDependency( layout, artifact, daemon.isUseTimestampInSnapshotFileName() ).getRelativePath() );
             counter++;
         }
 
@@ -360,16 +361,21 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
-    private static Dependency createDependency( ArtifactRepositoryLayout layout, Artifact artifact )
+    private Dependency createDependency( ArtifactRepositoryLayout layout, Artifact artifact, boolean useTimestampInSnapshotFileName )
     {
         Dependency dependency = new Dependency();
         dependency.setArtifactId( artifact.getArtifactId() );
         dependency.setGroupId( artifact.getGroupId() );
         dependency.setVersion( artifact.getVersion() );
         dependency.setRelativePath( layout.pathOf( artifact ) );
+        if ( artifact.isSnapshot() && !useTimestampInSnapshotFileName )
+        {
+            dependency.setRelativePath( ArtifactUtils.pathBaseVersionOf( layout, artifact ) );
+        }
+        
         return dependency;
     }
-
+    
     private static void createAdditional( Daemon daemon, FormattedProperties confFile )
     {
         if ( daemon.getJvmSettings() != null )

@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.installer.ArtifactInstallationException;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
@@ -174,6 +173,14 @@ public class GenerateDaemonsMojo
      */
     private Map availableRepositoryLayouts;
 
+    /**
+     * For those snapshots download from remote repo, replace the timestamp part with "SNAPSHOT" instead
+     * 
+     * @parameter default-value="true"
+     * @since 1.2.3
+     */
+    private boolean useTimestampInSnapshotFileName;
+
     // -----------------------------------------------------------------------
     // AbstractMojo Implementation
     // -----------------------------------------------------------------------
@@ -233,6 +240,7 @@ public class GenerateDaemonsMojo
             }
 
             modelDaemon.setEnvironmentSetupFileName( environmentSetupFileName );
+            modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
 
             // -----------------------------------------------------------------------
             //
@@ -279,38 +287,14 @@ public class GenerateDaemonsMojo
                 {
                     Artifact artifact = (Artifact) it.next();
 
-                    installArtifact( artifactRepository, artifact );
+                    installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
                 }
 
                 // install the project's artifact in the new repository
-                installArtifact( artifactRepository, projectArtifact );
+                installArtifact( projectArtifact, artifactRepository, false );
 
             }
 
-        }
-    }
-
-    // ----------------------------------------------------------------------
-    // Install artifacts into the assemble repository
-    // ----------------------------------------------------------------------
-
-    private void installArtifact( ArtifactRepository artifactRepository, Artifact artifact )
-        throws MojoExecutionException
-    {
-        try
-        {
-            // Necessary for the artifact's baseVersion to be set correctly
-            // See: http://mail-archives.apache.org/mod_mbox/maven-dev/200511.mbox/%3c437288F4.4080003@apache.org%3e
-            artifact.isSnapshot();
-
-            if ( artifact.getFile() != null )
-            {
-                artifactInstaller.install( artifact.getFile(), artifact, artifactRepository );
-            }
-        }
-        catch ( ArtifactInstallationException e )
-        {
-            throw new MojoExecutionException( "Failed to copy artifact.", e );
         }
     }
 
