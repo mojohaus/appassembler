@@ -38,25 +38,75 @@
         </configuration>
         <executions>
           <execution>
-            <id>useTimestampInSnapshotFileName=true</id>
+            <id>create-repo-with-timestamp</id>
             <phase>package</phase>
             <goals>
               <goal>create-repository</goal>
             </goals>
             <configuration>
               <useTimestampInSnapshotFileName>true</useTimestampInSnapshotFileName>
-              <assembleDirectory>${project.build.directory}/exec-1</assembleDirectory>              
+              <assembleDirectory>${project.build.directory}/exec-1</assembleDirectory>
             </configuration>
           </execution>
           <execution>
-            <id>useTimestampInSnapshotFileName=false</id>
+            <id>create-repo-with-snapshot</id>
             <phase>package</phase>
             <goals>
               <goal>create-repository</goal>
             </goals>
             <configuration>
               <useTimestampInSnapshotFileName>false</useTimestampInSnapshotFileName>
-              <assembleDirectory>${project.build.directory}/exec-2</assembleDirectory>              
+              <assembleDirectory>${project.build.directory}/exec-2</assembleDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>assemble-snapshot</id>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+            <configuration>
+              <useTimestampInSnapshotFileName>false</useTimestampInSnapshotFileName>
+              <assembleDirectory>${project.build.directory}/exec-3</assembleDirectory>
+              <programs>
+                <program>
+                  <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+                  <name>useTimestampInSnapshotFileNameTest</name>
+                </program>
+              </programs>
+              <platforms>
+                <platform>windows</platform>
+                <platform>unix</platform>
+              </platforms>
+            </configuration>
+          </execution>
+          <execution>
+            <id>jsw-snapshot</id>
+            <phase>package</phase>
+            <goals>
+              <goal>generate-daemons</goal>
+            </goals>
+            <configuration>
+              <useTimestampInSnapshotFileName>false</useTimestampInSnapshotFileName>
+              <target>${project.build.directory}/exec-4</target>
+              <repositoryLayout>flat</repositoryLayout>
+              <daemons>
+                <daemon>
+                  <id>useTimestampInSnapshotFileNameTest</id>
+                  <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+                  <platforms>
+                    <platform>jsw</platform>
+                  </platforms>
+                  <generatorConfigurations>
+                    <generatorConfiguration>
+                      <generator>jsw</generator>
+                      <includes>
+                        <include>linux-x86-32</include>
+                      </includes>
+                    </generatorConfiguration>
+                  </generatorConfigurations>
+                </daemon>
+              </daemons>
             </configuration>
           </execution>
         </executions>
