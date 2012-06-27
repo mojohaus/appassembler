@@ -39,7 +39,7 @@ exit /b 1
 
 :nt
 
-set BASEDIR=%~dp0\..
+set BASEDIR="%~dp0\.."
 @env.setup.windows@
 
 rem

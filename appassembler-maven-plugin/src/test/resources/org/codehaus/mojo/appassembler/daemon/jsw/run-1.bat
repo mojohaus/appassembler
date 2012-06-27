@@ -39,7 +39,7 @@ exit /b 1
 
 :nt
 
-set BASEDIR=%~dp0\..
+set BASEDIR="%~dp0\.."
 if exist "%BASEDIR%\bin\app-env.bat" call "%BASEDIR%\bin\app-env.bat"
 
 rem
