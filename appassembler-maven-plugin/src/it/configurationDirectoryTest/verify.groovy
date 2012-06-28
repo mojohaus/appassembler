@@ -36,7 +36,6 @@ def unixScriptFile = new File( fileBinFolder, "basic-test" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
     'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/config:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/configurationDirectory-test/1.0-SNAPSHOT/configurationDirectory-test-1.0-SNAPSHOT.jar',
-    'EXTRA_JVM_ARGUMENTS="-Xms16m"',
 ])
 
 // Check the existence of the generated windows script
@@ -44,7 +43,6 @@ File windowsBatchFile = new File( fileBinFolder, "basic-test.bat" );
 
 t.checkExistenceAndContentOfAFile(windowsBatchFile, [
     /set CLASSPATH="%BASEDIR%"\config;"%REPO%"\org\codehaus\mojo\appassembler-maven-plugin\it\configurationDirectory-test\1.0-SNAPSHOT\configurationDirectory-test-1.0-SNAPSHOT.jar/,
-    /set EXTRA_JVM_ARGUMENTS=-Xms16m/,
 ])
 
 //Check the existence of the generated repository.

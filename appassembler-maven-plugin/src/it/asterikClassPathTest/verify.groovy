@@ -36,14 +36,12 @@ def unixScriptFile = new File( fileBinFolder, "basic-test" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
     'CLASSPATH=$CLASSPATH_PREFIX:"$REPO"/*',
-    'EXTRA_JVM_ARGUMENTS="-Xms16m"',
 ])
 
 File windowsBatchFile = new File( fileBinFolder, "basic-test.bat" );
 
 t.checkExistenceAndContentOfAFile(windowsBatchFile, [
     /set CLASSPATH="%REPO%"\*/,
-    /set EXTRA_JVM_ARGUMENTS=-Xms16m/,
 ])
 
 //Check the existence of the generated repository.

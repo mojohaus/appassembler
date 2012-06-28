@@ -36,9 +36,7 @@ def unixScriptFile = new File( fileBinFolder, "basic-test" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
     'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/programCLIArgumentsWithExpanding-test/1.0-SNAPSHOT/programCLIArgumentsWithExpanding-test-1.0-SNAPSHOT.jar',
-    'EXTRA_JVM_ARGUMENTS="-Dx.y.basedir="$BASEDIR" -Dx.y.repo="$REPO""',
-    'exec "$JAVACMD" $JAVA_OPTS \\',
-    '  $EXTRA_JVM_ARGUMENTS \\',
+    'exec "$JAVACMD" $JAVA_OPTS -Dx.y.basedir="$BASEDIR" -Dx.y.repo="$REPO" \\',
     '  -classpath "$CLASSPATH" \\',
     '  -Dapp.name="basic-test" \\',
     '  -Dapp.pid="$$" \\',
@@ -55,8 +53,7 @@ def windowsScriptFile = new File( fileBinFolder, "basic-test.bat");
 
 t.checkExistenceAndContentOfAFile(windowsScriptFile, [
     'set CLASSPATH="%BASEDIR%"\\etc;"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\programCLIArgumentsWithExpanding-test\\1.0-SNAPSHOT\\programCLIArgumentsWithExpanding-test-1.0-SNAPSHOT.jar',
-    'set EXTRA_JVM_ARGUMENTS=-Dx.y.basedir="%BASEDIR%" -Dx.y.repo="%REPO%"',
-    '%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="basic-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 "%BASEDIR%" "%REPO%" %CMD_LINE_ARGS%',
+    '%JAVACMD% %JAVA_OPTS% -Dx.y.basedir="%BASEDIR%" -Dx.y.repo="%REPO%" -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="basic-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 "%BASEDIR%" "%REPO%" %CMD_LINE_ARGS%',
 ])
 
 //Check the existence of the generated repository.

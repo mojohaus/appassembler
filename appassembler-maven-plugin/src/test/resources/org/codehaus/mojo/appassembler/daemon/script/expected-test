@@ -92,7 +92,6 @@ then
 fi
 
 CLASSPATH=$CLASSPATH_PREFIX:
-EXTRA_JVM_ARGUMENTS="Yo dude"
 
 # For Cygwin, switch paths to Windows format before running java
 if $cygwin; then
@@ -103,8 +102,7 @@ if $cygwin; then
   [ -n "$REPO" ] && REPO=`cygpath --path --windows "$REPO"`
 fi
 
-exec "$JAVACMD" $JAVA_OPTS \
-  $EXTRA_JVM_ARGUMENTS \
+exec "$JAVACMD" $JAVA_OPTS Yo dude \
   -classpath "$CLASSPATH" \
   -Dapp.name="test" \
   -Dapp.pid="$$" \

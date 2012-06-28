@@ -35,8 +35,7 @@ def scriptfile_program_01_test = new File( fileBinFolder, 'program-01-test');
 
 t.checkExistenceAndContentOfAFile(scriptfile_program_01_test, [
     'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/test/artifactId/1.0.0/artifactId-1.0.0.jar:"$REPO"/commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar:"$REPO"/log4j/log4j/1.2.14/log4j-1.2.14.jar:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/systemDependency-test/1.0-SNAPSHOT/systemDependency-test-1.0-SNAPSHOT.jar',
-    'exec "$JAVACMD" $JAVA_OPTS \\',
-    '  $EXTRA_JVM_ARGUMENTS \\',
+    'exec "$JAVACMD" $JAVA_OPTS  \\',
     '  -classpath "$CLASSPATH" \\',
     '  -Dapp.name="program-01-test" \\',
     '  -Dapp.pid="$$" \\',

@@ -36,7 +36,6 @@ def unixScriptFile = new File( fileBinFolder, "basic-test" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
     'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/repositoryLayout-test-1.0-SNAPSHOT.jar',
-    'EXTRA_JVM_ARGUMENTS="-Xms16m"',
 ])
 
 //Check the existence of the generated repository.

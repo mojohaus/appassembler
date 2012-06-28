@@ -72,13 +72,12 @@ if "%JAVACMD%"=="" set JAVACMD=java
 if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
 set CLASSPATH=
-set EXTRA_JVM_ARGUMENTS=Yo dude
 goto endInit
 
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" foo.Bar %CMD_LINE_ARGS%
+%JAVACMD% %JAVA_OPTS% Yo dude -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" foo.Bar %CMD_LINE_ARGS%
 if ERRORLEVEL 1 goto error
 goto end
 
