@@ -51,7 +51,7 @@ while [ -h "$SELF_PATH" ]; do
     # 4) append the basename
     DIR=$(dirname -- "$SELF_PATH")
     SYM=$(readlink "$SELF_PATH")
-    SELF_PATH=$(cd "$DIR" && cd $(dirname -- "$SYM") && pwd)/$(basename -- "$SYM")
+    SELF_PATH=$(cd "$DIR" && cd "$(dirname -- "$SYM")" && pwd)/$(basename -- "$SYM")
 done
 
 BASEDIR=`dirname "$SELF_PATH"`/..
