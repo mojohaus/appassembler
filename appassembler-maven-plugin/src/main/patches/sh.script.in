@@ -40,22 +40,21 @@
 APP_NAME="@app.name@"
 APP_LONG_NAME="@app.long.name@"
 
-# get the absolute path of the executable
-SELF_PATH=$(cd -P -- "$(dirname -- "$0")" && pwd -P) && SELF_PATH="$SELF_PATH"/$(basename -- "$0")
-
-# resolve symlinks
-while [ -h "$SELF_PATH" ]; do
-    # 1) cd to directory of the symlink
-    # 2) cd to the directory of where the symlink points
-    # 3) get the pwd
-    # 4) append the basename
-    DIR=$(dirname -- "$SELF_PATH")
-    SYM=$(readlink "$SELF_PATH")
-    SELF_PATH=$(cd "$DIR" && cd "$(dirname -- "$SYM")" && pwd)/$(basename -- "$SYM")
-done
-
-BASEDIR=`dirname "$SELF_PATH"`/..
+# discover BASEDIR
+BASEDIR=`dirname "$0"`/..
 BASEDIR=`(cd "$BASEDIR"; pwd)`
+ls -l "$0" | grep -e '->' > /dev/null 2>&1
+if [ $? = 0 ]; then
+  #this is softlink
+  _PWD=`pwd`
+  _EXEDIR=`dirname "$0"`
+  cd "$EXEDIR"
+  _BASENAME=`basename "$0"`
+  _REALFILE=`ls -l "$_BASENAME" | sed 's/.*->\ //g'`
+   BASEDIR=`dirname "$_REALFILE"`/..
+   BASEDIR=`(cd "$BASEDIR"; pwd)`
+   cd "$_PWD"
+fi
 
 @env.setup.unix@
 
