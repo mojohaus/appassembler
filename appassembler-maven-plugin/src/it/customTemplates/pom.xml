@@ -74,6 +74,7 @@
             <configuration>
               <repositoryLayout>flat</repositoryLayout>
               <target>${project.build.directory}/appassembler</target>
+              <!-- Normally, you should include additional plugin dependency that has these resources -->
               <windowsScriptTemplate>org/codehaus/mojo/appassembler/template/windowsJswScriptTemplateSample</windowsScriptTemplate>
               <unixScriptTemplate>org/codehaus/mojo/appassembler/template/unixJswScriptTemplateSample</unixScriptTemplate>
               <daemons>
@@ -95,9 +96,10 @@
             </goals>
             <configuration>
               <repositoryLayout>flat</repositoryLayout>
+              <assembleDirectory>${project.build.directory}/appassembler/jsw/daemon-2</assembleDirectory>
+              <!-- Normally, you should include additional plugin dependency that has these resources -->
               <windowsScriptTemplate>org/codehaus/mojo/appassembler/template/windowsScriptTemplateSample</windowsScriptTemplate>
               <unixScriptTemplate>org/codehaus/mojo/appassembler/template/unixScriptTemplateSample</unixScriptTemplate>
-              <assembleDirectory>${project.build.directory}/appassembler/jsw/daemon-2</assembleDirectory>
               <platforms>
                 <platform>windows</platform>
                 <platform>unix</platform>
@@ -111,6 +113,9 @@
             </configuration>
           </execution>
         </executions>
+        <dependencies>
+          <!-- if you use this as your pom template, must add your own jar that has the custom template as resource -->
+        </dependencies>
       </plugin>
     </plugins>
 
