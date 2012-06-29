@@ -48,7 +48,7 @@ if [ $? = 0 ]; then
   #this is softlink
   _PWD=`pwd`
   _EXEDIR=`dirname "$0"`
-  cd "$EXEDIR"
+  cd "$_EXEDIR"
   _BASENAME=`basename "$0"`
   _REALFILE=`ls -l "$_BASENAME" | sed 's/.*->\ //g'`
    BASEDIR=`dirname "$_REALFILE"`/..
