@@ -22,6 +22,7 @@ package org.codehaus.mojo.appassembler.daemon.script;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -157,7 +158,7 @@ public class DefaultScriptGenerator
 
         try
         {
-            in = getClass().getResourceAsStream( platformName + "BinTemplate" );
+            in = getScriptTemplate( platformName, daemon );
 
             if ( in == null )
             {
@@ -242,5 +243,31 @@ public class DefaultScriptGenerator
             IOUtil.close( out );
             IOUtil.close( in );
         }
+    }
+
+    private InputStream getScriptTemplate( String platformName, Daemon daemon )
+        throws FileNotFoundException
+    {
+
+        String customTemplate = daemon.getWindowsScriptTemplate();
+        if ( Platform.UNIX_NAME.equals( platformName ) )
+        {
+            customTemplate = daemon.getWindowsScriptTemplate();
+        }
+
+        if ( customTemplate != null )
+        {
+            File customTemplateFile = new File( customTemplate );
+            if ( customTemplateFile.exists() )
+            {
+                return new FileInputStream( customTemplateFile );
+            }
+            else
+            {
+                return getClass().getClassLoader().getResourceAsStream( customTemplate );
+            }
+        }
+
+        return getClass().getResourceAsStream( platformName + "BinTemplate" );
     }
 }

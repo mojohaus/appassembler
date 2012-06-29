@@ -21,6 +21,8 @@
 package org.codehaus.mojo.appassembler.daemon.jsw;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -191,7 +193,7 @@ public class JavaServiceWrapperDaemonGenerator
 
         confFile.setProperty( "wrapper.app.parameter.1", daemon.getMainClass() );
 
-        createClasspath(  daemon, request, confFile, configuration );
+        createClasspath( daemon, request, confFile, configuration );
         createAdditional( daemon, confFile );
         createParameters( daemon, confFile );
 
@@ -324,8 +326,8 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
-    private void createClasspath(  Daemon daemon, DaemonGenerationRequest request, FormattedProperties confFile,
-                                         Properties configuration )
+    private void createClasspath( Daemon daemon, DaemonGenerationRequest request, FormattedProperties confFile,
+                                  Properties configuration )
     {
         final String wrapperClassPathPrefix = "wrapper.java.classpath.";
 
@@ -341,16 +343,19 @@ public class JavaServiceWrapperDaemonGenerator
         MavenProject project = request.getMavenProject();
         ArtifactRepositoryLayout layout = request.getRepositoryLayout();
 
-        confFile.setProperty( wrapperClassPathPrefix + counter++,
-                              "%REPO_DIR%/" + createDependency( layout, project.getArtifact(), true ).getRelativePath() );
+        confFile
+            .setProperty( wrapperClassPathPrefix + counter++,
+                          "%REPO_DIR%/" + createDependency( layout, project.getArtifact(), true ).getRelativePath() );
 
         Iterator j = project.getRuntimeArtifacts().iterator();
         while ( j.hasNext() )
         {
             Artifact artifact = (Artifact) j.next();
 
-            confFile.setProperty( wrapperClassPathPrefix + counter, "%REPO_DIR%/"
-                + createDependency( layout, artifact, daemon.isUseTimestampInSnapshotFileName() ).getRelativePath() );
+            confFile.setProperty( wrapperClassPathPrefix + counter,
+                                  "%REPO_DIR%/"
+                                      + createDependency( layout, artifact, daemon.isUseTimestampInSnapshotFileName() )
+                                          .getRelativePath() );
             counter++;
         }
 
@@ -361,7 +366,8 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
-    private Dependency createDependency( ArtifactRepositoryLayout layout, Artifact artifact, boolean useTimestampInSnapshotFileName )
+    private Dependency createDependency( ArtifactRepositoryLayout layout, Artifact artifact,
+                                         boolean useTimestampInSnapshotFileName )
     {
         Dependency dependency = new Dependency();
         dependency.setArtifactId( artifact.getArtifactId() );
@@ -372,10 +378,10 @@ public class JavaServiceWrapperDaemonGenerator
         {
             dependency.setRelativePath( ArtifactUtils.pathBaseVersionOf( layout, artifact ) );
         }
-        
+
         return dependency;
     }
-    
+
     private static void createAdditional( Daemon daemon, FormattedProperties confFile )
     {
         if ( daemon.getJvmSettings() != null )
@@ -409,30 +415,88 @@ public class JavaServiceWrapperDaemonGenerator
                                    Properties context )
         throws DaemonGeneratorException
     {
-        // TODO: selectively depending on selected platforms instead of always doing both
-        InputStream shellScriptInputStream = this.getClass().getResourceAsStream( "bin/sh.script.in" );
-
-        if ( shellScriptInputStream == null )
+        InputStream shellScriptInputStream = null;
+        InputStream batchFileInputStream = null;
+        try
         {
-            throw new DaemonGeneratorException( "Could not load template." );
+            // TODO: selectively depending on selected platforms instead of always doing both
+            shellScriptInputStream = getUnixTemplate( daemon );
+
+            if ( shellScriptInputStream == null )
+            {
+                throw new DaemonGeneratorException( "Could not load template." );
+            }
+
+            Reader reader = new InputStreamReader( shellScriptInputStream );
+
+            writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + daemon.getId() ), context );
+
+            batchFileInputStream = this.getWindowsTemplate( daemon );
+
+            if ( batchFileInputStream == null )
+            {
+                throw new DaemonGeneratorException( "Could not load template." );
+            }
+
+            reader = new InputStreamReader( batchFileInputStream );
+
+            writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + daemon.getId() + ".bat" ),
+                               context );
         }
-
-        Reader reader = new InputStreamReader( shellScriptInputStream );
-
-        writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + daemon.getId() ), context );
-
-        InputStream batchFileInputStream = this.getClass().getResourceAsStream( "bin/AppCommand.bat.in" );
-
-        if ( batchFileInputStream == null )
+        catch ( FileNotFoundException e )
         {
-            throw new DaemonGeneratorException( "Could not load template." );
+            throw new DaemonGeneratorException( "Could not load template: " + e.getMessage(), e );
         }
-
-        reader = new InputStreamReader( batchFileInputStream );
-
-        writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + daemon.getId() + ".bat" ),
-                           context );
+        finally {
+            IOUtil.close( shellScriptInputStream );
+            IOUtil.close( batchFileInputStream );
+        }
     }
+
+    private InputStream getUnixTemplate( Daemon daemon )
+        throws FileNotFoundException
+    {
+
+        String customTemplate = daemon.getUnixScriptTemplate();
+
+        if ( customTemplate != null )
+        {
+            File customTemplateFile = new File( customTemplate );
+            if ( customTemplateFile.exists() )
+            {
+                return new FileInputStream( customTemplateFile );
+            }
+            else
+            {
+                return getClass().getClassLoader().getResourceAsStream( customTemplate );
+            }
+        }
+
+        return this.getClass().getResourceAsStream( "bin/sh.script.in" );
+    }
+    
+    private InputStream getWindowsTemplate( Daemon daemon )
+        throws FileNotFoundException
+    {
+
+        String customTemplate = daemon.getWindowsScriptTemplate();
+
+        if ( customTemplate != null )
+        {
+            File customTemplateFile = new File( customTemplate );
+            if ( customTemplateFile.exists() )
+            {
+                return new FileInputStream( customTemplateFile );
+            }
+            else
+            {
+                return getClass().getClassLoader().getResourceAsStream( customTemplate );
+            }
+        }
+
+        return this.getClass().getResourceAsStream( "bin/AppCommand.bat.in"  );
+    }
+    
 
     private void writeLibraryFiles( File outputDirectory, List jswPlatformIncludes )
         throws DaemonGeneratorException

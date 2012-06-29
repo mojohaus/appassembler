@@ -272,10 +272,32 @@ public class AssembleMojo
      * For those snapshots download from remote repo, replace the timestamp part with "SNAPSHOT" instead
      * 
      * @parameter default-value="true"
-     * @since 1.2.3
+     * @since 1.3
      */
     private boolean useTimestampInSnapshotFileName;
 
+    
+    /**
+     * The unix template of the generated script. It can be a file or resource path.
+     * If not given, an internal one is used.
+     * Use with case since it not guaranteed to be compatible with new plugin release 
+     * @since 1.3
+     * 
+     * @parameter expression="${unixScriptTemplate}"
+     */
+    private String unixScriptTemplate;
+
+    /**
+     * The windows template of the generated script. It can be a file or resource path.
+     * If not given, an internal one is used.
+     * Use with case since it is not guaranteed to be compatible with new plugin release
+     * @since 1.3
+     * 
+     * @parameter expression="${unixScriptTemplate}"
+     */
+    private String windowsScriptTemplate;
+
+    
     // -----------------------------------------------------------------------
     // Read-only Parameters
     // -----------------------------------------------------------------------
@@ -610,6 +632,14 @@ public class AssembleMojo
         daemon.setJvmSettings( convertToJvmSettingsWithDefaultHandling( program ) );
 
         daemon.setEnvironmentSetupFileName( this.environmentSetupFileName );
+        
+        if ( this.unixScriptTemplate != null ) {
+            daemon.setUnixScriptTemplate( unixScriptTemplate );
+        }
+        if( this.windowsScriptTemplate != null ) {
+            daemon.setWindowsScriptTemplate( windowsScriptTemplate );
+        }
+        
 
         return daemon;
     }

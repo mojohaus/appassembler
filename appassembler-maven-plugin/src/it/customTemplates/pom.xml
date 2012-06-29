@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.mojo.appassembler</groupId>
+  <artifactId>customTemplates</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>Daemon Test Project</name>
+  <description>This is a test for custom templates.</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>@project.groupId@</groupId>
+        <artifactId>@project.artifactId@</artifactId>
+        <version>@project.version@</version>
+        <executions>
+          <execution>
+            <id>generate-daemons</id>
+            <phase>package</phase>
+            <goals>
+              <goal>generate-daemons</goal>
+            </goals>
+            <configuration>
+              <repositoryLayout>flat</repositoryLayout>
+              <target>${project.build.directory}/appassembler</target>
+              <windowsScriptTemplate>${project.basedir}/src/templates/windowsJswScriptTemplate</windowsScriptTemplate>
+              <unixScriptTemplate>${project.basedir}/src/templates/unixJswScriptTemplate</unixScriptTemplate>
+              <daemons>
+                <daemon>
+                  <id>daemon-1</id>
+                  <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+                  <platforms>
+                    <platform>jsw</platform>
+                  </platforms>
+                </daemon>
+              </daemons>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-scripts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+            <configuration>
+              <repositoryLayout>flat</repositoryLayout>
+              <windowsScriptTemplate>${project.basedir}/src/templates/windowsJswScriptTemplate</windowsScriptTemplate>
+              <unixScriptTemplate>${project.basedir}/src/templates/unixJswScriptTemplate</unixScriptTemplate>
+              <assembleDirectory>${project.build.directory}/appassembler/jsw/daemon-1</assembleDirectory>
+              <platforms>
+                <platform>windows</platform>
+                <platform>unix</platform>
+              </platforms>
+              <programs>
+                <program>
+                  <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+                  <name>basic-test</name>
+                </program>
+              </programs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+  </build>
+
+</project>

@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
@@ -176,6 +175,26 @@ public class GenerateDaemonsMojo
      */
     private boolean useTimestampInSnapshotFileName;
 
+    /**
+     * The unix template of the generated script. It can be a file or resource path.
+     * If not given, an internal one is used.
+     * Use with case since it not guaranteed to be compatible with new plugin release 
+     * @since 1.3
+     * 
+     * @parameter expression="${unixScriptTemplate}"
+     */
+    private String unixScriptTemplate;
+
+    /**
+     * The windows template of the generated script. It can be a file or resource path.
+     * If not given, an internal one is used.
+     * Use with case since it is not guaranteed to be compatible with new plugin release
+     * @since 1.3
+     * 
+     * @parameter expression="${unixScriptTemplate}"
+     */
+    private String windowsScriptTemplate;
+
     // -----------------------------------------------------------------------
     // AbstractMojo Implementation
     // -----------------------------------------------------------------------
@@ -236,6 +255,12 @@ public class GenerateDaemonsMojo
 
             modelDaemon.setEnvironmentSetupFileName( environmentSetupFileName );
             modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
+            if ( this.unixScriptTemplate != null ) {
+                modelDaemon.setUnixScriptTemplate( unixScriptTemplate );
+            }
+            if( this.windowsScriptTemplate != null ) {
+                modelDaemon.setWindowsScriptTemplate( windowsScriptTemplate );
+            }
 
             // -----------------------------------------------------------------------
             //

@@ -111,6 +111,16 @@
           <version>1.0.0+</version>
           <type>String</type>
         </field>
+        <field>
+          <name>unixScriptTemplate</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
+        <field>
+          <name>windowsScriptTemplate</name>
+          <version>1.0.0+</version>
+          <type>String</type>
+        </field>
       </fields>
       <codeSegments>
         <codeSegment>
