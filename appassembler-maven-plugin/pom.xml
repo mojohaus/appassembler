@@ -316,7 +316,7 @@
               <projectsDirectory>src/it</projectsDirectory>
               <showVersion>true</showVersion>
               <pomIncludes>
-                <pomInclude>customTemplates/pom.xml</pomInclude>
+                <pomInclude>*/pom.xml</pomInclude>
               </pomIncludes>
               <pomExcludes>
                 <!--  Currently not correctly working. -->
