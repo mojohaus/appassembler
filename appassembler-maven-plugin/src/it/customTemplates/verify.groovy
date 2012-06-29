@@ -33,13 +33,32 @@ def daemonFolder = new File( basedir, "target/appassembler/jsw/daemon-1/")
 //The bin folder where to find the generated scripts.
 def fileBinFolder = new File( daemonFolder, "bin");
 
-// Check the existence of the generated unix script
-def unixScriptFile = new File( fileBinFolder, "daemon-1" );
+// Check the existence of the generated scripts
+def unixJswScriptFile = new File( fileBinFolder, "daemon-1" );
+
+t.checkExistenceAndContentOfAFile(unixJswScriptFile, [
+    'From unixJswScriptTemplate'
+])
+
+def unixScriptFile = new File( fileBinFolder, "script-1" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
-    'APP_NAME="daemon-1"',
-    'APP_LONG_NAME="Daemon Test Project"',
+    'From unixScriptTemplate',
 ])
+
+// Check the existence of the generated scripts
+def windowsJswScriptFile = new File( fileBinFolder, "daemon-1.bat" );
+
+t.checkExistenceAndContentOfAFile(windowsJswScriptFile, [
+    'From windowsJswScriptTemplate',
+])
+
+def windowsScriptFile = new File( fileBinFolder, "script-1.bat" );
+
+t.checkExistenceAndContentOfAFile(windowsScriptFile, [
+    'From windowsScriptTemplate',
+])
+
 
 //conf folder.
 def fileConfFolder = new File( daemonFolder, "conf");
@@ -52,5 +71,52 @@ t.checkExistenceAndContentOfAFile(wrapperConfFile, [
     'wrapper.java.classpath.2=%REPO_DIR%/customTemplates-1.0-SNAPSHOT.jar',
     'wrapper.java.library.path.1=lib',
 ])
+
+/////////////////////////////////////////////////////////////////////////////////
+
+def daemonFolder2 = new File( basedir, "target/appassembler/jsw/daemon-2/")
+
+//The bin folder where to find the generated scripts.
+def fileBinFolder2 = new File( daemonFolder2, "bin");
+
+// Check the existence of the generated scripts
+def unixJswScriptFile2 = new File( fileBinFolder2, "daemon-2" );
+
+t.checkExistenceAndContentOfAFile(unixJswScriptFile2, [
+    'From unixJswScriptTemplateSample'
+])
+
+def unixScriptFile2 = new File( fileBinFolder2, "script-2" );
+
+t.checkExistenceAndContentOfAFile(unixScriptFile2, [
+    'From unixScriptTemplateSample',
+])
+
+// Check the existence of the generated scripts
+def windowsJswScriptFile2 = new File( fileBinFolder2, "daemon-2.bat" );
+
+t.checkExistenceAndContentOfAFile(windowsJswScriptFile2, [
+    'From windowsJswScriptTemplateSample',
+])
+
+def windowsScriptFile2 = new File( fileBinFolder2, "script-2.bat" );
+
+t.checkExistenceAndContentOfAFile(windowsScriptFile2, [
+    'From windowsScriptTemplateSample',
+])
+
+
+//conf folder.
+def fileConfFolder2 = new File( daemonFolder2, "conf");
+
+// Check the existence of the generated wrapper.conf file.
+def wrapperConfFile2 = new File( fileConfFolder2, "wrapper.conf" );
+
+t.checkExistenceAndContentOfAFile(wrapperConfFile2, [
+    'wrapper.java.classpath.1=lib/wrapper.jar',
+    'wrapper.java.classpath.2=%REPO_DIR%/customTemplates-1.0-SNAPSHOT.jar',
+    'wrapper.java.library.path.1=lib',
+])
+
 
 return true;

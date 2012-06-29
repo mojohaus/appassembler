@@ -160,12 +160,7 @@ public class DefaultScriptGenerator
         {
             in = getScriptTemplate( platformName, daemon );
 
-            if ( in == null )
-            {
-                throw new DaemonGeneratorException( "Internal error: could not find template for platform '"
-                    + platformName + "'." );
-            }
-            InputStreamReader reader = new InputStreamReader( in );
+            InputStreamReader reader = new InputStreamReader( getScriptTemplate( platformName, daemon ) );
 
             Map context = new HashMap();
             context.put( "MAINCLASS", daemon.getMainClass() );
@@ -246,28 +241,47 @@ public class DefaultScriptGenerator
     }
 
     private InputStream getScriptTemplate( String platformName, Daemon daemon )
-        throws FileNotFoundException
+        throws DaemonGeneratorException
     {
+        InputStream is = null;
 
-        String customTemplate = daemon.getWindowsScriptTemplate();
-        if ( Platform.UNIX_NAME.equals( platformName ) )
+        try
         {
-            customTemplate = daemon.getWindowsScriptTemplate();
-        }
-
-        if ( customTemplate != null )
-        {
-            File customTemplateFile = new File( customTemplate );
-            if ( customTemplateFile.exists() )
+            String customTemplate = daemon.getWindowsScriptTemplate();
+            if ( Platform.UNIX_NAME.equals( platformName ) )
             {
-                return new FileInputStream( customTemplateFile );
+                customTemplate = daemon.getUnixScriptTemplate();
+            }
+
+            if ( customTemplate != null )
+            {
+                File customTemplateFile = new File( customTemplate );
+                if ( customTemplateFile.exists() )
+                {
+                    is = new FileInputStream( customTemplateFile );
+                }
+                else
+                {
+                    is = getClass().getClassLoader().getResourceAsStream( customTemplate );
+                    if ( is == null ) {
+                        throw new DaemonGeneratorException( "Unable to load external template resource: " + customTemplate );
+                    }
+                }
             }
             else
             {
-                return getClass().getClassLoader().getResourceAsStream( customTemplate );
+                is = getClass().getResourceAsStream( platformName + "BinTemplate" );
+                if ( is == null ) {
+                    throw new DaemonGeneratorException( "Unable to load internal template resource: " + platformName + "BinTemplate" );
+                }
             }
         }
+        catch ( FileNotFoundException e )
+        {
+            throw new DaemonGeneratorException( "Unable to load external template file", e );
+        }
 
-        return getClass().getResourceAsStream( platformName + "BinTemplate" );
+        return is;
+
     }
 }

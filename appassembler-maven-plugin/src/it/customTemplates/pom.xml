@@ -21,7 +21,7 @@
         <version>@project.version@</version>
         <executions>
           <execution>
-            <id>generate-daemons</id>
+            <id>generate-daemons-using-file</id>
             <phase>package</phase>
             <goals>
               <goal>generate-daemons</goal>
@@ -43,15 +43,15 @@
             </configuration>
           </execution>
           <execution>
-            <id>generate-scripts</id>
+            <id>generate-scripts-using-file</id>
             <phase>package</phase>
             <goals>
               <goal>assemble</goal>
             </goals>
             <configuration>
               <repositoryLayout>flat</repositoryLayout>
-              <windowsScriptTemplate>${project.basedir}/src/templates/windowsJswScriptTemplate</windowsScriptTemplate>
-              <unixScriptTemplate>${project.basedir}/src/templates/unixJswScriptTemplate</unixScriptTemplate>
+              <windowsScriptTemplate>${project.basedir}/src/templates/windowsScriptTemplate</windowsScriptTemplate>
+              <unixScriptTemplate>${project.basedir}/src/templates/unixScriptTemplate</unixScriptTemplate>
               <assembleDirectory>${project.build.directory}/appassembler/jsw/daemon-1</assembleDirectory>
               <platforms>
                 <platform>windows</platform>
@@ -60,7 +60,52 @@
               <programs>
                 <program>
                   <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
-                  <name>basic-test</name>
+                  <name>script-1</name>
+                </program>
+              </programs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-daemons-using-resource</id>
+            <phase>package</phase>
+            <goals>
+              <goal>generate-daemons</goal>
+            </goals>
+            <configuration>
+              <repositoryLayout>flat</repositoryLayout>
+              <target>${project.build.directory}/appassembler</target>
+              <windowsScriptTemplate>org/codehaus/mojo/appassembler/template/windowsJswScriptTemplateSample</windowsScriptTemplate>
+              <unixScriptTemplate>org/codehaus/mojo/appassembler/template/unixJswScriptTemplateSample</unixScriptTemplate>
+              <daemons>
+                <daemon>
+                  <id>daemon-2</id>
+                  <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+                  <platforms>
+                    <platform>jsw</platform>
+                  </platforms>
+                </daemon>
+              </daemons>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-scripts-using-resource</id>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+            <configuration>
+              <repositoryLayout>flat</repositoryLayout>
+              <windowsScriptTemplate>org/codehaus/mojo/appassembler/template/windowsScriptTemplateSample</windowsScriptTemplate>
+              <unixScriptTemplate>org/codehaus/mojo/appassembler/template/unixScriptTemplateSample</unixScriptTemplate>
+              <assembleDirectory>${project.build.directory}/appassembler/jsw/daemon-2</assembleDirectory>
+              <platforms>
+                <platform>windows</platform>
+                <platform>unix</platform>
+              </platforms>
+              <programs>
+                <program>
+                  <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+                  <name>script-2</name>
                 </program>
               </programs>
             </configuration>

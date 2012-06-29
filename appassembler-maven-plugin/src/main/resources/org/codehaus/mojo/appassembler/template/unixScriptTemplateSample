@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#from unixScriptTemplate
+#from unixScriptTemplateSample
 @LICENSE_HEADER@
 @ENV_SETUP@
 @REPO@

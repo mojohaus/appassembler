@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# From unixJswScriptTemplate
+# From unixJswScriptTemplateSample
 
 APP_NAME="@app.name@"
 APP_LONG_NAME="@app.long.name@"

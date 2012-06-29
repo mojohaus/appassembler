@@ -443,58 +443,64 @@ public class JavaServiceWrapperDaemonGenerator
             writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + daemon.getId() + ".bat" ),
                                context );
         }
-        catch ( FileNotFoundException e )
+        finally
         {
-            throw new DaemonGeneratorException( "Could not load template: " + e.getMessage(), e );
-        }
-        finally {
             IOUtil.close( shellScriptInputStream );
             IOUtil.close( batchFileInputStream );
         }
     }
 
     private InputStream getUnixTemplate( Daemon daemon )
-        throws FileNotFoundException
+        throws DaemonGeneratorException
     {
+        return getTemplate( daemon.getUnixScriptTemplate(), "bin/sh.script.in" );
+    }
 
-        String customTemplate = daemon.getUnixScriptTemplate();
-
-        if ( customTemplate != null )
-        {
-            File customTemplateFile = new File( customTemplate );
-            if ( customTemplateFile.exists() )
-            {
-                return new FileInputStream( customTemplateFile );
-            }
-            else
-            {
-                return getClass().getClassLoader().getResourceAsStream( customTemplate );
-            }
-        }
-
-        return this.getClass().getResourceAsStream( "bin/sh.script.in" );
+    private InputStream getWindowsTemplate( Daemon daemon )
+        throws DaemonGeneratorException
+    {
+        return getTemplate( daemon.getWindowsScriptTemplate(), "bin/AppCommand.bat.in" );
     }
     
-    private InputStream getWindowsTemplate( Daemon daemon )
-        throws FileNotFoundException
+    private InputStream getTemplate( String customTemplate, String internalTemplate )
+        throws DaemonGeneratorException
     {
 
-        String customTemplate = daemon.getWindowsScriptTemplate();
+        InputStream is = null;
 
-        if ( customTemplate != null )
+        try
         {
-            File customTemplateFile = new File( customTemplate );
-            if ( customTemplateFile.exists() )
+            if ( customTemplate != null )
             {
-                return new FileInputStream( customTemplateFile );
+                File customTemplateFile = new File( customTemplate );
+                if ( customTemplateFile.exists() )
+                {
+                    is = new FileInputStream( customTemplateFile );
+                }
+                else
+                {
+                    is = getClass().getClassLoader().getResourceAsStream( customTemplate );
+                    if ( is == null ) {
+                        throw new DaemonGeneratorException( "Unable to load external template resource: " + customTemplate );
+                    }
+                    
+                }
             }
             else
             {
-                return getClass().getClassLoader().getResourceAsStream( customTemplate );
+                is = this.getClass().getResourceAsStream( internalTemplate );
+                if ( is == null ) {
+                    throw new DaemonGeneratorException( "Unable to load internal template resource: " + internalTemplate );
+                }
             }
-        }
 
-        return this.getClass().getResourceAsStream( "bin/AppCommand.bat.in"  );
+        }
+        catch ( FileNotFoundException e )
+        {
+            throw new DaemonGeneratorException( "Unable to load external template file", e );
+        }
+        
+        return is;
     }
     
 

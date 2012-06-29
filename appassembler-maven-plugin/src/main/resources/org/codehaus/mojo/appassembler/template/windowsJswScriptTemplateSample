@@ -1,6 +1,6 @@
 @echo off
 setlocal
 
-rem from windowsJswScriptTemplate
+rem from windowsJswScriptTemplateSample
 @env.setup.windows@
 
