@@ -572,6 +572,8 @@ public class JavaServiceWrapperDaemonGenerator
         if ( jswPlatformIncludes == null || jswPlatformIncludes.isEmpty() )
         {
             jswPlatformIncludes = new ArrayList();
+            jswPlatformIncludes.add( "aix-ppc-32" );
+            jswPlatformIncludes.add( "aix-ppc-64" );
             jswPlatformIncludes.add( "linux-x86-32" );
             jswPlatformIncludes.add( "macosx-x86-universal-32" );
             jswPlatformIncludes.add( "solaris-x86-32" );
