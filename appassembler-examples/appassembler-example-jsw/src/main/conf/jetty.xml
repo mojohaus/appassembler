@@ -271,4 +271,10 @@
   </Array>
 
 
+  <!-- =========================================================== -->
+  <!-- prevent random Zip close exception                          -->
+  <!-- =========================================================== -->
+  <Set class="org.eclipse.jetty.util.resource.Resource" name="defaultUseCaches">false</Set>
+
+
 </Configure>
