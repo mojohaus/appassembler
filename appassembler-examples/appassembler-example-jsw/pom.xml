@@ -37,103 +37,212 @@
   
   <name>Application Assembler Java Service Wrapper Example</name>
   
+  <packaging>pom</packaging>
+  
+  <properties>
+    <jetty.version>7.5.4.v20111024</jetty.version>
+    <assembleDirectory>${project.build.directory}/generated-resources/appassembler/jsw/jswjetty</assembleDirectory>
+  </properties>
+  
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.mojo.appassembler.example</groupId>
-      <artifactId>appassembler-example-webapp</artifactId>
-      <version>1.3-SNAPSHOT</version>
-      <type>war</type>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    
+    <!-- Runtime dependencies that need to be included in the generated binaries -->
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-jndi</artifactId>
+      <version>${jetty.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-start</artifactId>
+      <version>${jetty.version}</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty</artifactId>
-      <version>6.1.6</version>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-plus</artifactId>
+      <version>${jetty.version}</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty-util</artifactId>
-      <version>6.1.6</version>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-deploy</artifactId>
+      <version>${jetty.version}</version>
+      <scope>runtime</scope>
     </dependency>
+
     <dependency>
       <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jsp-2.1</artifactId>
-      <version>6.1.3</version>
+      <artifactId>jsp-2.1-glassfish</artifactId>
+      <version>9.1.1.B60.25.p0</version>
+      <scope>runtime</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.mortbay.jetty</groupId>
+      <artifactId>jsp-api-2.1-glassfish</artifactId>
+      <version>9.1.1.B60.25.p0</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.eclipse.jdt.core.compiler</groupId>
+      <artifactId>ecj</artifactId>
+      <version>3.7</version>
+      <scope>runtime</scope>
+    </dependency>
+    
   </dependencies>
+
   <build>
     <plugins>
+    
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>config</id>
+            <phase>process-resources</phase>
+            <configuration>
+              <tasks>
+                <copy todir="${assembleDirectory}/conf">
+                  <fileset dir="src/main/conf" />
+                </copy>
+                <mkdir dir="${assembleDirectory}/apps" />
+                <mkdir dir="${assembleDirectory}/logs" />
+                <mkdir dir="${assembleDirectory}/temp" />
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <id>prepare-war</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.apache.myfaces.commons</groupId>
+                  <artifactId>myfaces-commons-facelets-examples20</artifactId>    
+                  <type>war</type>
+                  <version>1.0.2.1</version>
+                  <outputDirectory>${assembleDirectory}/apps</outputDirectory>
+                  <destFileName>mfex.war</destFileName>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+    
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
         <configuration>
-          <defaultJvmSettings>
-            <initialMemorySize>16m</initialMemorySize>
-          </defaultJvmSettings>
+          <repoPath>lib</repoPath>
+          <repositoryLayout>flat</repositoryLayout>
+          <assembleDirectory>${assembleDirectory}</assembleDirectory>
           <daemons>
             <daemon>
-              <id>my-server</id>
-              <mainClass>org.codehaus.mojo.appassembler.example.jsw.MyServer</mainClass>
+              <id>jswjetty</id>
+              <mainClass>org.eclipse.jetty.start.Main</mainClass>
+              <commandLineArguments>
+                <commandLineArgument>conf/jetty.xml</commandLineArgument>
+              </commandLineArguments>
               <platforms>
                 <platform>jsw</platform>
               </platforms>
               <generatorConfigurations>
                 <generatorConfiguration>
                   <generator>jsw</generator>
-                      <configuration>
-                        <property>
-                          <name>app.base.envvar</name>
-                          <value>BASEDIR</value>
-                        </property>
-                        <property>
-                          <name>set.default.REPO_DIR</name>
-                          <value>./lib</value>
-                        </property>
-                        <property>
-                          <name>wrapper.logfile</name>
-                          <value>%BASEDIR%/logs/wrapper.log</value>
-                        </property>
-                        <property>
-                        </property>
-                        <property>
-                          <name>wrapper.java.maxmemory</name>
-                          <value>128</value>
-                        </property>
-                        <property>
-                          <name>wrapper.console.title</name>
-                          <value>${appName}</value>
-                        </property>
-                        <property>
-                          <name>wrapper.ntservice.name</name>
-                          <value>${appName}</value>
-                        </property>
-                        <property>
-                          <name>wrapper.ntservice.displayname</name>
-                          <value>${appName}</value>
-                        </property>
-                        <property>
-                          <name>wrapper.console.loglevel</name>
-                          <value>INFO</value>
-                        </property>
-                      </configuration>
-                      <includes>
-                        <include>linux-x86-32</include>
-                        <include>linux-x86-64</include>
-                        <include>windows-x86-32</include>
-                        <include>windows-x86-64</include>
-                        <include>macosx-universal-64</include>
-                      </includes>
-                    </generatorConfiguration>
-                  </generatorConfigurations>
-                  <jvmSettings>
-                    <initialMemorySize>128M</initialMemorySize>
-                    <maxMemorySize>128M</maxMemorySize>
-                    <extraArguments>
-                      <extraArgument>-Xrs</extraArgument>
-                    </extraArguments>
-                    <systemProperties>
-                      <systemProperty>basedir=%BASEDIR%</systemProperty>
-                    </systemProperties>
-                  </jvmSettings>
+                  <configuration>
+                    <property>
+                      <name>wrapper.console.loglevel</name>
+                      <value>INFO</value>
+                    </property>
+                    <property>
+                      <name>wrapper.java.additional.1.stripquotes</name>
+                      <value>TRUE</value>
+                    </property>
+                    <property>
+                      <name>set.default.REPO_DIR</name>
+                      <value>lib</value>
+                    </property>
+                    <property>
+                      <name>app.base.envvar</name>
+                      <value>BASEDIR</value>
+                    </property>
+                    <property>
+                      <name>wrapper.logfile</name>
+                      <value>%BASEDIR%/logs/wrapper.YYYYMMDD.log</value>
+                    </property>
+                    <property>
+                      <name>wrapper.logfile.rollmode</name>
+                      <value>DATE</value>
+                    </property>
+                    <property>
+                      <name>wrapper.app.parameter.2</name>
+                      <value>%BASEDIR%/conf/jetty.xml</value>
+                    </property>
+                    <property>
+                      <name>app.base.envvar</name>
+                      <value>BASEDIR</value>
+                    </property>
+                    <property>
+                      <name>wrapper.on_exit.default</name>
+                      <value>SHUTDOWN</value>
+                    </property>
+                    <property>
+                      <name>wrapper.on_exit.0</name>
+                      <value>SHUTDOWN</value>
+                    </property>
+                    <property>
+                      <name>wrapper.restart.delay</name>
+                      <value>30</value>
+                    </property>
+                  </configuration>
+                  <includes>
+                    <include>linux-x86-32</include>
+                    <include>linux-x86-64</include>
+                    <include>windows-x86-32</include>
+                    <include>windows-x86-64</include>
+                  </includes>
+                </generatorConfiguration>
+              </generatorConfigurations>
+              <jvmSettings>
+                <systemProperties>
+                  <systemProperty>appserver.home=.</systemProperty>
+                  <systemProperty>appserver.base=%BASEDIR%</systemProperty>
+                  <systemProperty>jetty.logs=%BASEDIR%/logs</systemProperty>
+                  <systemProperty>java.io.tmpdir=%BASEDIR%/temp</systemProperty>
+                </systemProperties>
+                <extraArguments>
+                  <extraArgument>-XX:MaxPermSize=128m</extraArgument>
+                </extraArguments>
+                <initialMemorySize>512</initialMemorySize>
+                <maxMemorySize>512</maxMemorySize>
+              </jvmSettings>
             </daemon>
           </daemons>
         </configuration>
@@ -141,6 +250,7 @@
           <execution>
             <goals>
               <goal>generate-daemons</goal>
+              <goal>create-repository</goal>
             </goals>
           </execution>
         </executions>
