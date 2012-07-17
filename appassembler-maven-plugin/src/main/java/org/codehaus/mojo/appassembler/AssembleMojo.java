@@ -931,7 +931,7 @@ public class AssembleMojo
     /**
      * Define if all project dependencies should be used or not.
      * 
-     * @param useAllDependencies
+     * @param useAllProjectDependencies
      *            true to activate false otherwise.
      */
     public void setUseAllProjectDependencies( boolean useAllProjectDependencies )
