@@ -171,10 +171,19 @@ public class GenerateDaemonsMojo
      * For those snapshots download from remote repo, replace the timestamp part with "SNAPSHOT" instead
      * 
      * @parameter default-value="true"
-     * @since 1.2.3
+     * @since 1.3
      */
     private boolean useTimestampInSnapshotFileName;
 
+    /**
+     * When enable, name wrapper configuration file as wrapper-${daemon.id}.conf
+     * 
+     * @parameter default-value="false"
+     * @since 1.3
+     */
+    private boolean useDaemonIdAsWrapperConfName;
+
+    
     /**
      * The unix template of the generated script. It can be a file or resource path.
      * If not given, an internal one is used.
@@ -255,6 +264,8 @@ public class GenerateDaemonsMojo
 
             modelDaemon.setEnvironmentSetupFileName( environmentSetupFileName );
             modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
+            modelDaemon.setUseDaemonIdAsWrapperConfName( useDaemonIdAsWrapperConfName );
+            
             if ( this.unixScriptTemplate != null ) {
                 modelDaemon.setUnixScriptTemplate( unixScriptTemplate );
             }

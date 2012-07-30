@@ -125,6 +125,7 @@ public class JavaServiceWrapperDaemonGenerator
         Properties context = createContext( request, daemon );
         context.setProperty( "app.base.envvar", appBaseEnvVar );
         context.setProperty( "run.as.user.envvar", runAsUserEnvVar );
+        context.setProperty( "wrapper.conf.fileName", this.getWrapperConfigFileName( daemon ) );
 
         writeWrapperConfFile( request, daemon, outputDirectory, context, configuration );
 
@@ -218,7 +219,19 @@ public class JavaServiceWrapperDaemonGenerator
 
         Reader reader = new InputStreamReader( new StringInputStream( string.toString() ) );
 
-        writeFilteredFile( request, daemon, reader, new File( outputDirectory, "conf/wrapper.conf" ), context );
+        writeFilteredFile( request, daemon, reader, new File( outputDirectory, "conf/"
+            + getWrapperConfigFileName( daemon ) ), context );
+    }
+
+    private String getWrapperConfigFileName( Daemon daemon )
+    {
+        String wrapperConfigFileName = "wrapper.conf";
+        if ( daemon.isUseDaemonIdAsWrapperConfName() )
+        {
+            wrapperConfigFileName = "wrapper-" + daemon.getId() + ".conf";
+        }
+
+        return wrapperConfigFileName;
     }
 
     private Properties createConfiguration( Daemon daemon )
@@ -461,7 +474,7 @@ public class JavaServiceWrapperDaemonGenerator
     {
         return getTemplate( daemon.getWindowsScriptTemplate(), "bin/AppCommand.bat.in" );
     }
-    
+
     private InputStream getTemplate( String customTemplate, String internalTemplate )
         throws DaemonGeneratorException
     {
@@ -480,17 +493,21 @@ public class JavaServiceWrapperDaemonGenerator
                 else
                 {
                     is = getClass().getClassLoader().getResourceAsStream( customTemplate );
-                    if ( is == null ) {
-                        throw new DaemonGeneratorException( "Unable to load external template resource: " + customTemplate );
+                    if ( is == null )
+                    {
+                        throw new DaemonGeneratorException( "Unable to load external template resource: "
+                            + customTemplate );
                     }
-                    
+
                 }
             }
             else
             {
                 is = this.getClass().getResourceAsStream( internalTemplate );
-                if ( is == null ) {
-                    throw new DaemonGeneratorException( "Unable to load internal template resource: " + internalTemplate );
+                if ( is == null )
+                {
+                    throw new DaemonGeneratorException( "Unable to load internal template resource: "
+                        + internalTemplate );
                 }
             }
 
@@ -499,10 +516,9 @@ public class JavaServiceWrapperDaemonGenerator
         {
             throw new DaemonGeneratorException( "Unable to load external template file", e );
         }
-        
+
         return is;
     }
-    
 
     private void writeLibraryFiles( File outputDirectory, List jswPlatformIncludes )
         throws DaemonGeneratorException

@@ -88,6 +88,12 @@
           <defaultValue>true</defaultValue>
         </field>
         <field>
+          <name>useDaemonIdAsWrapperConfName</name>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+        </field>
+        <field>
           <name>generatorConfigurations</name>
           <version>1.0.0+</version>
           <association>

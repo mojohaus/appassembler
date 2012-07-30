@@ -40,6 +40,7 @@
         </executions>
         <configuration>
           <repositoryLayout>flat</repositoryLayout>
+          <useDaemonIdAsWrapperConfName>true</useDaemonIdAsWrapperConfName>
           <daemons>
             <daemon>
               <id>daemon-1</id>

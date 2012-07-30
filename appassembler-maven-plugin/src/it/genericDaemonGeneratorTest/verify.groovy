@@ -60,14 +60,23 @@ def unixScriptFile = new File( fileBinFolder, "daemon-1" );
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
     'APP_NAME="daemon-1"',
     'APP_LONG_NAME="Test Project"',
+    'WRAPPER_CONF="$BASEDIR/conf/wrapper-daemon-1.conf"',
 ])
+
+// Check the existence of the generated unix script
+def windowsScriptFile = new File( fileBinFolder, "daemon-1.bat" );
+
+t.checkExistenceAndContentOfAFile(windowsScriptFile, [
+    'set _WRAPPER_CONF="%_REALPATH%..\\conf\\wrapper-daemon-1.conf"',
+])
+
 
 //conf folder.
 def fileConfFolder = new File( basedir, "target/generated-resources/appassembler/jsw/daemon-1/conf/");
 
 
 // Check the existence of the generated wrapper.conf file.
-def wrapperConfFile = new File( fileConfFolder, "wrapper.conf" );
+def wrapperConfFile = new File( fileConfFolder, "wrapper-daemon-1.conf" );
 
 t.checkExistenceAndContentOfAFile(wrapperConfFile, [
     'wrapper.java.classpath.1=lib/wrapper.jar',

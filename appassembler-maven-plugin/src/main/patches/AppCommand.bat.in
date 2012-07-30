@@ -82,7 +82,7 @@ rem
 rem Find the wrapper.conf
 rem
 :conf
-set _WRAPPER_CONF="%_REALPATH%..\conf\wrapper.conf"
+set _WRAPPER_CONF="%_REALPATH%..\conf\@wrapper.conf.fileName@"
 
 rem
 rem Run the application.

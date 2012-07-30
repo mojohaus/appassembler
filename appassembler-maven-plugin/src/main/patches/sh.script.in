@@ -60,7 +60,7 @@ fi
 
 # Wrapper
 WRAPPER_CMD="./wrapper"
-WRAPPER_CONF="$BASEDIR/conf/wrapper.conf"
+WRAPPER_CONF="$BASEDIR/conf/@wrapper.conf.fileName@"
 
 # Priority at which to run the wrapper.  See "man nice" for valid priorities.
 #  nice is only used if a priority is specified.
