@@ -86,10 +86,7 @@ set _WRAPPER_CONF="%_REALPATH%..\conf\wrapper.conf"
 
 rem
 rem Run the application.
-rem At runtime, the current directory will be that of wrapper.exe
-rem unset BASEDIR since wrapper.conf has its own
 rem
-set BASEDIR=
 call :%COMMAND%
 goto :eof
 
