@@ -49,6 +49,12 @@ import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.mojo.appassembler.util.ArtifactUtils;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -67,6 +73,7 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class AssembleMojo
     extends AbstractAppAssemblerMojo
+    implements Contextualizable
 {
     // -----------------------------------------------------------------------
     // Parameters
@@ -363,10 +370,10 @@ public class AssembleMojo
     private DaemonGeneratorService daemonGeneratorService;
 
     /**
-     * @component role=
-     *            "org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
+     * A reference to the Plexus container so that we can do our own component
+     * lookups, which was required to solve MAPPASM-96.
      */
-    private Map availableRepositoryLayouts;
+    private PlexusContainer container;
 
     // ----------------------------------------------------------------------
     // CONSTANTS
@@ -375,6 +382,15 @@ public class AssembleMojo
     private static final Set VALID_PLATFORMS = Collections.unmodifiableSet( new HashSet( Arrays.asList( new String[] {
         "unix",
         "windows" } ) ) );
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void contextualize( Context context ) throws ContextException
+    {
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    }
 
     // ----------------------------------------------------------------------
     // Validate
@@ -440,95 +456,103 @@ public class AssembleMojo
         // Set the extensions for bin files for the different platforms
         setBinFileExtensions();
 
-        ArtifactRepositoryLayout artifactRepositoryLayout = (ArtifactRepositoryLayout) availableRepositoryLayouts
-            .get( repositoryLayout );
-        if ( artifactRepositoryLayout == null )
-        {
-            throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
-        }
-
-        if ( isUseAllDependencies() || isUseAllProjectDependencies() )
-        {
-            // TODO: This should be made different. We have to think about using
-            // a default ArtifactFilter
-            Set dependencyArtifacts = mavenProject.getDependencyArtifacts();
-            artifacts = new ArrayList();
-            for ( Iterator it = dependencyArtifacts.iterator(); it.hasNext(); )
+        ArtifactRepositoryLayout artifactRepositoryLayout = null;
+        try {
+            artifactRepositoryLayout = (ArtifactRepositoryLayout) container.lookup( "org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout",
+                                                                                    repositoryLayout );
+            if ( artifactRepositoryLayout == null )
             {
-                Artifact artifact = (Artifact) it.next();
-                artifacts.add( artifact );
-            }
-        }
-
-        // ----------------------------------------------------------------------
-        // Install dependencies in the new repository
-        // ----------------------------------------------------------------------
-        if ( generateRepository )
-        {
-            // The repo where the jar files will be installed
-            ArtifactRepository artifactRepository = artifactRepositoryFactory
-                .createDeploymentArtifactRepository( "appassembler", "file://" + assembleDirectory.getAbsolutePath()
-                    + "/" + repositoryName, artifactRepositoryLayout, false );
-
-            for ( Iterator it = artifacts.iterator(); it.hasNext(); )
-            {
-                Artifact artifact = (Artifact) it.next();
-
-                installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
+                throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
             }
 
-            // install the project's artifact in the new repository
-            installArtifact( projectArtifact, artifactRepository );
-        }
-
-        // ----------------------------------------------------------------------
-        // Setup
-        // ----------------------------------------------------------------------
-
-        setUpWorkingArea();
-
-        // ----------------------------------------------------------------------
-        // Create bin files
-        // ----------------------------------------------------------------------
-
-        for ( Iterator it = programs.iterator(); it.hasNext(); )
-        {
-            Program program = (Program) it.next();
-
-            Set validatedPlatforms = validatePlatforms( program.getPlatforms(), defaultPlatforms );
-
-            for ( Iterator platformIt = validatedPlatforms.iterator(); platformIt.hasNext(); )
+            if ( isUseAllDependencies() || isUseAllProjectDependencies() )
             {
-                String platform = (String) platformIt.next();
-
-                // TODO: seems like a bug in the generator that the request is
-                // modified
-                org.codehaus.mojo.appassembler.model.Daemon daemon = programToDaemon( program, artifactRepositoryLayout );
-                DaemonGenerationRequest request = new DaemonGenerationRequest( daemon, mavenProject, localRepository,
-                                                                               assembleDirectory, binFolder );
-                request.setStubDaemon( request.getDaemon() );
-
-                request.setPlatform( platform );
-
-                try
+                // TODO: This should be made different. We have to think about using
+                // a default ArtifactFilter
+                Set dependencyArtifacts = mavenProject.getDependencyArtifacts();
+                artifacts = new ArrayList();
+                for ( Iterator it = dependencyArtifacts.iterator(); it.hasNext(); )
                 {
-                    daemonGeneratorService.generateDaemon( request );
-                }
-                catch ( DaemonGeneratorException e )
-                {
-                    throw new MojoExecutionException( "Error while generating script for the program '"
-                        + program.getName() + "' for the platform '" + platform + "': " + e.getMessage(), e );
+                    Artifact artifact = (Artifact) it.next();
+                    artifacts.add( artifact );
                 }
             }
+
+            // ----------------------------------------------------------------------
+            // Install dependencies in the new repository
+            // ----------------------------------------------------------------------
+            if ( generateRepository )
+            {
+                // The repo where the jar files will be installed
+                ArtifactRepository artifactRepository = artifactRepositoryFactory
+                    .createDeploymentArtifactRepository( "appassembler", "file://" + assembleDirectory.getAbsolutePath()
+                        + "/" + repositoryName, artifactRepositoryLayout, false );
+
+                for ( Iterator it = artifacts.iterator(); it.hasNext(); )
+                {
+                    Artifact artifact = (Artifact) it.next();
+
+                    installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
+                }
+
+                // install the project's artifact in the new repository
+                installArtifact( projectArtifact, artifactRepository );
+            }
+
+            // ----------------------------------------------------------------------
+            // Setup
+            // ----------------------------------------------------------------------
+
+            setUpWorkingArea();
+
+            // ----------------------------------------------------------------------
+            // Create bin files
+            // ----------------------------------------------------------------------
+
+            for ( Iterator it = programs.iterator(); it.hasNext(); )
+            {
+                Program program = (Program) it.next();
+
+                Set validatedPlatforms = validatePlatforms( program.getPlatforms(), defaultPlatforms );
+
+                for ( Iterator platformIt = validatedPlatforms.iterator(); platformIt.hasNext(); )
+                {
+                    String platform = (String) platformIt.next();
+
+                    // TODO: seems like a bug in the generator that the request is
+                    // modified
+                    org.codehaus.mojo.appassembler.model.Daemon daemon = programToDaemon( program, artifactRepositoryLayout );
+                    DaemonGenerationRequest request = new DaemonGenerationRequest( daemon, mavenProject, localRepository,
+                                                                                   assembleDirectory, binFolder );
+                    request.setStubDaemon( request.getDaemon() );
+
+                    request.setPlatform( platform );
+
+                    try
+                    {
+                        daemonGeneratorService.generateDaemon( request );
+                    }
+                    catch ( DaemonGeneratorException e )
+                    {
+                        throw new MojoExecutionException( "Error while generating script for the program '"
+                            + program.getName() + "' for the platform '" + platform + "': " + e.getMessage(), e );
+                    }
+                }
+            }
+
+            // ----------------------------------------------------------------------
+            // Copy configuration directory
+            // ----------------------------------------------------------------------
+
+            if ( copyConfigurationDirectory )
+            {
+                copyConfigurationDirectory();
+            }
         }
-
-        // ----------------------------------------------------------------------
-        // Copy configuration directory
-        // ----------------------------------------------------------------------
-
-        if ( copyConfigurationDirectory )
+        catch(ComponentLookupException e)
         {
-            copyConfigurationDirectory();
+            throw new MojoFailureException( "Unable to lookup the repository layout component '"
+                                            + repositoryLayout + "': " + e.getMessage() );
         }
     }
 
@@ -825,17 +849,6 @@ public class AssembleMojo
         }
 
         return extraJvmArguments;
-    }
-
-    /**
-     * Set the available repository layouts.
-     * 
-     * @param availableRepositoryLayouts
-     *            The repository layouts which are available.
-     */
-    public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )
-    {
-        this.availableRepositoryLayouts = availableRepositoryLayouts;
     }
 
     /**
