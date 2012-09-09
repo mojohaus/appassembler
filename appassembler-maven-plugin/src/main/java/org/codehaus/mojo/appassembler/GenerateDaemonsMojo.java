@@ -187,7 +187,7 @@ public class GenerateDaemonsMojo
     /**
      * The unix template of the generated script. It can be a file or resource path.
      * If not given, an internal one is used.
-     * Use with case since it not guaranteed to be compatible with new plugin release 
+     * Use with care since it not guaranteed to be compatible with future plugin releases.
      * @since 1.3
      * 
      * @parameter expression="${unixScriptTemplate}"
@@ -197,7 +197,7 @@ public class GenerateDaemonsMojo
     /**
      * The windows template of the generated script. It can be a file or resource path.
      * If not given, an internal one is used.
-     * Use with case since it is not guaranteed to be compatible with new plugin release
+     * Use with care since it is not guaranteed to be compatible with future plugin releases.
      * @since 1.3
      * 
      * @parameter expression="${unixScriptTemplate}"
