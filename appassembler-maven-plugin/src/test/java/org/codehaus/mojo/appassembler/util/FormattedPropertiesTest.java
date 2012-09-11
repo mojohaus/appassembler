@@ -27,6 +27,7 @@ import junit.framework.TestCase;
 
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringOutputStream;
+import org.codehaus.plexus.util.StringUtils;
 
 public class FormattedPropertiesTest
     extends TestCase
@@ -61,7 +62,8 @@ public class FormattedPropertiesTest
             IOUtil.close( asStream );
         }
 
-        assertEquals( expected.toString(), string.toString() );
+        String unified = StringUtils.unifyLineSeparators(expected.toString());
+        assertEquals(unified, string.toString());
     }
 
     public void testReadingProperties()

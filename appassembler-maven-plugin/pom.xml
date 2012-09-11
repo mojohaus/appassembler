@@ -39,7 +39,7 @@
   <properties>
     <its>*</its>
     <threadCount>2</threadCount>
-    <maven.version>2.0.10</maven.version>
+    <maven.version>2.2.1</maven.version>
   </properties>
 
   <prerequisites>
@@ -69,6 +69,10 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-interpolation</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>

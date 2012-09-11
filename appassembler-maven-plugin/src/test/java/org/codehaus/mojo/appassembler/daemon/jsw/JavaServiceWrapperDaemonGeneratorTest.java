@@ -21,9 +21,11 @@
 package org.codehaus.mojo.appassembler.daemon.jsw;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.codehaus.mojo.appassembler.daemon.AbstractDaemonGeneratorTest;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
@@ -45,8 +47,8 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
 
-        assertEquals( FileUtils
-                          .fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-1.conf" ) ),
+        assertEquals( normalizedLineEndingRead(
+            "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-1.conf" ),
                       FileUtils.fileRead( wrapper ) );
 
         File shellScript = new File( jswDir, "bin/app" );
@@ -62,11 +64,12 @@ public class JavaServiceWrapperDaemonGeneratorTest
         assertTrue( "Batch file is missing: " + batchFile.getAbsolutePath(), batchFile.isFile() );
 
         assertEquals( FileUtils
-                          .fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-1.bat" ) ),
+                          .fileRead(
+                              getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-1.bat" ) ),
                       FileUtils.fileRead( batchFile ) );
 
         assertEquals( ( new File( getBasedir()
-                          + "/target/classes/org/codehaus/mojo/appassembler/daemon/jsw/bin/wrapper-linux-x86-32" ) ).length(),
+                                      + "/target/classes/org/codehaus/mojo/appassembler/daemon/jsw/bin/wrapper-linux-x86-32" ) ).length(),
                       ( new File( jswDir, "bin/wrapper-linux-x86-32" ) ).length() );
 
         assertFileExists( jswDir, "lib/wrapper.jar" );
@@ -103,8 +106,8 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
 
-        assertEquals( FileUtils
-                          .fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-1.conf" ) ),
+        assertEquals( normalizedLineEndingRead(
+            "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-1.conf" ) ,
                       FileUtils.fileRead( wrapper ) );
 
         File shellScript = new File( jswDir, "bin/app" );
@@ -158,8 +161,8 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
 
-        assertEquals( FileUtils
-                          .fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/no-generator-configurations-wrapper.conf" ) ),
+        assertEquals( normalizedLineEndingRead(
+            "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/no-generator-configurations-wrapper.conf" ),
                       FileUtils.fileRead( wrapper ) );
 
         File shellScript = new File( jswDir, "bin/app" );
@@ -215,9 +218,18 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
 
-        assertEquals( FileUtils
-                          .fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-6.conf" ) ),
+        assertEquals( normalizedLineEndingRead(
+            "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-6.conf" ),
                       FileUtils.fileRead( wrapper ) );
+    }
+
+    private String normalizedLineEndingRead( String file )
+        throws IOException
+    {
+        String expected = FileUtils.fileRead(
+            getTestFile( file ) );
+        return StringUtils.unifyLineSeparators( expected );
+
     }
 
     public void testGenerateWithAllKnownPlatforms()
@@ -231,8 +243,8 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
 
-        assertEquals( FileUtils
-                          .fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-7.conf" ) ),
+        assertEquals( normalizedLineEndingRead(
+            "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-7.conf" ),
                       FileUtils.fileRead( wrapper ) );
 
         assertFileExists( jswDir, "lib/wrapper.jar" );
