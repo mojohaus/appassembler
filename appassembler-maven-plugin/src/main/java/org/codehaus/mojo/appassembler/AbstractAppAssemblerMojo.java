@@ -98,7 +98,11 @@ public abstract class AbstractAppAssemblerMojo
                     }
                 }
 
-                FileUtils.copyFile( source, destination );
+                if ( ! source.isDirectory() ) {
+                    //sometime target/classes is in the artiact list and copyFile() would fail. 
+                    // need to ignore this condition
+                    FileUtils.copyFile( source, destination );
+                }
 
                 getLog().info( "Installing artifact " + source.getPath() + " to " + destination );
 
