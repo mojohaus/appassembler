@@ -301,7 +301,7 @@ public class AssembleMojo
      * Use with case since it is not guaranteed to be compatible with new plugin release.
      * @since 1.3
      * 
-     * @parameter expression="${unixScriptTemplate}"
+     * @parameter expression="${windowsScriptTemplate}"
      */
     private String windowsScriptTemplate;
 
