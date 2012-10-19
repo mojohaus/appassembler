@@ -157,9 +157,9 @@ public class AssembleMojo
      * settings. This is only valid for the extraJvmArguments not for the rest
      * of the {@link JvmSettings#}.
      * 
-     * Since 1.2 it's possible to use place holder <code>@BASEDIR@</code> and <code>@REPO@</code> which will be expanded
+     * Since 1.2 it's possible to use place holders <code>@BASEDIR@</code> and <code>@REPO@</code> which will be expanded
      * based on the platform for
-     * which the appropriate script will generated.
+     * which the appropriate scripts will be generated.
      * 
      * @parameter
      */
@@ -174,21 +174,22 @@ public class AssembleMojo
     private Set platforms;
 
     /**
-     * Setup file in $BASEDIR/bin to be called prior to execution.
+     * Setup file in <code>$BASEDIR/bin</code> to be called prior to execution.
      * 
      * @parameter
      */
     private String environmentSetupFileName;
 
     /**
-     * Set to false to skip repository generation.
+     * Set to <code>false</code> to skip repository generation.
      * 
      * @parameter default-value="true"
      */
     private boolean generateRepository;
 
     /**
-     * Path (relative to assembleDirectory) of the desired output repository.
+     * Path (relative to <code>assembleDirectory</code>) of the desired output
+     * repository.
      * 
      * @parameter default-value="repo"
      */
@@ -211,7 +212,7 @@ public class AssembleMojo
      * 
      * @since 1.2.1
      * @parameter default-value="false"
-     * @deprecated Use useallProjectDependencies instead.
+     * @deprecated Use <code>useAllProjectDependencies</code> instead.
      */
     private boolean useAllDependencies;
 
@@ -238,7 +239,7 @@ public class AssembleMojo
      * 
      * @since 1.2.2
      * @parameter default-value="false"
-     * @deprecated Use useWildcardClassPath instead.
+     * @deprecated Use <code>useWildcardClassPath</code> instead.
      */
     private boolean useAsterikClassPath;
 
@@ -287,7 +288,7 @@ public class AssembleMojo
     /**
      * The unix template of the generated script. It can be a file or resource path.
      * If not given, an internal one is used.
-     * Use with case since it not guaranteed to be compatible with new plugin release 
+     * Use with case since it is not guaranteed to be compatible with new plugin release.
      * @since 1.3
      * 
      * @parameter expression="${unixScriptTemplate}"
@@ -297,7 +298,7 @@ public class AssembleMojo
     /**
      * The windows template of the generated script. It can be a file or resource path.
      * If not given, an internal one is used.
-     * Use with case since it is not guaranteed to be compatible with new plugin release
+     * Use with case since it is not guaranteed to be compatible with new plugin release.
      * @since 1.3
      * 
      * @parameter expression="${unixScriptTemplate}"
