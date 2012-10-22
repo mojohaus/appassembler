@@ -85,23 +85,6 @@ public class CreateRepositoryMojo
      */
     private String repoPath;
 
-    /**
-     * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
-     * (flat <code>lib/</code> style).
-     * The style "legacy" is only supported if you are running under Maven 2.2.1 and before.
-     * 
-     * @parameter default-value="default"
-     */
-    private String repositoryLayout;
-
-    /**
-     * For those snapshots download from remote repo, replace the timestamp part with "SNAPSHOT" instead
-     *
-     * @parameter default-value="true"
-     * @since 1.2.3
-     */
-    private boolean useTimestampInSnapshotFileName;
-
     // -----------------------------------------------------------------------
     // Read-only parameters
     // -----------------------------------------------------------------------

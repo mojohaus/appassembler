@@ -59,6 +59,32 @@ import org.codehaus.plexus.util.FileUtils;
 public abstract class AbstractAppAssemblerMojo
     extends AbstractMojo
 {
+    // -----------------------------------------------------------------------
+    // Parameters
+    // -----------------------------------------------------------------------
+
+    /**
+     * The layout of the generated Maven repository. Supported types - "default"
+     * (Maven2) | "legacy" (Maven1) | "flat" (flat <code>lib/</code> style). The
+     * style "legacy" is only supported if you are running under Maven 2.2.1 and
+     * before.
+     *
+     * @parameter default-value="default"
+     */
+    protected String repositoryLayout;
+
+    /**
+     * For those snapshots downloaded from a remote repo, replace the timestamp
+     * part with "SNAPSHOT" instead.
+     *
+     * @parameter default-value="true"
+     * @since 1.2.3 (create-repository), 1.3 (assemble and generate-daemons)
+     */
+    protected boolean useTimestampInSnapshotFileName;
+
+    // -----------------------------------------------------------------------
+    // Methods
+    // -----------------------------------------------------------------------
 
     /**
      * Copy artifact to another repository, with an option not to use timestamp in the snapshot filename.

@@ -138,16 +138,6 @@ public class AssembleMojo
     private boolean includeConfigurationDirectoryInClasspath;
 
     /**
-     * The layout of the generated Maven repository. Supported types - "default"
-     * (Maven2) | "legacy" (Maven1) | "flat" (flat <code>lib/</code> style). The
-     * style "legacy" is only supported if you are running under Maven 2.2.1 and
-     * before.
-     * 
-     * @parameter default-value="default"
-     */
-    private String repositoryLayout;
-
-    /**
      * Extra arguments that will be given to the JVM verbatim. If you define
      * JvmSettings on the {@link Program#setJvmSettings(JvmSettings)} level this
      * part will be overwritten by the given parameters on program level.
@@ -293,15 +283,6 @@ public class AssembleMojo
      */
     protected Map/* <String, String> */binFileExtensions;
 
-    /**
-     * For those snapshots download from remote repo, replace the timestamp part with "SNAPSHOT" instead
-     * 
-     * @parameter default-value="true"
-     * @since 1.3
-     */
-    private boolean useTimestampInSnapshotFileName;
-
-    
     /**
      * The unix template of the generated script. It can be a file or resource path.
      * If not given, an internal one is used.

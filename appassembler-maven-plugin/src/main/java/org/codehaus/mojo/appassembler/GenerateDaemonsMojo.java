@@ -109,15 +109,6 @@ public class GenerateDaemonsMojo
     private MavenProject project;
 
     /**
-     * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
-     * (flat <code>lib/</code> style).
-     * The style "legacy" is only supported if you are running under Maven 2.2.1 and before.
-     * 
-     * @parameter default-value="default"
-     */
-    private String repositoryLayout;
-
-    /**
      * You can define a license header file which will be used
      * instead the default header in the generated scripts.
      * 
@@ -166,14 +157,6 @@ public class GenerateDaemonsMojo
      * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
      */
     private Map availableRepositoryLayouts;
-
-    /**
-     * For those snapshots download from remote repo, replace the timestamp part with "SNAPSHOT" instead
-     * 
-     * @parameter default-value="true"
-     * @since 1.3
-     */
-    private boolean useTimestampInSnapshotFileName;
 
     /**
      * When enable, name wrapper configuration file as wrapper-${daemon.id}.conf
