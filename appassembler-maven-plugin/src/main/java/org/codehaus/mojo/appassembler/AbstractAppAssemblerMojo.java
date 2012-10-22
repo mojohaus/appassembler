@@ -61,7 +61,7 @@ public abstract class AbstractAppAssemblerMojo
 {
 
     /**
-     * Copy artifact to another repository with option not to use timestamp in the snapshot filename
+     * Copy artifact to another repository, with an option not to use timestamp in the snapshot filename.
      * @param artifact
      * @param artifactRepository
      * @param useTimestampInSnapshotFileName
@@ -93,14 +93,14 @@ public abstract class AbstractAppAssemblerMojo
                 {
                     if ( !useTimestampInSnapshotFileName )
                     {
-                        //dont want timestamp in the snapshot file during copy
+                        // Don't want timestamp in the snapshot file during copy
                         destination = new File( destination.getParentFile(), source.getName() );
                     }
                 }
 
                 if ( ! source.isDirectory() ) {
-                    //sometime target/classes is in the artiact list and copyFile() would fail. 
-                    // need to ignore this condition
+                    // Sometimes target/classes is in the artifact list and copyFile() would fail.
+                    // Need to ignore this condition
                     FileUtils.copyFile( source, destination );
                 }
 
@@ -115,7 +115,7 @@ public abstract class AbstractAppAssemblerMojo
     }
 
     /**
-     * Copy artifact to another repository 
+     * Copy artifact to another repository.
      * @param artifact
      * @param artifactRepository
      * @throws MojoExecutionException
