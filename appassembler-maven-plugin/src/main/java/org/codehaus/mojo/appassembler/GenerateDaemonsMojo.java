@@ -100,15 +100,6 @@ public class GenerateDaemonsMojo
     private File target;
 
     /**
-     * The maven project in question.
-     * 
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
-
-    /**
      * You can define a license header file which will be used
      * instead the default header in the generated scripts.
      * 
@@ -118,9 +109,32 @@ public class GenerateDaemonsMojo
     private File licenseHeaderFile;
 
     /**
-     * @component
+     * The unix template of the generated script. It can be a file or resource path.
+     * If not given, an internal one is used.
+     * Use with care since it not guaranteed to be compatible with future plugin releases.
+     * @since 1.3
+     *
+     * @parameter expression="${unixScriptTemplate}"
      */
-    private ArtifactRepositoryFactory artifactRepositoryFactory;
+    private String unixScriptTemplate;
+
+    /**
+     * When enable, name wrapper configuration file as wrapper-${daemon.id}.conf
+     *
+     * @parameter default-value="false"
+     * @since 1.3
+     */
+    private boolean useDaemonIdAsWrapperConfName;
+
+    /**
+     * The windows template of the generated script. It can be a file or resource path.
+     * If not given, an internal one is used.
+     * Use with care since it is not guaranteed to be compatible with future plugin releases.
+     * @since 1.3
+     *
+     * @parameter expression="${unixScriptTemplate}"
+     */
+    private String windowsScriptTemplate;
 
     // -----------------------------------------------------------------------
     // Read-only parameters
@@ -139,6 +153,15 @@ public class GenerateDaemonsMojo
     private ArtifactRepository localRepository;
 
     /**
+     * The maven project in question.
+     *
+     * @parameter expression="${project}"
+     * @required
+     * @readonly
+     */
+    private MavenProject project;
+
+    /**
      * @readonly
      * @parameter expression="${project.artifact}"
      */
@@ -151,7 +174,7 @@ public class GenerateDaemonsMojo
     /**
      * @component
      */
-    private DaemonGeneratorService daemonGeneratorService;
+    private ArtifactRepositoryFactory artifactRepositoryFactory;
 
     /**
      * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
@@ -159,33 +182,9 @@ public class GenerateDaemonsMojo
     private Map availableRepositoryLayouts;
 
     /**
-     * When enable, name wrapper configuration file as wrapper-${daemon.id}.conf
-     * 
-     * @parameter default-value="false"
-     * @since 1.3
+     * @component
      */
-    private boolean useDaemonIdAsWrapperConfName;
-
-    
-    /**
-     * The unix template of the generated script. It can be a file or resource path.
-     * If not given, an internal one is used.
-     * Use with care since it not guaranteed to be compatible with future plugin releases.
-     * @since 1.3
-     * 
-     * @parameter expression="${unixScriptTemplate}"
-     */
-    private String unixScriptTemplate;
-
-    /**
-     * The windows template of the generated script. It can be a file or resource path.
-     * If not given, an internal one is used.
-     * Use with care since it is not guaranteed to be compatible with future plugin releases.
-     * @since 1.3
-     * 
-     * @parameter expression="${unixScriptTemplate}"
-     */
-    private String windowsScriptTemplate;
+    private DaemonGeneratorService daemonGeneratorService;
 
     // -----------------------------------------------------------------------
     // AbstractMojo Implementation
