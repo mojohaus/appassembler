@@ -146,12 +146,6 @@ public class GenerateDaemonsMojo
     private List artifacts;
 
     /**
-     * @readonly
-     * @parameter expression="${localRepository}"
-     */
-    private ArtifactRepository localRepository;
-
-    /**
      * The maven project in question.
      *
      * @parameter expression="${project}"
@@ -159,12 +153,6 @@ public class GenerateDaemonsMojo
      * @readonly
      */
     private MavenProject project;
-
-    /**
-     * @readonly
-     * @parameter expression="${project.artifact}"
-     */
-    private Artifact projectArtifact;
 
     // -----------------------------------------------------------------------
     // Components

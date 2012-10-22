@@ -319,18 +319,6 @@ public class AssembleMojo
      */
     private List artifacts;
 
-    /**
-     * @readonly
-     * @parameter expression="${project.artifact}"
-     */
-    private Artifact projectArtifact;
-
-    /**
-     * @readonly
-     * @parameter expression="${localRepository}"
-     */
-    private ArtifactRepository localRepository;
-
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------

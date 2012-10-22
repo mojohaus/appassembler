@@ -100,18 +100,6 @@ public class CreateRepositoryMojo
      */
     private String pluginVersion;
 
-    /**
-     * @readonly
-     * @parameter expression="${localRepository}"
-     */
-    private ArtifactRepository localRepository;
-
-    /**
-     * @readonly
-     * @parameter expression="${project.artifact}"
-     */
-    private Artifact projectArtifact;
-
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------

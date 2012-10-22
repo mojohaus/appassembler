@@ -84,6 +84,22 @@ public abstract class AbstractAppAssemblerMojo
     protected boolean useTimestampInSnapshotFileName;
 
     // -----------------------------------------------------------------------
+    // Read-only parameters
+    // -----------------------------------------------------------------------
+
+    /**
+     * @readonly
+     * @parameter expression="${localRepository}"
+     */
+    protected ArtifactRepository localRepository;
+
+    /**
+     * @readonly
+     * @parameter expression="${project.artifact}"
+     */
+    protected Artifact projectArtifact;
+
+    // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
 
@@ -92,7 +108,7 @@ public abstract class AbstractAppAssemblerMojo
      */
     protected ArtifactRepositoryFactory artifactRepositoryFactory;
 
-  // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     // Methods
     // -----------------------------------------------------------------------
 
