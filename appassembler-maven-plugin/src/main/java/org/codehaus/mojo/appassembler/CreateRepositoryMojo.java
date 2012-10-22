@@ -43,7 +43,7 @@ import org.apache.maven.plugin.MojoFailureException;
 
 /**
  * Creates an appassembler repository. Note that this is deliberately a bit more specific than the assembly plugin
- * version - if it can generate a flat layout and exclude JARs, it may be a suitable replacement.
+ * version - if that could generate a flat layout and exclude JARs, it may be a suitable replacement.
  * 
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
  * @version $Id$
@@ -80,9 +80,19 @@ public class CreateRepositoryMojo
      * 
      * @required
      * @parameter default-value="repo"
+     * @deprecated Use <code>repositoryName</code> instead.
      * @todo customisation doesn't work due to the shell scripts not honouring it
      */
     private String repoPath;
+
+    /**
+     * Path (relative to <code>assembleDirectory</code>) of the desired output
+     * repository.
+     *
+     * @parameter default-value="repo"
+     * @todo Customization doesn't work due to the shell scripts not honouring it
+     */
+    private String repositoryName;
 
     // -----------------------------------------------------------------------
     // Read-only parameters
@@ -143,10 +153,21 @@ public class CreateRepositoryMojo
         // Initialize
         // -----------------------------------------------------------------------
 
-        String path = "file://" + assembleDirectory.getAbsolutePath() + "/" + repoPath;
+        StringBuffer path = new StringBuffer( "file://" + assembleDirectory.getAbsolutePath() + "/" );
+
+        // If repositoryName is configured to anything but the default value - use it
+        if ( !"repo".equals( repositoryName ) )
+        {
+            path.append( repositoryName );
+        }
+        else
+        {
+            // Fall back to deprecated parameter for backwards compatibility
+            path.append( repoPath );
+        }
 
         ArtifactRepository artifactRepository = artifactRepositoryFactory
-            .createDeploymentArtifactRepository( "appassembler", path, artifactRepositoryLayout, true );
+            .createDeploymentArtifactRepository( "appassembler", path.toString(), artifactRepositoryLayout, true );
 
         // -----------------------------------------------------------------------
         // Install the project's artifact in the new repository
