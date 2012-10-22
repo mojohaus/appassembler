@@ -33,7 +33,7 @@
 
 The 'daemon' Mechanism
 
- The 'daemon' mechanism is a generic way to declare how to start you application. The name 'daemon' might be a bit
+ The 'daemon' mechanism is a generic way to declare how to start your application. The name 'daemon' might be a bit
  misleading but it can be used to generate scripts for 'normal' applications (like GUI applications).
 
 * Available Platforms
@@ -44,8 +44,8 @@ The 'daemon' Mechanism
   extended set of properties.
 
   * <<booter-unix>> and <<booter-windows>>: generates a shell script and an xml file. The XML file contains a list of
-  all required dependencies and their paths within the repository. The shell script create a very small class path and
-  runs a custom main method that will read the XML file, build a custom class loader and starts the declared
+  all required dependencies and their paths within the repository. The shell script creates a very small class path and
+  runs a custom main method that will read the XML file, build a custom class loader and start the declared
   application. Note that to get this to work your application has to depend on
   <<<org.codehaus.mojo.appassembler:appassembler-booter>>>
 
