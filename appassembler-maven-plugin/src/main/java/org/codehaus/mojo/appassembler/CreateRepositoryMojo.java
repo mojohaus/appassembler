@@ -90,6 +90,7 @@ public class CreateRepositoryMojo
      * repository.
      *
      * @parameter default-value="repo"
+     * @since 1.4
      * @todo Customization doesn't work due to the shell scripts not honouring it
      */
     private String repositoryName;
