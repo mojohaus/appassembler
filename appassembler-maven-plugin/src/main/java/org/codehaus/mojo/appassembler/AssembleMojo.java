@@ -35,7 +35,6 @@ import java.util.StringTokenizer;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -335,11 +334,6 @@ public class AssembleMojo
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
-
-    /**
-     * @component
-     */
-    private ArtifactRepositoryFactory artifactRepositoryFactory;
 
     /**
      * @component
