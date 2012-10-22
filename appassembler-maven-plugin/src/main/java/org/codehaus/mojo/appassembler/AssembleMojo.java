@@ -345,6 +345,10 @@ public class AssembleMojo
      */
     private DaemonGeneratorService daemonGeneratorService;
 
+    // ----------------------------------------------------------------------
+    // Variables
+    // ----------------------------------------------------------------------
+
     /**
      * A reference to the Plexus container so that we can do our own component
      * lookups, which was required to solve MAPPASM-96.
