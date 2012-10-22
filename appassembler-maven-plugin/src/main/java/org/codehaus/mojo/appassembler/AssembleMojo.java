@@ -196,6 +196,15 @@ public class AssembleMojo
     private String repositoryName;
 
     /**
+     * You can define a license header file which will be used instead the
+     * default header in the generated scripts.
+     *
+     * @parameter
+     * @since 1.2
+     */
+    private File licenseHeaderFile;
+
+    /**
      * This can be used to put the project artifact as the first entry in the
      * classpath after the configuration folder (<code>etc</code> by default).
      * The default behavior is to have the project artifact at the last position
@@ -205,6 +214,14 @@ public class AssembleMojo
      * @parameter default-value="false"
      */
     private boolean projectArtifactFirstInClassPath;
+
+    /**
+     * Show console window when execute this application. When false, the generated java command runs in background.
+     * This works best for Swing application where the command line invocation is not blocked.
+     *
+     * @parameter default-value="true"
+     */
+    private boolean showConsoleWindow;
 
     /**
      * The following can be used to use all dependencies instead of the default
@@ -334,23 +351,6 @@ public class AssembleMojo
      */
     private ArtifactRepository localRepository;
 
-    /**
-     * Show console window when execute this application. When false, the generated java command runs in background.
-     * This works best for Swing application where the command line invocation is not blocked.
-     * 
-     * @parameter default-value="true"
-     */
-    private boolean showConsoleWindow;
-
-    /**
-     * You can define a license header file which will be used instead the
-     * default header in the generated scripts.
-     * 
-     * @parameter
-     * @since 1.2
-     */
-    private File licenseHeaderFile;
-
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -384,6 +384,10 @@ public class AssembleMojo
         "unix",
         "windows" } ) ) );
 
+
+    // -----------------------------------------------------------------------
+    // Plexus Implementation
+    // -----------------------------------------------------------------------
 
     /**
      * {@inheritDoc}

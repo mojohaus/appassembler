@@ -69,6 +69,14 @@ public class CreateRepositoryMojo
     private File assembleDirectory;
 
     /**
+     * Whether to install the booter artifacts into the repository. This may be needed if you are using the Shell script
+     * generators.
+     *
+     * @parameter default-value="false"
+     */
+    private boolean installBooterArtifacts;
+
+    /**
      * The directory that will be used for the dependencies, relative to <code>assembleDirectory</code>.
      * 
      * @required
@@ -85,6 +93,14 @@ public class CreateRepositoryMojo
      * @parameter default-value="default"
      */
     private String repositoryLayout;
+
+    /**
+     * For those snapshots download from remote repo, replace the timestamp part with "SNAPSHOT" instead
+     *
+     * @parameter default-value="true"
+     * @since 1.2.3
+     */
+    private boolean useTimestampInSnapshotFileName;
 
     // -----------------------------------------------------------------------
     // Read-only parameters
@@ -114,22 +130,6 @@ public class CreateRepositoryMojo
      */
     private Artifact projectArtifact;
 
-    /**
-     * Whether to install the booter artifacts into the repository. This may be needed if you are using the Shell script
-     * generators.
-     * 
-     * @parameter default-value="false"
-     */
-    private boolean installBooterArtifacts;
-
-    /**
-     * For those snapshots download from remote repo, replace the timestamp part with "SNAPSHOT" instead
-     * 
-     * @parameter default-value="true"
-     * @since 1.2.3
-     */
-    private boolean useTimestampInSnapshotFileName;
-
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -152,6 +152,10 @@ public class CreateRepositoryMojo
 
     /** @component */
     private ArtifactMetadataSource metadataSource;
+
+    // -----------------------------------------------------------------------
+    // AbstractMojo Implementation
+    // -----------------------------------------------------------------------
 
     /* (non-Javadoc)
      * @see org.apache.maven.plugin.AbstractMojo#execute()
