@@ -131,7 +131,7 @@ public class GenerateDaemonsMojo
      * Use with care since it is not guaranteed to be compatible with future plugin releases.
      * @since 1.3
      *
-     * @parameter expression="${unixScriptTemplate}"
+     * @parameter expression="${windowsScriptTemplate}"
      */
     private String windowsScriptTemplate;
 
