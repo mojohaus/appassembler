@@ -107,13 +107,13 @@ public class CreateRepositoryMojo
     /** @component */
     private ArtifactFactory artifactFactory;
 
+    /** @component */
+    private ArtifactResolver artifactResolver;
+
     /**
      * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
      */
     private Map availableRepositoryLayouts;
-
-    /** @component */
-    private ArtifactResolver artifactResolver;
 
     /** @component */
     private ArtifactMetadataSource metadataSource;

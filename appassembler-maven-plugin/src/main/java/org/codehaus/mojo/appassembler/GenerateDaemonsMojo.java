@@ -57,6 +57,14 @@ public class GenerateDaemonsMojo
     // -----------------------------------------------------------------------
 
     /**
+     * The base directory of the project.
+     *
+     * @parameter expression="${basedir}"
+     * @required
+     */
+    private File basedir;
+
+    /**
      * Set of {@linkplain Daemon}s to generate.
      * 
      * @parameter
@@ -83,22 +91,6 @@ public class GenerateDaemonsMojo
     private String environmentSetupFileName;
 
     /**
-     * The base directory of the project.
-     * 
-     * @parameter expression="${basedir}"
-     * @required
-     */
-    private File basedir;
-
-    /**
-     * Target directory for generated daemons.
-     * 
-     * @parameter expression="${project.build.directory}/generated-resources/appassembler"
-     * @required
-     */
-    private File target;
-
-    /**
      * You can define a license header file which will be used
      * instead the default header in the generated scripts.
      * 
@@ -106,6 +98,14 @@ public class GenerateDaemonsMojo
      * @since 1.2
      */
     private File licenseHeaderFile;
+
+    /**
+     * Target directory for generated daemons.
+     *
+     * @parameter expression="${project.build.directory}/generated-resources/appassembler"
+     * @required
+     */
+    private File target;
 
     /**
      * The unix template of the generated script. It can be a file or resource path.

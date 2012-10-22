@@ -89,12 +89,20 @@ public class AssembleMojo
     private File assembleDirectory;
 
     /**
-     * The set of Programs that bin files will be generated for.
-     * 
-     * @required
+     * The file extensions to use for bin files. The file extensions are stored
+     * in a Map that uses the platform name as key. To change the file extension
+     * for Unix bin files to ".sh" use this configuration:
+     *
+     * <pre>
+     *          &lt;binFileExtensions&gt;
+     *            &lt;unix&gt;.sh&lt;/unix&gt;
+     *          &lt;/binFileExtensions&gt;
+     * </pre>
+     *
      * @parameter
+     * @since 1.1
      */
-    private Set programs;
+    protected Map/* <String, String> */binFileExtensions;
 
     /**
      * Define the name of binary folder.
@@ -128,13 +136,11 @@ public class AssembleMojo
     private boolean copyConfigurationDirectory;
 
     /**
-     * If the <code>configurationDirectory</code> (<code>etc</code> by default)
-     * should be included in the beginning of the classpath in the generated bin
-     * files.
-     * 
-     * @parameter default-value="true"
+     * Setup file in <code>$BASEDIR/bin</code> to be called prior to execution.
+     *
+     * @parameter
      */
-    private boolean includeConfigurationDirectoryInClasspath;
+    private String environmentSetupFileName;
 
     /**
      * Extra arguments that will be given to the JVM verbatim. If you define
@@ -155,34 +161,20 @@ public class AssembleMojo
     private String extraJvmArguments;
 
     /**
-     * The default platforms the plugin will generate bin files for. Configure
-     * with string values - "all"(default/empty) | "windows" | "unix".
-     * 
-     * @parameter
-     */
-    private Set platforms;
-
-    /**
-     * Setup file in <code>$BASEDIR/bin</code> to be called prior to execution.
-     * 
-     * @parameter
-     */
-    private String environmentSetupFileName;
-
-    /**
      * Set to <code>false</code> to skip repository generation.
-     * 
+     *
      * @parameter default-value="true"
      */
     private boolean generateRepository;
 
     /**
-     * Path (relative to <code>assembleDirectory</code>) of the desired output
-     * repository.
-     * 
-     * @parameter default-value="repo"
+     * If the <code>configurationDirectory</code> (<code>etc</code> by default)
+     * should be included in the beginning of the classpath in the generated bin
+     * files.
+     *
+     * @parameter default-value="true"
      */
-    private String repositoryName;
+    private boolean includeConfigurationDirectoryInClasspath;
 
     /**
      * You can define a license header file which will be used instead the
@@ -194,15 +186,39 @@ public class AssembleMojo
     private File licenseHeaderFile;
 
     /**
+     * The default platforms the plugin will generate bin files for. Configure
+     * with string values - "all"(default/empty) | "windows" | "unix".
+     * 
+     * @parameter
+     */
+    private Set platforms;
+
+    /**
+     * The set of Programs that bin files will be generated for.
+     *
+     * @required
+     * @parameter
+     */
+    private Set programs;
+
+    /**
      * This can be used to put the project artifact as the first entry in the
      * classpath after the configuration folder (<code>etc</code> by default).
      * The default behavior is to have the project artifact at the last position
      * in classpath.
-     * 
+     *
      * @since 1.2.1
      * @parameter default-value="false"
      */
     private boolean projectArtifactFirstInClassPath;
+
+    /**
+     * Path (relative to <code>assembleDirectory</code>) of the desired output
+     * repository.
+     * 
+     * @parameter default-value="repo"
+     */
+    private String repositoryName;
 
     /**
      * Show console window when execute this application. When false, the generated java command runs in background.
@@ -211,6 +227,16 @@ public class AssembleMojo
      * @parameter default-value="true"
      */
     private boolean showConsoleWindow;
+
+    /**
+     * The unix template of the generated script. It can be a file or resource path.
+     * If not given, an internal one is used.
+     * Use with case since it is not guaranteed to be compatible with new plugin release.
+     * @since 1.3
+     *
+     * @parameter expression="${unixScriptTemplate}"
+     */
+    private String unixScriptTemplate;
 
     /**
      * The following can be used to use all dependencies instead of the default
@@ -267,32 +293,6 @@ public class AssembleMojo
     private boolean useWildcardClassPath;
 
     /**
-     * The file extensions to use for bin files. The file extensions are stored
-     * in a Map that uses the platform name as key. To change the file extension
-     * for Unix bin files to ".sh" use this configuration:
-     * 
-     * <pre>
-     *          &lt;binFileExtensions&gt;
-     *            &lt;unix&gt;.sh&lt;/unix&gt;
-     *          &lt;/binFileExtensions&gt;
-     * </pre>
-     * 
-     * @parameter
-     * @since 1.1
-     */
-    protected Map/* <String, String> */binFileExtensions;
-
-    /**
-     * The unix template of the generated script. It can be a file or resource path.
-     * If not given, an internal one is used.
-     * Use with case since it is not guaranteed to be compatible with new plugin release.
-     * @since 1.3
-     * 
-     * @parameter expression="${unixScriptTemplate}"
-     */
-    private String unixScriptTemplate;
-
-    /**
      * The windows template of the generated script. It can be a file or resource path.
      * If not given, an internal one is used.
      * Use with case since it is not guaranteed to be compatible with new plugin release.
@@ -309,15 +309,15 @@ public class AssembleMojo
 
     /**
      * @readonly
-     * @parameter expression="${project}"
-     */
-    private MavenProject mavenProject;
-
-    /**
-     * @readonly
      * @parameter expression="${project.runtimeArtifacts}"
      */
     private List artifacts;
+
+    /**
+     * @readonly
+     * @parameter expression="${project}"
+     */
+    private MavenProject mavenProject;
 
     // -----------------------------------------------------------------------
     // Components
