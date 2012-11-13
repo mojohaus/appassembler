@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -48,13 +49,13 @@ import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.mojo.appassembler.util.ArtifactUtils;
+import org.codehaus.mojo.appassembler.util.FileFilterHelper;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
 // @deprecated Use the generate-daemons goal instead
@@ -693,6 +694,8 @@ public class AssembleMojo
                 + configurationSourceDirectory.getAbsolutePath() );
         }
 
+        getLog().debug("copying configuration directory.");
+
         File configurationTargetDirectory = new File( assembleDirectory.getAbsolutePath(), configurationDirectory );
         if ( !configurationTargetDirectory.exists() )
         {
@@ -710,8 +713,8 @@ public class AssembleMojo
                 getLog().debug( "Will try to copy configuration files from "
                                     + configurationSourceDirectory.getAbsolutePath() + " to "
                                     + configurationTargetDirectory.getAbsolutePath() );
-                FileUtils.copyDirectory( configurationSourceDirectory, configurationTargetDirectory, null,
-                                         getDefaultExcludesAsCommaSeparatedString() );
+                
+                FileUtils.copyDirectory(configurationSourceDirectory, configurationTargetDirectory, FileFilterHelper.createDefaultFilter());
             }
             catch ( IOException e )
             {
@@ -720,25 +723,7 @@ public class AssembleMojo
         }
     }
 
-    private String getDefaultExcludesAsCommaSeparatedString()
-    {
-        StringBuffer defaultExcludes = new StringBuffer();
-
-        List defaultExcludesAsList = FileUtils.getDefaultExcludesAsList();
-        Iterator iterator = defaultExcludesAsList.iterator();
-        while ( iterator.hasNext() )
-        {
-            String exclude = (String) iterator.next();
-            defaultExcludes.append( exclude );
-            if ( iterator.hasNext() )
-            {
-                defaultExcludes.append( "," );
-            }
-        }
-
-        return defaultExcludes.toString();
-    }
-
+    
     private Set validatePlatforms( Set platformsToValidate, Set defaultPlatforms )
         throws MojoFailureException
     {
