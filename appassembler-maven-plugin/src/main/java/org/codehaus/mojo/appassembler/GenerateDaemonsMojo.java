@@ -193,7 +193,7 @@ public class GenerateDaemonsMojo
         throws MojoExecutionException, MojoFailureException
     {
         
-        if ( useWildcardClassPath && !repositoryLayout.equalsIgnoreCase( "flat" ) )
+        if ( isUseWildcardClassPath() && !repositoryLayout.equalsIgnoreCase( "flat" ) )
         {
             throw new MojoExecutionException( "The useWildcardClassPath works only in combination with repositoryLayout flat." );
         }
@@ -408,4 +408,26 @@ public class GenerateDaemonsMojo
     {
         this.daemons = daemons;
     }
+    
+    /**
+     * Should the <code>/*</code> part for the classpath be used or not.
+     * 
+     * @return true if the wild card class path will be used false otherwise.
+     */
+    public boolean isUseWildcardClassPath()
+    {
+        return useWildcardClassPath;
+    }
+
+    /**
+     * Use wildcard classpath or not.
+     * 
+     * @param useWildcardClassPath
+     *            true to use wildcard classpath false otherwise.
+     */
+    public void setUseWildcardClassPath( boolean useWildcardClassPath )
+    {
+        this.useWildcardClassPath = useWildcardClassPath;
+    }
+
 }

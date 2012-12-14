@@ -426,6 +426,16 @@ public class AssembleMojo
                                               "The useAsterikClassPath/useWildcardClassPath works only in combination with repositoryLayout flat." );
         }
 
+        if ( isUseAsterikClassPath() ) 
+        {
+            getLog().warn("The usuage of useAsterikClassPath is marked as deprecated. Please use useWildcardClassPath instead");
+        }
+        
+        if ( isUseAllDependencies() )
+        {
+            getLog().warn("The usuage of useAllDependencies marked as deprecated. Please use useAllProjectDependencies instead");
+        }
+
         // Set the extensions for bin files for the different platforms
         setBinFileExtensions();
 
