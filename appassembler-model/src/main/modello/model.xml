@@ -94,6 +94,12 @@
           <defaultValue>false</defaultValue>
         </field>
         <field>
+          <name>useWildcardClassPath</name>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+        </field>
+        <field>
           <name>generatorConfigurations</name>
           <version>1.0.0+</version>
           <association>

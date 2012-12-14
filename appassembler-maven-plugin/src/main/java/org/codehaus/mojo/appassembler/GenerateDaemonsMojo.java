@@ -126,6 +126,23 @@ public class GenerateDaemonsMojo
     private boolean useDaemonIdAsWrapperConfName;
 
     /**
+     * Sometimes it happens that you have many dependencies
+     * which means in other words having a very long classpath.
+     * And sometimes the classpath becomes too long (in particular
+     * on Windows based platforms). This option can help in such
+     * situation. If you activate that your classpath contains only a
+     * <a href=
+     * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html"
+     * >classpath wildcard</a> (REPO/*). But be aware that this works only in combination
+     * with Java 1.6 and above and with {@link #repositoryLayout} <code>flat</code>.
+     * Otherwise this configuration will not work.
+     * 
+     * @since 1.3.1
+     * @parameter default-value="false"
+     */
+    private boolean useWildcardClassPath;
+
+    /**
      * The windows template of the generated script. It can be a file or resource path.
      * If not given, an internal one is used.
      * Use with care since it is not guaranteed to be compatible with future plugin releases.
@@ -175,6 +192,12 @@ public class GenerateDaemonsMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
+        
+        if ( useWildcardClassPath && !repositoryLayout.equalsIgnoreCase( "flat" ) )
+        {
+            throw new MojoExecutionException( "The useWildcardClassPath works only in combination with repositoryLayout flat." );
+        }
+
         for ( Iterator itd = daemons.iterator(); itd.hasNext(); )
         {
             Daemon daemon = (Daemon) itd.next();
@@ -229,6 +252,7 @@ public class GenerateDaemonsMojo
             modelDaemon.setEnvironmentSetupFileName( environmentSetupFileName );
             modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
             modelDaemon.setUseDaemonIdAsWrapperConfName( useDaemonIdAsWrapperConfName );
+            modelDaemon.setUseWildcardClassPath( useWildcardClassPath );
             
             if ( this.unixScriptTemplate != null ) {
                 modelDaemon.setUnixScriptTemplate( unixScriptTemplate );

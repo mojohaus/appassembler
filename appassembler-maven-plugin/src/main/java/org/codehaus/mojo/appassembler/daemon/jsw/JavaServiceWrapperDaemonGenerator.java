@@ -1,5 +1,5 @@
 /**
- * The MIT License
+# * The MIT License
  * 
  * Copyright 2006-2012 The Codehaus.
  * 
@@ -356,21 +356,27 @@ public class JavaServiceWrapperDaemonGenerator
         MavenProject project = request.getMavenProject();
         ArtifactRepositoryLayout layout = request.getRepositoryLayout();
 
-        confFile
-            .setProperty( wrapperClassPathPrefix + counter++,
-                          "%REPO_DIR%/" + createDependency( layout, project.getArtifact(), true ).getRelativePath() );
-
-        Iterator j = project.getRuntimeArtifacts().iterator();
-        while ( j.hasNext() )
+        if ( daemon.isUseWildcardClassPath() ) 
         {
-            Artifact artifact = (Artifact) j.next();
-
-            confFile.setProperty( wrapperClassPathPrefix + counter,
-                                  "%REPO_DIR%/"
-                                      + createDependency( layout, artifact, daemon.isUseTimestampInSnapshotFileName() )
-                                          .getRelativePath() );
-            counter++;
+            confFile.setProperty( wrapperClassPathPrefix + counter++, "%REPO_DIR%/*" );
+        } 
+        else 
+        {
+            confFile.setProperty( wrapperClassPathPrefix + counter++, "%REPO_DIR%/" + createDependency( layout, project.getArtifact(), true ).getRelativePath() );
+            
+            Iterator j = project.getRuntimeArtifacts().iterator();
+            while ( j.hasNext() )
+            {
+                Artifact artifact = (Artifact) j.next();
+                
+                confFile.setProperty( wrapperClassPathPrefix + counter,
+                        "%REPO_DIR%/"
+                                + createDependency( layout, artifact, daemon.isUseTimestampInSnapshotFileName() )
+                                .getRelativePath() );
+                counter++;
+            }
         }
+
 
         String configurationDirLast = configuration.getProperty( "configuration.directory.in.classpath.last" );
         if ( configurationDirLast != null )
