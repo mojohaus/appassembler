@@ -296,7 +296,7 @@ public class AssembleMojo
     /**
      * The windows template of the generated script. It can be a file or resource path.
      * If not given, an internal one is used.
-     * Use with case since it is not guaranteed to be compatible with new plugin release.
+     * Use with care since it is not guaranteed to be compatible with new plugin release.
      * @since 1.3
      * 
      * @parameter expression="${windowsScriptTemplate}"
