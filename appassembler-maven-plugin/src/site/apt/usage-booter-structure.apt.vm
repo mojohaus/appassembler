@@ -72,11 +72,11 @@ The 'Booter' Mechanism
     |       |-- mojo
     |       |   `-- appassembler
     |       |       |-- appassembler-booter
-    |       |       |   `-- 1.2.1
-    |       |       |       `-- appassembler-booter-1.2.1.jar
+    |       |       |   `-- ${project.version}
+    |       |       |       `-- appassembler-booter-${project.version}.jar
     |       |       |-- appassembler-model
-    |       |       |   `-- 1.2.1
-    |       |       |       `-- appassembler-model-1.2.1.jar
+    |       |       |   `-- ${project.version}
+    |       |       |       `-- appassembler-model-${project.version}.jar
     |       |       `-- example
     |       |           `-- appassembler-example-booter
     |       |               `-- 1.0-SNAPSHOT
