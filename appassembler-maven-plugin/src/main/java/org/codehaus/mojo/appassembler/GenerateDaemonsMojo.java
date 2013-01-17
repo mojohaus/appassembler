@@ -47,7 +47,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @goal generate-daemons
  * @requiresDependencyResolution runtime
  * @phase package
- * @threadsafe
+ * @threadSafe
  */
 public class GenerateDaemonsMojo
     extends AbstractAppAssemblerMojo

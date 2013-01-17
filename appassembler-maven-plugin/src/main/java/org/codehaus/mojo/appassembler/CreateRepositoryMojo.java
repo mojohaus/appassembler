@@ -50,7 +50,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * @goal create-repository
  * @requiresDependencyResolution runtime
  * @phase package
- * @threadsafe
+ * @threadSafe
  */
 public class CreateRepositoryMojo
     extends AbstractAppAssemblerMojo
