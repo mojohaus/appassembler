@@ -78,7 +78,7 @@ goto endInit
 :endInit
 
 %JAVACMD% %JAVA_OPTS% Yo dude -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" foo.Bar %CMD_LINE_ARGS%
-if ERRORLEVEL 1 goto error
+if %ERRORLEVEL% NEQ 0 goto error
 goto end
 
 :error

@@ -60,7 +60,7 @@ goto endInit
 :endInit
 
 %JAVACMD% %JAVA_OPTS% #EXTRA_JVM_ARGUMENTS# -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="#APP_NAME#" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" #MAINCLASS# #APP_ARGUMENTS#%CMD_LINE_ARGS%
-if ERRORLEVEL 1 goto error
+if %ERRORLEVEL% NEQ 0 goto error
 goto end
 
 :error
