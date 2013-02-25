@@ -314,6 +314,37 @@ public class JavaServiceWrapperDaemonGeneratorTest
                       FileUtils.fileRead( batchFile ) );
     }
 
+    public void testGenerationWithWrapperPidFile()
+        throws Exception
+    {
+        runTest( "jsw", "src/test/resources/project-9/pom.xml", "src/test/resources/project-9/descriptor.xml",
+                 "target/output-9-jsw" );
+
+        File jswDir = getTestFile( "target/output-9-jsw/app" );
+        File wrapper = new File( jswDir, "conf/wrapper.conf" );
+
+        assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
+
+        String dir = "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw";
+
+        String testFile = dir + "/wrapper-9.conf";
+        assertEquals( "Comparing " + testFile + " to " + wrapper,
+                      normalizeLineTerminators( FileUtils.fileRead( getTestFile( testFile ) ) ),
+                      normalizeLineTerminators( FileUtils.fileRead( wrapper ) ) );
+
+        File shellScript = new File( jswDir, "bin/app" );
+
+        assertTrue( "Shell script file is missing: " + shellScript.getAbsolutePath(), shellScript.isFile() );
+
+        testFile = dir + "/run-9.sh";
+        assertEquals( "Comparing " + testFile + " to " + shellScript,
+                      normalizeLineTerminators( FileUtils.fileRead( getTestFile( testFile ) ) ),
+                      normalizeLineTerminators( FileUtils.fileRead( shellScript ) ) );
+
+        // there are no changes in batch file so we don't check it here
+
+    }
+
     private static void assertFileExists( File jswDir, String file )
     {
         File wrapperJar = new File( jswDir, file );

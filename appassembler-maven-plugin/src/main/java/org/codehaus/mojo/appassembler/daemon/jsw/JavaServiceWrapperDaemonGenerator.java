@@ -121,9 +121,11 @@ public class JavaServiceWrapperDaemonGenerator
             runAsUserEnvVar = "RUN_AS_USER=" + runAsUserEnvVar;
             configuration.remove( "run.as.user.envvar" );
         }
+        String pidFile = configuration.getProperty("wrapper.pidfile", "$BASEDIR/logs");
 
         Properties context = createContext( request, daemon );
         context.setProperty( "app.base.envvar", appBaseEnvVar );
+        context.setProperty( "wrapper.pidfile", pidFile );
         context.setProperty( "run.as.user.envvar", runAsUserEnvVar );
         context.setProperty( "wrapper.conf.fileName", this.getWrapperConfigFileName( daemon ) );
 

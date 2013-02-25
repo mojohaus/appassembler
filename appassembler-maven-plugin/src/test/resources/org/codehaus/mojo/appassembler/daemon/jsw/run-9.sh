@@ -37,8 +37,8 @@
 # These settings can be modified to fit the needs of your application
 
 # Application
-APP_NAME="@app.name@"
-APP_LONG_NAME="@app.long.name@"
+APP_NAME="app"
+APP_LONG_NAME="Test Project"
 
 # discover BASEDIR
 BASEDIR=`dirname "$0"`/..
@@ -56,18 +56,18 @@ if [ $? = 0 ]; then
    cd "$_PWD"
 fi
 
-@env.setup.unix@
+
 
 # Wrapper
 WRAPPER_CMD="./wrapper"
-WRAPPER_CONF="$BASEDIR/conf/@wrapper.conf.fileName@"
+WRAPPER_CONF="$BASEDIR/conf/wrapper.conf"
 
 # Priority at which to run the wrapper.  See "man nice" for valid priorities.
 #  nice is only used if a priority is specified.
 PRIORITY=
 
 # Location of the pid file.
-PIDDIR="@wrapper.pidfile@"
+PIDDIR="$BASEDIR/test"
 
 # If uncommented, causes the Wrapper to be shutdown using an anchor file.
 #  When launched with the 'start' command, it will also ignore all INT and
@@ -83,11 +83,11 @@ PIDDIR="@wrapper.pidfile@"
 #  the JVM and is not useful in situations where a privileged resource or
 #  port needs to be allocated prior to the user being changed.
 #RUN_AS_USER=
-@run.as.user.envvar@
+
 # The following two lines are used by the chkconfig command. Change as is
 #  appropriate for your application.  They should remain commented.
 # chkconfig: 2345 20 80
-# description: @app.long.name@
+# description: Test Project
 
 # Do not modify anything beyond this point
 #-----------------------------------------------------------------------------
