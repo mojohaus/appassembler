@@ -53,7 +53,7 @@
       <item name="Arguments" href="usage-program-arguments.html" />
       <item name="Generated Structure" href="usage-program-structure.html" />
     </menu>
-    <menu name="Deamons">
+    <menu name="Daemons">
       <item name="Scripts" href="usage-daemon-scripts.html" />
       <item name="Platforms" href="usage-daemon-platforms.html" />
       <item name="JVM Settings" href="usage-daemon-jvmsettings.html" />
