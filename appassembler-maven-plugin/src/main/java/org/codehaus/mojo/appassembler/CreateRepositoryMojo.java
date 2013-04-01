@@ -70,7 +70,7 @@ public class CreateRepositoryMojo
     /**
      * Whether to install the booter artifacts into the repository. This may be needed if you are using the Shell script
      * generators.
-     *
+     * 
      * @parameter default-value="false"
      */
     private boolean installBooterArtifacts;
@@ -86,9 +86,8 @@ public class CreateRepositoryMojo
     private String repoPath;
 
     /**
-     * Path (relative to <code>assembleDirectory</code>) of the desired output
-     * repository.
-     *
+     * Path (relative to <code>assembleDirectory</code>) of the desired output repository.
+     * 
      * @parameter default-value="repo"
      * @since 1.4
      * @todo Customization doesn't work due to the shell scripts not honouring it
@@ -133,7 +132,8 @@ public class CreateRepositoryMojo
     // AbstractMojo Implementation
     // -----------------------------------------------------------------------
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
     public void execute()
@@ -143,8 +143,8 @@ public class CreateRepositoryMojo
         // Create new repository for dependencies
         // ----------------------------------------------------------------------
 
-        ArtifactRepositoryLayout artifactRepositoryLayout = (ArtifactRepositoryLayout) availableRepositoryLayouts
-            .get( repositoryLayout );
+        ArtifactRepositoryLayout artifactRepositoryLayout =
+            (ArtifactRepositoryLayout) availableRepositoryLayouts.get( repositoryLayout );
         if ( artifactRepositoryLayout == null )
         {
             throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
@@ -167,8 +167,9 @@ public class CreateRepositoryMojo
             path.append( repoPath );
         }
 
-        ArtifactRepository artifactRepository = artifactRepositoryFactory
-            .createDeploymentArtifactRepository( "appassembler", path.toString(), artifactRepositoryLayout, true );
+        ArtifactRepository artifactRepository =
+            artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", path.toString(),
+                                                                          artifactRepositoryLayout, true );
 
         // -----------------------------------------------------------------------
         // Install the project's artifact in the new repository
@@ -200,20 +201,20 @@ public class CreateRepositoryMojo
     private void installBooterArtifacts( ArtifactRepository artifactRepository )
         throws MojoExecutionException
     {
-        Artifact artifact = artifactFactory.createDependencyArtifact( "org.codehaus.mojo.appassembler",
-                                                                      "appassembler-booter",
-                                                                      VersionRange.createFromVersion( pluginVersion ),
-                                                                      "jar", null, Artifact.SCOPE_RUNTIME );
+        Artifact artifact =
+            artifactFactory.createDependencyArtifact( "org.codehaus.mojo.appassembler", "appassembler-booter",
+                                                      VersionRange.createFromVersion( pluginVersion ), "jar", null,
+                                                      Artifact.SCOPE_RUNTIME );
         try
         {
-            Artifact p = artifactFactory.createBuildArtifact( "org.codehaus.mojo.appassembler",
-                                                              "appassembler-maven-plugin", pluginVersion, "jar" );
+            Artifact p =
+                artifactFactory.createBuildArtifact( "org.codehaus.mojo.appassembler", "appassembler-maven-plugin",
+                                                     pluginVersion, "jar" );
 
             ArtifactFilter filter = new ExcludesArtifactFilter( Collections.singletonList( "junit:junit" ) );
-            ArtifactResolutionResult result = artifactResolver.resolveTransitively( Collections.singleton( artifact ),
-                                                                                    p, localRepository,
-                                                                                    Collections.EMPTY_LIST,
-                                                                                    metadataSource, filter );
+            ArtifactResolutionResult result =
+                artifactResolver.resolveTransitively( Collections.singleton( artifact ), p, localRepository,
+                                                      Collections.EMPTY_LIST, metadataSource, filter );
             for ( Iterator i = result.getArtifacts().iterator(); i.hasNext(); )
             {
                 Artifact a = (Artifact) i.next();
@@ -232,6 +233,7 @@ public class CreateRepositoryMojo
 
     /**
      * Set the available repository layouts.
+     * 
      * @param availableRepositoryLayouts
      */
     public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )

@@ -61,8 +61,7 @@ import org.codehaus.plexus.util.StringUtils;
 // @deprecated Use the generate-daemons goal instead
 
 /**
- * Assembles the artifacts and generates bin scripts for the configured
- * applications
+ * Assembles the artifacts and generates bin scripts for the configured applications
  * 
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
  * @version $Id$
@@ -80,26 +79,23 @@ public class AssembleMojo
     // -----------------------------------------------------------------------
 
     /**
-     * The directory that will be used to assemble the artifacts in and place
-     * the bin scripts.
+     * The directory that will be used to assemble the artifacts in and place the bin scripts.
      * 
      * @required
-     * @parameter expression="${assembleDirectory}"
-     *            default-value="${project.build.directory}/appassembler"
+     * @parameter expression="${assembleDirectory}" default-value="${project.build.directory}/appassembler"
      */
     private File assembleDirectory;
 
     /**
-     * The file extensions to use for bin files. The file extensions are stored
-     * in a Map that uses the platform name as key. To change the file extension
-     * for Unix bin files to ".sh" use this configuration:
-     *
+     * The file extensions to use for bin files. The file extensions are stored in a Map that uses the platform name as
+     * key. To change the file extension for Unix bin files to ".sh" use this configuration:
+     * 
      * <pre>
      *          &lt;binFileExtensions&gt;
      *            &lt;unix&gt;.sh&lt;/unix&gt;
      *          &lt;/binFileExtensions&gt;
      * </pre>
-     *
+     * 
      * @parameter
      * @since 1.1
      */
@@ -138,24 +134,20 @@ public class AssembleMojo
 
     /**
      * Setup file in <code>$BASEDIR/bin</code> to be called prior to execution.
-     *
+     * 
      * @parameter
      */
     private String environmentSetupFileName;
 
     /**
-     * Extra arguments that will be given to the JVM verbatim. If you define
-     * JvmSettings on the {@link Program#setJvmSettings(JvmSettings)} level this
-     * part will be overwritten by the given parameters on program level.
-     * Otherwise if {@link Program#setJvmSettings(JvmSettings)} is not given
-     * these settings will be used instead. This can be used to define some
-     * default values whereas by using the {@link Program#setJvmSettings(JvmSettings)} to overwrite the default
-     * settings. This is only valid for the extraJvmArguments not for the rest
-     * of the {@link JvmSettings#}.
-     * 
-     * Since 1.2 it's possible to use place holders <code>@BASEDIR@</code> and <code>@REPO@</code> which will be expanded
-     * based on the platform for
-     * which the appropriate scripts will be generated.
+     * Extra arguments that will be given to the JVM verbatim. If you define JvmSettings on the
+     * {@link Program#setJvmSettings(JvmSettings)} level this part will be overwritten by the given parameters on
+     * program level. Otherwise if {@link Program#setJvmSettings(JvmSettings)} is not given these settings will be used
+     * instead. This can be used to define some default values whereas by using the
+     * {@link Program#setJvmSettings(JvmSettings)} to overwrite the default settings. This is only valid for the
+     * extraJvmArguments not for the rest of the {@link JvmSettings#}. Since 1.2 it's possible to use place holders
+     * <code>@BASEDIR@</code> and <code>@REPO@</code> which will be expanded based on the platform for which the
+     * appropriate scripts will be generated.
      * 
      * @parameter
      */
@@ -163,32 +155,30 @@ public class AssembleMojo
 
     /**
      * Set to <code>false</code> to skip repository generation.
-     *
+     * 
      * @parameter default-value="true"
      */
     private boolean generateRepository;
 
     /**
-     * If the <code>configurationDirectory</code> (<code>etc</code> by default)
-     * should be included in the beginning of the classpath in the generated bin
-     * files.
-     *
+     * If the <code>configurationDirectory</code> (<code>etc</code> by default) should be included in the beginning of
+     * the classpath in the generated bin files.
+     * 
      * @parameter default-value="true"
      */
     private boolean includeConfigurationDirectoryInClasspath;
 
     /**
-     * You can define a license header file which will be used instead the
-     * default header in the generated scripts.
-     *
+     * You can define a license header file which will be used instead the default header in the generated scripts.
+     * 
      * @parameter
      * @since 1.2
      */
     private File licenseHeaderFile;
 
     /**
-     * The default platforms the plugin will generate bin files for. Configure
-     * with string values - "all"(default/empty) | "windows" | "unix".
+     * The default platforms the plugin will generate bin files for. Configure with string values - "all"(default/empty)
+     * | "windows" | "unix".
      * 
      * @parameter
      */
@@ -196,26 +186,24 @@ public class AssembleMojo
 
     /**
      * The set of Programs that bin files will be generated for.
-     *
+     * 
      * @required
      * @parameter
      */
     private Set programs;
 
     /**
-     * This can be used to put the project artifact as the first entry in the
-     * classpath after the configuration folder (<code>etc</code> by default).
-     * The default behavior is to have the project artifact at the last position
-     * in classpath.
-     *
+     * This can be used to put the project artifact as the first entry in the classpath after the configuration folder (
+     * <code>etc</code> by default). The default behavior is to have the project artifact at the last position in
+     * classpath.
+     * 
      * @since 1.2.1
      * @parameter default-value="false"
      */
     private boolean projectArtifactFirstInClassPath;
 
     /**
-     * Path (relative to <code>assembleDirectory</code>) of the desired output
-     * repository.
+     * Path (relative to <code>assembleDirectory</code>) of the desired output repository.
      * 
      * @parameter default-value="repo"
      */
@@ -224,24 +212,23 @@ public class AssembleMojo
     /**
      * Show console window when execute this application. When false, the generated java command runs in background.
      * This works best for Swing application where the command line invocation is not blocked.
-     *
+     * 
      * @parameter default-value="true"
      */
     private boolean showConsoleWindow;
 
     /**
-     * The unix template of the generated script. It can be a file or resource path.
-     * If not given, an internal one is used.
-     * Use with case since it is not guaranteed to be compatible with new plugin release.
+     * The unix template of the generated script. It can be a file or resource path. If not given, an internal one is
+     * used. Use with case since it is not guaranteed to be compatible with new plugin release.
+     * 
      * @since 1.3
-     *
      * @parameter expression="${unixScriptTemplate}"
      */
     private String unixScriptTemplate;
 
     /**
-     * The following can be used to use all dependencies instead of the default
-     * behavior which represents runtime dependencies only.
+     * The following can be used to use all dependencies instead of the default behavior which represents runtime
+     * dependencies only.
      * 
      * @since 1.2.1
      * @parameter default-value="false"
@@ -250,8 +237,8 @@ public class AssembleMojo
     private boolean useAllDependencies;
 
     /**
-     * The following can be used to use all project dependencies instead of the
-     * default behavior which represents <code>runtime</code> dependencies only.
+     * The following can be used to use all project dependencies instead of the default behavior which represents
+     * <code>runtime</code> dependencies only.
      * 
      * @since 1.2.3
      * @parameter default-value="false"
@@ -259,16 +246,12 @@ public class AssembleMojo
     private boolean useAllProjectDependencies;
 
     /**
-     * Sometimes it happens that you have many dependencies
-     * which means in other words having a very long classpath.
-     * And sometimes the classpath becomes too long (in particular
-     * on Windows based platforms). This option can help in such
-     * situation. If you activate that your classpath contains only a
-     * <a href=
-     * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html"
-     * >classpath wildcard</a> (REPO/*). But be aware that this works only in combination
-     * with Java 1.6 and with {@link #repositoryLayout} <code>flat</code>.
-     * Otherwise this configuration will not work.
+     * Sometimes it happens that you have many dependencies which means in other words having a very long classpath. And
+     * sometimes the classpath becomes too long (in particular on Windows based platforms). This option can help in such
+     * situation. If you activate that your classpath contains only a <a href=
+     * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html" >classpath wildcard</a> (REPO/*).
+     * But be aware that this works only in combination with Java 1.6 and with {@link #repositoryLayout}
+     * <code>flat</code>. Otherwise this configuration will not work.
      * 
      * @since 1.2.2
      * @parameter default-value="false"
@@ -277,16 +260,12 @@ public class AssembleMojo
     private boolean useAsterikClassPath;
 
     /**
-     * Sometimes it happens that you have many dependencies
-     * which means in other words having a very long classpath.
-     * And sometimes the classpath becomes too long (in particular
-     * on Windows based platforms). This option can help in such
-     * situation. If you activate that your classpath contains only a
-     * <a href=
-     * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html"
-     * >classpath wildcard</a> (REPO/*). But be aware that this works only in combination
-     * with Java 1.6 and above and with {@link #repositoryLayout} <code>flat</code>.
-     * Otherwise this configuration will not work.
+     * Sometimes it happens that you have many dependencies which means in other words having a very long classpath. And
+     * sometimes the classpath becomes too long (in particular on Windows based platforms). This option can help in such
+     * situation. If you activate that your classpath contains only a <a href=
+     * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html" >classpath wildcard</a> (REPO/*).
+     * But be aware that this works only in combination with Java 1.6 and above and with {@link #repositoryLayout}
+     * <code>flat</code>. Otherwise this configuration will not work.
      * 
      * @since 1.2.3
      * @parameter default-value="false"
@@ -294,16 +273,14 @@ public class AssembleMojo
     private boolean useWildcardClassPath;
 
     /**
-     * The windows template of the generated script. It can be a file or resource path.
-     * If not given, an internal one is used.
-     * Use with care since it is not guaranteed to be compatible with new plugin release.
-     * @since 1.3
+     * The windows template of the generated script. It can be a file or resource path. If not given, an internal one is
+     * used. Use with care since it is not guaranteed to be compatible with new plugin release.
      * 
+     * @since 1.3
      * @parameter expression="${windowsScriptTemplate}"
      */
     private String windowsScriptTemplate;
 
-    
     // -----------------------------------------------------------------------
     // Read-only Parameters
     // -----------------------------------------------------------------------
@@ -339,8 +316,8 @@ public class AssembleMojo
     // ----------------------------------------------------------------------
 
     /**
-     * A reference to the Plexus container so that we can do our own component
-     * lookups, which was required to solve MAPPASM-96.
+     * A reference to the Plexus container so that we can do our own component lookups, which was required to solve
+     * MAPPASM-96.
      */
     private PlexusContainer container;
 
@@ -349,9 +326,7 @@ public class AssembleMojo
     // ----------------------------------------------------------------------
 
     private static final Set VALID_PLATFORMS = Collections.unmodifiableSet( new HashSet( Arrays.asList( new String[] {
-        "unix",
-        "windows" } ) ) );
-
+        "unix", "windows" } ) ) );
 
     // -----------------------------------------------------------------------
     // Plexus Implementation
@@ -360,7 +335,8 @@ public class AssembleMojo
     /**
      * {@inheritDoc}
      */
-    public void contextualize( Context context ) throws ContextException
+    public void contextualize( Context context )
+        throws ContextException
     {
         container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
     }
@@ -426,23 +402,25 @@ public class AssembleMojo
                                               "The useAsterikClassPath/useWildcardClassPath works only in combination with repositoryLayout flat." );
         }
 
-        if ( isUseAsterikClassPath() ) 
+        if ( isUseAsterikClassPath() )
         {
-            getLog().warn("The usuage of useAsterikClassPath is marked as deprecated. Please use useWildcardClassPath instead");
+            getLog().warn( "The usuage of useAsterikClassPath is marked as deprecated. Please use useWildcardClassPath instead" );
         }
-        
+
         if ( isUseAllDependencies() )
         {
-            getLog().warn("The usuage of useAllDependencies marked as deprecated. Please use useAllProjectDependencies instead");
+            getLog().warn( "The usuage of useAllDependencies marked as deprecated. Please use useAllProjectDependencies instead" );
         }
 
         // Set the extensions for bin files for the different platforms
         setBinFileExtensions();
 
         ArtifactRepositoryLayout artifactRepositoryLayout = null;
-        try {
-            artifactRepositoryLayout = (ArtifactRepositoryLayout) container.lookup( "org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout",
-                                                                                    repositoryLayout );
+        try
+        {
+            artifactRepositoryLayout =
+                (ArtifactRepositoryLayout) container.lookup( "org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout",
+                                                             repositoryLayout );
             if ( artifactRepositoryLayout == null )
             {
                 throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
@@ -467,9 +445,9 @@ public class AssembleMojo
             if ( generateRepository )
             {
                 // The repo where the jar files will be installed
-                ArtifactRepository artifactRepository = artifactRepositoryFactory
-                    .createDeploymentArtifactRepository( "appassembler", "file://" + assembleDirectory.getAbsolutePath()
-                        + "/" + repositoryName, artifactRepositoryLayout, false );
+                ArtifactRepository artifactRepository =
+                    artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://"
+                        + assembleDirectory.getAbsolutePath() + "/" + repositoryName, artifactRepositoryLayout, false );
 
                 for ( Iterator it = artifacts.iterator(); it.hasNext(); )
                 {
@@ -504,9 +482,11 @@ public class AssembleMojo
 
                     // TODO: seems like a bug in the generator that the request is
                     // modified
-                    org.codehaus.mojo.appassembler.model.Daemon daemon = programToDaemon( program, artifactRepositoryLayout );
-                    DaemonGenerationRequest request = new DaemonGenerationRequest( daemon, mavenProject, localRepository,
-                                                                                   assembleDirectory, binFolder );
+                    org.codehaus.mojo.appassembler.model.Daemon daemon =
+                        programToDaemon( program, artifactRepositoryLayout );
+                    DaemonGenerationRequest request =
+                        new DaemonGenerationRequest( daemon, mavenProject, localRepository, assembleDirectory,
+                                                     binFolder );
                     request.setStubDaemon( request.getDaemon() );
 
                     request.setPlatform( platform );
@@ -532,10 +512,10 @@ public class AssembleMojo
                 copyConfigurationDirectory();
             }
         }
-        catch(ComponentLookupException e)
+        catch ( ComponentLookupException e )
         {
-            throw new MojoFailureException( "Unable to lookup the repository layout component '"
-                                            + repositoryLayout + "': " + e.getMessage() );
+            throw new MojoFailureException( "Unable to lookup the repository layout component '" + repositoryLayout
+                + "': " + e.getMessage() );
         }
     }
 
@@ -639,14 +619,15 @@ public class AssembleMojo
         daemon.setJvmSettings( convertToJvmSettingsWithDefaultHandling( program ) );
 
         daemon.setEnvironmentSetupFileName( this.environmentSetupFileName );
-        
-        if ( this.unixScriptTemplate != null ) {
+
+        if ( this.unixScriptTemplate != null )
+        {
             daemon.setUnixScriptTemplate( unixScriptTemplate );
         }
-        if( this.windowsScriptTemplate != null ) {
+        if ( this.windowsScriptTemplate != null )
+        {
             daemon.setWindowsScriptTemplate( windowsScriptTemplate );
         }
-        
 
         return daemon;
     }
@@ -704,7 +685,7 @@ public class AssembleMojo
                 + configurationSourceDirectory.getAbsolutePath() );
         }
 
-        getLog().debug("copying configuration directory.");
+        getLog().debug( "copying configuration directory." );
 
         File configurationTargetDirectory = new File( assembleDirectory.getAbsolutePath(), configurationDirectory );
         if ( !configurationTargetDirectory.exists() )
@@ -723,8 +704,9 @@ public class AssembleMojo
                 getLog().debug( "Will try to copy configuration files from "
                                     + configurationSourceDirectory.getAbsolutePath() + " to "
                                     + configurationTargetDirectory.getAbsolutePath() );
-                
-                FileUtils.copyDirectory(configurationSourceDirectory, configurationTargetDirectory, FileFilterHelper.createDefaultFilter());
+
+                FileUtils.copyDirectory( configurationSourceDirectory, configurationTargetDirectory,
+                                         FileFilterHelper.createDefaultFilter() );
             }
             catch ( IOException e )
             {
@@ -733,7 +715,6 @@ public class AssembleMojo
         }
     }
 
-    
     private Set validatePlatforms( Set platformsToValidate, Set defaultPlatforms )
         throws MojoFailureException
     {
@@ -757,11 +738,9 @@ public class AssembleMojo
     }
 
     /**
-     * This will tokenize the given argument or give the extraJvmArguments back
-     * if the given argument is empty.
+     * This will tokenize the given argument or give the extraJvmArguments back if the given argument is empty.
      * 
-     * @param arg
-     *            The argument to parse.
+     * @param arg The argument to parse.
      * @return List of arguments.
      */
     public static List parseTokens( String arg )
@@ -819,8 +798,8 @@ public class AssembleMojo
     }
 
     /**
-     * Set the extensions for bin files for the supported platforms. The values
-     * are taken from the Mojo's <code>binFileExtensions</code> parameter.
+     * Set the extensions for bin files for the supported platforms. The values are taken from the Mojo's
+     * <code>binFileExtensions</code> parameter.
      */
     private void setBinFileExtensions()
         throws MojoFailureException
@@ -866,8 +845,7 @@ public class AssembleMojo
     /**
      * Set if the project should be the artifact at first position or not.
      * 
-     * @param projectArtifactFirstInClassPath
-     *            true if the project artifact will be first false otherwise.
+     * @param projectArtifactFirstInClassPath true if the project artifact will be first false otherwise.
      */
     public void setProjectArtifactFirstInClassPath( boolean projectArtifactFirstInClassPath )
     {
@@ -888,10 +866,8 @@ public class AssembleMojo
     /**
      * Define if all dependencies should be used or not.
      * 
-     * @param useAllDependencies
-     *            true to activate false otherwise.
+     * @param useAllDependencies true to activate false otherwise.
      * @deprecated use {@link #setUseAllProjectDependencies(boolean)} instead.
-     *  
      */
     public void setUseAllDependencies( boolean useAllDependencies )
     {
@@ -911,8 +887,7 @@ public class AssembleMojo
     /**
      * Define if all project dependencies should be used or not.
      * 
-     * @param useAllProjectDependencies
-     *            true to activate false otherwise.
+     * @param useAllProjectDependencies true to activate false otherwise.
      */
     public void setUseAllProjectDependencies( boolean useAllProjectDependencies )
     {
@@ -933,8 +908,7 @@ public class AssembleMojo
     /**
      * Use asterik-classpath or not.
      * 
-     * @param useAsterikClassPath
-     *            true to use asterik classpath false otherwise.
+     * @param useAsterikClassPath true to use asterik classpath false otherwise.
      * @deprecated use {@link #setUseWildcardClassPath(boolean)} instead.
      */
     public void setUseAsterikClassPath( boolean useAsterikClassPath )
@@ -955,8 +929,7 @@ public class AssembleMojo
     /**
      * Use wildcard classpath or not.
      * 
-     * @param useWildcardClassPath
-     *            true to use wildcard classpath false otherwise.
+     * @param useWildcardClassPath true to use wildcard classpath false otherwise.
      */
     public void setUseWildcardClassPath( boolean useWildcardClassPath )
     {

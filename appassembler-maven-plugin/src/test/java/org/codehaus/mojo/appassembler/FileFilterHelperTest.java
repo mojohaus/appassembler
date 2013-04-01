@@ -13,120 +13,141 @@ import org.apache.commons.io.FileUtils;
 import org.codehaus.mojo.appassembler.util.FileFilterHelper;
 import org.codehaus.mojo.appassembler.util.TestBase;
 
-public class FileFilterHelperTest extends TestCase {
+public class FileFilterHelperTest
+    extends TestCase
+{
 
     /**
      * Just copied from FileUitlsTest.java (plexus-utils)
+     * 
      * @param size
      * @return
      */
-    private byte[] generateTestData(final long size) {
-	try {
-	    ByteArrayOutputStream baout = new ByteArrayOutputStream();
-	    generateTestData(baout, size);
-	    return baout.toByteArray();
-	} catch (IOException ioe) {
-	    throw new RuntimeException("This should never happen: " + ioe.getMessage());
-	}
+    private byte[] generateTestData( final long size )
+    {
+        try
+        {
+            ByteArrayOutputStream baout = new ByteArrayOutputStream();
+            generateTestData( baout, size );
+            return baout.toByteArray();
+        }
+        catch ( IOException ioe )
+        {
+            throw new RuntimeException( "This should never happen: " + ioe.getMessage() );
+        }
     }
 
     /**
      * Just copied from FileUitlsTest.java (plexus-utils)
+     * 
      * @param size
      * @return
      */
-    private  void generateTestData(final OutputStream out, final long size) throws IOException {
-	for (int i = 0; i < size; i++) {
-	    // nice varied byte pattern compatible with Readers and Writers
-	    out.write((byte) ((i % 127) + 1));
-	}
+    private void generateTestData( final OutputStream out, final long size )
+        throws IOException
+    {
+        for ( int i = 0; i < size; i++ )
+        {
+            // nice varied byte pattern compatible with Readers and Writers
+            out.write( (byte) ( ( i % 127 ) + 1 ) );
+        }
     }
-    
+
     /**
      * Just copied from FileUitlsTest.java (plexus-utils)
+     * 
      * @param size
      * @return
      */
-    private byte[] createFile(final File file, final long size) throws IOException {
-	if (!file.getParentFile().exists()) {
-	    throw new IOException("Cannot create file " + file + " as the parent directory does not exist");
-	}
+    private byte[] createFile( final File file, final long size )
+        throws IOException
+    {
+        if ( !file.getParentFile().exists() )
+        {
+            throw new IOException( "Cannot create file " + file + " as the parent directory does not exist" );
+        }
 
-	byte[] data = generateTestData(size);
+        byte[] data = generateTestData( size );
 
-	final BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(file));
+        final BufferedOutputStream output = new BufferedOutputStream( new FileOutputStream( file ) );
 
-	try {
-	    output.write(data);
+        try
+        {
+            output.write( data );
 
-	    return data;
-	} finally {
-	    output.close();
-	}
+            return data;
+        }
+        finally
+        {
+            output.close();
+        }
     }
-    
-    public void testCreateDefaultFilter() throws IOException {
 
-	File testTargetDirectory = new File(TestBase.getTargetDir());
+    public void testCreateDefaultFilter()
+        throws IOException
+    {
 
-	File sourceDirectory = new File(testTargetDirectory, "source-structure");
-	sourceDirectory.mkdirs();
+        File testTargetDirectory = new File( TestBase.getTargetDir() );
 
-	createFile(new File(sourceDirectory, ".cvsignore"), 200);
-	createFile(new File(sourceDirectory, "ShouldBeIgnored.#"), 100);
-	createFile(new File(sourceDirectory, "project.pj"), 500);
+        File sourceDirectory = new File( testTargetDirectory, "source-structure" );
+        sourceDirectory.mkdirs();
 
-	createFile(new File(sourceDirectory, "README.md"), 250);
-	createFile(new File(sourceDirectory, "test-1.2-SNAPSHOT.jar"), 267);
-	
-	File gitDirectory = new File(sourceDirectory, ".git");
-	gitDirectory.mkdirs();
-	createFile(new File(gitDirectory, "a"), 10);
-	createFile(new File(gitDirectory, "b"), 100);
-	createFile(new File(gitDirectory, "c"), 1000);
-	
-	File subDirectory = new File(sourceDirectory, "subdir");
-	subDirectory.mkdirs();
-	createFile(new File(subDirectory, "x.txt"), 200);
-	createFile(new File(subDirectory, "README"), 200);
-	createFile(new File(subDirectory, "pom.xml"), 2000);
-	createFile(new File(subDirectory, "#ThisFileWillBeIgnored#"), 2000);
-	
-	File targetDirectory = new File(testTargetDirectory, "destination-structure");
-	if (targetDirectory.exists()) {
-	    FileUtils.deleteDirectory(targetDirectory);
-	}
+        createFile( new File( sourceDirectory, ".cvsignore" ), 200 );
+        createFile( new File( sourceDirectory, "ShouldBeIgnored.#" ), 100 );
+        createFile( new File( sourceDirectory, "project.pj" ), 500 );
 
-	FileUtils.copyDirectory(sourceDirectory, targetDirectory, FileFilterHelper.createDefaultFilter());
+        createFile( new File( sourceDirectory, "README.md" ), 250 );
+        createFile( new File( sourceDirectory, "test-1.2-SNAPSHOT.jar" ), 267 );
 
-	assertTrue(targetDirectory.exists());
-	assertTrue(targetDirectory.isDirectory());
+        File gitDirectory = new File( sourceDirectory, ".git" );
+        gitDirectory.mkdirs();
+        createFile( new File( gitDirectory, "a" ), 10 );
+        createFile( new File( gitDirectory, "b" ), 100 );
+        createFile( new File( gitDirectory, "c" ), 1000 );
 
-	assertFalse(new File(targetDirectory, ".cvsignore").exists());
-	assertFalse(new File(targetDirectory, "ShouldBeIgnored.#").exists());
-	assertFalse(new File(targetDirectory, "project.pj").exists());
-	assertFalse(new File(targetDirectory, ".git").exists());
+        File subDirectory = new File( sourceDirectory, "subdir" );
+        subDirectory.mkdirs();
+        createFile( new File( subDirectory, "x.txt" ), 200 );
+        createFile( new File( subDirectory, "README" ), 200 );
+        createFile( new File( subDirectory, "pom.xml" ), 2000 );
+        createFile( new File( subDirectory, "#ThisFileWillBeIgnored#" ), 2000 );
 
-	assertTrue(new File(targetDirectory, "README.md").exists());
-	assertTrue(new File(targetDirectory, "README.md").isFile());
-	assertTrue(new File(targetDirectory, "test-1.2-SNAPSHOT.jar").exists());
-	assertTrue(new File(targetDirectory, "test-1.2-SNAPSHOT.jar").isFile());
-	
-	subDirectory = new File(targetDirectory, "subdir");
-	assertTrue(subDirectory.exists());
-	assertTrue(subDirectory.isDirectory());
+        File targetDirectory = new File( testTargetDirectory, "destination-structure" );
+        if ( targetDirectory.exists() )
+        {
+            FileUtils.deleteDirectory( targetDirectory );
+        }
 
-	assertTrue(new File(subDirectory, "x.txt").exists());
-	assertTrue(new File(subDirectory, "x.txt").isFile());
+        FileUtils.copyDirectory( sourceDirectory, targetDirectory, FileFilterHelper.createDefaultFilter() );
 
-	assertTrue(new File(subDirectory, "README").exists());
-	assertTrue(new File(subDirectory, "README").isFile());
+        assertTrue( targetDirectory.exists() );
+        assertTrue( targetDirectory.isDirectory() );
 
-	assertTrue(new File(subDirectory, "pom.xml").exists());
-	assertTrue(new File(subDirectory, "pom.xml").isFile());
+        assertFalse( new File( targetDirectory, ".cvsignore" ).exists() );
+        assertFalse( new File( targetDirectory, "ShouldBeIgnored.#" ).exists() );
+        assertFalse( new File( targetDirectory, "project.pj" ).exists() );
+        assertFalse( new File( targetDirectory, ".git" ).exists() );
 
-	assertFalse(new File(subDirectory, "#ThisFileWillBeIgnored#").exists());
+        assertTrue( new File( targetDirectory, "README.md" ).exists() );
+        assertTrue( new File( targetDirectory, "README.md" ).isFile() );
+        assertTrue( new File( targetDirectory, "test-1.2-SNAPSHOT.jar" ).exists() );
+        assertTrue( new File( targetDirectory, "test-1.2-SNAPSHOT.jar" ).isFile() );
+
+        subDirectory = new File( targetDirectory, "subdir" );
+        assertTrue( subDirectory.exists() );
+        assertTrue( subDirectory.isDirectory() );
+
+        assertTrue( new File( subDirectory, "x.txt" ).exists() );
+        assertTrue( new File( subDirectory, "x.txt" ).isFile() );
+
+        assertTrue( new File( subDirectory, "README" ).exists() );
+        assertTrue( new File( subDirectory, "README" ).isFile() );
+
+        assertTrue( new File( subDirectory, "pom.xml" ).exists() );
+        assertTrue( new File( subDirectory, "pom.xml" ).isFile() );
+
+        assertFalse( new File( subDirectory, "#ThisFileWillBeIgnored#" ).exists() );
 
     }
-    
+
 }

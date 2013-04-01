@@ -67,8 +67,8 @@ public class Program
     private org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings;
 
     /**
-     * The platforms the plugin will generate bin files for.
-     * Configure with string values - "all"(default/empty) | "windows" | "unix".
+     * The platforms the plugin will generate bin files for. Configure with string values - "all"(default/empty) |
+     * "windows" | "unix".
      * 
      * @parameter
      */
@@ -84,10 +84,8 @@ public class Program
     /**
      * The constructor.
      * 
-     * @param name
-     *            The name of the program.
-     * @param mainClass
-     *            The main class of the program.
+     * @param name The name of the program.
+     * @param mainClass The main class of the program.
      */
     public Program( String name, String mainClass )
     {
@@ -108,8 +106,7 @@ public class Program
     /**
      * Set the name.
      * 
-     * @param name
-     *            The name of the program.
+     * @param name The name of the program.
      */
     public void setName( String name )
     {
@@ -129,8 +126,7 @@ public class Program
     /**
      * Set the main class.
      * 
-     * @param mainClass
-     *            The name of the main class.
+     * @param mainClass The name of the main class.
      */
     public void setMainClass( String mainClass )
     {
@@ -150,8 +146,7 @@ public class Program
     /**
      * The platforms.
      * 
-     * @param platforms
-     *            The set with the platforms.
+     * @param platforms The set with the platforms.
      */
     public void setPlatforms( Set platforms )
     {
@@ -171,8 +166,7 @@ public class Program
     /**
      * Set the argument list.
      * 
-     * @param arguments
-     *            The list of command line arguments.
+     * @param arguments The list of command line arguments.
      */
     public void setCommandLineArguments( List arguments )
     {
@@ -182,8 +176,7 @@ public class Program
     /**
      * Add an command line arguments.
      * 
-     * @param argument
-     *            The argument which will be aded to list of arguments.
+     * @param argument The argument which will be aded to list of arguments.
      */
     public void addCommandLineArgument( String argument )
     {
@@ -204,8 +197,7 @@ public class Program
     /**
      * Set the JVM settings.
      * 
-     * @param jvmSettings
-     *            The instance of the JVM settings which will be used.
+     * @param jvmSettings The instance of the JVM settings which will be used.
      */
     public void setJvmSettings( org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings )
     {
@@ -225,8 +217,7 @@ public class Program
     /**
      * Set the license header file.
      * 
-     * @param licenseHeaderFile
-     *            The File instance.
+     * @param licenseHeaderFile The File instance.
      */
     public void setLicenseHeaderFile( File licenseHeaderFile )
     {
@@ -246,8 +237,7 @@ public class Program
     /**
      * Set the bin folder.
      * 
-     * @param binFolder
-     *            The new bin folder name.
+     * @param binFolder The new bin folder name.
      */
     public void setBinFolder( File binFolder )
     {

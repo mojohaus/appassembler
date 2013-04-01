@@ -23,22 +23,23 @@ package org.codehaus.mojo.appassembler.util;
 import java.io.File;
 
 /**
- * This class exposes helper methods to do Unit testing in a Maven/Eclipse
- * environment.
+ * This class exposes helper methods to do Unit testing in a Maven/Eclipse environment.
  * 
  * @author <a href="mailto:info@soebes.de">Karl-Heinz Marbaise</a>
  */
-public class TestBase {
+public class TestBase
+{
     /**
      * Return the base directory of the project.
      * 
      * @return The base folder.
      */
-    public static String getMavenBaseDir() {
-	// basedir is defined by Maven
-	// but the above will not work under Eclipse.
-	// So there I'M using user.dir
-	return System.getProperty("basedir", System.getProperty("user.dir", "."));
+    public static String getMavenBaseDir()
+    {
+        // basedir is defined by Maven
+        // but the above will not work under Eclipse.
+        // So there I'M using user.dir
+        return System.getProperty( "basedir", System.getProperty( "user.dir", "." ) );
     }
 
     /**
@@ -46,8 +47,9 @@ public class TestBase {
      * 
      * @return The target folder.
      */
-    public static String getTargetDir() {
-	return getMavenBaseDir() + File.separatorChar + "target" + File.separator;
+    public static String getTargetDir()
+    {
+        return getMavenBaseDir() + File.separatorChar + "target" + File.separator;
     }
 
     /**
@@ -55,8 +57,9 @@ public class TestBase {
      * 
      * @return The string
      */
-    public static String getSrcDirectory() {
-	return getMavenBaseDir() + File.separator + "src";
+    public static String getSrcDirectory()
+    {
+        return getMavenBaseDir() + File.separator + "src";
     }
 
     /**
@@ -65,8 +68,9 @@ public class TestBase {
      * @return String representing the folder.
      */
 
-    public static String getTestDirectory() {
-	return getSrcDirectory() + File.separator + "test";
+    public static String getTestDirectory()
+    {
+        return getSrcDirectory() + File.separator + "test";
     }
 
     /**
@@ -74,8 +78,9 @@ public class TestBase {
      * 
      * @return The string representing the folder.
      */
-    public static String getTestResourcesDirectory() {
-	return getTestDirectory() + File.separator + "resources" + File.separator;
+    public static String getTestResourcesDirectory()
+    {
+        return getTestDirectory() + File.separator + "resources" + File.separator;
     }
 
 }

@@ -58,7 +58,7 @@ public class GenerateDaemonsMojo
 
     /**
      * The base directory of the project.
-     *
+     * 
      * @parameter expression="${basedir}"
      * @required
      */
@@ -80,10 +80,9 @@ public class GenerateDaemonsMojo
     private JvmSettings defaultJvmSettings;
 
     /**
-     * Setup file in $BASEDIR/bin to be called prior to execution. If this optional 
-     * environment file also sets up WRAPPER_CONF_OVERRIDES variable, it will be passed into
-     * JSW native launcher's command line arguments to override wrapper.conf's properties.
-     * See http://wrapper.tanukisoftware.com/doc/english/props-command-line.html for details.
+     * Setup file in $BASEDIR/bin to be called prior to execution. If this optional environment file also sets up
+     * WRAPPER_CONF_OVERRIDES variable, it will be passed into JSW native launcher's command line arguments to override
+     * wrapper.conf's properties. See http://wrapper.tanukisoftware.com/doc/english/props-command-line.html for details.
      * 
      * @parameter
      * @since 1.2.3
@@ -91,8 +90,7 @@ public class GenerateDaemonsMojo
     private String environmentSetupFileName;
 
     /**
-     * You can define a license header file which will be used
-     * instead the default header in the generated scripts.
+     * You can define a license header file which will be used instead the default header in the generated scripts.
      * 
      * @parameter
      * @since 1.2
@@ -101,41 +99,36 @@ public class GenerateDaemonsMojo
 
     /**
      * Target directory for generated daemons.
-     *
+     * 
      * @parameter expression="${project.build.directory}/generated-resources/appassembler"
      * @required
      */
     private File target;
 
     /**
-     * The unix template of the generated script. It can be a file or resource path.
-     * If not given, an internal one is used.
-     * Use with care since it not guaranteed to be compatible with future plugin releases.
+     * The unix template of the generated script. It can be a file or resource path. If not given, an internal one is
+     * used. Use with care since it not guaranteed to be compatible with future plugin releases.
+     * 
      * @since 1.3
-     *
      * @parameter expression="${unixScriptTemplate}"
      */
     private String unixScriptTemplate;
 
     /**
      * When enable, name wrapper configuration file as wrapper-${daemon.id}.conf
-     *
+     * 
      * @parameter default-value="false"
      * @since 1.3
      */
     private boolean useDaemonIdAsWrapperConfName;
 
     /**
-     * Sometimes it happens that you have many dependencies
-     * which means in other words having a very long classpath.
-     * And sometimes the classpath becomes too long (in particular
-     * on Windows based platforms). This option can help in such
-     * situation. If you activate that your classpath contains only a
-     * <a href=
-     * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html"
-     * >classpath wildcard</a> (REPO/*). But be aware that this works only in combination
-     * with Java 1.6 and above and with {@link #repositoryLayout} <code>flat</code>.
-     * Otherwise this configuration will not work.
+     * Sometimes it happens that you have many dependencies which means in other words having a very long classpath. And
+     * sometimes the classpath becomes too long (in particular on Windows based platforms). This option can help in such
+     * situation. If you activate that your classpath contains only a <a href=
+     * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html" >classpath wildcard</a> (REPO/*).
+     * But be aware that this works only in combination with Java 1.6 and above and with {@link #repositoryLayout}
+     * <code>flat</code>. Otherwise this configuration will not work.
      * 
      * @since 1.3.1
      * @parameter default-value="false"
@@ -143,11 +136,10 @@ public class GenerateDaemonsMojo
     private boolean useWildcardClassPath;
 
     /**
-     * The windows template of the generated script. It can be a file or resource path.
-     * If not given, an internal one is used.
-     * Use with care since it is not guaranteed to be compatible with future plugin releases.
+     * The windows template of the generated script. It can be a file or resource path. If not given, an internal one is
+     * used. Use with care since it is not guaranteed to be compatible with future plugin releases.
+     * 
      * @since 1.3
-     *
      * @parameter expression="${windowsScriptTemplate}"
      */
     private String windowsScriptTemplate;
@@ -164,7 +156,7 @@ public class GenerateDaemonsMojo
 
     /**
      * The maven project in question.
-     *
+     * 
      * @parameter expression="${project}"
      * @required
      * @readonly
@@ -192,10 +184,11 @@ public class GenerateDaemonsMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        
+
         if ( isUseWildcardClassPath() && !repositoryLayout.equalsIgnoreCase( "flat" ) )
         {
-            throw new MojoExecutionException( "The useWildcardClassPath works only in combination with repositoryLayout flat." );
+            throw new MojoExecutionException(
+                                              "The useWildcardClassPath works only in combination with repositoryLayout flat." );
         }
 
         for ( Iterator itd = daemons.iterator(); itd.hasNext(); )
@@ -224,8 +217,8 @@ public class GenerateDaemonsMojo
                 modelJvmSettings = convertJvmSettings( defaultJvmSettings );
             }
 
-            ArtifactRepositoryLayout artifactRepositoryLayout = (ArtifactRepositoryLayout) availableRepositoryLayouts
-                .get( repositoryLayout );
+            ArtifactRepositoryLayout artifactRepositoryLayout =
+                (ArtifactRepositoryLayout) availableRepositoryLayouts.get( repositoryLayout );
             if ( artifactRepositoryLayout == null )
             {
                 throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
@@ -253,11 +246,13 @@ public class GenerateDaemonsMojo
             modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
             modelDaemon.setUseDaemonIdAsWrapperConfName( useDaemonIdAsWrapperConfName );
             modelDaemon.setUseWildcardClassPath( useWildcardClassPath );
-            
-            if ( this.unixScriptTemplate != null ) {
+
+            if ( this.unixScriptTemplate != null )
+            {
                 modelDaemon.setUnixScriptTemplate( unixScriptTemplate );
             }
-            if( this.windowsScriptTemplate != null ) {
+            if ( this.windowsScriptTemplate != null )
+            {
                 modelDaemon.setWindowsScriptTemplate( windowsScriptTemplate );
             }
 
@@ -298,9 +293,9 @@ public class GenerateDaemonsMojo
                 // FIXME: /lib hard coded. Should be made configurable.
                 // via repositoryName like in AssembleMojo ?
                 // Might be refactored into AbstractAppAssemblerMojo?
-                ArtifactRepository artifactRepository = artifactRepositoryFactory
-                    .createDeploymentArtifactRepository( "appassembler", "file://" + outputDirectory.getAbsolutePath()
-                        + "/lib", artifactRepositoryLayout, false );
+                ArtifactRepository artifactRepository =
+                    artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://"
+                        + outputDirectory.getAbsolutePath() + "/lib", artifactRepositoryLayout, false );
 
                 for ( Iterator it = artifacts.iterator(); it.hasNext(); )
                 {
@@ -342,8 +337,7 @@ public class GenerateDaemonsMojo
 
         if ( daemon.getGeneratorConfigurations() != null )
         {
-            modelDaemon
-                .setGeneratorConfigurations( convertGeneratorConfigurations( daemon.getGeneratorConfigurations() ) );
+            modelDaemon.setGeneratorConfigurations( convertGeneratorConfigurations( daemon.getGeneratorConfigurations() ) );
         }
 
         return modelDaemon;
@@ -363,7 +357,8 @@ public class GenerateDaemonsMojo
 
     private org.codehaus.mojo.appassembler.model.GeneratorConfiguration convertGeneratorConfiguration( GeneratorConfiguration config )
     {
-        org.codehaus.mojo.appassembler.model.GeneratorConfiguration value = new org.codehaus.mojo.appassembler.model.GeneratorConfiguration();
+        org.codehaus.mojo.appassembler.model.GeneratorConfiguration value =
+            new org.codehaus.mojo.appassembler.model.GeneratorConfiguration();
         value.setGenerator( config.getGenerator() );
         value.setConfiguration( config.getConfiguration() );
         value.setIncludes( config.getIncludes() );
@@ -374,7 +369,8 @@ public class GenerateDaemonsMojo
     // TODO: see if it is possible to just inherit from the model JVM Settings
     private org.codehaus.mojo.appassembler.model.JvmSettings convertJvmSettings( JvmSettings jvmSettings )
     {
-        org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings = new org.codehaus.mojo.appassembler.model.JvmSettings();
+        org.codehaus.mojo.appassembler.model.JvmSettings modelJvmSettings =
+            new org.codehaus.mojo.appassembler.model.JvmSettings();
 
         modelJvmSettings.setInitialMemorySize( jvmSettings.getInitialMemorySize() );
         modelJvmSettings.setMaxMemorySize( jvmSettings.getMaxMemorySize() );
@@ -408,7 +404,7 @@ public class GenerateDaemonsMojo
     {
         this.daemons = daemons;
     }
-    
+
     /**
      * Should the <code>/*</code> part for the classpath be used or not.
      * 
@@ -422,8 +418,7 @@ public class GenerateDaemonsMojo
     /**
      * Use wildcard classpath or not.
      * 
-     * @param useWildcardClassPath
-     *            true to use wildcard classpath false otherwise.
+     * @param useWildcardClassPath true to use wildcard classpath false otherwise.
      */
     public void setUseWildcardClassPath( boolean useWildcardClassPath )
     {

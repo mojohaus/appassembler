@@ -27,7 +27,6 @@ import java.util.Properties;
  * This class contains the generator configuration.
  * 
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
- *
  */
 public class GeneratorConfiguration
 {

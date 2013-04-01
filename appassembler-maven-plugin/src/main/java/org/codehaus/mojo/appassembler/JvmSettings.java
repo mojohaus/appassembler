@@ -24,7 +24,6 @@ package org.codehaus.mojo.appassembler;
  * The class which is used to contain the JVM settings.
  * 
  * @author Karl-Heinz Marbaise
- * 
  */
 public class JvmSettings
 {

@@ -63,16 +63,11 @@ public class DaemonGenerationRequest
     /**
      * Request with the given parameters.
      * 
-     * @param daemon
-     *            The Daemon to use.
-     * @param project
-     *            The Maven Project
-     * @param localRepository
-     *            The local repository.
-     * @param outputDir
-     *            The output directory.
-     * @param binFolder
-     *            The binary folder.
+     * @param daemon The Daemon to use.
+     * @param project The Maven Project
+     * @param localRepository The local repository.
+     * @param outputDir The output directory.
+     * @param binFolder The binary folder.
      */
     public DaemonGenerationRequest( Daemon daemon, MavenProject project, ArtifactRepository localRepository,
                                     File outputDir, String binFolder )
@@ -99,8 +94,7 @@ public class DaemonGenerationRequest
     }
 
     /**
-     * @param platform
-     *            Set the platform.
+     * @param platform Set the platform.
      */
     public void setPlatform( String platform )
     {
@@ -108,8 +102,7 @@ public class DaemonGenerationRequest
     }
 
     /**
-     * Get the StubDescriptor
-     * FIXME: What for is this needed?
+     * Get the StubDescriptor FIXME: What for is this needed?
      * 
      * @return The Stub Descriptor file.
      */
@@ -119,8 +112,7 @@ public class DaemonGenerationRequest
     }
 
     /**
-     * Set the StubDescriptor.
-     * FIXME: What for is this needed?
+     * Set the StubDescriptor. FIXME: What for is this needed?
      * 
      * @param stubDescriptor The File instance for the descriptor.
      */
@@ -130,8 +122,7 @@ public class DaemonGenerationRequest
     }
 
     /**
-     * Get the StubDaemon
-     * FIXME: Is this needed?
+     * Get the StubDaemon FIXME: Is this needed?
      * 
      * @return The set stub Daemon
      */
@@ -141,11 +132,9 @@ public class DaemonGenerationRequest
     }
 
     /**
-     * Set the StubDaemon.
-     * FIXME: Is this needed?
+     * Set the StubDaemon. FIXME: Is this needed?
      * 
-     * @param stubDaemon
-     *            This will be set.
+     * @param stubDaemon This will be set.
      */
     public void setStubDaemon( Daemon stubDaemon )
     {
@@ -205,8 +194,7 @@ public class DaemonGenerationRequest
     /**
      * Set the Maven Project.
      * 
-     * @param mavenProject
-     *            instance to be set.
+     * @param mavenProject instance to be set.
      */
     public void setMavenProject( MavenProject mavenProject )
     {
@@ -224,8 +212,7 @@ public class DaemonGenerationRequest
     }
 
     /**
-     * @param localRepository
-     *            Set the local repositoy.
+     * @param localRepository Set the local repositoy.
      */
     public void setLocalRepository( ArtifactRepository localRepository )
     {
@@ -243,8 +230,7 @@ public class DaemonGenerationRequest
     /**
      * Set the current repository layout.
      * 
-     * @param repositoryLayout
-     *            The repositoryLayout which will be set.
+     * @param repositoryLayout The repositoryLayout which will be set.
      */
     public void setRepositoryLayout( ArtifactRepositoryLayout repositoryLayout )
     {

@@ -41,8 +41,7 @@ public class FormattedPropertiesTest
 
         formattedProperties = new FormattedProperties();
 
-        formattedProperties.read( getClass()
-            .getResourceAsStream( "/org/codehaus/mojo/appassembler/util/test.properties" ) );
+        formattedProperties.read( getClass().getResourceAsStream( "/org/codehaus/mojo/appassembler/util/test.properties" ) );
     }
 
     private void saveAndCompare( String expectedResource )
@@ -62,8 +61,8 @@ public class FormattedPropertiesTest
             IOUtil.close( asStream );
         }
 
-        String unified = StringUtils.unifyLineSeparators(expected.toString());
-        assertEquals(unified, string.toString());
+        String unified = StringUtils.unifyLineSeparators( expected.toString() );
+        assertEquals( unified, string.toString() );
     }
 
     public void testReadingProperties()

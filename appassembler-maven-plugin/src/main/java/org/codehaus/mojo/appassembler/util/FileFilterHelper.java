@@ -1,138 +1,157 @@
 package org.codehaus.mojo.appassembler.util;
 
+/*
+ * The MIT License
+ * 
+ * Copyright (c) 2004, The Codehaus
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 
-public class FileFilterHelper {
-    public static IOFileFilter makeDirectoryAware(IOFileFilter filter, String directoryName) {
+/**
+ * This is helper class to summarize all filters.
+ * 
+ * @author <a href="mailto:khmarbaise@soebes.de">Karl Heinz Marbaise</a>
+ */
+public class FileFilterHelper
+{
+    public static IOFileFilter makeDirectoryAware( IOFileFilter filter, String directoryName )
+    {
 
-	IOFileFilter directoryAwareFilter = FileFilterUtils.notFileFilter(
-		FileFilterUtils.andFileFilter(
-			FileFilterUtils.directoryFileFilter(), FileFilterUtils.nameFileFilter(directoryName)
-		)
-	);
-	
-	return FileFilterUtils.andFileFilter(filter, directoryAwareFilter);
-    }
-    
-    public static IOFileFilter makeFileNameAware(IOFileFilter filter, String fileName) {
-	IOFileFilter directoryAwareFilter = FileFilterUtils.notFileFilter(
-		FileFilterUtils.andFileFilter(
-			FileFilterUtils.fileFileFilter(), FileFilterUtils.nameFileFilter(fileName)
-		)
-	);
-	
-	return FileFilterUtils.andFileFilter(filter, directoryAwareFilter);
-    }
-    
-    public static IOFileFilter makeSuffixAware(IOFileFilter filter, String suffixFileName) {
-	IOFileFilter directoryAwareFilter = FileFilterUtils.notFileFilter(
-		FileFilterUtils.andFileFilter(
-			FileFilterUtils.fileFileFilter(), FileFilterUtils.suffixFileFilter(suffixFileName)
-		)
-	);
-	
-	return FileFilterUtils.andFileFilter(filter, directoryAwareFilter);
+        IOFileFilter directoryAwareFilter =
+            FileFilterUtils.notFileFilter( FileFilterUtils.andFileFilter( FileFilterUtils.directoryFileFilter(),
+                                                                          FileFilterUtils.nameFileFilter( directoryName ) ) );
+
+        return FileFilterUtils.andFileFilter( filter, directoryAwareFilter );
     }
 
-    public static IOFileFilter makePatternFileNameAware(IOFileFilter filter, String pattern) {
-	IOFileFilter directoryAwareFilter = FileFilterUtils.notFileFilter(
-		FileFilterUtils.andFileFilter(
-			FileFilterUtils.fileFileFilter(), new RegexFileFilter(pattern)
-		)
-	);
-	
-	return FileFilterUtils.andFileFilter(filter, directoryAwareFilter);
+    public static IOFileFilter makeFileNameAware( IOFileFilter filter, String fileName )
+    {
+        IOFileFilter directoryAwareFilter =
+            FileFilterUtils.notFileFilter( FileFilterUtils.andFileFilter( FileFilterUtils.fileFileFilter(),
+                                                                          FileFilterUtils.nameFileFilter( fileName ) ) );
+
+        return FileFilterUtils.andFileFilter( filter, directoryAwareFilter );
     }
-    
+
+    public static IOFileFilter makeSuffixAware( IOFileFilter filter, String suffixFileName )
+    {
+        IOFileFilter directoryAwareFilter =
+            FileFilterUtils.notFileFilter( FileFilterUtils.andFileFilter( FileFilterUtils.fileFileFilter(),
+                                                                          FileFilterUtils.suffixFileFilter( suffixFileName ) ) );
+
+        return FileFilterUtils.andFileFilter( filter, directoryAwareFilter );
+    }
+
+    public static IOFileFilter makePatternFileNameAware( IOFileFilter filter, String pattern )
+    {
+        IOFileFilter directoryAwareFilter =
+            FileFilterUtils.notFileFilter( FileFilterUtils.andFileFilter( FileFilterUtils.fileFileFilter(),
+                                                                          new RegexFileFilter( pattern ) ) );
+
+        return FileFilterUtils.andFileFilter( filter, directoryAwareFilter );
+    }
+
     /**
-     * This will create a FileFilter which is the same as in
-     * plexus-utils (DirectoryScanner.DEFAULTEXCLUDES).
+     * This will create a FileFilter which is the same as in plexus-utils (DirectoryScanner.DEFAULTEXCLUDES).
      * 
-     * @return The initialized filter. 
+     * @return The initialized filter.
      */
-    public static IOFileFilter createDefaultFilter() {
+    public static IOFileFilter createDefaultFilter()
+    {
 
-	IOFileFilter filter = null;
-	
-	// CVS
-	// "**/CVS", "**/CVS/**", 
-	filter = FileFilterUtils.makeCVSAware(filter);
-	
-	// "**/.cvsignore",
-	filter = makeFileNameAware(filter, ".cvsignore");
+        IOFileFilter filter = null;
 
-	// Subversion
-	// "**/.svn", "**/.svn/**",
-	filter = FileFilterUtils.makeSVNAware(filter);
+        // CVS
+        // "**/CVS", "**/CVS/**",
+        filter = FileFilterUtils.makeCVSAware( filter );
 
-	// RCS
-	// "**/RCS", "**/RCS/**",
-	filter = makeDirectoryAware(filter, "RCS");
+        // "**/.cvsignore",
+        filter = makeFileNameAware( filter, ".cvsignore" );
 
-	// SCCS
-	// "**/SCCS", "**/SCCS/**",
-	filter = makeDirectoryAware(filter, "SCCS");
+        // Subversion
+        // "**/.svn", "**/.svn/**",
+        filter = FileFilterUtils.makeSVNAware( filter );
 
+        // RCS
+        // "**/RCS", "**/RCS/**",
+        filter = makeDirectoryAware( filter, "RCS" );
 
-	// "**/*~", "**/#*#", "**/.#*", "**/%*%", "**/._*",
-	filter = makeSuffixAware(filter, "~");
-	filter = makePatternFileNameAware(filter, "#.*#");
-	filter = makePatternFileNameAware(filter, "%.*%");
-	filter = makeSuffixAware(filter, ".#");
-	filter = makeSuffixAware(filter, "._");
+        // SCCS
+        // "**/SCCS", "**/SCCS/**",
+        filter = makeDirectoryAware( filter, "SCCS" );
 
+        // "**/*~", "**/#*#", "**/.#*", "**/%*%", "**/._*",
+        filter = makeSuffixAware( filter, "~" );
+        filter = makePatternFileNameAware( filter, "#.*#" );
+        filter = makePatternFileNameAware( filter, "%.*%" );
+        filter = makeSuffixAware( filter, ".#" );
+        filter = makeSuffixAware( filter, "._" );
 
-	
-	// Visual SourceSafe
-	// "**/vssver.scc",
-	filter = makeFileNameAware(filter, "vssver.scc");
+        // Visual SourceSafe
+        // "**/vssver.scc",
+        filter = makeFileNameAware( filter, "vssver.scc" );
 
-	// MKS
-	// "**/project.pj",
-	filter = makeFileNameAware(filter, "project.pj");
+        // MKS
+        // "**/project.pj",
+        filter = makeFileNameAware( filter, "project.pj" );
 
-	// Arch
-	// "**/.arch-ids", "**/.arch-ids/**",
-	filter = makeDirectoryAware(filter, ".arch-ids");
+        // Arch
+        // "**/.arch-ids", "**/.arch-ids/**",
+        filter = makeDirectoryAware( filter, ".arch-ids" );
 
-	//Bazaar
-	// "**/.bzr", "**/.bzr/**",
-	filter = makeDirectoryAware(filter, ".bzr");
+        // Bazaar
+        // "**/.bzr", "**/.bzr/**",
+        filter = makeDirectoryAware( filter, ".bzr" );
 
-	//SurroundSCM
-	// "**/.MySCMServerInfo",
-	filter = makeFileNameAware(filter, ".MySCMServerInfo");
+        // SurroundSCM
+        // "**/.MySCMServerInfo",
+        filter = makeFileNameAware( filter, ".MySCMServerInfo" );
 
-	// Mac
-	// "**/.DS_Store",
-	filter = makeDirectoryAware(filter, ".DS_Store");
+        // Mac
+        // "**/.DS_Store",
+        filter = makeDirectoryAware( filter, ".DS_Store" );
 
-	// Serena Dimensions Version 10
-	// "**/.metadata", "**/.metadata/**",
-	filter = makeDirectoryAware(filter, ".metadata");
+        // Serena Dimensions Version 10
+        // "**/.metadata", "**/.metadata/**",
+        filter = makeDirectoryAware( filter, ".metadata" );
 
-	// Mercurial
-	// "**/.hg", "**/.hg/**",
-	filter = makeDirectoryAware(filter, ".hg");
+        // Mercurial
+        // "**/.hg", "**/.hg/**",
+        filter = makeDirectoryAware( filter, ".hg" );
 
-	// git
-	// "**/.git", "**/.gitignore", "**/.gitattributes", "**/.git/**",
-	filter = makeDirectoryAware(filter, ".git");
-	filter = makeFileNameAware(filter, ".gitignore");
+        // git
+        // "**/.git", "**/.gitignore", "**/.gitattributes", "**/.git/**",
+        filter = makeDirectoryAware( filter, ".git" );
+        filter = makeFileNameAware( filter, ".gitignore" );
 
-	// BitKeeper
-	//"**/BitKeeper", "**/BitKeeper/**", "**/ChangeSet", "**/ChangeSet/**",
-	filter = makeDirectoryAware(filter, "BitKeeper");
-	filter = makeDirectoryAware(filter, "ChangeSet");
+        // BitKeeper
+        // "**/BitKeeper", "**/BitKeeper/**", "**/ChangeSet", "**/ChangeSet/**",
+        filter = makeDirectoryAware( filter, "BitKeeper" );
+        filter = makeDirectoryAware( filter, "ChangeSet" );
 
-	// darcs
-	// "**/_darcs", "**/_darcs/**", "**/.darcsrepo", "**/.darcsrepo/**", "**/-darcs-backup*", "**/.darcs-temp-mail" };
-	filter = makeDirectoryAware(filter, "_darcs");
-	filter = makeDirectoryAware(filter, ".darcsrepo");
+        // darcs
+        // "**/_darcs", "**/_darcs/**", "**/.darcsrepo", "**/.darcsrepo/**", "**/-darcs-backup*", "**/.darcs-temp-mail"
+        // };
+        filter = makeDirectoryAware( filter, "_darcs" );
+        filter = makeDirectoryAware( filter, ".darcsrepo" );
 
-	return filter;
+        return filter;
     }
 
 }

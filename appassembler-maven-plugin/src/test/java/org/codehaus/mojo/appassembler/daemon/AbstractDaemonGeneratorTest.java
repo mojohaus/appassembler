@@ -69,12 +69,14 @@ public abstract class AbstractDaemonGeneratorTest
         MavenSettingsBuilder settingsBuilder = (MavenSettingsBuilder) lookup( MavenSettingsBuilder.ROLE );
         Settings settings = settingsBuilder.buildSettings();
 
-        ArtifactRepositoryFactory artifactRepositoryFactory = (ArtifactRepositoryFactory) lookup( ArtifactRepositoryFactory.ROLE );
+        ArtifactRepositoryFactory artifactRepositoryFactory =
+            (ArtifactRepositoryFactory) lookup( ArtifactRepositoryFactory.ROLE );
 
         String localRepoUrl = new File( settings.getLocalRepository() ).toURL().toExternalForm();
 
-        ArtifactRepository localRepository = artifactRepositoryFactory
-            .createDeploymentArtifactRepository( "local", localRepoUrl, new DefaultRepositoryLayout(), false );
+        ArtifactRepository localRepository =
+            artifactRepositoryFactory.createDeploymentArtifactRepository( "local", localRepoUrl,
+                                                                          new DefaultRepositoryLayout(), false );
 
         ProfileManager profileManager = new DefaultProfileManager( getContainer() );
 
@@ -110,8 +112,8 @@ public abstract class AbstractDaemonGeneratorTest
         File tempPom = File.createTempFile( "appassembler", "tmp" );
         tempPom.deleteOnExit();
 
-        InterpolationFilterReader reader = new InterpolationFilterReader( new FileReader( getTestFile( file ) ),
-                                                                          context, "@", "@" );
+        InterpolationFilterReader reader =
+            new InterpolationFilterReader( new FileReader( getTestFile( file ) ), context, "@", "@" );
         FileWriter out = null;
 
         try

@@ -125,10 +125,8 @@ public class FormattedProperties
      * write, even though properties from any previous read are still retained. This allows adding properties to the top
      * of the file.
      * 
-     * @param inputStream
-     *            the stream to read from
-     * @throws IOException
-     *             if there is a problem reading the stream
+     * @param inputStream the stream to read from
+     * @throws IOException if there is a problem reading the stream
      */
     public void read( InputStream inputStream )
         throws IOException
