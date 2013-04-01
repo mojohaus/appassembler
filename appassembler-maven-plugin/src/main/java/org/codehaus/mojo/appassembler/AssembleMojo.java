@@ -1,24 +1,28 @@
-/**
- * The MIT License
- * 
- * Copyright 2006-2012 The Codehaus.
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
- * associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute,
- * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all copies or
- * substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
- * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
- * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
 package org.codehaus.mojo.appassembler;
+
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2006-2012, The Codehaus
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
 import java.io.File;
 import java.io.IOException;
@@ -384,8 +388,8 @@ public class AssembleMojo
     // Execute
     // ----------------------------------------------------------------------
 
-    /*
-     * (non-Javadoc)
+    /**
+     * calling from Maven.
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
     public void execute()
@@ -398,18 +402,20 @@ public class AssembleMojo
 
         if ( ( isUseAsterikClassPath() || isUseWildcardClassPath() ) && !repositoryLayout.equalsIgnoreCase( "flat" ) )
         {
-            throw new MojoExecutionException(
-                                              "The useAsterikClassPath/useWildcardClassPath works only in combination with repositoryLayout flat." );
+            throw new MojoExecutionException( "The useAsterikClassPath/useWildcardClassPath works only in "
+                + "combination with repositoryLayout flat." );
         }
 
         if ( isUseAsterikClassPath() )
         {
-            getLog().warn( "The usuage of useAsterikClassPath is marked as deprecated. Please use useWildcardClassPath instead" );
+            getLog().warn( "The usuage of useAsterikClassPath is marked as deprecated. Please use "
+                               + "useWildcardClassPath instead" );
         }
 
         if ( isUseAllDependencies() )
         {
-            getLog().warn( "The usuage of useAllDependencies marked as deprecated. Please use useAllProjectDependencies instead" );
+            getLog().warn( "The usuage of useAllDependencies marked as deprecated. Please use"
+                               + " useAllProjectDependencies instead" );
         }
 
         // Set the extensions for bin files for the different platforms
@@ -419,8 +425,8 @@ public class AssembleMojo
         try
         {
             artifactRepositoryLayout =
-                (ArtifactRepositoryLayout) container.lookup( "org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout",
-                                                             repositoryLayout );
+                (ArtifactRepositoryLayout) container.lookup( "org.apache.maven.artifact."
+                    + "repository.layout.ArtifactRepositoryLayout", repositoryLayout );
             if ( artifactRepositoryLayout == null )
             {
                 throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );

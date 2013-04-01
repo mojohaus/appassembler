@@ -2,21 +2,26 @@ package org.codehaus.mojo.appassembler.util;
 
 /*
  * The MIT License
- * 
- * Copyright (c) 2004, The Codehaus
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
- * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
- * Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
- * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
- * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Copyright (c) 2006-2012, The Codehaus
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -26,10 +31,17 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 /**
  * This is helper class to summarize all filters.
  * 
- * @author <a href="mailto:khmarbaise@soebes.de">Karl Heinz Marbaise</a>
+ * @author <a href="mailto:codehaus@soebes.de">Karl Heinz Marbaise</a>
  */
 public class FileFilterHelper
 {
+    /**
+     * Make the given IOFileFilter aware of directories.
+     * 
+     * @param filter The filter to make aware of directories.
+     * @param directoryName The directory name which should be payed attention to.
+     * @return The new generated filter.
+     */
     public static IOFileFilter makeDirectoryAware( IOFileFilter filter, String directoryName )
     {
 
@@ -40,6 +52,13 @@ public class FileFilterHelper
         return FileFilterUtils.andFileFilter( filter, directoryAwareFilter );
     }
 
+    /**
+     * Make the given IOFileFilter aware of files.
+     * 
+     * @param filter The filter to make aware of files.
+     * @param fileName The file name which should be payed attention to.
+     * @return The new generated filter.
+     */
     public static IOFileFilter makeFileNameAware( IOFileFilter filter, String fileName )
     {
         IOFileFilter directoryAwareFilter =
@@ -49,6 +68,13 @@ public class FileFilterHelper
         return FileFilterUtils.andFileFilter( filter, directoryAwareFilter );
     }
 
+    /**
+     * Make the given IOFileFilter aware of an suffix.
+     * 
+     * @param filter The filter to make aware of an suffix.
+     * @param suffixFileName The suffix name which should be payed attention to.
+     * @return The new generated filter.
+     */
     public static IOFileFilter makeSuffixAware( IOFileFilter filter, String suffixFileName )
     {
         IOFileFilter directoryAwareFilter =
@@ -58,6 +84,13 @@ public class FileFilterHelper
         return FileFilterUtils.andFileFilter( filter, directoryAwareFilter );
     }
 
+    /**
+     * Make the given IOFileFilter aware of the given pattern.
+     * 
+     * @param filter The filter to make aware of the pattern.
+     * @param pattern The pattern which should be payed attention to.
+     * @return The new generated filter.
+     */
     public static IOFileFilter makePatternFileNameAware( IOFileFilter filter, String pattern )
     {
         IOFileFilter directoryAwareFilter =
