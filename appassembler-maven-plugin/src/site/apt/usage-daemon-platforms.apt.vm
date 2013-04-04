@@ -46,11 +46,17 @@ Daemon Platforms
 
   which will generate for the following platforms by default:
   
-  * libwrapper-linux-x86-32
-
-  * libwrapper-linux-x86-64
-
-  * wrapper-windows-x86-32
+  * aix-ppc-32
+  
+  * aix-ppc-64
+  
+  * linux-x86-32
+  
+  * macosx-x86-universal-32
+  
+  * solaris-x86-32
+  
+  * windows-x86-32
   
   []
   
@@ -63,8 +69,8 @@ Daemon Platforms
       <generator>jsw</generator>
       <includes>
         <include>linux-x86-32</include>
-        <include>libwrapper-linux-x86-64</include>
-        <include>wrapper-windows-x86-32</include>
+        <include>linux-x86-64</include>
+        <include>windows-x86-32</include>
       </includes>
     </generatorConfiguration>
   </generatorConfigurations>
@@ -95,8 +101,8 @@ Daemon Platforms
                   <generator>jsw</generator>
                   <includes>
                     <include>linux-x86-32</include>
-                    <include>libwrapper-linux-x86-64</include>
-                    <include>wrapper-windows-x86-32</include>
+                    <include>linux-x86-64</include>
+                    <include>windows-x86-32</include>
                   </includes>
                 </generatorConfiguration>
               </generatorConfigurations>
@@ -160,41 +166,35 @@ Daemon Platforms
 
   Currently the following platforms are available:
   
-  * linux-x86-32-lib
+  * aix-ppc-32
+  
+  * aix-ppc-64
+  
+  * hpux-parisc-64
+  
+  * linux-x86-32
 
-  * linux-x86-32-exec
+  * linux-x86-64
 
-  * linux-x86-64-lib
+  * linux-ppc-64
+  
+  * macosx-ppc-32
+  
+  * macosx-x86-universal-32
 
-  * linux-x86-64-exec
-  
-  * linux-ppc-64-lib
-  
-  * linux-ppc-64-exec
-  
-  * macosx-ppc-32-lib
-  
-  * macosx-ppc-32-exec
-  
-  * macosx-x86-universal-32-lib
-  
-  * macosx-x86-universal-32-exec
-  
-  * solaris-sparc-32-lib
-  
-  * solaris-sparc-32-exec
-  
-  * solaris-sparc-64-lib
-  
-  * solaris-sparc-64-exec
-  
-  * solaris-x86-32-lib
-  
-  * solaris-x86-32-exec
-  
-  * windows-x86-32-lib
+  * macosx-universal-32
 
-  * windows-x86-32-exec
+  * macosx-universal-64
+  
+  * solaris-sparc-32
+  
+  * solaris-sparc-64
+  
+  * solaris-x86-32
+  
+  * windows-x86-32
+  
+  * windows-x86-64
   
   []
   
