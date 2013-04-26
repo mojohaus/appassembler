@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.project.MavenProject;
@@ -139,9 +140,9 @@ public class JavaServiceWrapperDaemonGenerator
 
         List jswPlatformIncludes = getJswPlatformIncludes( daemon );
 
-        writeLibraryFiles( outputDirectory, jswPlatformIncludes );
+        writeLibraryFiles( outputDirectory, daemon,  jswPlatformIncludes );
 
-        writeExecutableFiles( outputDirectory, jswPlatformIncludes );
+        writeExecutableFiles( outputDirectory, daemon, jswPlatformIncludes );
     }
 
     private void writeWrapperConfFile( DaemonGenerationRequest request, Daemon daemon, File outputDirectory,
@@ -532,7 +533,7 @@ public class JavaServiceWrapperDaemonGenerator
         return is;
     }
 
-    private void writeLibraryFiles( File outputDirectory, List jswPlatformIncludes )
+    private void writeLibraryFiles( File outputDirectory, Daemon daemon, List jswPlatformIncludes )
         throws DaemonGeneratorException
     {
         copyResourceFile( outputDirectory, "lib/wrapper.jar" );
@@ -543,7 +544,14 @@ public class JavaServiceWrapperDaemonGenerator
             String libFile = (String) JSW_PLATFORMS_MAP.get( platform + "-lib" );
             if ( libFile != null )
             {
-                copyResourceFile( outputDirectory, libFile );
+                if ( daemon.getExternalDeltaPackDirectory() != null ) 
+                {
+                    copyExternalFile( new File( daemon.getExternalDeltaPackDirectory(), libFile ), new File( outputDirectory, libFile) );
+                }
+                else
+                {
+                    copyResourceFile( outputDirectory, libFile );
+                }
             }
             else
             {
@@ -552,7 +560,7 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
-    private void writeExecutableFiles( File outputDirectory, List jswPlatformIncludes )
+    private void writeExecutableFiles( File outputDirectory, Daemon daemon, List jswPlatformIncludes )
         throws DaemonGeneratorException
     {
         for ( Iterator iter = jswPlatformIncludes.iterator(); iter.hasNext(); )
@@ -561,7 +569,14 @@ public class JavaServiceWrapperDaemonGenerator
             String execFile = (String) JSW_PLATFORMS_MAP.get( platform + "-exec" );
             if ( execFile != null )
             {
-                copyResourceFile( outputDirectory, execFile );
+                if ( daemon.getExternalDeltaPackDirectory() != null ) 
+                {
+                    copyExternalFile( new File( daemon.getExternalDeltaPackDirectory(), execFile ), new File( outputDirectory, execFile) );
+                }
+                else 
+                {
+                    copyResourceFile( outputDirectory, execFile );
+                }
             }
             else
             {
@@ -569,6 +584,22 @@ public class JavaServiceWrapperDaemonGenerator
             }
         }
     }
+    
+    private void copyExternalFile( File from, File to )
+                    throws DaemonGeneratorException
+    {
+        try 
+        {
+            from.getParentFile().mkdirs();
+            FileUtils.copyFile( from,  to );
+        }
+        catch ( IOException e )
+        {
+            throw new DaemonGeneratorException( "Could not copy external file: " + from, e );
+        }
+        
+    }
+    
 
     private void copyResourceFile( File outputDirectory, String fileName )
         throws DaemonGeneratorException

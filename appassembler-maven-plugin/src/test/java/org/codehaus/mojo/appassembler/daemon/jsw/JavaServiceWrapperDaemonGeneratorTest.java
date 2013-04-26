@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.codehaus.mojo.appassembler.daemon.AbstractDaemonGeneratorTest;
+import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -342,6 +343,40 @@ public class JavaServiceWrapperDaemonGeneratorTest
                       normalizeLineTerminators( FileUtils.fileRead( shellScript ) ) );
 
         // there are no changes in batch file so we don't check it here
+        
+
+    }
+    
+    public void testGenerationWithGoodExternalDeltaPack()
+                    throws Exception
+    {
+        runTest( "jsw", "src/test/resources/project-10/pom.xml", "src/test/resources/project-10/descriptor.xml",
+                  "target/output-10-jsw" );
+
+        File jswDir = getTestFile( "target/output-10-jsw/app" );
+
+        // just enough to prove we see the external file
+        assertFileExists( jswDir, "lib/wrapper.jar" );
+        assertFileExists( jswDir, "lib/libwrapper-aix-ppc-32.a" );
+        assertFileExists( jswDir, "lib/libwrapper-aix-ppc-64.a" );
+                    
+
+    }
+    
+    public void testGenerationWithBadExternalDeltaPack()
+                    throws Exception
+    {
+        try {
+            runTest( "jsw", "src/test/resources/project-10/pom.xml", "src/test/resources/project-11/descriptor.xml",
+                     "target/output-11-jsw" );
+            
+            fail( "Invalid external delta pack passed thru!!." );
+        }
+        catch ( DaemonGeneratorException e ) {
+            assertTrue( "Invalid external delta pack does not get correct exceptoin", e.getMessage().startsWith( "Could not copy external file"  ) );
+        }
+
+
 
     }
 

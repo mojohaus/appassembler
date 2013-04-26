@@ -147,6 +147,16 @@ public class GenerateDaemonsMojo
      * @parameter expression="${windowsScriptTemplate}"
      */
     private String windowsScriptTemplate;
+    
+    /**
+     * Use this option to override the current built-in delta pack binary. You will need to unpack your delta pack version 
+     * to a known location set by this option
+     * 
+     * @since 1.3.2
+     * @parameter expression="${externalDeltaPackDirectory}"
+     */
+    private File externalDeltaPackDirectory;
+    
 
     // -----------------------------------------------------------------------
     // Read-only parameters
@@ -264,6 +274,11 @@ public class GenerateDaemonsMojo
                 modelDaemon.setWindowsScriptTemplate( windowsScriptTemplate );
             }
 
+            if ( this.externalDeltaPackDirectory != null )
+            {
+                modelDaemon.setExternalDeltaPackDirectory( this.externalDeltaPackDirectory.getAbsolutePath() );
+            }
+            
             // -----------------------------------------------------------------------
             //
             // -----------------------------------------------------------------------
