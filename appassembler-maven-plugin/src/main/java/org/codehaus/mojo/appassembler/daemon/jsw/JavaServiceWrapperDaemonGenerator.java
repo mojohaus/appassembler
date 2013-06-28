@@ -536,7 +536,14 @@ public class JavaServiceWrapperDaemonGenerator
     private void writeLibraryFiles( File outputDirectory, Daemon daemon, List jswPlatformIncludes )
         throws DaemonGeneratorException
     {
-        copyResourceFile( outputDirectory, "lib/wrapper.jar" );
+        if ( daemon.getExternalDeltaPackDirectory() != null ) 
+        {
+            copyExternalFile( new File( daemon.getExternalDeltaPackDirectory(), "lib/wrapper.jar" ), new File( outputDirectory, "lib/wrapper.jar") );
+        }
+        else
+        {
+            copyResourceFile( outputDirectory, "lib/wrapper.jar" );
+        }
 
         for ( Iterator iter = jswPlatformIncludes.iterator(); iter.hasNext(); )
         {
