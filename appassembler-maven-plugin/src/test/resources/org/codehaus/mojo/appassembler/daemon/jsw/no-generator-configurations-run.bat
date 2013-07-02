@@ -51,14 +51,24 @@ set _REALPATH=%~dp0
 rem Decide on the wrapper binary.
 set _WRAPPER_BASE=wrapper
 
-rem 32 bit binary works on both 32 and 64 windows
+if "%PROCESSOR_ARCHITEW6432%"=="AMD64" goto amd64
+if "%PROCESSOR_ARCHITECTURE%"=="AMD64" goto amd64
+if "%PROCESSOR_ARCHITECTURE%"=="IA64" goto ia64
+
 set _WRAPPER_EXE=%_REALPATH%%_WRAPPER_BASE%-windows-x86-32.exe
-if exist "%_WRAPPER_EXE%" goto validate
+goto validate_wrapper_exe
 
+:amd64
 set _WRAPPER_EXE=%_REALPATH%%_WRAPPER_BASE%-windows-x86-64.exe
-if exist "%_WRAPPER_EXE%" goto validate
+goto validate_wrapper_exe
 
-set _WRAPPER_EXE=%_REALPATH%%_WRAPPER_BASE%.exe
+:ia64
+set _WRAPPER_EXE=%_REALPATH%%_WRAPPER_BASE%-windows-ia-64.exe
+goto validate_wrapper_exe
+
+:validate_wrapper_exe
+if NOT exist "%_WRAPPER_EXE%" set _WRAPPER_EXE=%_REALPATH%%_WRAPPER_BASE%.exe
+
 if exist "%_WRAPPER_EXE%" goto validate
 
 echo Unable to locate a Wrapper executable using any of the following names:
