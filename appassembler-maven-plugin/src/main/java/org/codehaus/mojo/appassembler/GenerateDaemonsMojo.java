@@ -152,7 +152,7 @@ public class GenerateDaemonsMojo
      * Use this option to override the current built-in delta pack binary. You will need to unpack your delta pack version 
      * to a known location set by this option
      * 
-     * @since 1.3.2
+     * @since 1.4.0
      * @parameter expression="${externalDeltaPackDirectory}"
      */
     private File externalDeltaPackDirectory;

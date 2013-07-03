@@ -127,13 +127,21 @@ public class JavaServiceWrapperDaemonGenerator
             configuration.remove( "run.as.user.envvar" );
         }
         String pidFile = configuration.getProperty( "wrapper.pidfile", "$BASEDIR/logs" );
-
+        
+        // Don't want these in the wrapper.conf file
+        String chkconfigStart = configuration.getProperty( "chkconfig.start", "20" );
+        configuration.remove("chkconfig.start");
+        String chkconfigStop = configuration.getProperty( "chkconfig.stop", "80" );
+        configuration.remove("chkconfig.stop");
+        
         Properties context = createContext( request, daemon );
         context.setProperty( "app.base.envvar", appBaseEnvVar );
         context.setProperty( "wrapper.pidfile", pidFile );
         context.setProperty( "run.as.user.envvar", runAsUserEnvVar );
         context.setProperty( "wrapper.conf.fileName", this.getWrapperConfigFileName( daemon ) );
-
+        context.setProperty( "chkconfig.start", chkconfigStart);
+        context.setProperty( "chkconfig.stop", chkconfigStop);
+        
         writeWrapperConfFile( request, daemon, outputDirectory, context, configuration );
 
         writeScriptFiles( request, daemon, outputDirectory, context );
