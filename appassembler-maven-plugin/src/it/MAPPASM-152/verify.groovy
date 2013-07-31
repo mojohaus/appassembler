@@ -33,7 +33,7 @@ if ( !repositoryFolder.canRead() ) {
 }
 
 def filesInRepository = [
-    'MAPPASM-152-1.0-SNAPSHOT.jar',
+    'mappasm-152-1.0-SNAPSHOT.jar',
     'plexus-utils-1.1.jar',
     'wrapper.jar',
 ];
