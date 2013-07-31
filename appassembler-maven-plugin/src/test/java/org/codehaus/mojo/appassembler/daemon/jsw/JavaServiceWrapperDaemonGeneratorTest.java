@@ -230,7 +230,6 @@ public class JavaServiceWrapperDaemonGeneratorTest
         String expected = FileUtils.fileRead(
             getTestFile( file ) );
         return StringUtils.unifyLineSeparators( expected );
-
     }
 
     public void testGenerateWithAllKnownPlatforms()
@@ -276,7 +275,6 @@ public class JavaServiceWrapperDaemonGeneratorTest
         assertFileExists( jswDir, "bin/wrapper-solaris-sparc-64" );
         assertFileExists( jswDir, "bin/wrapper-windows-x86-32.exe" );
         assertFileExists( jswDir, "bin/wrapper-windows-x86-64.exe" );
-
     }
 
     public void testGenerationWithRunAsUserEnvVar()
@@ -361,8 +359,6 @@ public class JavaServiceWrapperDaemonGeneratorTest
                       normalizeLineTerminators( FileUtils.fileRead( shellScript ) ) );
 
         // there are no changes in batch file so we don't check it here
-        
-
     }
     
     public void testGenerationWithGoodExternalDeltaPack()
@@ -373,12 +369,14 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         File jswDir = getTestFile( "target/output-10-jsw/app" );
 
-        // just enough to prove we see the external file
+        // just enough to prove we see the external files
         assertFileExists( jswDir, "lib/wrapper.jar" );
         assertFileExists( jswDir, "lib/libwrapper-aix-ppc-32.a" );
         assertFileExists( jswDir, "lib/libwrapper-aix-ppc-64.a" );
                     
-
+        // just enough to prove we see the external files
+        assertFileExists( jswDir, "bin/wrapper-aix-ppc-32" );
+        assertFileExists( jswDir, "bin/wrapper-aix-ppc-64" );
     }
     
     public void testGenerationWithBadExternalDeltaPack()
@@ -393,9 +391,6 @@ public class JavaServiceWrapperDaemonGeneratorTest
         catch ( DaemonGeneratorException e ) {
             assertTrue( "Invalid external delta pack does not get correct exceptoin", e.getMessage().startsWith( "Could not copy external file"  ) );
         }
-
-
-
     }
 
     public void testGenerationWithRepositoryName()
