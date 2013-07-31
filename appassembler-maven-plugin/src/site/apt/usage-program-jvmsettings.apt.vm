@@ -158,7 +158,7 @@ exec "$JAVACMD" $JAVA_OPTS \
       <plugin>
         ...
         <configuration>
-          <extracJvmArguments>-Xms16m</extracJvmArguments>
+          <extraJvmArguments>-Xms16m</extraJvmArguments>
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
@@ -194,7 +194,7 @@ exec "$JAVACMD" $JAVA_OPTS \
       <plugin>
         ...
         <configuration>
-          <extracJvmArguments>-Dpar1=@BASEDIR@ -Dpar2=@REPO@</extracJvmArguments>
+          <extraJvmArguments>-Dpar1=@BASEDIR@ -Dpar2=@REPO@</extraJvmArguments>
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
