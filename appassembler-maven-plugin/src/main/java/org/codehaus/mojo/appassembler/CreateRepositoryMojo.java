@@ -93,7 +93,7 @@ public class CreateRepositoryMojo
      * Path (relative to <code>assembleDirectory</code>) of the desired output repository.
      * 
      * @parameter default-value="repo"
-     * @since 1.4
+     * @since 1.3.1
      * @todo Customization doesn't work due to the shell scripts not honouring it
      */
     private String repositoryName;
