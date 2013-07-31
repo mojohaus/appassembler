@@ -66,6 +66,7 @@ public class DefaultDaemonMerger
         result.setClasspath( (Classpath) select( dominant.getClasspath(), recessive.getClasspath() ) );
         result
             .setCommandLineArguments( select( dominant.getCommandLineArguments(), recessive.getCommandLineArguments() ) );
+        result.setConfigurationDirectory( select( dominant.getConfigurationDirectory(), recessive.getConfigurationDirectory() ) );
         // This should probably be improved
         result.setJvmSettings( (JvmSettings) select( dominant.getJvmSettings(), recessive.getJvmSettings() ) );
         result.setShowConsoleWindow( dominant.isShowConsoleWindow() );

@@ -40,7 +40,7 @@ exit /b 1
 :nt
 
 set BASEDIR=%~dp0\..
-@env.setup.windows@
+
 
 rem
 rem Find the application home.
@@ -92,7 +92,7 @@ rem
 rem Find the wrapper.conf
 rem
 :conf
-set _WRAPPER_CONF="%_REALPATH%..\@wrapper.conf.directory@\@wrapper.conf.fileName@"
+set _WRAPPER_CONF="%_REALPATH%..\etc\wrapper.conf"
 
 rem
 rem Run the application.

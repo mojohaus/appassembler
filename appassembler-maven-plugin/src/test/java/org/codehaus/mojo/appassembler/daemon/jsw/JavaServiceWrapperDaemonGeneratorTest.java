@@ -425,6 +425,28 @@ public class JavaServiceWrapperDaemonGeneratorTest
         assertFileNotExists( jswDir, "lib/libwrapper-solaris-sparc-64.so" );
     }
 
+    public void testGenerationWithConfigurationDirectory()
+        throws Exception
+    {
+        runTest( "jsw", "src/test/resources/project-14/pom.xml", "src/test/resources/project-14/descriptor.xml",
+                 "target/output-14-jsw" );
+
+        File jswDir = getTestFile( "target/output-14-jsw/app" );
+        assertFileExists( jswDir, "etc/wrapper.conf" );
+
+        File shellScript = new File( jswDir, "bin/app" );
+        assertTrue( "Shell script file is missing: " + shellScript.getAbsolutePath(), shellScript.isFile() );
+        assertEquals( FileUtils.fileRead(
+                          getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-14.sh" ) ),
+                          FileUtils.fileRead( shellScript ) );
+
+        File batchFile = new File( jswDir, "bin/app.bat" );
+        assertTrue( "Batch file is missing: " + batchFile.getAbsolutePath(), batchFile.isFile() );
+        assertEquals( FileUtils.fileRead(
+                          getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-14.bat" ) ),
+                          FileUtils.fileRead( batchFile ) );
+    }
+
     private static void assertFileExists( File jswDir, String file )
     {
         File wrapperJar = new File( jswDir, file );

@@ -69,6 +69,15 @@ public class GenerateDaemonsMojo
     private File basedir;
 
     /**
+     * The name of the target directory for configuration files.
+     *
+     * @parameter default-value="conf"
+     * @since 1.5
+     * @todo Synchronize the default value with the other mojos in 2.0
+     */
+    private String configurationDirectory;
+
+    /**
      * Set of {@linkplain Daemon}s to generate.
      * 
      * @parameter
@@ -107,7 +116,7 @@ public class GenerateDaemonsMojo
      *
      * @parameter default-value="lib"
      * @since 1.5
-     * @todo Change the default value to "repo" in 2.0 to be consistent with the other mojos
+     * @todo Synchronize the default value with the other mojos in 2.0
      */
     private String repositoryName;
 
@@ -270,6 +279,7 @@ public class GenerateDaemonsMojo
                 }
             }
 
+            modelDaemon.setConfigurationDirectory( configurationDirectory );
             modelDaemon.setEnvironmentSetupFileName( environmentSetupFileName );
             modelDaemon.setRepositoryName( repositoryName );
             modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
@@ -324,9 +334,6 @@ public class GenerateDaemonsMojo
                 File outputDirectory = new File( request.getOutputDirectory(), daemon.getId() );
 
                 // The repo where the jar files will be installed
-                // FIXME: /lib hard coded. Should be made configurable.
-                // via repositoryName like in AssembleMojo ?
-                // Might be refactored into AbstractAppAssemblerMojo?
                 ArtifactRepository artifactRepository =
                     artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://"
                         + outputDirectory.getAbsolutePath() + "/" + repositoryName, artifactRepositoryLayout, false );
@@ -357,6 +364,7 @@ public class GenerateDaemonsMojo
         modelDaemon.setId( daemon.getId() );
         modelDaemon.setMainClass( daemon.getMainClass() );
         modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
+        modelDaemon.setConfigurationDirectory( daemon.getConfigurationDirectory() );
         modelDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
         modelDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
         modelDaemon.setRepositoryName( daemon.getRepositoryName() );

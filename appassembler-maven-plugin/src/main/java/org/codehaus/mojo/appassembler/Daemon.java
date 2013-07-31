@@ -43,6 +43,8 @@ public class Daemon
 
     private List commandLineArguments;
 
+    private String configurationDirectory;
+
     private JvmSettings jvmSettings;
 
     private List generatorConfigurations;
@@ -106,6 +108,15 @@ public class Daemon
     public List getCommandLineArguments()
     {
         return commandLineArguments;
+    }
+
+    /**
+     * Return the configuration directory.
+     *
+     * @return The configuration directory.
+     */
+    public String getConfigurationDirectory() {
+        return configurationDirectory;
     }
 
     /**

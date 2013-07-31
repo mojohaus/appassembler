@@ -146,6 +146,7 @@ public class JavaServiceWrapperDaemonGenerator
         context.setProperty( "app.base.envvar", appBaseEnvVar );
         context.setProperty( "wrapper.pidfile", pidFile );
         context.setProperty( "run.as.user.envvar", runAsUserEnvVar );
+        context.setProperty( "wrapper.conf.directory", daemon.getConfigurationDirectory() );
         context.setProperty( "wrapper.conf.fileName", this.getWrapperConfigFileName( daemon ) );
         context.setProperty( "chkconfig.start", chkconfigStart);
         context.setProperty( "chkconfig.stop", chkconfigStop);
@@ -241,7 +242,7 @@ public class JavaServiceWrapperDaemonGenerator
 
         Reader reader = new InputStreamReader( new StringInputStream( string.toString() ) );
 
-        writeFilteredFile( request, daemon, reader, new File( outputDirectory, "conf/"
+        writeFilteredFile( request, daemon, reader, new File( outputDirectory, daemon.getConfigurationDirectory() + "/"
             + getWrapperConfigFileName( daemon ) ), context );
     }
 
@@ -367,6 +368,7 @@ public class JavaServiceWrapperDaemonGenerator
         final String wrapperClassPathPrefix = "wrapper.java.classpath.";
 
         int counter = 1;
+        // @todo dennisl: Shouldn't we be using %REPO_DIR% here?
         confFile.setProperty( wrapperClassPathPrefix + counter++, daemon.getRepositoryName() + "/wrapper.jar" );
 
         String configurationDirFirst = configuration.getProperty( "configuration.directory.in.classpath.first" );

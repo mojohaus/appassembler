@@ -22,22 +22,18 @@
   ~ SOFTWARE.
   -->
 
-<daemon>
-  <mainClass>com.westerngeco.example.App</mainClass>
-  <configurationDirectory>conf</configurationDirectory>
-  <jvmSettings>
-    <initialMemorySize>345</initialMemorySize>
-    <maxMemorySize>234</maxMemorySize>
-    <maxStackSize>321</maxStackSize>
-  </jvmSettings>
-  <generatorConfigurations>
-    <generatorConfiguration>
-      <generator>jsw</generator>
-      <configuration>
-        <wrapper.pidfile>$BASEDIR/test</wrapper.pidfile>
-      </configuration>
-    </generatorConfiguration>
-  </generatorConfigurations>
-  <repositoryName>lib</repositoryName>
-  <externalDeltaPackDirectory>target/baddir</externalDeltaPackDirectory>
-</daemon>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.mojo.appassembler</groupId>
+  <artifactId>project-14</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>Test Project</name>
+  <description>This is a test project.</description>
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>1.1</version>
+    </dependency>
+  </dependencies>
+</project>

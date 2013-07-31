@@ -24,6 +24,7 @@
 
 <daemon>
   <mainClass>com.westerngeco.example.App</mainClass>
+  <configurationDirectory>conf</configurationDirectory>
   <generatorConfigurations>
     <generatorConfiguration>
       <generator>jsw</generator>

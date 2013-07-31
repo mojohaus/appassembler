@@ -24,20 +24,10 @@
 
 <daemon>
   <mainClass>com.westerngeco.example.App</mainClass>
-  <configurationDirectory>conf</configurationDirectory>
-  <jvmSettings>
-    <initialMemorySize>345</initialMemorySize>
-    <maxMemorySize>234</maxMemorySize>
-    <maxStackSize>321</maxStackSize>
-  </jvmSettings>
+  <configurationDirectory>etc</configurationDirectory>
   <generatorConfigurations>
     <generatorConfiguration>
       <generator>jsw</generator>
-      <configuration>
-        <wrapper.pidfile>$BASEDIR/test</wrapper.pidfile>
-      </configuration>
     </generatorConfiguration>
   </generatorConfigurations>
-  <repositoryName>lib</repositoryName>
-  <externalDeltaPackDirectory>target/baddir</externalDeltaPackDirectory>
 </daemon>

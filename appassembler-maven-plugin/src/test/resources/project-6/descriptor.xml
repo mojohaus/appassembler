@@ -23,8 +23,9 @@
   -->
   
  <daemon>
-   <mainClass>com.company.example.App</mainClass> 
-   <environmentSetupFileName>app-env</environmentSetupFileName>  
+   <mainClass>com.company.example.App</mainClass>
+   <configurationDirectory>conf</configurationDirectory>
+   <environmentSetupFileName>app-env</environmentSetupFileName>
    <generatorConfigurations>
      <generatorConfiguration>
        <generator>jsw</generator>
