@@ -47,6 +47,8 @@ public class Daemon
 
     private List generatorConfigurations;
 
+    private String repositoryName;
+
     private boolean showConsoleWindow = true;
 
     private String environmentSetupFileName;
@@ -124,6 +126,16 @@ public class Daemon
     public List getGeneratorConfigurations()
     {
         return generatorConfigurations;
+    }
+
+    /**
+     * Return the repository name.
+     *
+     * @return The repository name.
+     */
+    public String getRepositoryName()
+    {
+        return repositoryName;
     }
 
     /**

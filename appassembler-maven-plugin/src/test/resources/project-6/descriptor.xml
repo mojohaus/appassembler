@@ -44,5 +44,6 @@
          <include>windows-x86-32</include>
       </includes>
      </generatorConfiguration>
-   </generatorConfigurations>  
+   </generatorConfigurations>
+   <repositoryName>lib</repositoryName>
  </daemon>

@@ -69,6 +69,7 @@ public class DefaultDaemonMerger
         // This should probably be improved
         result.setJvmSettings( (JvmSettings) select( dominant.getJvmSettings(), recessive.getJvmSettings() ) );
         result.setShowConsoleWindow( dominant.isShowConsoleWindow() );
+        result.setRepositoryName( select( dominant.getRepositoryName(), recessive.getRepositoryName() ) );
 
         return result;
     }

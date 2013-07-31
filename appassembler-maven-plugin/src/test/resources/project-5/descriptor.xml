@@ -40,4 +40,5 @@
   <commandLineArguments>
     <commandLineArgument>arg1=arg1-value</commandLineArgument>
   </commandLineArguments>
+  <repositoryName>lib</repositoryName>
 </daemon>

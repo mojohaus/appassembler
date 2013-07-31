@@ -71,38 +71,42 @@ public class JavaServiceWrapperDaemonGenerator
     private static final Map JSW_PLATFORMS_MAP = new HashMap()
     {
         {
-            put( "aix-ppc-32-lib", "lib/libwrapper-aix-ppc-32.a" );
+            put( "aix-ppc-32-lib", "libwrapper-aix-ppc-32.a" );
             put( "aix-ppc-32-exec", "bin/wrapper-aix-ppc-32" );
-            put( "aix-ppc-64-lib", "lib/libwrapper-aix-ppc-64.a" );
+            put( "aix-ppc-64-lib", "libwrapper-aix-ppc-64.a" );
             put( "aix-ppc-64-exec", "bin/wrapper-aix-ppc-64" );
-            put( "hpux-parisc-64-lib", "lib/libwrapper-hpux-parisc-64.sl" );
+            put( "hpux-parisc-64-lib", "libwrapper-hpux-parisc-64.sl" );
             put( "hpux-parisc-64-exec", "bin/wrapper-hpux-parisc-64" );
-            put( "linux-x86-32-lib", "lib/libwrapper-linux-x86-32.so" );
+            put( "linux-x86-32-lib", "libwrapper-linux-x86-32.so" );
             put( "linux-x86-32-exec", "bin/wrapper-linux-x86-32" );
-            put( "linux-x86-64-lib", "lib/libwrapper-linux-x86-64.so" );
+            put( "linux-x86-64-lib", "libwrapper-linux-x86-64.so" );
             put( "linux-x86-64-exec", "bin/wrapper-linux-x86-64" );
-            put( "linux-ppc-64-lib", "lib/libwrapper-linux-ppc-64.so" );
+            put( "linux-ppc-64-lib", "libwrapper-linux-ppc-64.so" );
             put( "linux-ppc-64-exec", "bin/wrapper-linux-ppc-64" );
-            put( "macosx-ppc-32-lib", "lib/libwrapper-macosx-ppc-32.jnilib" );
+            put( "macosx-ppc-32-lib", "libwrapper-macosx-ppc-32.jnilib" );
             put( "macosx-ppc-32-exec", "bin/wrapper-macosx-ppc-32" );
-            put( "macosx-x86-universal-32-lib", "lib/libwrapper-macosx-universal-32.jnilib" );
+            put( "macosx-x86-universal-32-lib", "libwrapper-macosx-universal-32.jnilib" );
             put( "macosx-x86-universal-32-exec", "bin/wrapper-macosx-universal-32" );
-            put( "macosx-universal-32-lib", "lib/libwrapper-macosx-universal-32.jnilib" );
+            put( "macosx-universal-32-lib", "libwrapper-macosx-universal-32.jnilib" );
             put( "macosx-universal-32-exec", "bin/wrapper-macosx-universal-32" );
-            put( "macosx-universal-64-lib", "lib/libwrapper-macosx-universal-64.jnilib" );
+            put( "macosx-universal-64-lib", "libwrapper-macosx-universal-64.jnilib" );
             put( "macosx-universal-64-exec", "bin/wrapper-macosx-universal-64" );
-            put( "solaris-sparc-32-lib", "lib/libwrapper-solaris-sparc-32.so" );
+            put( "solaris-sparc-32-lib", "libwrapper-solaris-sparc-32.so" );
             put( "solaris-sparc-32-exec", "bin/wrapper-solaris-sparc-32" );
-            put( "solaris-sparc-64-lib", "lib/libwrapper-solaris-sparc-64.so" );
+            put( "solaris-sparc-64-lib", "libwrapper-solaris-sparc-64.so" );
             put( "solaris-sparc-64-exec", "bin/wrapper-solaris-sparc-64" );
-            put( "solaris-x86-32-lib", "lib/libwrapper-solaris-x86-32.so" );
+            put( "solaris-x86-32-lib", "libwrapper-solaris-x86-32.so" );
             put( "solaris-x86-32-exec", "bin/wrapper-solaris-x86-32" );
-            put( "windows-x86-32-lib", "lib/wrapper-windows-x86-32.dll" );
+            put( "windows-x86-32-lib", "wrapper-windows-x86-32.dll" );
             put( "windows-x86-32-exec", "bin/wrapper-windows-x86-32.exe" );
-            put( "windows-x86-64-lib", "lib/wrapper-windows-x86-64.dll" );
+            put( "windows-x86-64-lib", "wrapper-windows-x86-64.dll" );
             put( "windows-x86-64-exec", "bin/wrapper-windows-x86-64.exe" );
         }
     };
+    /**
+     * The directory where the JSW lib files are fetched from.
+     */
+    private static final String JSW_LIB_DIR = "lib";
 
     // -----------------------------------------------------------------------
     // DaemonGenerator Implementation
@@ -181,9 +185,9 @@ public class JavaServiceWrapperDaemonGenerator
 
         // TODO: configurable?
         confFile.setPropertyAfter( "wrapper.working.dir", "..", "wrapper.java.command" );
-        confFile.setProperty( "wrapper.java.library.path.1", "lib" );
+        confFile.setProperty( "wrapper.java.library.path.1", daemon.getRepositoryName() );
 
-        confFile.setPropertyAfter( "set.default.REPO_DIR", "lib", "wrapper.java.mainclass" );
+        confFile.setPropertyAfter( "set.default.REPO_DIR", daemon.getRepositoryName(), "wrapper.java.mainclass" );
         confFile.setPropertyAfter( "set." + context.getProperty( "app.base.envvar" ), ".", "wrapper.java.mainclass" );
 
         if ( daemon.getWrapperLogFile() == null )
@@ -359,7 +363,7 @@ public class JavaServiceWrapperDaemonGenerator
         final String wrapperClassPathPrefix = "wrapper.java.classpath.";
 
         int counter = 1;
-        confFile.setProperty( wrapperClassPathPrefix + counter++, "lib/wrapper.jar" );
+        confFile.setProperty( wrapperClassPathPrefix + counter++, daemon.getRepositoryName() + "/wrapper.jar" );
 
         String configurationDirFirst = configuration.getProperty( "configuration.directory.in.classpath.first" );
         if ( configurationDirFirst != null )
@@ -546,11 +550,11 @@ public class JavaServiceWrapperDaemonGenerator
     {
         if ( daemon.getExternalDeltaPackDirectory() != null ) 
         {
-            copyExternalFile( new File( daemon.getExternalDeltaPackDirectory(), "lib/wrapper.jar" ), new File( outputDirectory, "lib/wrapper.jar") );
+            copyExternalFile( new File( daemon.getExternalDeltaPackDirectory(), JSW_LIB_DIR + "/wrapper.jar" ), new File( outputDirectory, daemon.getRepositoryName() + "/wrapper.jar") );
         }
         else
         {
-            copyResourceFile( outputDirectory, "lib/wrapper.jar" );
+            copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, "wrapper.jar" );
         }
 
         for ( Iterator iter = jswPlatformIncludes.iterator(); iter.hasNext(); )
@@ -561,11 +565,11 @@ public class JavaServiceWrapperDaemonGenerator
             {
                 if ( daemon.getExternalDeltaPackDirectory() != null ) 
                 {
-                    copyExternalFile( new File( daemon.getExternalDeltaPackDirectory(), libFile ), new File( outputDirectory, libFile) );
+                    copyExternalFile( new File( daemon.getExternalDeltaPackDirectory(), JSW_LIB_DIR + "/" + libFile ), new File( outputDirectory, daemon.getRepositoryName() + "/" + libFile) );
                 }
                 else
                 {
-                    copyResourceFile( outputDirectory, libFile );
+                    copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, libFile );
                 }
             }
             else
@@ -620,6 +624,19 @@ public class JavaServiceWrapperDaemonGenerator
         throws DaemonGeneratorException
     {
         InputStream batchFileInputStream = this.getClass().getResourceAsStream( fileName );
+
+        if ( batchFileInputStream == null )
+        {
+            throw new DaemonGeneratorException( "Could not load library file: " + fileName );
+        }
+
+        writeFile( new File( outputDirectory, fileName ), batchFileInputStream );
+    }
+
+    private void copyResourceFile( File outputDirectory, String inputDirectory, String fileName )
+        throws DaemonGeneratorException
+    {
+        InputStream batchFileInputStream = this.getClass().getResourceAsStream( inputDirectory + "/" + fileName );
 
         if ( batchFileInputStream == null )
         {

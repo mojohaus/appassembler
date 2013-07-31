@@ -52,4 +52,5 @@
       </configuration>
     </generatorConfiguration>
   </generatorConfigurations>
+  <repositoryName>lib</repositoryName>
 </daemon>

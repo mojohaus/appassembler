@@ -102,6 +102,16 @@ public class GenerateDaemonsMojo
     private File licenseHeaderFile;
 
     /**
+     * Path (relative to <code>assembleDirectory</code>) of the desired output
+     * repository.
+     *
+     * @parameter default-value="lib"
+     * @since 1.5
+     * @todo Change the default value to "repo" in 2.0 to be consistent with the other mojos
+     */
+    private String repositoryName;
+
+    /**
      * Target directory for generated daemons.
      * 
      * @parameter expression="${project.build.directory}/generated-resources/appassembler"
@@ -261,6 +271,7 @@ public class GenerateDaemonsMojo
             }
 
             modelDaemon.setEnvironmentSetupFileName( environmentSetupFileName );
+            modelDaemon.setRepositoryName( repositoryName );
             modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
             modelDaemon.setUseDaemonIdAsWrapperConfName( useDaemonIdAsWrapperConfName );
             modelDaemon.setUseWildcardClassPath( useWildcardClassPath );
@@ -318,7 +329,7 @@ public class GenerateDaemonsMojo
                 // Might be refactored into AbstractAppAssemblerMojo?
                 ArtifactRepository artifactRepository =
                     artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://"
-                        + outputDirectory.getAbsolutePath() + "/lib", artifactRepositoryLayout, false );
+                        + outputDirectory.getAbsolutePath() + "/" + repositoryName, artifactRepositoryLayout, false );
 
                 for ( Iterator it = artifacts.iterator(); it.hasNext(); )
                 {
@@ -348,6 +359,7 @@ public class GenerateDaemonsMojo
         modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
         modelDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
         modelDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
+        modelDaemon.setRepositoryName( daemon.getRepositoryName() );
 
         if ( daemon.getJvmSettings() != null )
         {

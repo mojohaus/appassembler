@@ -398,6 +398,38 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
     }
 
+    public void testGenerationWithRepositoryName()
+        throws Exception
+    {
+        runTest( "jsw", "src/test/resources/project-13/pom.xml", "src/test/resources/project-13/descriptor.xml",
+                 "target/output-13-jsw" );
+
+        File jswDir = getTestFile( "target/output-13-jsw/app" );
+        File wrapper = new File( jswDir, "conf/wrapper.conf" );
+
+        assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
+
+        String dir = "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw";
+
+        String testFile = dir + "/wrapper-13.conf";
+        assertEquals( "Comparing " + testFile + " to " + wrapper,
+                      normalizeLineTerminators( FileUtils.fileRead( getTestFile( testFile ) ) ),
+                      normalizeLineTerminators( FileUtils.fileRead( wrapper ) ) );
+
+        assertFileExists( jswDir, "repo/wrapper.jar" );
+        assertFileExists( jswDir, "repo/wrapper-windows-x86-32.dll" );
+        assertFileExists( jswDir, "repo/wrapper-windows-x86-64.dll" );
+        assertFileExists( jswDir, "repo/libwrapper-macosx-universal-32.jnilib" );
+        assertFileExists( jswDir, "repo/libwrapper-linux-x86-32.so" );
+        assertFileExists( jswDir, "repo/libwrapper-solaris-sparc-64.so" );
+        assertFileNotExists( jswDir, "lib/wrapper.jar" );
+        assertFileNotExists( jswDir, "lib/wrapper-windows-x86-32.dll" );
+        assertFileNotExists( jswDir, "lib/wrapper-windows-x86-64.dll" );
+        assertFileNotExists( jswDir, "lib/libwrapper-macosx-universal-32.jnilib" );
+        assertFileNotExists( jswDir, "lib/libwrapper-linux-x86-32.so" );
+        assertFileNotExists( jswDir, "lib/libwrapper-solaris-sparc-64.so" );
+    }
+
     private static void assertFileExists( File jswDir, String file )
     {
         File wrapperJar = new File( jswDir, file );

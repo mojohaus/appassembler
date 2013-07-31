@@ -24,18 +24,17 @@
 
 <daemon>
   <mainClass>com.westerngeco.example.App</mainClass>
-  <jvmSettings>
-    <initialMemorySize>345</initialMemorySize>
-    <maxMemorySize>234</maxMemorySize>
-    <maxStackSize>321</maxStackSize>
-  </jvmSettings>
   <generatorConfigurations>
     <generatorConfiguration>
       <generator>jsw</generator>
-      <configuration>
-        <wrapper.pidfile>$BASEDIR/test</wrapper.pidfile>
-      </configuration>
+      <includes>
+        <include>macosx-x86-universal-32</include>
+        <include>linux-x86-32</include>
+        <include>solaris-sparc-64</include>
+        <include>windows-x86-32</include>
+        <include>windows-x86-64</include>
+      </includes>
     </generatorConfiguration>
   </generatorConfigurations>
-  <repositoryName>lib</repositoryName>
+  <repositoryName>repo</repositoryName>
 </daemon>
