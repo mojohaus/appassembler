@@ -365,6 +365,7 @@ public class GenerateDaemonsMojo
         modelDaemon.setMainClass( daemon.getMainClass() );
         modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
         modelDaemon.setConfigurationDirectory( daemon.getConfigurationDirectory() );
+        modelDaemon.setLicenseHeaderFile( daemon.getLicenseHeaderFile() );
         modelDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
         modelDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
         modelDaemon.setRepositoryName( daemon.getRepositoryName() );

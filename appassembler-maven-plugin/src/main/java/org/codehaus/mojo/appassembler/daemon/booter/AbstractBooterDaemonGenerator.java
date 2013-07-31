@@ -96,6 +96,7 @@ public abstract class AbstractBooterDaemonGenerator
         Daemon booterDaemon = new Daemon();
         booterDaemon.setId( daemon.getId() );
         booterDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
+        booterDaemon.setLicenseHeaderFile( daemon.getLicenseHeaderFile() );
         booterDaemon.setModelEncoding( daemon.getModelEncoding() );
         // TODO: replace with org.codehaus.mojo.appassembler.booter.AppassemblerBooter.class.getName() and test - trygve
         booterDaemon.setMainClass( "org.codehaus.mojo.appassembler.booter.AppassemblerBooter" );

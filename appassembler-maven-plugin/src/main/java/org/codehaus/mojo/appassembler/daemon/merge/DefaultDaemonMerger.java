@@ -64,11 +64,11 @@ public class DefaultDaemonMerger
         result.setId( select( dominant.getId(), recessive.getId() ) );
         result.setMainClass( select( dominant.getMainClass(), recessive.getMainClass() ) );
         result.setClasspath( (Classpath) select( dominant.getClasspath(), recessive.getClasspath() ) );
-        result
-            .setCommandLineArguments( select( dominant.getCommandLineArguments(), recessive.getCommandLineArguments() ) );
+        result.setCommandLineArguments( select( dominant.getCommandLineArguments(), recessive.getCommandLineArguments() ) );
         result.setConfigurationDirectory( select( dominant.getConfigurationDirectory(), recessive.getConfigurationDirectory() ) );
         // This should probably be improved
         result.setJvmSettings( (JvmSettings) select( dominant.getJvmSettings(), recessive.getJvmSettings() ) );
+        result.setLicenseHeaderFile( select( dominant.getLicenseHeaderFile(), recessive.getLicenseHeaderFile() ) );
         result.setShowConsoleWindow( dominant.isShowConsoleWindow() );
         result.setRepositoryName( select( dominant.getRepositoryName(), recessive.getRepositoryName() ) );
 

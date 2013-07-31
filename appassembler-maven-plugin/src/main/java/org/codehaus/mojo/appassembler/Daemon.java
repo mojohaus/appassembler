@@ -49,6 +49,8 @@ public class Daemon
 
     private List generatorConfigurations;
 
+    private String licenseHeaderFile;
+
     private String repositoryName;
 
     private boolean showConsoleWindow = true;
@@ -115,7 +117,8 @@ public class Daemon
      *
      * @return The configuration directory.
      */
-    public String getConfigurationDirectory() {
+    public String getConfigurationDirectory()
+    {
         return configurationDirectory;
     }
 
@@ -137,6 +140,16 @@ public class Daemon
     public List getGeneratorConfigurations()
     {
         return generatorConfigurations;
+    }
+
+    /**
+     * Return the name of the license header file.
+     *
+     * @return The name of the license header file.
+     */
+    public String getLicenseHeaderFile()
+    {
+        return licenseHeaderFile;
     }
 
     /**

@@ -119,6 +119,12 @@ public class DaemonGeneratorServiceTest
         dominant.getCommandLineArguments().add( "2" );
         assertEquals( 2, generatorService.mergeDaemons( dominant, recessive ).getCommandLineArguments().size() );
 
+        dominant = new Daemon();
+        recessive = new Daemon();
+        dominant.setLicenseHeaderFile( "Dominant's License" );
+        recessive.setLicenseHeaderFile( "Recessive's License" );
+        assertEquals( "Dominant's License", generatorService.mergeDaemons( dominant, recessive ).getLicenseHeaderFile() );
+
         // -----------------------------------------------------------------------
         // System properties
         // -----------------------------------------------------------------------
