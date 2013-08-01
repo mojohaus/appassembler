@@ -54,7 +54,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @threadSafe
  */
 public class GenerateDaemonsMojo
-    extends AbstractAppAssemblerMojo
+    extends AbstractScriptGeneratorMojo
 {
     // -----------------------------------------------------------------------
     // Parameters
@@ -93,24 +93,6 @@ public class GenerateDaemonsMojo
     private JvmSettings defaultJvmSettings;
 
     /**
-     * Setup file in $BASEDIR/bin to be called prior to execution. If this optional environment file also sets up
-     * WRAPPER_CONF_OVERRIDES variable, it will be passed into JSW native launcher's command line arguments to override
-     * wrapper.conf's properties. See http://wrapper.tanukisoftware.com/doc/english/props-command-line.html for details.
-     * 
-     * @parameter
-     * @since 1.2.3
-     */
-    private String environmentSetupFileName;
-
-    /**
-     * You can define a license header file which will be used instead the default header in the generated scripts.
-     * 
-     * @parameter
-     * @since 1.2
-     */
-    private File licenseHeaderFile;
-
-    /**
      * Path (relative to <code>assembleDirectory</code>) of the desired output
      * repository.
      *
@@ -129,15 +111,6 @@ public class GenerateDaemonsMojo
     private File target;
 
     /**
-     * The unix template of the generated script. It can be a file or resource path. If not given, an internal one is
-     * used. Use with care since it not guaranteed to be compatible with future plugin releases.
-     * 
-     * @since 1.3
-     * @parameter expression="${unixScriptTemplate}"
-     */
-    private String unixScriptTemplate;
-
-    /**
      * When enable, name wrapper configuration file as wrapper-${daemon.id}.conf
      * 
      * @parameter default-value="false"
@@ -146,28 +119,6 @@ public class GenerateDaemonsMojo
     private boolean useDaemonIdAsWrapperConfName;
 
     /**
-     * Sometimes it happens that you have many dependencies which means in other words having a very long classpath. And
-     * sometimes the classpath becomes too long (in particular on Windows based platforms). This option can help in such
-     * situation. If you activate that your classpath contains only a <a href=
-     * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html" >classpath wildcard</a> (REPO/*).
-     * But be aware that this works only in combination with Java 1.6 and above and with {@link #repositoryLayout}
-     * <code>flat</code>. Otherwise this configuration will not work.
-     * 
-     * @since 1.3.1
-     * @parameter default-value="false"
-     */
-    private boolean useWildcardClassPath;
-
-    /**
-     * The windows template of the generated script. It can be a file or resource path. If not given, an internal one is
-     * used. Use with care since it is not guaranteed to be compatible with future plugin releases.
-     * 
-     * @since 1.3
-     * @parameter expression="${windowsScriptTemplate}"
-     */
-    private String windowsScriptTemplate;
-    
-    /**
      * Use this option to override the current built-in delta pack binary. You will need to unpack your delta pack version 
      * to a known location set by this option
      * 
@@ -175,26 +126,6 @@ public class GenerateDaemonsMojo
      * @parameter expression="${externalDeltaPackDirectory}"
      */
     private File externalDeltaPackDirectory;
-    
-
-    // -----------------------------------------------------------------------
-    // Read-only parameters
-    // -----------------------------------------------------------------------
-
-    /**
-     * @readonly
-     * @parameter expression="${project.runtimeArtifacts}"
-     */
-    private List artifacts;
-
-    /**
-     * The maven project in question.
-     * 
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    private MavenProject project;
 
     // -----------------------------------------------------------------------
     // Components
@@ -204,11 +135,6 @@ public class GenerateDaemonsMojo
      * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
      */
     private Map availableRepositoryLayouts;
-
-    /**
-     * @component
-     */
-    private DaemonGeneratorService daemonGeneratorService;
 
     // -----------------------------------------------------------------------
     // AbstractMojo Implementation
@@ -284,7 +210,7 @@ public class GenerateDaemonsMojo
             modelDaemon.setRepositoryName( repositoryName );
             modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
             modelDaemon.setUseDaemonIdAsWrapperConfName( useDaemonIdAsWrapperConfName );
-            modelDaemon.setUseWildcardClassPath( useWildcardClassPath );
+            modelDaemon.setUseWildcardClassPath( isUseWildcardClassPath() );
 
             if ( this.unixScriptTemplate != null )
             {
@@ -318,7 +244,7 @@ public class GenerateDaemonsMojo
                 request.setStubDescriptor( descriptor );
                 request.setStubDaemon( modelDaemon );
                 request.setOutputDirectory( output );
-                request.setMavenProject( project );
+                request.setMavenProject( mavenProject );
                 request.setLocalRepository( localRepository );
                 request.setRepositoryLayout( artifactRepositoryLayout );
 
@@ -453,25 +379,4 @@ public class GenerateDaemonsMojo
     {
         this.daemons = daemons;
     }
-
-    /**
-     * Should the <code>/*</code> part for the classpath be used or not.
-     * 
-     * @return true if the wild card class path will be used false otherwise.
-     */
-    public boolean isUseWildcardClassPath()
-    {
-        return useWildcardClassPath;
-    }
-
-    /**
-     * Use wildcard classpath or not.
-     * 
-     * @param useWildcardClassPath true to use wildcard classpath false otherwise.
-     */
-    public void setUseWildcardClassPath( boolean useWildcardClassPath )
-    {
-        this.useWildcardClassPath = useWildcardClassPath;
-    }
-
 }

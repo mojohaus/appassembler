@@ -75,7 +75,7 @@ import org.codehaus.plexus.util.StringUtils;
  * @threadSafe
  */
 public class AssembleMojo
-    extends AbstractAppAssemblerMojo
+    extends AbstractScriptGeneratorMojo
     implements Contextualizable
 {
     // -----------------------------------------------------------------------
@@ -137,13 +137,6 @@ public class AssembleMojo
     private boolean copyConfigurationDirectory;
 
     /**
-     * Setup file in <code>$BASEDIR/bin</code> to be called prior to execution.
-     * 
-     * @parameter
-     */
-    private String environmentSetupFileName;
-
-    /**
      * Extra arguments that will be given to the JVM verbatim. If you define JvmSettings on the
      * {@link Program#setJvmSettings(JvmSettings)} level this part will be overwritten by the given parameters on
      * program level. Otherwise if {@link Program#setJvmSettings(JvmSettings)} is not given these settings will be used
@@ -171,14 +164,6 @@ public class AssembleMojo
      * @parameter default-value="true"
      */
     private boolean includeConfigurationDirectoryInClasspath;
-
-    /**
-     * You can define a license header file which will be used instead the default header in the generated scripts.
-     * 
-     * @parameter
-     * @since 1.2
-     */
-    private File licenseHeaderFile;
 
     /**
      * The default platforms the plugin will generate bin files for. Configure with string values - "all"(default/empty)
@@ -222,15 +207,6 @@ public class AssembleMojo
     private boolean showConsoleWindow;
 
     /**
-     * The unix template of the generated script. It can be a file or resource path. If not given, an internal one is
-     * used. Use with case since it is not guaranteed to be compatible with new plugin release.
-     * 
-     * @since 1.3
-     * @parameter expression="${unixScriptTemplate}"
-     */
-    private String unixScriptTemplate;
-
-    /**
      * The following can be used to use all dependencies instead of the default behavior which represents runtime
      * dependencies only.
      * 
@@ -263,44 +239,6 @@ public class AssembleMojo
      */
     private boolean useAsterikClassPath;
 
-    /**
-     * Sometimes it happens that you have many dependencies which means in other words having a very long classpath. And
-     * sometimes the classpath becomes too long (in particular on Windows based platforms). This option can help in such
-     * situation. If you activate that your classpath contains only a <a href=
-     * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html" >classpath wildcard</a> (REPO/*).
-     * But be aware that this works only in combination with Java 1.6 and above and with {@link #repositoryLayout}
-     * <code>flat</code>. Otherwise this configuration will not work.
-     * 
-     * @since 1.2.3
-     * @parameter default-value="false"
-     */
-    private boolean useWildcardClassPath;
-
-    /**
-     * The windows template of the generated script. It can be a file or resource path. If not given, an internal one is
-     * used. Use with care since it is not guaranteed to be compatible with new plugin release.
-     * 
-     * @since 1.3
-     * @parameter expression="${windowsScriptTemplate}"
-     */
-    private String windowsScriptTemplate;
-
-    // -----------------------------------------------------------------------
-    // Read-only Parameters
-    // -----------------------------------------------------------------------
-
-    /**
-     * @readonly
-     * @parameter expression="${project.runtimeArtifacts}"
-     */
-    private List artifacts;
-
-    /**
-     * @readonly
-     * @parameter expression="${project}"
-     */
-    private MavenProject mavenProject;
-
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -309,11 +247,6 @@ public class AssembleMojo
      * @component
      */
     private ArtifactInstaller artifactInstaller;
-
-    /**
-     * @component
-     */
-    private DaemonGeneratorService daemonGeneratorService;
 
     // ----------------------------------------------------------------------
     // Variables
@@ -920,25 +853,5 @@ public class AssembleMojo
     public void setUseAsterikClassPath( boolean useAsterikClassPath )
     {
         this.useAsterikClassPath = useAsterikClassPath;
-    }
-
-    /**
-     * Should the <code>/*</code> part for the classpath be used or not.
-     * 
-     * @return true if the wild card class path will be used false otherwise.
-     */
-    public boolean isUseWildcardClassPath()
-    {
-        return useWildcardClassPath;
-    }
-
-    /**
-     * Use wildcard classpath or not.
-     * 
-     * @param useWildcardClassPath true to use wildcard classpath false otherwise.
-     */
-    public void setUseWildcardClassPath( boolean useWildcardClassPath )
-    {
-        this.useWildcardClassPath = useWildcardClassPath;
     }
 }
