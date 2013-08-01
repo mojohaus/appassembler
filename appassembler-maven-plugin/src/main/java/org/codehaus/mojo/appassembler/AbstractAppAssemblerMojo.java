@@ -30,8 +30,16 @@ import java.io.IOException;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
+import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.plexus.PlexusConstants;
+import org.codehaus.plexus.PlexusContainer;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.codehaus.plexus.context.Context;
+import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
@@ -41,6 +49,7 @@ import org.codehaus.plexus.util.FileUtils;
  */
 public abstract class AbstractAppAssemblerMojo
     extends AbstractMojo
+    implements Contextualizable
 {
     // -----------------------------------------------------------------------
     // Parameters
@@ -88,9 +97,54 @@ public abstract class AbstractAppAssemblerMojo
      */
     protected ArtifactRepositoryFactory artifactRepositoryFactory;
 
+    // ----------------------------------------------------------------------
+    // Variables
+    // ----------------------------------------------------------------------
+
+    /**
+     * A reference to the Plexus container so that we can do our own component lookups, which was required to solve
+     * MAPPASM-96.
+     */
+    protected PlexusContainer container;
+
+    // -----------------------------------------------------------------------
+    // Plexus Implementation
+    // -----------------------------------------------------------------------
+
+    /**
+     * {@inheritDoc}
+     */
+    public void contextualize( Context context )
+        throws ContextException
+    {
+        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+    }
+
     // -----------------------------------------------------------------------
     // Methods
     // -----------------------------------------------------------------------
+
+    protected ArtifactRepositoryLayout getArtifactRepositoryLayout()
+        throws MojoFailureException
+    {
+        try
+        {
+            ArtifactRepositoryLayout artifactRepositoryLayout = null;
+            artifactRepositoryLayout =
+                (ArtifactRepositoryLayout) container.lookup( "org.apache.maven.artifact."
+                    + "repository.layout.ArtifactRepositoryLayout", repositoryLayout );
+            if ( artifactRepositoryLayout == null )
+            {
+                throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
+            }
+            return artifactRepositoryLayout;
+        }
+        catch ( ComponentLookupException e )
+        {
+            throw new MojoFailureException( "Unable to lookup the repository layout component '" + repositoryLayout
+                + "': " + e.getMessage() );
+        }
+    }
 
     /**
      * Copy artifact to another repository, with an option not to use timestamp in the snapshot filename.

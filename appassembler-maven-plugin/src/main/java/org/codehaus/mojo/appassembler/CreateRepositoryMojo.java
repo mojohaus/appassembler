@@ -27,7 +27,6 @@ package org.codehaus.mojo.appassembler;
 import java.io.File;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
@@ -124,11 +123,6 @@ public class CreateRepositoryMojo
     /** @component */
     private ArtifactResolver artifactResolver;
 
-    /**
-     * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
-     */
-    private Map availableRepositoryLayouts;
-
     /** @component */
     private ArtifactMetadataSource metadataSource;
 
@@ -147,12 +141,7 @@ public class CreateRepositoryMojo
         // Create new repository for dependencies
         // ----------------------------------------------------------------------
 
-        ArtifactRepositoryLayout artifactRepositoryLayout =
-            (ArtifactRepositoryLayout) availableRepositoryLayouts.get( repositoryLayout );
-        if ( artifactRepositoryLayout == null )
-        {
-            throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
-        }
+        ArtifactRepositoryLayout artifactRepositoryLayout = getArtifactRepositoryLayout();
 
         // -----------------------------------------------------------------------
         // Initialize
@@ -233,16 +222,6 @@ public class CreateRepositoryMojo
         {
             throw new MojoExecutionException( "Failed to copy artifact.", e );
         }
-    }
-
-    /**
-     * Set the layout of the repository.
-     * 
-     * @param availableRepositoryLayouts The map of available repository layouts.
-     */
-    public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )
-    {
-        this.availableRepositoryLayouts = availableRepositoryLayouts;
     }
 
 }

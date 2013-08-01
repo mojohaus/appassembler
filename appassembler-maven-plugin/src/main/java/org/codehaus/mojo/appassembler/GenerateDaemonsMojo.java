@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
@@ -37,10 +36,8 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
-import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -128,15 +125,6 @@ public class GenerateDaemonsMojo
     private File externalDeltaPackDirectory;
 
     // -----------------------------------------------------------------------
-    // Components
-    // -----------------------------------------------------------------------
-
-    /**
-     * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout"
-     */
-    private Map availableRepositoryLayouts;
-
-    // -----------------------------------------------------------------------
     // AbstractMojo Implementation
     // -----------------------------------------------------------------------
 
@@ -180,12 +168,7 @@ public class GenerateDaemonsMojo
                 modelJvmSettings = convertJvmSettings( defaultJvmSettings );
             }
 
-            ArtifactRepositoryLayout artifactRepositoryLayout =
-                (ArtifactRepositoryLayout) availableRepositoryLayouts.get( repositoryLayout );
-            if ( artifactRepositoryLayout == null )
-            {
-                throw new MojoFailureException( "Unknown repository layout '" + repositoryLayout + "'." );
-            }
+            ArtifactRepositoryLayout artifactRepositoryLayout = getArtifactRepositoryLayout();
 
             // -----------------------------------------------------------------------
             // Create a daemon object from the POM configuration
@@ -259,6 +242,7 @@ public class GenerateDaemonsMojo
 
                 File outputDirectory = new File( request.getOutputDirectory(), daemon.getId() );
 
+                // @todo Refactor: This code is near identical to what is in AssembleMojo
                 // The repo where the jar files will be installed
                 ArtifactRepository artifactRepository =
                     artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://"
@@ -363,11 +347,6 @@ public class GenerateDaemonsMojo
         }
 
         return modelJvmSettings;
-    }
-
-    public void setAvailableRepositoryLayouts( Map availableRepositoryLayouts )
-    {
-        this.availableRepositoryLayouts = availableRepositoryLayouts;
     }
 
     /**
