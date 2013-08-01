@@ -123,7 +123,7 @@ public class GenerateDaemonsMojo
     /**
      * Target directory for generated daemons.
      * 
-     * @parameter expression="${project.build.directory}/generated-resources/appassembler"
+     * @parameter default-value="${project.build.directory}/generated-resources/appassembler"
      * @required
      */
     private File target;
