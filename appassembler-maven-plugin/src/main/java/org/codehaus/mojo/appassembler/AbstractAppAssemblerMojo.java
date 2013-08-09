@@ -34,11 +34,13 @@ import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.shared.mapping.MappingUtils;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
+import org.codehaus.plexus.interpolation.InterpolationException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.util.FileUtils;
 
@@ -54,6 +56,20 @@ public abstract class AbstractAppAssemblerMojo
     // -----------------------------------------------------------------------
     // Parameters
     // -----------------------------------------------------------------------
+
+    /**
+     * The file name mapping to use when copying libraries to the repository.
+     * If no file mapping is set (default) the files are copied with their
+     * standard names.
+     * <p>
+     * <b>Note: </b> if you use this parameter, then the
+     * <code>useTimestampInSnapshotFileName</code> parameter will be ignored.
+     * </p>
+     *
+     * @parameter
+     * @since 1.5
+     */
+    private String outputFileNameMapping;
 
     /**
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
@@ -187,6 +203,11 @@ public abstract class AbstractAppAssemblerMojo
 
                 if ( !source.isDirectory() )
                 {
+                    if( outputFileNameMapping != null )
+                    {
+                        String fileName = MappingUtils.evaluateFileNameMapping( outputFileNameMapping, artifact );
+                        destination = new File( destination.getParent(), fileName );
+                    }
                     // Sometimes target/classes is in the artifact list and copyFile() would fail.
                     // Need to ignore this condition
                     FileUtils.copyFile( source, destination );
@@ -198,6 +219,9 @@ public abstract class AbstractAppAssemblerMojo
             catch ( IOException e )
             {
                 throw new MojoExecutionException( "Failed to copy artifact.", e );
+            }
+            catch( InterpolationException e ) {
+                throw new MojoExecutionException( "Failed to map file name.", e );
             }
         }
     }
