@@ -144,6 +144,16 @@
         <version>1.0-alpha-9-stable-1</version>
       </dependency>
       <dependency>
+        <groupId>org.apache.maven.shared</groupId>
+        <artifactId>maven-mapping</artifactId>
+        <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-plugin-api</artifactId>
+        <version>2.0</version>
+      </dependency>
+      <dependency>
         <groupId>stax</groupId>
         <artifactId>stax-api</artifactId>
         <version>1.0.1</version>
