@@ -26,8 +26,6 @@ package org.codehaus.mojo.appassembler.daemon.booter;
 
 import java.io.File;
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
@@ -35,9 +33,9 @@ import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.script.AbstactScriptDaemonGenerator;
 import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
+import org.codehaus.mojo.appassembler.util.DependencyFactory;
 
 /**
  * This contains all common code which is used in the {@link UnixBooterDaemonGenerator} and in the
@@ -109,16 +107,17 @@ public abstract class AbstractBooterDaemonGenerator
         Classpath classpath = new Classpath();
         booterDaemon.setClasspath( classpath );
         classpath.addDirectory( createDirectory( "etc" ) );
-        classpath.addDependency( createDependency( project, "org.codehaus.mojo.appassembler:appassembler-booter",
-                                                   request.getRepositoryLayout() ) );
+        classpath.addDependency( DependencyFactory.create( project,
+                                                           "org.codehaus.mojo.appassembler:appassembler-booter",
+                                                           request.getRepositoryLayout() ) );
 
         // TODO: Transitively resolve the dependencies of the booter - for now we're just hardcoding them in
-        classpath.addDependency( createDependency( project, "org.codehaus.mojo.appassembler:appassembler-model",
-                                                   request.getRepositoryLayout() ) );
-        classpath.addDependency( createDependency( project, "org.codehaus.plexus:plexus-utils",
-                                                   request.getRepositoryLayout() ) );
-        classpath.addDependency( createDependency( project, "stax:stax-api", request.getRepositoryLayout() ) );
-        classpath.addDependency( createDependency( project, "stax:stax", request.getRepositoryLayout() ) );
+        classpath.addDependency( DependencyFactory.create( project, "org.codehaus.mojo.appassembler:appassembler-model",
+                                                           request.getRepositoryLayout() ) );
+        classpath.addDependency( DependencyFactory.create( project, "org.codehaus.plexus:plexus-utils",
+                                                           request.getRepositoryLayout() ) );
+        classpath.addDependency( DependencyFactory.create( project, "stax:stax-api", request.getRepositoryLayout() ) );
+        classpath.addDependency( DependencyFactory.create( project, "stax:stax", request.getRepositoryLayout() ) );
 
         // FIXME: Check if this is correct new File("bin") ?
         scriptGenerator.createBinScript( getPlatformName(), booterDaemon, outputDirectory, "bin" );
@@ -127,23 +126,6 @@ public abstract class AbstractBooterDaemonGenerator
     // -----------------------------------------------------------------------
     // Private
     // -----------------------------------------------------------------------
-
-    private static Dependency createDependency( MavenProject project, String id,
-                                                ArtifactRepositoryLayout artifactRepositoryLayout )
-        throws DaemonGeneratorException
-    {
-        Artifact artifact = (Artifact) project.getArtifactMap().get( id );
-
-        if ( artifact == null )
-        {
-            throw new DaemonGeneratorException( "The project has to have a dependency on '" + id + "'." );
-        }
-
-        Dependency dependency = new Dependency();
-
-        dependency.setRelativePath( artifactRepositoryLayout.pathOf( artifact ) );
-        return dependency;
-    }
 
     private static Directory createDirectory( String relativePath )
     {

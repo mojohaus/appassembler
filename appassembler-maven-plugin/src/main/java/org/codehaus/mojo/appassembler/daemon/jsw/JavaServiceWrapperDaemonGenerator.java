@@ -48,9 +48,8 @@ import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.model.Daemon;
-import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.GeneratorConfiguration;
-import org.codehaus.mojo.appassembler.util.ArtifactUtils;
+import org.codehaus.mojo.appassembler.util.DependencyFactory;
 import org.codehaus.mojo.appassembler.util.FormattedProperties;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.IOUtil;
@@ -388,7 +387,7 @@ public class JavaServiceWrapperDaemonGenerator
         {
             confFile.setProperty( wrapperClassPathPrefix + counter++,
                                   "%REPO_DIR%/"
-                                      + createDependency( layout, project.getArtifact(), true ).getRelativePath() );
+                                      + DependencyFactory.create( project.getArtifact(), layout, true ).getRelativePath() );
 
             Iterator j = project.getRuntimeArtifacts().iterator();
             while ( j.hasNext() )
@@ -397,8 +396,8 @@ public class JavaServiceWrapperDaemonGenerator
 
                 confFile.setProperty( wrapperClassPathPrefix + counter,
                                       "%REPO_DIR%/"
-                                          + createDependency( layout, artifact,
-                                                              daemon.isUseTimestampInSnapshotFileName() ).getRelativePath() );
+                                          + DependencyFactory.create( artifact, layout,
+                                                                      daemon.isUseTimestampInSnapshotFileName() ).getRelativePath() );
                 counter++;
             }
         }
@@ -408,22 +407,6 @@ public class JavaServiceWrapperDaemonGenerator
         {
             confFile.setProperty( wrapperClassPathPrefix + counter++, configurationDirLast );
         }
-    }
-
-    private Dependency createDependency( ArtifactRepositoryLayout layout, Artifact artifact,
-                                         boolean useTimestampInSnapshotFileName )
-    {
-        Dependency dependency = new Dependency();
-        dependency.setArtifactId( artifact.getArtifactId() );
-        dependency.setGroupId( artifact.getGroupId() );
-        dependency.setVersion( artifact.getVersion() );
-        dependency.setRelativePath( layout.pathOf( artifact ) );
-        if ( artifact.isSnapshot() && !useTimestampInSnapshotFileName )
-        {
-            dependency.setRelativePath( ArtifactUtils.pathBaseVersionOf( layout, artifact ) );
-        }
-
-        return dependency;
     }
 
     private static void createAdditional( Daemon daemon, FormattedProperties confFile )

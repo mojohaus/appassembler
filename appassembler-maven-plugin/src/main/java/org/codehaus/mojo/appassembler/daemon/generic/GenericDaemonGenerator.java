@@ -43,6 +43,7 @@ import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.io.stax.AppassemblerModelStaxWriter;
+import org.codehaus.mojo.appassembler.util.DependencyFactory;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
@@ -132,15 +133,7 @@ public class GenericDaemonGenerator
         // -----------------------------------------------------------------------
         // Add the project itself as a dependency.
         // -----------------------------------------------------------------------
-        Dependency projectDependency = new Dependency();
-        Artifact projectArtifact = project.getArtifact();
-        projectArtifact.isSnapshot();
-        projectDependency.setGroupId( projectArtifact.getGroupId() );
-        projectDependency.setArtifactId( projectArtifact.getArtifactId() );
-        projectDependency.setVersion( projectArtifact.getVersion() );
-        projectDependency.setClassifier( projectArtifact.getClassifier() );
-        projectDependency.setRelativePath( layout.pathOf( projectArtifact ) );
-        complete.getClasspath().addDependency( projectDependency );
+        complete.getClasspath().addDependency( DependencyFactory.create( project.getArtifact(), layout ) );
 
         // -----------------------------------------------------------------------
         // Add all the dependencies of the project.
@@ -149,15 +142,7 @@ public class GenericDaemonGenerator
         {
             Artifact artifact = (Artifact) it.next();
 
-            artifact.isSnapshot();
-
-            Dependency dependency = new Dependency();
-            dependency.setGroupId( artifact.getGroupId() );
-            dependency.setArtifactId( artifact.getArtifactId() );
-            dependency.setVersion( artifact.getVersion() );
-
-            dependency.setClassifier( artifact.getClassifier() );
-            dependency.setRelativePath( layout.pathOf( artifact ) );
+            Dependency dependency = DependencyFactory.create( artifact, layout );
 
             complete.getClasspath().addDependency( dependency );
         }

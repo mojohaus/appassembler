@@ -50,7 +50,7 @@ import org.codehaus.mojo.appassembler.model.Classpath;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
-import org.codehaus.mojo.appassembler.util.ArtifactUtils;
+import org.codehaus.mojo.appassembler.util.DependencyFactory;
 import org.codehaus.mojo.appassembler.util.FileFilterHelper;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -491,17 +491,9 @@ public class AssembleMojo
             for ( Iterator it = classPathArtifacts.iterator(); it.hasNext(); )
             {
                 Artifact artifact = (Artifact) it.next();
-                Dependency dependency = new Dependency();
-                dependency.setGroupId( artifact.getGroupId() );
-                dependency.setArtifactId( artifact.getArtifactId() );
-                dependency.setVersion( artifact.getVersion() );
-                dependency.setRelativePath( artifactRepositoryLayout.pathOf( artifact ) );
-                if ( artifact.isSnapshot() && !this.useTimestampInSnapshotFileName )
-                {
-                    dependency.setRelativePath( ArtifactUtils.pathBaseVersionOf( artifactRepositoryLayout, artifact ) );
-                }
 
-                dependencies.add( dependency );
+                dependencies.add( DependencyFactory.create( artifact, artifactRepositoryLayout,
+                                                            this.useTimestampInSnapshotFileName ) );
             }
 
         }
