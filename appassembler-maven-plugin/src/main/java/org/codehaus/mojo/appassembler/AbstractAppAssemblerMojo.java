@@ -69,7 +69,7 @@ public abstract class AbstractAppAssemblerMojo
      * @parameter
      * @since 1.5
      */
-    private String outputFileNameMapping;
+    protected String outputFileNameMapping;
 
     /**
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"

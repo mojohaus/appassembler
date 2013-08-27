@@ -493,7 +493,7 @@ public class AssembleMojo
                 Artifact artifact = (Artifact) it.next();
 
                 dependencies.add( DependencyFactory.create( artifact, artifactRepositoryLayout,
-                                                            this.useTimestampInSnapshotFileName ) );
+                                                            this.useTimestampInSnapshotFileName, outputFileNameMapping ) );
             }
 
         }

@@ -133,7 +133,7 @@ public class GenericDaemonGenerator
         // -----------------------------------------------------------------------
         // Add the project itself as a dependency.
         // -----------------------------------------------------------------------
-        complete.getClasspath().addDependency( DependencyFactory.create( project.getArtifact(), layout ) );
+        complete.getClasspath().addDependency( DependencyFactory.create( project.getArtifact(), layout, null ) );
 
         // -----------------------------------------------------------------------
         // Add all the dependencies of the project.
@@ -142,7 +142,7 @@ public class GenericDaemonGenerator
         {
             Artifact artifact = (Artifact) it.next();
 
-            Dependency dependency = DependencyFactory.create( artifact, layout );
+            Dependency dependency = DependencyFactory.create( artifact, layout, null );
 
             complete.getClasspath().addDependency( dependency );
         }

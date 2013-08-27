@@ -109,15 +109,15 @@ public abstract class AbstractBooterDaemonGenerator
         classpath.addDirectory( createDirectory( "etc" ) );
         classpath.addDependency( DependencyFactory.create( project,
                                                            "org.codehaus.mojo.appassembler:appassembler-booter",
-                                                           request.getRepositoryLayout() ) );
+                                                           request.getRepositoryLayout(), null ) );
 
         // TODO: Transitively resolve the dependencies of the booter - for now we're just hardcoding them in
         classpath.addDependency( DependencyFactory.create( project, "org.codehaus.mojo.appassembler:appassembler-model",
-                                                           request.getRepositoryLayout() ) );
+                                                           request.getRepositoryLayout(), null ) );
         classpath.addDependency( DependencyFactory.create( project, "org.codehaus.plexus:plexus-utils",
-                                                           request.getRepositoryLayout() ) );
-        classpath.addDependency( DependencyFactory.create( project, "stax:stax-api", request.getRepositoryLayout() ) );
-        classpath.addDependency( DependencyFactory.create( project, "stax:stax", request.getRepositoryLayout() ) );
+                                                           request.getRepositoryLayout(), null ) );
+        classpath.addDependency( DependencyFactory.create( project, "stax:stax-api", request.getRepositoryLayout(), null ) );
+        classpath.addDependency( DependencyFactory.create( project, "stax:stax", request.getRepositoryLayout(), null ) );
 
         // FIXME: Check if this is correct new File("bin") ?
         scriptGenerator.createBinScript( getPlatformName(), booterDaemon, outputDirectory, "bin" );
