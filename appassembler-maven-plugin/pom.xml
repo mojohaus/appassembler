@@ -346,9 +346,22 @@
             </configuration>
             <executions>
               <execution>
-                <id>integration-tests</id>
+                <id>pre-integration-tests</id>
                 <goals>
                   <goal>install</goal>
+                </goals>
+                <configuration>
+                <configuration>
+                  <extraArtifacts>
+                    <extraArtifact>org.apache.poi:poi:3.6:jar</extraArtifact>
+                    <extraArtifact>org.apache.poi:poi-oxml-schemas:3.6:jar</extraArtifact>
+                  </extraArtifacts>
+                </configuration>
+                </configuration>
+              </execution>
+              <execution>
+                <id>integration-tests</id>
+                <goals>
                   <goal>run</goal>
                 </goals>
                 <configuration>
