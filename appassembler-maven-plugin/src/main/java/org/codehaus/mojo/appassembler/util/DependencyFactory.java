@@ -15,7 +15,6 @@ public class DependencyFactory
 {
     public static Dependency create( Artifact artifact, ArtifactRepositoryLayout layout )
     {
-        artifact.isSnapshot();
         Dependency dependency = new Dependency();
         dependency.setGroupId( artifact.getGroupId() );
         dependency.setArtifactId( artifact.getArtifactId() );
@@ -28,11 +27,8 @@ public class DependencyFactory
     public static Dependency create( Artifact artifact, ArtifactRepositoryLayout layout,
                                      boolean useTimestampInSnapshotFileName )
     {
-        Dependency dependency = new Dependency();
-        dependency.setArtifactId( artifact.getArtifactId() );
-        dependency.setGroupId( artifact.getGroupId() );
-        dependency.setVersion( artifact.getVersion() );
-        dependency.setRelativePath( layout.pathOf( artifact ) );
+        Dependency dependency = create( artifact, layout );
+
         if ( artifact.isSnapshot() && !useTimestampInSnapshotFileName )
         {
             dependency.setRelativePath( ArtifactUtils.pathBaseVersionOf( layout, artifact ) );
@@ -52,9 +48,6 @@ public class DependencyFactory
             throw new DaemonGeneratorException( "The project has to have a dependency on '" + id + "'." );
         }
 
-        Dependency dependency = new Dependency();
-
-        dependency.setRelativePath( layout.pathOf( artifact ) );
-        return dependency;
+        return create( artifact, layout );
     }
 }
