@@ -230,6 +230,7 @@ public class GenerateDaemonsMojo
                 request.setMavenProject( mavenProject );
                 request.setLocalRepository( localRepository );
                 request.setRepositoryLayout( artifactRepositoryLayout );
+                request.setOutputFileNameMapping( this.outputFileNameMapping );
 
                 try
                 {

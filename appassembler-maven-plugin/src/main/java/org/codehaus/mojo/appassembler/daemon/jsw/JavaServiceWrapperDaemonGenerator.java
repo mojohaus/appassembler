@@ -387,7 +387,7 @@ public class JavaServiceWrapperDaemonGenerator
         {
             confFile.setProperty( wrapperClassPathPrefix + counter++,
                                   "%REPO_DIR%/"
-                                      + DependencyFactory.create( project.getArtifact(), layout, true, null ).getRelativePath() );
+                                      + DependencyFactory.create( project.getArtifact(), layout, true, request.getOutputFileNameMapping() ).getRelativePath() );
 
             Iterator j = project.getRuntimeArtifacts().iterator();
             while ( j.hasNext() )
@@ -397,7 +397,7 @@ public class JavaServiceWrapperDaemonGenerator
                 confFile.setProperty( wrapperClassPathPrefix + counter,
                                       "%REPO_DIR%/"
                                           + DependencyFactory.create( artifact, layout,
-                                                                      daemon.isUseTimestampInSnapshotFileName(), null ).getRelativePath() );
+                                                                      daemon.isUseTimestampInSnapshotFileName(), request.getOutputFileNameMapping() ).getRelativePath() );
                 counter++;
             }
         }
