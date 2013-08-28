@@ -87,26 +87,28 @@ Usage
 
 ** Using the generated scripts
 
-  * All dependencies and the artifact itself are placed in <<<target/appassembler/lib>>> 
+  * All dependencies and the artifact itself are placed in <<<target/generated-resources/appassembler/jsw/app1/lib>>>
     directory.
 
-  * The JSW bin scripts and configuration are placed in <<<target/jsw/app1>>> directory.
+  * The JSW bin scripts are placed in the <<<target/generated-resources/appassembler/jsw/app1/bin>>> directory.
   
+  * The JSW configuration file is placed in the <<<target/generated-resources/appassembler/jsw/app1/conf>>> directory.
+
     []
 
 +--------------------------
 $ mvn package
 
-$ chmod +x target/jsw/app1/bin/app1
+$ chmod +x target/generated-resources/appassembler/jsw/app1/bin/app1
 
-$ chmod +x target/jsw/app1/bin/wrapper-linux-x86-32
+$ chmod +x target/generated-resources/appassembler/jsw/app1/bin/wrapper-linux-x86-32
 
-$ target/jsw/app1/bin/app1 start
+$ target/generated-resources/appassembler/jsw/app1/bin/app1 start
 
 $ ps -ef | grep java
 (to check that it is running)
 
-$ target/jsw/app1/bin/app1 stop
+$ target/generated-resources/appassembler/jsw/app1/bin/app1 stop
 +--------------------------
 
 ** Add application specific shutdown code
