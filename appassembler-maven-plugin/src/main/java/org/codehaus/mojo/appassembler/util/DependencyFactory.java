@@ -18,6 +18,9 @@ import java.io.File;
  */
 public class DependencyFactory
 {
+    /**
+     * Used by GenericDaemonGenerator.
+     */
     public static Dependency create( Artifact artifact, ArtifactRepositoryLayout layout, String outputFileNameMapping )
     {
         Dependency dependency = new Dependency();
@@ -50,6 +53,9 @@ public class DependencyFactory
         return dependency;
     }
 
+    /**
+     * Used by AssembleMojo and JavaServiceWrapperDaemonGenerator.
+     */
     public static Dependency create( Artifact artifact, ArtifactRepositoryLayout layout,
                                      boolean useTimestampInSnapshotFileName, String outputFileNameMapping )
     {
@@ -63,6 +69,9 @@ public class DependencyFactory
         return dependency;
     }
 
+    /**
+     * Used by AbstractBooterDaemonGenerator.
+     */
     public static Dependency create( MavenProject project, String id,
                                      ArtifactRepositoryLayout layout,
                                      String outputFileNameMapping )
