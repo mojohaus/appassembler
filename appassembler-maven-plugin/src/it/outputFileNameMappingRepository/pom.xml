@@ -57,7 +57,7 @@
           <outputFileNameMapping>@{artifactId}@.@{extension}@</outputFileNameMapping>
           <programs>
             <program>
-              <mainClass>com.westerngeco.example.App</mainClass>
+              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
               <name>app</name>
             </program>
           </programs>
