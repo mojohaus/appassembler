@@ -79,7 +79,7 @@ public class DefaultScriptGenerator
         List lines = null;
         if ( isDefaultLicenseHeaderRequested( daemon ) )
         {
-            getLogger().debug( "Using default licence file (" + DEFAULT_LICENSE_HEADER + "." );
+            getLogger().debug( "Using default licence file (" + DEFAULT_LICENSE_HEADER + ")." );
             lines = readLicenseHeader();
         }
         else
