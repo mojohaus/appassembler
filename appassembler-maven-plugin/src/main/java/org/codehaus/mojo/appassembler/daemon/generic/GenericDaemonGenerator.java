@@ -78,7 +78,7 @@ public class GenericDaemonGenerator
         // Create the daemon from the Maven project
         // -----------------------------------------------------------------------
 
-        Daemon createdDaemon = createDaemon( request.getMavenProject(), request.getRepositoryLayout() );
+        Daemon createdDaemon = createDaemon( request.getMavenProject(), request.getRepositoryLayout(), request.getOutputFileNameMapping() );
 
         // -----------------------------------------------------------------------
         // Merge the given stub daemon and the generated
@@ -124,7 +124,7 @@ public class GenericDaemonGenerator
     // Private
     // -----------------------------------------------------------------------
 
-    private Daemon createDaemon( MavenProject project, ArtifactRepositoryLayout layout )
+    private Daemon createDaemon( MavenProject project, ArtifactRepositoryLayout layout, String outputFileNameMapping )
     {
         Daemon complete = new Daemon();
 
@@ -133,7 +133,7 @@ public class GenericDaemonGenerator
         // -----------------------------------------------------------------------
         // Add the project itself as a dependency.
         // -----------------------------------------------------------------------
-        complete.getClasspath().addDependency( DependencyFactory.create( project.getArtifact(), layout, null ) );
+        complete.getClasspath().addDependency( DependencyFactory.create( project.getArtifact(), layout, outputFileNameMapping ) );
 
         // -----------------------------------------------------------------------
         // Add all the dependencies of the project.
@@ -142,7 +142,7 @@ public class GenericDaemonGenerator
         {
             Artifact artifact = (Artifact) it.next();
 
-            Dependency dependency = DependencyFactory.create( artifact, layout, null );
+            Dependency dependency = DependencyFactory.create( artifact, layout, outputFileNameMapping );
 
             complete.getClasspath().addDependency( dependency );
         }
