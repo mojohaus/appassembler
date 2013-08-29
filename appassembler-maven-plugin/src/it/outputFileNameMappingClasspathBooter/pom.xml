@@ -51,6 +51,9 @@
           </execution>
         </executions>
         <configuration>
+          <!-- This enables you to manually run the generated script on Windows.
+               Change the last part to 'booter-unix' if you want to run it on Unix. -->
+          <assembleDirectory>${project.build.directory}/generated-resources/appassembler/booter-windows</assembleDirectory>
           <daemons>
             <daemon>
               <id>app</id>
@@ -62,6 +65,8 @@
             </daemon>
           </daemons>
           <repositoryLayout>default</repositoryLayout>
+          <!-- Use the same repo name for daemon generation and repository creation -->
+          <repositoryName>repo</repositoryName>
           <outputFileNameMapping>@{artifactId}@.@{extension}@</outputFileNameMapping>
         </configuration>
       </plugin>

@@ -31,7 +31,7 @@ import groovy.util.XmlSlurper
 
 t = new IntegrationBase();
 
-def repoFolder = new File( basedir, "target/appassembler/repo");
+def repoFolder = new File( basedir, "target/generated-resources/appassembler/booter-windows/repo");
 def scriptFolder = new File( basedir, "target/generated-resources/appassembler/booter-windows/");
 
 def xmlFile = new File( scriptFolder, "etc/app.xml" );
