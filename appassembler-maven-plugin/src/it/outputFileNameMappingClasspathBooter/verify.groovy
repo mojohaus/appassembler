@@ -62,8 +62,8 @@ def projectVersion = getProjectVersion();
 def filesInRepository = [
  "junit/junit/3.8.1/junit.jar",
  "net/java/dev/stax-utils/stax-utils/20060502/stax-utils.jar",
- "org/codehaus/mojo/appassembler/appassembler-booter/${projectVersion}/appassembler-booter.jar",
- "org/codehaus/mojo/appassembler/appassembler-model/${projectVersion}/appassembler-model.jar",
+ "org/codehaus/mojo/appassembler/appassembler-booter/" + projectVersion + "/appassembler-booter.jar",
+ "org/codehaus/mojo/appassembler/appassembler-model/" + projectVersion + "/appassembler-model.jar",
  "org/codehaus/mojo/appassembler-maven-plugin/it/mappasm-71-5/1.0-SNAPSHOT/mappasm-71-5.jar",
  "org/codehaus/plexus/plexus-utils/1.1/plexus-utils.jar",
  "stax/stax/1.1.1-dev/stax.jar",
@@ -92,19 +92,18 @@ def dependencies = allDependencies.dependency
 dependencies.each {
     dependency ->
         def relativePath = dependency.relativePath
-        classpathElements.add( relativePath );
+        classpathElements.add( relativePath.text() );
 }
 
 // TODO: For debugging purposes only, remove before release
-//println "     classpathElements"
-//classpathElements.each {
-//    classpathElement ->
-//        println "     - classpathElement: '" + classpathElement + "'"
-//}
+println "     classpathElements"
+classpathElements.each {
+    classpathElement ->
+        println "     - classpathElement: '" + classpathElement + "'"
+}
 
 filesInRepository.each {
-    lib_file -> print "Checking for '" + lib_file + "' in classpath..."
-    def classpathElement = lib_file
+    classpathElement -> print "Checking for '" + classpathElement + "' in classpath..."
     if (!classpathElements.contains(classpathElement)) {
         println ""
         println "The classpath contains the following: " + classpathElements
