@@ -55,6 +55,8 @@ public class DaemonGenerationRequest
 
     private ArtifactRepository localRepository;
 
+    private String outputFileNameMapping;
+
     private ArtifactRepositoryLayout repositoryLayout = new DefaultRepositoryLayout();
 
     /**
@@ -261,4 +263,23 @@ public class DaemonGenerationRequest
         this.binFolder = binFolder;
     }
 
+    /**
+     * Get the output file name mapping.
+     *
+     * @return The mapping
+     */
+    public String getOutputFileNameMapping()
+    {
+        return outputFileNameMapping;
+    }
+
+    /**
+     * Set the output file name mapping.
+     *
+     * @param outputFileNameMapping The mapping
+     */
+    public void setOutputFileNameMapping( String outputFileNameMapping )
+    {
+        this.outputFileNameMapping = outputFileNameMapping;
+    }
 }
