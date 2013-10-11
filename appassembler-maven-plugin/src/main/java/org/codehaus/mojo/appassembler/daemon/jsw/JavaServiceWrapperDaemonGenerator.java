@@ -96,6 +96,8 @@ public class JavaServiceWrapperDaemonGenerator
             put( "solaris-sparc-64-exec", "wrapper-solaris-sparc-64" );
             put( "solaris-x86-32-lib", "libwrapper-solaris-x86-32.so" );
             put( "solaris-x86-32-exec", "wrapper-solaris-x86-32" );
+            put( "solaris-x86-64-lib", "libwrapper-solaris-x86-64.so" );
+            put( "solaris-x86-64-exec", "wrapper-solaris-x86-64" );            
             put( "windows-x86-32-lib", "wrapper-windows-x86-32.dll" );
             put( "windows-x86-32-exec", "wrapper-windows-x86-32.exe" );
             put( "windows-x86-64-lib", "wrapper-windows-x86-64.dll" );
