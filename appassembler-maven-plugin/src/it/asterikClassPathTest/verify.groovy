@@ -28,35 +28,43 @@ import java.util.*
 
 t = new IntegrationBase()
 
-//The bin folder where to find the generated scripts.
-def fileBinFolder = new File( basedir, "target/appassembler/bin");
+/**
+ * This will filter out the version of the 
+ * appassembler-maven-plugin whcih is configured 
+ * within the integration test.
+ * @return Version information.
+ */
+def getProjectVersion() {
+    def pom = new XmlSlurper().parse(new File(basedir, 'pom.xml'))
+    
+    def allPlugins = pom.build.plugins
 
-// Check the existence of the generated unix script
-def unixScriptFile = new File( fileBinFolder, "basic-test" );
+    def dependencies = allPlugins.plugin
 
-t.checkExistenceAndContentOfAFile(unixScriptFile, [
-    'CLASSPATH=$CLASSPATH_PREFIX:"$REPO"/*',
-])
+    def appassemblerModule = dependencies.find {
+        item -> item.groupId.equals("org.codehaus.mojo") && item.artifactId.equals("appassembler-maven-plugin");
+    }
 
-File windowsBatchFile = new File( fileBinFolder, "basic-test.bat" );
+   return appassemblerModule.version;
+ }
+ 
+def projectVersion = getProjectVersion();
 
-t.checkExistenceAndContentOfAFile(windowsBatchFile, [
-    /set CLASSPATH="%REPO%"\*/,
-])
+println "ProjectVersion:" + projectVersion
 
-//Check the existence of the generated repository.
-def fileRepoFolder = new File( basedir, "target/appassembler/repo");
+def buildLog = new File( basedir, "build.log")
 
-if ( !fileRepoFolder.canRead() ) {
-    throw new FileNotFoundException( "Could not find the generated repository. " + fileRepoFolder );
-}
+t.checkExistenceAndContentOfAFile(buildLog, [
+    '[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project asterikClassPath-test: The useAsterikClassPath has been marked as deprecated since version 1.4 -> [Help 1]',
+    'org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project asterikClassPath-test: The useAsterikClassPath has been marked as deprecated since version 1.4',
+])    
 
-def jarFileRepoFolder = new File( fileRepoFolder, "/asterikClassPath-test-1.0-SNAPSHOT.jar");
+def targetFolder = new File( basedir, "target")
+
+def jarFileRepoFolder = new File( targetFolder, "asterikClassPath-test-1.0-SNAPSHOT.jar");
 if ( !jarFileRepoFolder.canRead() ) {
     throw new FileNotFoundException( "Could not find the generated jar. " + jarFileRepoFolder );
 }
-
-
 
 
 return true;

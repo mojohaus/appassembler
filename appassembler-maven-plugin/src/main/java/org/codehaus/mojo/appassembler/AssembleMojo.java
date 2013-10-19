@@ -38,7 +38,6 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.installer.ArtifactInstaller;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -203,7 +202,7 @@ public class AssembleMojo
      * 
      * @since 1.2.1
      * @parameter default-value="false"
-     * @deprecated Use <code>useAllProjectDependencies</code> instead.
+     * @deprecated Use <code>useAllProjectDependencies</code> instead otherwise your build will fail.
      */
     private boolean useAllDependencies;
 
@@ -226,18 +225,13 @@ public class AssembleMojo
      * 
      * @since 1.2.2
      * @parameter default-value="false"
-     * @deprecated Use <code>useWildcardClassPath</code> instead.
+     * @deprecated Use <code>useWildcardClassPath</code> instead otherwise your build will fail.
      */
     private boolean useAsterikClassPath;
 
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
-
-    /**
-     * @component
-     */
-    private ArtifactInstaller artifactInstaller;
 
     // ----------------------------------------------------------------------
     // CONSTANTS
@@ -289,6 +283,17 @@ public class AssembleMojo
     // Execute
     // ----------------------------------------------------------------------
 
+    
+    public void checkDeprecatedParameterAndFailIfOneOfThemIsUsed() throws MojoExecutionException {
+    	if (isUseAsterikClassPath()) {
+    		throw new MojoExecutionException("The useAsterikClassPath has been marked as deprecated since version 1.4");
+    	}
+    	
+    	if (isUseAllDependencies()) {
+    		throw new MojoExecutionException("The useAllDependencies has been marked as deprecated since version 1.3.1");
+    	}
+    }
+
     /**
      * calling from Maven.
      * @see org.apache.maven.plugin.AbstractMojo#execute()
@@ -297,26 +302,16 @@ public class AssembleMojo
         throws MojoExecutionException, MojoFailureException
     {
         Set defaultPlatforms = validatePlatforms( platforms, VALID_PLATFORMS );
+        
+        checkDeprecatedParameterAndFailIfOneOfThemIsUsed();
 
         // validate input and set defaults
         validate( defaultPlatforms );
 
-        if ( ( isUseAsterikClassPath() || isUseWildcardClassPath() ) && !repositoryLayout.equalsIgnoreCase( "flat" ) )
+        if ( isUseWildcardClassPath() && !repositoryLayout.equalsIgnoreCase( "flat" ) )
         {
-            throw new MojoExecutionException( "The useAsterikClassPath/useWildcardClassPath works only in "
+            throw new MojoExecutionException( "useWildcardClassPath works only in "
                 + "combination with repositoryLayout flat." );
-        }
-
-        if ( isUseAsterikClassPath() )
-        {
-            getLog().warn( "The usuage of useAsterikClassPath is marked as deprecated. Please use "
-                               + "useWildcardClassPath instead" );
-        }
-
-        if ( isUseAllDependencies() )
-        {
-            getLog().warn( "The usuage of useAllDependencies marked as deprecated. Please use"
-                               + " useAllProjectDependencies instead" );
         }
 
         // Set the extensions for bin files for the different platforms
@@ -324,7 +319,7 @@ public class AssembleMojo
 
         ArtifactRepositoryLayout artifactRepositoryLayout = getArtifactRepositoryLayout();
 
-        if ( isUseAllDependencies() || isUseAllProjectDependencies() )
+        if ( isUseAllProjectDependencies() )
         {
             // TODO: This should be made different. We have to think about using
             // a default ArtifactFilter

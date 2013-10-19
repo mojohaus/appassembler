@@ -27,47 +27,34 @@ import java.util.*
 
 t = new IntegrationBase();
 
+/**
+ * This will filter out the project version out of the
+ * pom.xml file, cause currently no opportunity exists to
+ * get this information via Maven Invoker Plugin into
+ * the Groovy script code.
+ * @return Version information.
+ */
+ def getProjectVersion() {
+    def pom = new XmlSlurper().parse(new File(basedir, 'pom.xml'))
+    
+    def allPlugins = pom.build.plugins
 
-//The bin folder where to find the generated scripts.
-def fileBinFolder = new File( basedir, "target/appassembler/bin");
+    def dependencies = allPlugins.plugin
 
-def scriptfile_program_01_test = new File( fileBinFolder, 'program-01-test');
+    def appassemblerModule = dependencies.find {
+        item -> item.groupId.equals("org.codehaus.mojo") && item.artifactId.equals("appassembler-maven-plugin");
+    }
 
-t.checkExistenceAndContentOfAFile(scriptfile_program_01_test, [
-    'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/test/artifactId/1.0.0/artifactId-1.0.0.jar:"$REPO"/commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar:"$REPO"/log4j/log4j/1.2.14/log4j-1.2.14.jar:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/systemDependency-test/1.0-SNAPSHOT/systemDependency-test-1.0-SNAPSHOT.jar',
-    'exec "$JAVACMD" $JAVA_OPTS  \\',
-    '  -classpath "$CLASSPATH" \\',
-    '  -Dapp.name="program-01-test" \\',
-    '  -Dapp.pid="$$" \\',
-    '  -Dapp.repo="$REPO" \\',
-    '  -Dbasedir="$BASEDIR" \\',
-    '  org.codehaus.mojo.appassembler.example.helloworld.HelloWorld \\',
-]);
-
-def scriptfile_program_01_test_bat = new File( fileBinFolder, 'program-01-test.bat');
-
-t.checkExistenceAndContentOfAFile(scriptfile_program_01_test_bat, [
-    'set CLASSPATH="%BASEDIR%"\\etc;"%REPO%"\\test\\artifactId\\1.0.0\\artifactId-1.0.0.jar;"%REPO%"\\commons-logging\\commons-logging-api\\1.1\\commons-logging-api-1.1.jar;"%REPO%"\\log4j\\log4j\\1.2.14\\log4j-1.2.14.jar;"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\systemDependency-test\\1.0-SNAPSHOT\\systemDependency-test-1.0-SNAPSHOT.jar',
-]);
-
-def artifacts_in_repository = [
-	'/test/artifactId/1.0.0/artifactId-1.0.0.jar',
-	'/commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar',
-	'/log4j/log4j/1.2.14/log4j-1.2.14.jar',
-	'/org/codehaus/mojo/appassembler-maven-plugin/it/systemDependency-test/1.0-SNAPSHOT/systemDependency-test-1.0-SNAPSHOT.jar',
-];
-
-//Check the existence of the generated repository.
-def fileRepoFolder = new File( basedir, "target/appassembler/repo");
-
-if ( !fileRepoFolder.canRead() ) {
-    throw new FileNotFoundException( "Could not find the generated repository. " + fileRepoFolder );
+   return appassemblerModule.version;
 }
+ 
+def projectVersion = getProjectVersion();
 
-artifacts_in_repository.each { artifact -> jarFileRepoFolder = new File( fileRepoFolder, artifact);
-	if ( !jarFileRepoFolder.canRead() ) {
-		throw new FileNotFoundException( "Could not find the generated jar. " + jarFileRepoFolder );
-	}
-}
+def buildLog = new File( basedir, "build.log")
+
+t.checkExistenceAndContentOfAFile(buildLog, [
+  '[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project systemDependency-test: The useAllDependencies has been marked as deprecated since version 1.3.1 -> [Help 1]',
+  'org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project systemDependency-test: The useAllDependencies has been marked as deprecated since version 1.3.1',
+]);
 
 return true;
