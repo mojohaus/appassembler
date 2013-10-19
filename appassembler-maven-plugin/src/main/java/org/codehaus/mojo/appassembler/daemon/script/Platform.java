@@ -94,11 +94,9 @@ public class Platform
     /**
      * Get an instance of the named platform.
      * 
-     * @param platformName
-     *            The name of the wished platform.
+     * @param platformName The name of the wished platform.
      * @return Instance of the platform.
-     * @throws DaemonGeneratorException
-     *             in case of an wrong platformname.
+     * @throws DaemonGeneratorException in case of an wrong platformname.
      */
     public static Platform getInstance( String platformName )
         throws DaemonGeneratorException
@@ -136,11 +134,9 @@ public class Platform
     /**
      * Redefine the list of platforms with the given one.
      * 
-     * @param platformList
-     *            The new list of platforms.
+     * @param platformList The new list of platforms.
      * @return The redefined platforms set.
-     * @throws DaemonGeneratorException
-     *             in case of an error.
+     * @throws DaemonGeneratorException in case of an error.
      */
     public static Set getPlatformSet( List platformList )
         throws DaemonGeneratorException
@@ -151,13 +147,10 @@ public class Platform
     /**
      * Get back all platforms.
      * 
-     * @param platformList
-     *            The list of platforms.
-     * @param allSet
-     *            The all set list.
+     * @param platformList The list of platforms.
+     * @param allSet The all set list.
      * @return Get the platform sets.
-     * @throws DaemonGeneratorException
-     *             in case of an error.
+     * @throws DaemonGeneratorException in case of an error.
      */
     public static Set getPlatformSet( List platformList, Set allSet )
         throws DaemonGeneratorException
@@ -285,11 +278,9 @@ public class Platform
     /**
      * Get the ClassPath based on the given Daemon.
      * 
-     * @param daemon
-     *            The Daemon instance.
+     * @param daemon The Daemon instance.
      * @return The classpath as a string.
-     * @throws DaemonGeneratorException
-     *             in case of an error.
+     * @throws DaemonGeneratorException in case of an error.
      */
     public String getClassPath( Daemon daemon )
         throws DaemonGeneratorException
@@ -377,11 +368,9 @@ public class Platform
     /**
      * Get the extra JVMArguments.
      * 
-     * @param jvmSettings
-     *            The JVM settings
+     * @param jvmSettings The JVM settings
      * @return The created string which contains <code>-X</code> options for the JVM settings.
-     * @throws IOException
-     *             in case of an error.
+     * @throws IOException in case of an error.
      */
     public String getExtraJvmArguments( JvmSettings jvmSettings )
         throws IOException
@@ -432,8 +421,7 @@ public class Platform
     /**
      * Get the application arguments.
      * 
-     * @param descriptor
-     *            Instance of the daemon descriptor.
+     * @param descriptor Instance of the daemon descriptor.
      * @return The list of application arguments.
      */
     public String getAppArguments( Daemon descriptor )
@@ -475,8 +463,7 @@ public class Platform
     /**
      * Get the environment setup file.
      * 
-     * @param daemon
-     *            The instance of the Daemon for which this is beeing produced.
+     * @param daemon The instance of the Daemon for which this is beeing produced.
      * @return The created string which contains the path to the setup file.
      */
     public String getEnvSetup( Daemon daemon )

@@ -38,7 +38,8 @@ import org.codehaus.plexus.util.FileUtils;
 public class ScriptGeneratorBaseDirRepoTest
     extends PlexusTestCase
 {
-    private static final String PREFIX = "src/test/resources/org/codehaus/mojo/appassembler/daemon/script-basedir-repo/";
+    private static final String PREFIX =
+        "src/test/resources/org/codehaus/mojo/appassembler/daemon/script-basedir-repo/";
 
     protected void setUp()
         throws Exception

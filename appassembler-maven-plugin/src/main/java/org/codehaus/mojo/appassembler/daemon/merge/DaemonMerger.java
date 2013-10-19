@@ -40,6 +40,7 @@ public interface DaemonMerger
 
     /**
      * Merge two Daemons into a single one.
+     * 
      * @param dominant
      * @param recessive
      * @return The merged Daemon instance.

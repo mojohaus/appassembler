@@ -56,8 +56,10 @@ public class DaemonToolsDaemonGenerator
     // DaemonGenerator Implementation
     // -----------------------------------------------------------------------
 
-    /* (non-Javadoc)
-     * @see org.codehaus.mojo.appassembler.daemon.DaemonGenerator#generate(org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest)
+    /*
+     * (non-Javadoc)
+     * @see org.codehaus.mojo.appassembler.daemon.DaemonGenerator#generate(org.codehaus.mojo.appassembler.daemon.
+     * DaemonGenerationRequest)
      */
     public void generate( DaemonGenerationRequest request )
         throws DaemonGeneratorException

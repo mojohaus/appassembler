@@ -97,17 +97,19 @@ public class JavaServiceWrapperDaemonGenerator
             put( "solaris-x86-32-lib", "libwrapper-solaris-x86-32.so" );
             put( "solaris-x86-32-exec", "wrapper-solaris-x86-32" );
             put( "solaris-x86-64-lib", "libwrapper-solaris-x86-64.so" );
-            put( "solaris-x86-64-exec", "wrapper-solaris-x86-64" );            
+            put( "solaris-x86-64-exec", "wrapper-solaris-x86-64" );
             put( "windows-x86-32-lib", "wrapper-windows-x86-32.dll" );
             put( "windows-x86-32-exec", "wrapper-windows-x86-32.exe" );
             put( "windows-x86-64-lib", "wrapper-windows-x86-64.dll" );
             put( "windows-x86-64-exec", "wrapper-windows-x86-64.exe" );
         }
     };
+
     /**
      * The directory where the JSW executable files are fetched from.
      */
     private static final String JSW_BIN_DIR = "bin";
+
     /**
      * The directory where the JSW lib files are fetched from.
      */
@@ -136,29 +138,29 @@ public class JavaServiceWrapperDaemonGenerator
             configuration.remove( "run.as.user.envvar" );
         }
         String pidFile = configuration.getProperty( "wrapper.pidfile", "$BASEDIR/logs" );
-        
+
         // Don't want these in the wrapper.conf file
         String chkconfigStart = configuration.getProperty( "chkconfig.start", "20" );
-        configuration.remove("chkconfig.start");
+        configuration.remove( "chkconfig.start" );
         String chkconfigStop = configuration.getProperty( "chkconfig.stop", "80" );
-        configuration.remove("chkconfig.stop");
-        
+        configuration.remove( "chkconfig.stop" );
+
         Properties context = createContext( request, daemon );
         context.setProperty( "app.base.envvar", appBaseEnvVar );
         context.setProperty( "wrapper.pidfile", pidFile );
         context.setProperty( "run.as.user.envvar", runAsUserEnvVar );
         context.setProperty( "wrapper.conf.directory", daemon.getConfigurationDirectory() );
         context.setProperty( "wrapper.conf.fileName", this.getWrapperConfigFileName( daemon ) );
-        context.setProperty( "chkconfig.start", chkconfigStart);
-        context.setProperty( "chkconfig.stop", chkconfigStop);
-        
+        context.setProperty( "chkconfig.start", chkconfigStart );
+        context.setProperty( "chkconfig.stop", chkconfigStop );
+
         writeWrapperConfFile( request, daemon, outputDirectory, context, configuration );
 
         writeScriptFiles( request, daemon, outputDirectory, context );
 
         List jswPlatformIncludes = getJswPlatformIncludes( daemon );
 
-        writeLibraryFiles( outputDirectory, daemon,  jswPlatformIncludes );
+        writeLibraryFiles( outputDirectory, daemon, jswPlatformIncludes );
 
         writeExecutableFiles( outputDirectory, daemon, jswPlatformIncludes );
     }
@@ -389,7 +391,8 @@ public class JavaServiceWrapperDaemonGenerator
         {
             confFile.setProperty( wrapperClassPathPrefix + counter++,
                                   "%REPO_DIR%/"
-                                      + DependencyFactory.create( project.getArtifact(), layout, true, request.getOutputFileNameMapping() ).getRelativePath() );
+                                      + DependencyFactory.create( project.getArtifact(), layout, true,
+                                                                  request.getOutputFileNameMapping() ).getRelativePath() );
 
             Iterator j = project.getRuntimeArtifacts().iterator();
             while ( j.hasNext() )
@@ -399,7 +402,8 @@ public class JavaServiceWrapperDaemonGenerator
                 confFile.setProperty( wrapperClassPathPrefix + counter,
                                       "%REPO_DIR%/"
                                           + DependencyFactory.create( artifact, layout,
-                                                                      daemon.isUseTimestampInSnapshotFileName(), request.getOutputFileNameMapping() ).getRelativePath() );
+                                                                      daemon.isUseTimestampInSnapshotFileName(),
+                                                                      request.getOutputFileNameMapping() ).getRelativePath() );
                 counter++;
             }
         }
@@ -539,15 +543,14 @@ public class JavaServiceWrapperDaemonGenerator
     private void writeLibraryFiles( File outputDirectory, Daemon daemon, List jswPlatformIncludes )
         throws DaemonGeneratorException
     {
-        if ( daemon.getExternalDeltaPackDirectory() != null ) 
+        if ( daemon.getExternalDeltaPackDirectory() != null )
         {
             copyExternalFile( new File( daemon.getExternalDeltaPackDirectory(), JSW_LIB_DIR + "/wrapper.jar" ),
-                              new File( outputDirectory, daemon.getRepositoryName() + "/wrapper.jar") );
+                              new File( outputDirectory, daemon.getRepositoryName() + "/wrapper.jar" ) );
         }
         else
         {
-            copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ),
-                              JSW_LIB_DIR, "wrapper.jar" );
+            copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, "wrapper.jar" );
         }
 
         for ( Iterator iter = jswPlatformIncludes.iterator(); iter.hasNext(); )
@@ -556,15 +559,14 @@ public class JavaServiceWrapperDaemonGenerator
             String libFile = (String) JSW_PLATFORMS_MAP.get( platform + "-lib" );
             if ( libFile != null )
             {
-                if ( daemon.getExternalDeltaPackDirectory() != null ) 
+                if ( daemon.getExternalDeltaPackDirectory() != null )
                 {
                     copyExternalFile( new File( daemon.getExternalDeltaPackDirectory(), JSW_LIB_DIR + "/" + libFile ),
-                                      new File( outputDirectory, daemon.getRepositoryName() + "/" + libFile) );
+                                      new File( outputDirectory, daemon.getRepositoryName() + "/" + libFile ) );
                 }
                 else
                 {
-                    copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ),
-                                      JSW_LIB_DIR, libFile );
+                    copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, libFile );
                 }
             }
             else
@@ -583,15 +585,14 @@ public class JavaServiceWrapperDaemonGenerator
             String execFile = (String) JSW_PLATFORMS_MAP.get( platform + "-exec" );
             if ( execFile != null )
             {
-                if ( daemon.getExternalDeltaPackDirectory() != null ) 
+                if ( daemon.getExternalDeltaPackDirectory() != null )
                 {
                     copyExternalFile( new File( daemon.getExternalDeltaPackDirectory(), JSW_BIN_DIR + "/" + execFile ),
-                                      new File( outputDirectory, JSW_BIN_DIR + "/" + execFile) );
+                                      new File( outputDirectory, JSW_BIN_DIR + "/" + execFile ) );
                 }
-                else 
+                else
                 {
-                    copyResourceFile( new File( outputDirectory, JSW_BIN_DIR ),
-                                      JSW_BIN_DIR, execFile );
+                    copyResourceFile( new File( outputDirectory, JSW_BIN_DIR ), JSW_BIN_DIR, execFile );
                 }
             }
             else
@@ -600,22 +601,21 @@ public class JavaServiceWrapperDaemonGenerator
             }
         }
     }
-    
+
     private void copyExternalFile( File from, File to )
-                    throws DaemonGeneratorException
+        throws DaemonGeneratorException
     {
-        try 
+        try
         {
             from.getParentFile().mkdirs();
-            FileUtils.copyFile( from,  to );
+            FileUtils.copyFile( from, to );
         }
         catch ( IOException e )
         {
             throw new DaemonGeneratorException( "Could not copy external file: " + from, e );
         }
-        
+
     }
-    
 
     private void copyResourceFile( File outputDirectory, String inputDirectory, String fileName )
         throws DaemonGeneratorException

@@ -38,6 +38,7 @@ public class DaemonGeneratorException
 
     /**
      * Exception with message.
+     * 
      * @param message The message for the execption.
      */
     public DaemonGeneratorException( String message )
@@ -46,8 +47,8 @@ public class DaemonGeneratorException
     }
 
     /**
-     * The exception with an appropriate message and the cause of the 
-     * failure.
+     * The exception with an appropriate message and the cause of the failure.
+     * 
      * @param message The message to show.
      * @param cause The root cause.
      */

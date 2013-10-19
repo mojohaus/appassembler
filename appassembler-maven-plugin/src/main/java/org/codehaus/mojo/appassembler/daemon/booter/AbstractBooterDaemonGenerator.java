@@ -77,8 +77,7 @@ public abstract class AbstractBooterDaemonGenerator
 
         // TODO: we're assuming state for things that don't really appear stateful
         /*
-         * The JVM settings are written to the script, and do not need to go into
-         * the manifest.
+         * The JVM settings are written to the script, and do not need to go into the manifest.
          */
         daemon.setJvmSettings( null );
 
@@ -109,15 +108,21 @@ public abstract class AbstractBooterDaemonGenerator
         classpath.addDirectory( createDirectory( "etc" ) );
         classpath.addDependency( DependencyFactory.create( project,
                                                            "org.codehaus.mojo.appassembler:appassembler-booter",
-                                                           request.getRepositoryLayout(), request.getOutputFileNameMapping() ) );
+                                                           request.getRepositoryLayout(),
+                                                           request.getOutputFileNameMapping() ) );
 
         // TODO: Transitively resolve the dependencies of the booter - for now we're just hardcoding them in
-        classpath.addDependency( DependencyFactory.create( project, "org.codehaus.mojo.appassembler:appassembler-model",
-                                                           request.getRepositoryLayout(), request.getOutputFileNameMapping() ) );
+        classpath.addDependency( DependencyFactory.create( project,
+                                                           "org.codehaus.mojo.appassembler:appassembler-model",
+                                                           request.getRepositoryLayout(),
+                                                           request.getOutputFileNameMapping() ) );
         classpath.addDependency( DependencyFactory.create( project, "org.codehaus.plexus:plexus-utils",
-                                                           request.getRepositoryLayout(), request.getOutputFileNameMapping() ) );
-        classpath.addDependency( DependencyFactory.create( project, "stax:stax-api", request.getRepositoryLayout(), request.getOutputFileNameMapping() ) );
-        classpath.addDependency( DependencyFactory.create( project, "stax:stax", request.getRepositoryLayout(), request.getOutputFileNameMapping() ) );
+                                                           request.getRepositoryLayout(),
+                                                           request.getOutputFileNameMapping() ) );
+        classpath.addDependency( DependencyFactory.create( project, "stax:stax-api", request.getRepositoryLayout(),
+                                                           request.getOutputFileNameMapping() ) );
+        classpath.addDependency( DependencyFactory.create( project, "stax:stax", request.getRepositoryLayout(),
+                                                           request.getOutputFileNameMapping() ) );
 
         // FIXME: Check if this is correct new File("bin") ?
         scriptGenerator.createBinScript( getPlatformName(), booterDaemon, outputDirectory, "bin" );

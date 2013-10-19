@@ -31,7 +31,8 @@ import org.codehaus.plexus.util.StringUtils;
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
- * @todo test could be improved - there are other conditions like "check if extra properties can override those from template"
+ * @todo test could be improved - there are other conditions like
+ *       "check if extra properties can override those from template"
  * @todo reading POM/model should not be necessary?
  */
 public class JavaServiceWrapperDaemonGeneratorTest
@@ -48,29 +49,25 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
 
-        assertEquals( normalizedLineEndingRead(
-            "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-1.conf" ),
+        assertEquals( normalizedLineEndingRead( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-1.conf" ),
                       FileUtils.fileRead( wrapper ) );
 
         File shellScript = new File( jswDir, "bin/app" );
 
         assertTrue( "Shell script file is missing: " + shellScript.getAbsolutePath(), shellScript.isFile() );
 
-        assertEquals( FileUtils
-                          .fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-1.sh" ) ),
+        assertEquals( FileUtils.fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-1.sh" ) ),
                       FileUtils.fileRead( shellScript ) );
 
         File batchFile = new File( jswDir, "bin/app.bat" );
 
         assertTrue( "Batch file is missing: " + batchFile.getAbsolutePath(), batchFile.isFile() );
 
-        assertEquals( FileUtils
-                          .fileRead(
-                              getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-1.bat" ) ),
+        assertEquals( FileUtils.fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-1.bat" ) ),
                       FileUtils.fileRead( batchFile ) );
 
         assertEquals( ( new File( getBasedir()
-                                      + "/target/classes/org/codehaus/mojo/appassembler/daemon/jsw/bin/wrapper-linux-x86-32" ) ).length(),
+                          + "/target/classes/org/codehaus/mojo/appassembler/daemon/jsw/bin/wrapper-linux-x86-32" ) ).length(),
                       ( new File( jswDir, "bin/wrapper-linux-x86-32" ) ).length() );
 
         assertFileExists( jswDir, "lib/wrapper.jar" );
@@ -107,24 +104,21 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
 
-        assertEquals( normalizedLineEndingRead(
-            "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-1.conf" ) ,
+        assertEquals( normalizedLineEndingRead( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-1.conf" ),
                       FileUtils.fileRead( wrapper ) );
 
         File shellScript = new File( jswDir, "bin/app" );
 
         assertTrue( "Shell script file is missing: " + shellScript.getAbsolutePath(), shellScript.isFile() );
 
-        assertEquals( FileUtils
-                          .fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-1.sh" ) ),
+        assertEquals( FileUtils.fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-1.sh" ) ),
                       FileUtils.fileRead( shellScript ) );
 
         File batchFile = new File( jswDir, "bin/app.bat" );
 
         assertTrue( "Batch file is missing: " + batchFile.getAbsolutePath(), batchFile.isFile() );
 
-        assertEquals( FileUtils
-                          .fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-1.bat" ) ),
+        assertEquals( FileUtils.fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-1.bat" ) ),
                       FileUtils.fileRead( batchFile ) );
 
         assertEquals( ( new File( getBasedir()
@@ -162,24 +156,21 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
 
-        assertEquals( normalizedLineEndingRead(
-            "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/no-generator-configurations-wrapper.conf" ),
+        assertEquals( normalizedLineEndingRead( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/no-generator-configurations-wrapper.conf" ),
                       FileUtils.fileRead( wrapper ) );
 
         File shellScript = new File( jswDir, "bin/app" );
 
         assertTrue( "Shell script file is missing: " + shellScript.getAbsolutePath(), shellScript.isFile() );
 
-        assertEquals( FileUtils
-                          .fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/no-generator-configurations-run.sh" ) ),
+        assertEquals( FileUtils.fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/no-generator-configurations-run.sh" ) ),
                       FileUtils.fileRead( shellScript ) );
 
         File batchFile = new File( jswDir, "bin/app.bat" );
 
         assertTrue( "Batch file is missing: " + batchFile.getAbsolutePath(), batchFile.isFile() );
 
-        assertEquals( FileUtils
-                          .fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/no-generator-configurations-run.bat" ) ),
+        assertEquals( FileUtils.fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/no-generator-configurations-run.bat" ) ),
                       FileUtils.fileRead( batchFile ) );
 
         assertEquals( ( new File( getBasedir()
@@ -219,16 +210,14 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
 
-        assertEquals( normalizedLineEndingRead(
-            "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-6.conf" ),
+        assertEquals( normalizedLineEndingRead( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-6.conf" ),
                       FileUtils.fileRead( wrapper ) );
     }
 
     private String normalizedLineEndingRead( String file )
         throws IOException
     {
-        String expected = FileUtils.fileRead(
-            getTestFile( file ) );
+        String expected = FileUtils.fileRead( getTestFile( file ) );
         return StringUtils.unifyLineSeparators( expected );
     }
 
@@ -243,8 +232,7 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         assertTrue( "Wrapper file is missing: " + wrapper.getAbsolutePath(), wrapper.isFile() );
 
-        assertEquals( normalizedLineEndingRead(
-            "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-7.conf" ),
+        assertEquals( normalizedLineEndingRead( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/wrapper-7.conf" ),
                       FileUtils.fileRead( wrapper ) );
 
         assertFileExists( jswDir, "lib/wrapper.jar" );
@@ -313,24 +301,26 @@ public class JavaServiceWrapperDaemonGeneratorTest
                       FileUtils.fileRead( batchFile ) );
     }
 
-    public void testGenerationWithChkConfig() throws Exception {
+    public void testGenerationWithChkConfig()
+        throws Exception
+    {
         runTest( "jsw", "src/test/resources/project-12/pom.xml", "src/test/resources/project-12/descriptor.xml",
-            "target/output-12-jsw" );
-        
+                 "target/output-12-jsw" );
+
         File jswDir = getTestFile( "target/output-12-jsw/app" );
         File wrapper = new File( jswDir, "conf/wrapper.conf" );
-        
+
         String wrapperContents = FileUtils.fileRead( wrapper );
-        
-        assertFalse("Wrapper conf contains chkconfig.start", wrapperContents.contains("chkconfig.start"));
-        assertFalse("Wrapper conf contains chkconfig.stop", wrapperContents.contains("chkconfig.stop"));
-        
+
+        assertFalse( "Wrapper conf contains chkconfig.start", wrapperContents.contains( "chkconfig.start" ) );
+        assertFalse( "Wrapper conf contains chkconfig.stop", wrapperContents.contains( "chkconfig.stop" ) );
+
         File script = new File( jswDir, "bin/app" );
         String scriptContents = FileUtils.fileRead( script );
-        
-        assertTrue("Chkconfig replace did not work", scriptContents.contains("chkconfig: 2345 21 81"));
+
+        assertTrue( "Chkconfig replace did not work", scriptContents.contains( "chkconfig: 2345 21 81" ) );
     }
-    
+
     public void testGenerationWithWrapperPidFile()
         throws Exception
     {
@@ -360,12 +350,12 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         // there are no changes in batch file so we don't check it here
     }
-    
+
     public void testGenerationWithGoodExternalDeltaPack()
-                    throws Exception
+        throws Exception
     {
         runTest( "jsw", "src/test/resources/project-10/pom.xml", "src/test/resources/project-10/descriptor.xml",
-                  "target/output-10-jsw" );
+                 "target/output-10-jsw" );
 
         File jswDir = getTestFile( "target/output-10-jsw/app" );
 
@@ -373,23 +363,26 @@ public class JavaServiceWrapperDaemonGeneratorTest
         assertFileExists( jswDir, "lib/wrapper.jar" );
         assertFileExists( jswDir, "lib/libwrapper-aix-ppc-32.a" );
         assertFileExists( jswDir, "lib/libwrapper-aix-ppc-64.a" );
-                    
+
         // just enough to prove we see the external files
         assertFileExists( jswDir, "bin/wrapper-aix-ppc-32" );
         assertFileExists( jswDir, "bin/wrapper-aix-ppc-64" );
     }
-    
+
     public void testGenerationWithBadExternalDeltaPack()
-                    throws Exception
+        throws Exception
     {
-        try {
+        try
+        {
             runTest( "jsw", "src/test/resources/project-10/pom.xml", "src/test/resources/project-11/descriptor.xml",
                      "target/output-11-jsw" );
-            
+
             fail( "Invalid external delta pack passed thru!!." );
         }
-        catch ( DaemonGeneratorException e ) {
-            assertTrue( "Invalid external delta pack does not get correct exceptoin", e.getMessage().startsWith( "Could not copy external file"  ) );
+        catch ( DaemonGeneratorException e )
+        {
+            assertTrue( "Invalid external delta pack does not get correct exceptoin",
+                        e.getMessage().startsWith( "Could not copy external file" ) );
         }
     }
 
@@ -436,15 +429,13 @@ public class JavaServiceWrapperDaemonGeneratorTest
 
         File shellScript = new File( jswDir, "bin/app" );
         assertTrue( "Shell script file is missing: " + shellScript.getAbsolutePath(), shellScript.isFile() );
-        assertEquals( FileUtils.fileRead(
-                          getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-14.sh" ) ),
-                          FileUtils.fileRead( shellScript ) );
+        assertEquals( FileUtils.fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-14.sh" ) ),
+                      FileUtils.fileRead( shellScript ) );
 
         File batchFile = new File( jswDir, "bin/app.bat" );
         assertTrue( "Batch file is missing: " + batchFile.getAbsolutePath(), batchFile.isFile() );
-        assertEquals( FileUtils.fileRead(
-                          getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-14.bat" ) ),
-                          FileUtils.fileRead( batchFile ) );
+        assertEquals( FileUtils.fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-14.bat" ) ),
+                      FileUtils.fileRead( batchFile ) );
     }
 
     private static void assertFileExists( File jswDir, String file )

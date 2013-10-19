@@ -31,9 +31,9 @@ import java.io.File;
 import java.util.List;
 
 /**
- * This is intended to collect all generic parts of the script generating Mojos assemble and generate-daemons
- * into a single class. A first step of hopefully merging the two into one some day.
- *
+ * This is intended to collect all generic parts of the script generating Mojos assemble and generate-daemons into a
+ * single class. A first step of hopefully merging the two into one some day.
+ * 
  * @author Dennis Lundberg
  * @version $Id$
  */
@@ -51,7 +51,7 @@ public abstract class AbstractScriptGeneratorMojo
      * WRAPPER_CONF_OVERRIDES variable, it will be passed into JSW native launcher's command line arguments to override
      * wrapper.conf's properties. See http://wrapper.tanukisoftware.com/doc/english/props-command-line.html for details.
      * </p>
-     *
+     * 
      * @parameter
      * @since 1.2.3 (generate-daemons)
      */
@@ -59,7 +59,7 @@ public abstract class AbstractScriptGeneratorMojo
 
     /**
      * You can define a license header file which will be used instead the default header in the generated scripts.
-     *
+     * 
      * @parameter
      * @since 1.2
      */
@@ -68,7 +68,7 @@ public abstract class AbstractScriptGeneratorMojo
     /**
      * The unix template of the generated script. It can be a file or resource path. If not given, an internal one is
      * used. Use with case since it is not guaranteed to be compatible with new plugin release.
-     *
+     * 
      * @parameter expression="${unixScriptTemplate}"
      * @since 1.3
      */
@@ -81,7 +81,7 @@ public abstract class AbstractScriptGeneratorMojo
      * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html" >classpath wildcard</a> (REPO/*).
      * But be aware that this works only in combination with Java 1.6 and above and with {@link #repositoryLayout}
      * <code>flat</code>. Otherwise this configuration will not work.
-     *
+     * 
      * @since 1.2.3 (assemble), 1.3.1 (generate-daemons)
      * @parameter default-value="false"
      */
@@ -90,7 +90,7 @@ public abstract class AbstractScriptGeneratorMojo
     /**
      * The windows template of the generated script. It can be a file or resource path. If not given, an internal one is
      * used. Use with care since it is not guaranteed to be compatible with new plugin release.
-     *
+     * 
      * @parameter expression="${windowsScriptTemplate}"
      * @since 1.3
      */
@@ -128,7 +128,7 @@ public abstract class AbstractScriptGeneratorMojo
 
     /**
      * Should the <code>/*</code> part for the classpath be used or not.
-     *
+     * 
      * @return true if the wild card class path will be used false otherwise.
      */
     public boolean isUseWildcardClassPath()
@@ -138,7 +138,7 @@ public abstract class AbstractScriptGeneratorMojo
 
     /**
      * Use wildcard classpath or not.
-     *
+     * 
      * @param useWildcardClassPath true to use wildcard classpath false otherwise.
      */
     public void setUseWildcardClassPath( boolean useWildcardClassPath )

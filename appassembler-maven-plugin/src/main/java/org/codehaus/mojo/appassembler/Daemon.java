@@ -114,7 +114,7 @@ public class Daemon
 
     /**
      * Return the configuration directory.
-     *
+     * 
      * @return The configuration directory.
      */
     public String getConfigurationDirectory()
@@ -144,7 +144,7 @@ public class Daemon
 
     /**
      * Return the name of the license header file.
-     *
+     * 
      * @return The name of the license header file.
      */
     public String getLicenseHeaderFile()
@@ -154,7 +154,7 @@ public class Daemon
 
     /**
      * Return the repository name.
-     *
+     * 
      * @return The repository name.
      */
     public String getRepositoryName()

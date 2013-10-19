@@ -58,14 +58,13 @@ public abstract class AbstractAppAssemblerMojo
     // -----------------------------------------------------------------------
 
     /**
-     * The file name mapping to use when copying libraries to the repository.
-     * If no file mapping is set (default) the files are copied with their
-     * standard names.
+     * The file name mapping to use when copying libraries to the repository. If no file mapping is set (default) the
+     * files are copied with their standard names.
      * <p>
-     * <b>Note: </b> if you use this parameter, then the
-     * <code>useTimestampInSnapshotFileName</code> parameter will be ignored.
+     * <b>Note: </b> if you use this parameter, then the <code>useTimestampInSnapshotFileName</code> parameter will be
+     * ignored.
      * </p>
-     *
+     * 
      * @parameter
      * @since 1.5
      */
@@ -203,7 +202,7 @@ public abstract class AbstractAppAssemblerMojo
 
                 if ( !source.isDirectory() )
                 {
-                    if( outputFileNameMapping != null )
+                    if ( outputFileNameMapping != null )
                     {
                         String fileName = MappingUtils.evaluateFileNameMapping( outputFileNameMapping, artifact );
                         destination = new File( destination.getParent(), fileName );
@@ -220,7 +219,8 @@ public abstract class AbstractAppAssemblerMojo
             {
                 throw new MojoExecutionException( "Failed to copy artifact.", e );
             }
-            catch( InterpolationException e ) {
+            catch ( InterpolationException e )
+            {
                 throw new MojoExecutionException( "Failed to map file name.", e );
             }
         }

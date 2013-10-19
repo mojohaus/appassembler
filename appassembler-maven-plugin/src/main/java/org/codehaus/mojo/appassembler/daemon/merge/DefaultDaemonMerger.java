@@ -65,7 +65,8 @@ public class DefaultDaemonMerger
         result.setMainClass( select( dominant.getMainClass(), recessive.getMainClass() ) );
         result.setClasspath( (Classpath) select( dominant.getClasspath(), recessive.getClasspath() ) );
         result.setCommandLineArguments( select( dominant.getCommandLineArguments(), recessive.getCommandLineArguments() ) );
-        result.setConfigurationDirectory( select( dominant.getConfigurationDirectory(), recessive.getConfigurationDirectory() ) );
+        result.setConfigurationDirectory( select( dominant.getConfigurationDirectory(),
+                                                  recessive.getConfigurationDirectory() ) );
         // This should probably be improved
         result.setJvmSettings( (JvmSettings) select( dominant.getJvmSettings(), recessive.getJvmSettings() ) );
         result.setLicenseHeaderFile( select( dominant.getLicenseHeaderFile(), recessive.getLicenseHeaderFile() ) );

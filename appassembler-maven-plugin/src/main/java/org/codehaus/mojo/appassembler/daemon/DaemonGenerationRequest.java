@@ -265,7 +265,7 @@ public class DaemonGenerationRequest
 
     /**
      * Get the output file name mapping.
-     *
+     * 
      * @return The mapping
      */
     public String getOutputFileNameMapping()
@@ -275,7 +275,7 @@ public class DaemonGenerationRequest
 
     /**
      * Set the output file name mapping.
-     *
+     * 
      * @param outputFileNameMapping The mapping
      */
     public void setOutputFileNameMapping( String outputFileNameMapping )

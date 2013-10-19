@@ -13,7 +13,7 @@ import java.io.File;
 
 /**
  * A factory that creates Dependency objects.
- *
+ * 
  * @author Dennis Lundberg
  */
 public class DependencyFactory
@@ -30,7 +30,7 @@ public class DependencyFactory
         dependency.setClassifier( artifact.getClassifier() );
 
         String path = layout.pathOf( artifact );
-        if( StringUtils.isNotEmpty( outputFileNameMapping ) )
+        if ( StringUtils.isNotEmpty( outputFileNameMapping ) )
         {
             // Replace the file name part of the path with one that has been mapped
             File directory = new File( path ).getParentFile();
@@ -42,10 +42,10 @@ public class DependencyFactory
                 // Always use forward slash as path separator, because that's what layout.pathOf( artifact ) uses
                 path = file.getPath().replace( '\\', '/' );
             }
-            catch(InterpolationException e)
+            catch ( InterpolationException e )
             {
                 // TODO Handle exceptions!
-//                throw new MojoExecutionException("Unable to map file name.", e);
+                // throw new MojoExecutionException("Unable to map file name.", e);
             }
         }
         dependency.setRelativePath( path );
@@ -72,8 +72,7 @@ public class DependencyFactory
     /**
      * Used by AbstractBooterDaemonGenerator.
      */
-    public static Dependency create( MavenProject project, String id,
-                                     ArtifactRepositoryLayout layout,
+    public static Dependency create( MavenProject project, String id, ArtifactRepositoryLayout layout,
                                      String outputFileNameMapping )
         throws DaemonGeneratorException
     {

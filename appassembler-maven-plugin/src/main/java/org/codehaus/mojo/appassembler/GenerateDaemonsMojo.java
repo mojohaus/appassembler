@@ -67,7 +67,7 @@ public class GenerateDaemonsMojo
 
     /**
      * The name of the target directory for configuration files.
-     *
+     * 
      * @parameter default-value="conf"
      * @since 1.5
      * @todo Synchronize the default value with the other mojos in 2.0
@@ -90,9 +90,8 @@ public class GenerateDaemonsMojo
     private JvmSettings defaultJvmSettings;
 
     /**
-     * Path (relative to <code>assembleDirectory</code>) of the desired output
-     * repository.
-     *
+     * Path (relative to <code>assembleDirectory</code>) of the desired output repository.
+     * 
      * @parameter default-value="lib"
      * @since 1.5
      * @todo Synchronize the default value with the other mojos in 2.0
@@ -116,8 +115,8 @@ public class GenerateDaemonsMojo
     private boolean useDaemonIdAsWrapperConfName;
 
     /**
-     * Use this option to override the current built-in delta pack binary. You will need to unpack your delta pack version 
-     * to a known location set by this option
+     * Use this option to override the current built-in delta pack binary. You will need to unpack your delta pack
+     * version to a known location set by this option
      * 
      * @since 1.4.0
      * @parameter expression="${externalDeltaPackDirectory}"
@@ -130,6 +129,7 @@ public class GenerateDaemonsMojo
 
     /**
      * calling from Maven.
+     * 
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
     public void execute()
@@ -208,7 +208,7 @@ public class GenerateDaemonsMojo
             {
                 modelDaemon.setExternalDeltaPackDirectory( this.externalDeltaPackDirectory.getAbsolutePath() );
             }
-            
+
             // -----------------------------------------------------------------------
             //
             // -----------------------------------------------------------------------

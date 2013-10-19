@@ -64,8 +64,8 @@ public class GenericDaemonGeneratorTest
 
     }
 
-    //MAPPASM-143. The old unit tests testGenerationWithSnapshotDependencies() has been converted into
-    //a integration tests to get the integration test running after a release change etc.
+    // MAPPASM-143. The old unit tests testGenerationWithSnapshotDependencies() has been converted into
+    // a integration tests to get the integration test running after a release change etc.
     private void assertNodeEquals( String expected, String tagName, Document document )
     {
         assertEquals( "Node with tag name " + tagName + " does not match", expected,

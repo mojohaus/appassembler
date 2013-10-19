@@ -41,17 +41,12 @@ public interface ScriptGenerator
     String ROLE = ScriptGenerator.class.getName();
 
     /**
-     * Generate the binary script based on platform, daemon into the given outputDirectory
-     * and the binFolder.
+     * Generate the binary script based on platform, daemon into the given outputDirectory and the binFolder.
      * 
-     * @param platform
-     *            The platform.
-     * @param daemon
-     *            The Daemon.
-     * @param outputDirectory
-     *            The output folder where the script will be generated into.
-     * @param binFolder
-     *            The bin folder which will be appended to the outputDirectory.
+     * @param platform The platform.
+     * @param daemon The Daemon.
+     * @param outputDirectory The output folder where the script will be generated into.
+     * @param binFolder The bin folder which will be appended to the outputDirectory.
      * @throws DaemonGeneratorException in case of an error.
      */
     void createBinScript( String platform, Daemon daemon, File outputDirectory, String binFolder )

@@ -46,7 +46,6 @@ public class GeneratorConfiguration
     private List includes;
 
     /**
-     * 
      * @return Current generator.
      */
     public String getGenerator()
@@ -84,7 +83,8 @@ public class GeneratorConfiguration
         this.configuration = configuration;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     public String toString()

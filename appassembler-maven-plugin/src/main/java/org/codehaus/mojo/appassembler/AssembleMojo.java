@@ -283,26 +283,31 @@ public class AssembleMojo
     // Execute
     // ----------------------------------------------------------------------
 
-    
-    public void checkDeprecatedParameterAndFailIfOneOfThemIsUsed() throws MojoExecutionException {
-    	if (isUseAsterikClassPath()) {
-    		throw new MojoExecutionException("The useAsterikClassPath has been marked as deprecated since version 1.4");
-    	}
-    	
-    	if (isUseAllDependencies()) {
-    		throw new MojoExecutionException("The useAllDependencies has been marked as deprecated since version 1.3.1");
-    	}
+    public void checkDeprecatedParameterAndFailIfOneOfThemIsUsed()
+        throws MojoExecutionException
+    {
+        if ( isUseAsterikClassPath() )
+        {
+            throw new MojoExecutionException( "The useAsterikClassPath has been marked as deprecated since version 1.4" );
+        }
+
+        if ( isUseAllDependencies() )
+        {
+            throw new MojoExecutionException(
+                                              "The useAllDependencies has been marked as deprecated since version 1.3.1" );
+        }
     }
 
     /**
      * calling from Maven.
+     * 
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
         Set defaultPlatforms = validatePlatforms( platforms, VALID_PLATFORMS );
-        
+
         checkDeprecatedParameterAndFailIfOneOfThemIsUsed();
 
         // validate input and set defaults
@@ -378,8 +383,7 @@ public class AssembleMojo
                 org.codehaus.mojo.appassembler.model.Daemon daemon =
                     programToDaemon( program, artifactRepositoryLayout );
                 DaemonGenerationRequest request =
-                    new DaemonGenerationRequest( daemon, mavenProject, localRepository, assembleDirectory,
-                                                 binFolder );
+                    new DaemonGenerationRequest( daemon, mavenProject, localRepository, assembleDirectory, binFolder );
                 request.setStubDaemon( request.getDaemon() );
 
                 request.setPlatform( platform );

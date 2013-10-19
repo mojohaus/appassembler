@@ -32,7 +32,7 @@ import org.codehaus.plexus.logging.LoggerManager;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
- * Test showConsoleWindow configuration 
+ * Test showConsoleWindow configuration
  */
 public class ScriptGeneratorBackgroundTest
     extends PlexusTestCase
@@ -77,8 +77,8 @@ public class ScriptGeneratorBackgroundTest
 
         generator.createBinScript( platform.getName(), daemon, outputDirectory, "bin" );
 
-        File expectedFile = getTestFile( PREFIX + "expected-false-showConsoleWindow-" + daemon.getId()
-            + platform.getBinFileExtension() );
+        File expectedFile =
+            getTestFile( PREFIX + "expected-false-showConsoleWindow-" + daemon.getId() + platform.getBinFileExtension() );
         File actualFile = new File( outputDirectory, "bin/" + daemon.getId() + platform.getBinFileExtension() );
 
         assertEquals( FileUtils.fileRead( expectedFile ), FileUtils.fileRead( actualFile ) );
