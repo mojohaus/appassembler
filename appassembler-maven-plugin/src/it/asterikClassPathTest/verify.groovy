@@ -36,28 +36,58 @@ t = new IntegrationBase()
  */
 def getProjectVersion() {
     def pom = new XmlSlurper().parse(new File(basedir, 'pom.xml'))
-    
+
     def allPlugins = pom.build.plugins
 
     def dependencies = allPlugins.plugin
 
-    def appassemblerModule = dependencies.find {
-        item -> item.groupId.equals("org.codehaus.mojo") && item.artifactId.equals("appassembler-maven-plugin");
+    def appassemblerModule = dependencies.find { item ->
+        item.groupId.equals("org.codehaus.mojo") && item.artifactId.equals("appassembler-maven-plugin");
     }
 
-   return appassemblerModule.version;
- }
- 
+    return appassemblerModule.version;
+}
+
 def projectVersion = getProjectVersion();
 
 println "ProjectVersion:" + projectVersion
 
 def buildLog = new File( basedir, "build.log")
 
-t.checkExistenceAndContentOfAFile(buildLog, [
-    '[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project asterikClassPath-test: The useAsterikClassPath has been marked as deprecated since version 1.4 -> [Help 1]',
-    'org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project asterikClassPath-test: The useAsterikClassPath has been marked as deprecated since version 1.4',
-])    
+def getMavenVersion(buildLog) {
+    def maven = null;
+    buildLog.eachLine { line ->
+        if (line.startsWith("Apache Maven 2.2.1")) {
+            maven = "2.2.1";
+        } else if (line.startsWith("Apache Maven 3.0.3")) {
+            maven = "3.0.3";
+        } else if (line.startsWith("Apache Maven 3.0.4")) {
+            maven = "3.0.4";
+        } else if (line.startsWith("Apache Maven 3.0.5")) {
+            maven = "3.0.5";
+        } else if (line.startsWith("Apache Maven 3.1.0")) {
+            maven = "3.1.0";
+        } else if (line.startsWith("Apache Maven 3.1.1")) {
+            maven = "3.1.1";
+        }
+    }
+
+    return maven
+}
+
+def mavenVersion = getMavenVersion(buildLog)
+
+if (mavenVersion.equals("3.0.4") || mavenVersion.equals("3.0.5") || mavenVersion.equals( "3.1.0" ) || mavenVersion.equals( "3.1.1" )) {
+    t.checkExistenceAndContentOfAFile(buildLog, [
+        '[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project asterikClassPath-test: The useAsterikClassPath has been marked as deprecated since version 1.4 -> [Help 1]',
+        'org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project asterikClassPath-test: The useAsterikClassPath has been marked as deprecated since version 1.4',
+    ])
+} else {
+    t.checkExistenceAndContentOfAFile(buildLog, [
+        'Caused by: org.apache.maven.plugin.MojoExecutionException: The useAsterikClassPath has been marked as deprecated since version 1.4',
+        'org.apache.maven.lifecycle.LifecycleExecutionException: The useAsterikClassPath has been marked as deprecated since version 1.4',
+    ])
+}
 
 def targetFolder = new File( basedir, "target")
 

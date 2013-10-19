@@ -294,7 +294,8 @@ public class AssembleMojo
         if ( isUseAllDependencies() )
         {
             throw new MojoExecutionException(
-                                              "The useAllDependencies has been marked as deprecated since version 1.3.1" );
+              "The useAllDependencies has been marked as deprecated since version 1.3.1" 
+            );
         }
     }
 
@@ -302,6 +303,8 @@ public class AssembleMojo
      * calling from Maven.
      * 
      * @see org.apache.maven.plugin.AbstractMojo#execute()
+     * @throws {@link MojoExecutionException}
+     * @throws {@link MojoFailureException}
      */
     public void execute()
         throws MojoExecutionException, MojoFailureException

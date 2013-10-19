@@ -52,9 +52,42 @@ def projectVersion = getProjectVersion();
 
 def buildLog = new File( basedir, "build.log")
 
-t.checkExistenceAndContentOfAFile(buildLog, [
-  '[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project systemDependency-test: The useAllDependencies has been marked as deprecated since version 1.3.1 -> [Help 1]',
-  'org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project systemDependency-test: The useAllDependencies has been marked as deprecated since version 1.3.1',
-]);
+def getMavenVersion(buildLog) {
+    def maven = null;
+    buildLog.eachLine { line ->
+        if (line.startsWith("Apache Maven 2.2.1")) {
+            maven = "2.2.1";
+        } else if (line.startsWith("Apache Maven 3.0.3")) {
+            maven = "3.0.3";
+        } else if (line.startsWith("Apache Maven 3.0.4")) {
+            maven = "3.0.4";
+        } else if (line.startsWith("Apache Maven 3.0.5")) {
+            maven = "3.0.5";
+        } else if (line.startsWith("Apache Maven 3.1.0")) {
+            maven = "3.1.0";
+        } else if (line.startsWith("Apache Maven 3.1.1")) {
+            maven = "3.1.1";
+        }
+    }
+
+    return maven
+}
+
+def mavenVersion = getMavenVersion(buildLog)
+
+//This is really needed, cause the output of Maven 3.X and Maven 2.2.1 are different.
+//But we have to check if the correct exceptions are printed out.
+
+if (mavenVersion.equals("3.0.4") || mavenVersion.equals("3.0.5") || mavenVersion.equals( "3.1.0" ) || mavenVersion.equals( "3.1.1" )) {
+    t.checkExistenceAndContentOfAFile(buildLog, [
+      '[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project systemDependency-test: The useAllDependencies has been marked as deprecated since version 1.3.1 -> [Help 1]',
+      'org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project systemDependency-test: The useAllDependencies has been marked as deprecated since version 1.3.1',
+    ])
+} else {
+    t.checkExistenceAndContentOfAFile(buildLog, [
+        'org.apache.maven.lifecycle.LifecycleExecutionException: The useAllDependencies has been marked as deprecated since version 1.3.1',
+        'Caused by: org.apache.maven.plugin.MojoExecutionException: The useAllDependencies has been marked as deprecated since version 1.3.1',
+    ])
+}
 
 return true;
