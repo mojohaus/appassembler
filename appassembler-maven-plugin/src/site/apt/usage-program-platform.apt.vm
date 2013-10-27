@@ -50,7 +50,7 @@ Platforms
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
-              <name>app</name>
+              <id>app</id>
             </program>
           </programs>
         </configuration>
@@ -81,7 +81,7 @@ Platforms
                 <platform>unix</platform>
               </platforms>
               <mainClass>com.mycompany.app.App</mainClass>
-              <name>app</name>
+              <id>app</id>
             </program>
           </programs>
         </configuration>
@@ -111,11 +111,11 @@ Platforms
           <programs>
             <program>
               <mainClass>com.mycompany.app.App1</mainClass>
-              <name>app1</name>
+              <id>app1</id>
             </program>
             <program>
               <mainClass>com.mycompany.app.App2</mainClass>
-              <name>app2</name>
+              <id>app2</id>
             </program>
           </programs>
         </configuration>
@@ -145,14 +145,14 @@ Platforms
                 <platform>unix</platform>
               </platforms>
               <mainClass>com.mycompany.app.App</mainClass>
-              <name>app</name>
+              <id>app</id>
             </program>
             <program>
               <platforms>
                 <platform>windows</platform>
               </platforms>
               <mainClass>com.mycompany.app.AppWindows</mainClass>
-              <name>app-windows</name>
+              <id>app-windows</id>
             </program>
           </programs>
         </configuration>

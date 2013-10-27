@@ -57,7 +57,7 @@ Scripts
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
-              <name>app</name>
+              <id>app</id>
             </program>
           </programs>
         </configuration>
@@ -85,11 +85,11 @@ Scripts
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
-              <name>app</name>
+              <id>app</id>
             </program>
             <program>
               <mainClass>com.mycompany.app.App1</mainClass>
-              <name>app1</name>
+              <id>app1</id>
             </program>
             .
             .

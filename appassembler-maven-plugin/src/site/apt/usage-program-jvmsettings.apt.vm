@@ -46,7 +46,7 @@ JVM Settings
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
-              <name>app</name>
+              <id>app</id>
             </program>
           </programs>
         </configuration>
@@ -162,7 +162,7 @@ exec "$JAVACMD" $JAVA_OPTS \
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
-              <name>app</name>
+              <id>app</id>
             </program>
           </programs>
         </configuration>
@@ -198,7 +198,7 @@ exec "$JAVACMD" $JAVA_OPTS \
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
-              <name>app</name>
+              <id>app</id>
             </program>
           </programs>
         </configuration>
@@ -225,7 +225,7 @@ exec "$JAVACMD" $JAVA_OPTS \
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
-              <name>app</name>
+              <id>app</id>
               <jvmSettings>
                 <initialMemorySize>20m</initialMemorySize>
                 <maxMemorySize>256m</maxMemorySize>

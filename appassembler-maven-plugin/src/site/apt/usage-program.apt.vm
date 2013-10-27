@@ -54,7 +54,7 @@ mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
-              <name>app</name>
+              <id>app</id>
             </program>
           </programs>
         </configuration>
@@ -120,7 +120,7 @@ Hello World!
           <programs>
             <program>
               <mainClass>com.mycompany.app.WindowsApp1</mainClass>
-              <name>app1</name>
+              <id>app1</id>
               <!-- Only generate windows bat script for this application -->
               <platforms>
                 <platform>windows</platform>
@@ -128,7 +128,7 @@ Hello World!
             </program>
             <program>
               <mainClass>com.mycompany.app.UnixApp2</mainClass>
-              <name>app2</name>
+              <id>app2</id>
               <!-- Only generate unix shell script for this application -->
               <platforms>
                 <platform>unix</platform>
@@ -141,11 +141,11 @@ Hello World!
               	<commandLineArgument>arg1</commandLineArgument>
               	<commandLineArgument>arg2</commandLineArgument>
               </commandLineArguments>
-              <name>app3</name>
+              <id>app3</id>
             </program>
             <program>
               <mainClass>com.mycompany.app.App4</mainClass>
-              <name>app4</name>
+              <id>app4</id>
             </program>
           </programs>
         </configuration>

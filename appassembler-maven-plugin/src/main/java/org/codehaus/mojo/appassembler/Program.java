@@ -36,6 +36,7 @@ import java.util.Set;
 public class Program
 {
     private String name;
+    private String id;
 
     private String mainClass;
 
@@ -101,6 +102,7 @@ public class Program
      * The name.
      * 
      * @return The name of the program.
+     * @deprecated Please use @{link {@link #getId()} instead.
      */
     public String getName()
     {
@@ -108,13 +110,32 @@ public class Program
     }
 
     /**
+     * The id.
+     * @return The id of the program.
+     */
+    public String getId()
+    {
+        return id;
+    }
+
+    /**
      * Set the name.
      * 
      * @param name The name of the program.
+     * @deprecated Use {@link #setId(String)} instead.
      */
     public void setName( String name )
     {
         this.name = name;
+    }
+
+    /**
+     * Set the id.
+     * @param id
+     */
+    public void setId( String id )
+    {
+        this.id = id;
     }
 
     /**

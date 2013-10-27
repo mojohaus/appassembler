@@ -82,11 +82,11 @@ BASEDIR=`(cd "$BASEDIR"; pwd)`
           <programs>
             <program>
               <mainClass>com.mycompany.app.App1</mainClass>
-              <name>app1</name>
+              <id>app1</id>
             </program>
             <program>
               <mainClass>com.mycompany.app.App2</mainClass>
-              <name>app2</name>
+              <id>app2</id>
             </program>
           </programs>
         </configuration>
@@ -118,11 +118,11 @@ BASEDIR=`(cd "$BASEDIR"; pwd)`
              <program>
                <licenseHeaderFile>${basedir}/license-header-1.txt</licenseHeaderFile>
                <mainClass>com.mycompany.app.App1</mainClass>
-               <name>app1</name>
+               <id>app1</id>
              </program>
              <program>
                <mainClass>com.mycompany.app.App2</mainClass>
-               <name>app2</name>
+               <id>app2</id>
              </program>
            </programs>
           </programs>

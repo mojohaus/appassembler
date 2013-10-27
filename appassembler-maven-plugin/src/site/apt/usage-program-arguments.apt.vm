@@ -51,7 +51,7 @@ Program Arguments
               	<commandLineArgument>arg1</commandLineArgument>
               	<commandLineArgument>arg2</commandLineArgument>
               </commandLineArguments>
-              <name>app</name>
+              <id>app</id>
             </program>
           </programs>
         </configuration>

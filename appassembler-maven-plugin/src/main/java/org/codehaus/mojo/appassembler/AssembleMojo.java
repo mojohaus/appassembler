@@ -257,6 +257,11 @@ public class AssembleMojo
         {
             Program program = (Program) i.next();
 
+            if (program.getName() != null) {
+                program.setId( program.getName() );
+                getLog().warn( "The usage of program name (" + program.getName() + ") is deprecated. Please use program.id instead." );
+            }
+
             if ( program.getMainClass() == null || program.getMainClass().trim().equals( "" ) )
             {
                 throw new MojoFailureException( "Missing main class in Program configuration" );
@@ -264,13 +269,13 @@ public class AssembleMojo
 
             // FIXME: After migration to Java 1.5 the following check could be
             // done simpler!
-            if ( !programNames.contains( program.getName() ) )
+            if ( !programNames.contains( program.getId() ) )
             {
-                programNames.add( program.getName() );
+                programNames.add( program.getId() );
             }
             else
             {
-                throw new MojoFailureException( "The program name: " + program.getName() + " exists more than once!" );
+                throw new MojoFailureException( "The program name: " + program.getId() + " exists more than once!" );
             }
 
             // platforms
@@ -375,6 +380,10 @@ public class AssembleMojo
         {
             Program program = (Program) it.next();
 
+            if (program.getName() != null) {
+                program.setId( program.getName() );
+            }
+
             Set validatedPlatforms = validatePlatforms( program.getPlatforms(), defaultPlatforms );
 
             for ( Iterator platformIt = validatedPlatforms.iterator(); platformIt.hasNext(); )
@@ -398,7 +407,7 @@ public class AssembleMojo
                 catch ( DaemonGeneratorException e )
                 {
                     throw new MojoExecutionException( "Error while generating script for the program '"
-                        + program.getName() + "' for the platform '" + platform + "': " + e.getMessage(), e );
+                        + program.getId() + "' for the platform '" + platform + "': " + e.getMessage(), e );
                 }
             }
         }
@@ -418,7 +427,11 @@ public class AssembleMojo
     {
         org.codehaus.mojo.appassembler.model.Daemon daemon = new org.codehaus.mojo.appassembler.model.Daemon();
 
-        daemon.setId( program.getName() );
+        if (program.getName() == null) {
+            daemon.setId( program.getId() );
+        } else {
+            daemon.setId( program.getName() );
+        }
         daemon.setMainClass( program.getMainClass() );
         daemon.setShowConsoleWindow( showConsoleWindow );
         daemon.setCommandLineArguments( program.getCommandLineArguments() );

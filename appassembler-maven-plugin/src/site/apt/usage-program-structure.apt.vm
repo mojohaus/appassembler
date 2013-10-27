@@ -46,7 +46,7 @@ Generated Structure
           <programs>
             <program>
               <mainClass>com.mycompany.app.App</mainClass>
-              <name>app</name>
+              <id>app</id>
             </program>
           </programs>
         </configuration>
