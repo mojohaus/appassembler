@@ -466,7 +466,7 @@ public class Platform
      * @param daemon The instance of the Daemon for which this is beeing produced.
      * @return The created string which contains the path to the setup file.
      */
-    public String getEnvSetup( Daemon daemon )
+    public String getEnvSetup( Daemon daemon, String binFolder )
     {
         String envSetup = "";
 
@@ -476,13 +476,13 @@ public class Platform
         {
             if ( isWindows )
             {
-                String envScriptPath = "\"%BASEDIR%\\bin\\" + envSetupFileName + ".bat\"";
+                String envScriptPath = "\"%BASEDIR%\\" + binFolder + "\\" + envSetupFileName + ".bat\"";
 
                 envSetup = "if exist " + envScriptPath + " call " + envScriptPath;
             }
             else
             {
-                String envScriptPath = "\"$BASEDIR\"/bin/" + envSetupFileName;
+                String envScriptPath = "\"$BASEDIR\"/" + binFolder + "/" + envSetupFileName;
                 envSetup = "[ -f " + envScriptPath + " ] && . " + envScriptPath;
             }
         }

@@ -31,7 +31,7 @@ class IntegrationBase {
 	}
 
 	def lines_to_check_in_unix_script_marker = [:];
-	(1..contents.size()).each { index ->
+	(0..contents.size()).each { index ->
 	    lines_to_check_in_unix_script_marker[index] = false
 	}
 
@@ -45,7 +45,7 @@ class IntegrationBase {
 
 	contents.eachWithIndex { value, index ->
 	    if ( lines_to_check_in_unix_script_marker[index] == false ) {
-		throw new Exception("The expected content in " + file + " couldn't be found." + contents[index]);
+          throw new Exception("The expected content in " + file + " couldn't be found." + contents[index]);
 	    }
 	}
     }

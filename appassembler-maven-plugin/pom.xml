@@ -352,6 +352,7 @@
                 </goals>
                 <configuration>
                   <extraArtifacts>
+                    <extraArtifact>org.apache.tika:tika-parsers:0.7:jar</extraArtifact>
                     <extraArtifact>org.apache.poi:poi:3.6:jar</extraArtifact>
                     <extraArtifact>org.apache.poi:poi-ooxml-schemas:3.6:jar</extraArtifact>
                   </extraArtifacts>

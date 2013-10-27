@@ -37,26 +37,28 @@ def fileBinFolder = new File( daemonFolder, "bin");
 def unixJswScriptFile = new File( fileBinFolder, "daemon-1" );
 
 t.checkExistenceAndContentOfAFile(unixJswScriptFile, [
-    'From unixJswScriptTemplate'
+	'# From unixJswScriptTemplate',
+	'APP_NAME="daemon-1"',
+    'APP_LONG_NAME="Daemon Test Project"',
 ])
 
 def unixScriptFile = new File( fileBinFolder, "script-1" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
-    'From unixScriptTemplate',
+	'#from unixScriptTemplate',
 ])
 
 // Check the existence of the generated scripts
 def windowsJswScriptFile = new File( fileBinFolder, "daemon-1.bat" );
 
 t.checkExistenceAndContentOfAFile(windowsJswScriptFile, [
-    'From windowsJswScriptTemplate',
+	'rem from windowsJswScriptTemplate',
 ])
 
 def windowsScriptFile = new File( fileBinFolder, "script-1.bat" );
 
 t.checkExistenceAndContentOfAFile(windowsScriptFile, [
-    'From windowsScriptTemplate',
+    'rem from windowsScriptTemplate',
 ])
 
 
@@ -83,26 +85,26 @@ def fileBinFolder2 = new File( daemonFolder2, "bin");
 def unixJswScriptFile2 = new File( fileBinFolder2, "daemon-2" );
 
 t.checkExistenceAndContentOfAFile(unixJswScriptFile2, [
-    'From unixJswScriptTemplateSample'
+    '# From unixJswScriptTemplateSample'
 ])
 
 def unixScriptFile2 = new File( fileBinFolder2, "script-2" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile2, [
-    'From unixScriptTemplateSample',
+    '#from unixScriptTemplateSample',
 ])
 
 // Check the existence of the generated scripts
 def windowsJswScriptFile2 = new File( fileBinFolder2, "daemon-2.bat" );
 
 t.checkExistenceAndContentOfAFile(windowsJswScriptFile2, [
-    'From windowsJswScriptTemplateSample',
+	'rem from windowsJswScriptTemplateSample',
 ])
 
 def windowsScriptFile2 = new File( fileBinFolder2, "script-2.bat" );
 
 t.checkExistenceAndContentOfAFile(windowsScriptFile2, [
-    'From windowsScriptTemplateSample',
+    'rem from windowsScriptTemplateSample',
 ])
 
 

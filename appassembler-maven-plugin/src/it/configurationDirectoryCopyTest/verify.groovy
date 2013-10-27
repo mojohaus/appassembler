@@ -35,14 +35,15 @@ def fileBinFolder = new File( basedir, "target/appassembler/bin");
 def unixScriptFile = new File( fileBinFolder, "basic-test" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
-    'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/config:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/configurationDirectoryCopy-test/1.0-SNAPSHOT/configurationDirectoryCopy-test-1.0-SNAPSHOT.jar',
+    'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/configurationDirectoryCopy-test/1.0-SNAPSHOT/configurationDirectoryCopy-test-1.0-SNAPSHOT.jar',
 ])
+
 
 // Check the existence of the generated windows script
 File windowsBatchFile = new File( fileBinFolder, "basic-test.bat" );
 
 t.checkExistenceAndContentOfAFile(windowsBatchFile, [
-    /set CLASSPATH="%BASEDIR%"\config;"%REPO%"\org\codehaus\mojo\appassembler-maven-plugin\it\configurationDirectoryCopy-test\1.0-SNAPSHOT\configurationDirectoryCopy-test-1.0-SNAPSHOT.jar/,
+    /set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org\codehaus\mojo\appassembler-maven-plugin\it\configurationDirectoryCopy-test\1.0-SNAPSHOT\configurationDirectoryCopy-test-1.0-SNAPSHOT.jar/,
 ])
 
 //Check the existence of the generated repository.

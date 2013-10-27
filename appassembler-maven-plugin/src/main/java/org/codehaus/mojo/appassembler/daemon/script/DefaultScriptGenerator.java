@@ -173,7 +173,7 @@ public class DefaultScriptGenerator
             context.put( "CLASSPATH", platform.getClassPath( daemon ) );
             context.put( "EXTRA_JVM_ARGUMENTS", platform.getExtraJvmArguments( daemon.getJvmSettings() ) );
             context.put( "APP_NAME", daemon.getId() );
-            context.put( "ENV_SETUP", platform.getEnvSetup( daemon ) );
+            context.put( "ENV_SETUP", platform.getEnvSetup( daemon, binFolder ) );
             context.put( "REPO", daemon.getRepositoryName() );
             context.put( "LICENSE_HEADER", getLicenseHeader( platform, daemon ) );
             if ( platform.isShowConsoleWindow( daemon ) )

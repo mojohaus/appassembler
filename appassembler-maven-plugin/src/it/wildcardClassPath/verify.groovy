@@ -35,13 +35,13 @@ def fileBinFolder = new File( basedir, "target/appassembler/bin");
 def unixScriptFile = new File( fileBinFolder, "basic-test" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
-    'CLASSPATH=$CLASSPATH_PREFIX:"$REPO"/*',
+    'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/config:"$REPO"/*',
 ])
 
 File windowsBatchFile = new File( fileBinFolder, "basic-test.bat" );
 
 t.checkExistenceAndContentOfAFile(windowsBatchFile, [
-    /set CLASSPATH="%REPO%"\*/,
+    /set CLASSPATH="%BASEDIR%"\config;"%REPO%"\*/,
 ])
 
 //Check the existence of the generated repository.

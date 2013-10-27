@@ -27,12 +27,34 @@ import java.util.*
 
 t = new IntegrationBase();
 
+/**
+ * This will filter out the version of the
+ * appassembler-maven-plugin whcih is configured
+ * within the integration test.
+ * @return Version information.
+ */
+def getProjectVersion() {
+	def pom = new XmlSlurper().parse(new File(basedir, 'pom.xml'))
+
+	def allPlugins = pom.build.plugins
+
+	def dependencies = allPlugins.plugin
+
+	def appassemblerModule = dependencies.find { item ->
+		item.groupId.equals("org.codehaus.mojo") && item.artifactId.equals("appassembler-maven-plugin");
+	}
+
+	return appassemblerModule.version;
+}
+
+def projectVersion = getProjectVersion();
+
+println "ProjectVersion:" + projectVersion
 
 def buildLogFile = new File( basedir, "build.log");
 
-
 t.checkExistenceAndContentOfAFile(buildLogFile, [
-    'The program name: program-01-test exists more than once!"',
+	'[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project programNameDuplicate-test: The program name: program-01-test exists more than once! -> [Help 1]',
 ]);
 
 return true;
