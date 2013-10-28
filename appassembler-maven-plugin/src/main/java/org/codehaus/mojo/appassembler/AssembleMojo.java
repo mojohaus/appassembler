@@ -275,7 +275,7 @@ public class AssembleMojo
             }
             else
             {
-                throw new MojoFailureException( "The program name: " + program.getId() + " exists more than once!" );
+                throw new MojoFailureException( "The program id: " + program.getId() + " exists more than once!" );
             }
 
             // platforms

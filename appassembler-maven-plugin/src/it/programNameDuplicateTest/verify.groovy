@@ -82,7 +82,7 @@ if (mavenVersion.equals("3.0.4") || mavenVersion.equals("3.0.5") || mavenVersion
 	]);
 } else {
 	t.checkExistenceAndContentOfAFile(buildLogFile, [
-		'org.apache.maven.BuildFailureException: The program name: program-01-test exists more than once!',
+		'org.apache.maven.BuildFailureException: The program id: program-01-test exists more than once!',
 	]);
 }
 
