@@ -61,6 +61,7 @@ public class GenericDaemonGeneratorTest
         assertNodeEquals( "321", "maxStackSize", actual );
         assertNodeEquals( "foo=bar", "systemProperty", actual );
         assertNodeEquals( "arg1=arg1-value", "commandLineArgument", actual );
+        assertNodeNull( "commandLineArgument", actual );
 
     }
 
@@ -72,4 +73,8 @@ public class GenericDaemonGeneratorTest
                       document.getElementsByTagName( tagName ).item( 0 ).getFirstChild().getNodeValue() );
     }
 
+    private void assertNodeNull( String tagName, Document document )
+    {
+        assertNull( document.getElementsByTagName( tagName ).item( 1 ).getFirstChild() );
+    }
 }

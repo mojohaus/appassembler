@@ -439,8 +439,10 @@ public class JavaServiceWrapperDaemonGenerator
         for ( Iterator i = daemon.getCommandLineArguments().iterator(); i.hasNext(); count++ )
         {
             String argument = (String) i.next();
-
-            confFile.setProperty( "wrapper.app.parameter." + count, argument );
+            if ( StringUtils.isNotEmpty( argument ) )
+            {
+                confFile.setProperty( "wrapper.app.parameter." + count, argument );
+            }
         }
     }
 

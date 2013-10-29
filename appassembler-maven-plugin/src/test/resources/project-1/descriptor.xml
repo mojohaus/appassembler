@@ -40,6 +40,7 @@
   <environmentSetupFileName>app-env</environmentSetupFileName>
   <commandLineArguments>
     <commandLineArgument>arg1=arg1-value</commandLineArgument>
+    <commandLineArgument></commandLineArgument>
   </commandLineArguments>
   <generatorConfigurations>
     <generatorConfiguration>
