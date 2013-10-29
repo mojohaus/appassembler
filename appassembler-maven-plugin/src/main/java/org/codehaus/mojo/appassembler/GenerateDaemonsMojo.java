@@ -243,21 +243,10 @@ public class GenerateDaemonsMojo
 
                 File outputDirectory = new File( request.getOutputDirectory(), daemon.getId() );
 
-                // @todo Refactor: This code is near identical to what is in AssembleMojo
-                // The repo where the jar files will be installed
-                ArtifactRepository artifactRepository =
-                    artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://"
-                        + outputDirectory.getAbsolutePath() + "/" + repositoryName, artifactRepositoryLayout, false );
-
-                for ( Iterator it = artifacts.iterator(); it.hasNext(); )
-                {
-                    Artifact artifact = (Artifact) it.next();
-
-                    installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
-                }
-
-                // install the project's artifact in the new repository
-                installArtifact( projectArtifact, artifactRepository );
+                // ----------------------------------------------------------------------
+                // Install dependencies in the new repository
+                // ----------------------------------------------------------------------
+                super.installDependencies(outputDirectory.getAbsolutePath(), repositoryName);
 
             }
 

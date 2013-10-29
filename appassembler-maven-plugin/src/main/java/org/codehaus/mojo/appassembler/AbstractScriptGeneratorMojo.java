@@ -24,10 +24,15 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -112,6 +117,13 @@ public abstract class AbstractScriptGeneratorMojo
      * @parameter expression="${project}"
      */
     protected MavenProject mavenProject;
+    
+    /**
+     * Set to <code>false</code> to skip repository generation.
+     * 
+     * @parameter default-value="true"
+     */
+    protected boolean generateRepository;
 
     // -----------------------------------------------------------------------
     // Components
@@ -122,6 +134,28 @@ public abstract class AbstractScriptGeneratorMojo
      */
     protected DaemonGeneratorService daemonGeneratorService;
 
+    // -----------------------------------------------------------------------
+    // Protected helper methods.
+    // -----------------------------------------------------------------------
+    
+    protected void installDependencies(final String outputDirectory, final String repositoryName)
+        throws MojoExecutionException, MojoFailureException {
+        if (isGenerateRepository()) {
+            // The repo where the jar files will be installed
+            ArtifactRepository artifactRepository =
+                artifactRepositoryFactory.createDeploymentArtifactRepository("appassembler", "file://"
+                    + outputDirectory + "/" + repositoryName, getArtifactRepositoryLayout(), false);
+
+            for (Iterator it = artifacts.iterator(); it.hasNext();) {
+                Artifact artifact = (Artifact) it.next();
+                installArtifact(artifact, artifactRepository, this.useTimestampInSnapshotFileName);
+            }
+
+            // install the project's artifact in the new repository
+            installArtifact(projectArtifact, artifactRepository);
+        }
+    }
+    
     // -----------------------------------------------------------------------
     // Getters and setters
     // -----------------------------------------------------------------------
@@ -144,5 +178,23 @@ public abstract class AbstractScriptGeneratorMojo
     public void setUseWildcardClassPath( boolean useWildcardClassPath )
     {
         this.useWildcardClassPath = useWildcardClassPath;
+    }
+
+    /**
+     * Should we generate repository or not.
+     * 
+     * @return true if we need to generate repository, false otherwise.
+     */
+    public boolean isGenerateRepository() {
+        return generateRepository;
+    }
+
+    /**
+     * Should we generate repository or not.
+     * 
+     * @param generateRepository true to generate repository, false otherwise.
+     */
+    public void setGenerateRepository(boolean generateRepository) {
+        this.generateRepository = generateRepository;
     }
 }

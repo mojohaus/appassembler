@@ -38,7 +38,6 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -139,13 +138,6 @@ public class AssembleMojo
      * @parameter
      */
     private String extraJvmArguments;
-
-    /**
-     * Set to <code>false</code> to skip repository generation.
-     * 
-     * @parameter default-value="true"
-     */
-    private boolean generateRepository;
 
     /**
      * If the <code>configurationDirectory</code> (<code>etc</code> by default) should be included in the beginning of
@@ -348,24 +340,8 @@ public class AssembleMojo
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
         // ----------------------------------------------------------------------
-        if ( generateRepository )
-        {
-            // The repo where the jar files will be installed
-            ArtifactRepository artifactRepository =
-                artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://"
-                    + assembleDirectory.getAbsolutePath() + "/" + repositoryName, artifactRepositoryLayout, false );
-
-            for ( Iterator it = artifacts.iterator(); it.hasNext(); )
-            {
-                Artifact artifact = (Artifact) it.next();
-
-                installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
-            }
-
-            // install the project's artifact in the new repository
-            installArtifact( projectArtifact, artifactRepository );
-        }
-
+        super.installDependencies(assembleDirectory.getAbsolutePath(), repositoryName);
+        
         // ----------------------------------------------------------------------
         // Setup
         // ----------------------------------------------------------------------
