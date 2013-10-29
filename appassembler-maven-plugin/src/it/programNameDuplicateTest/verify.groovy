@@ -78,7 +78,7 @@ def mavenVersion = getMavenVersion(buildLogFile)
 
 if (mavenVersion.equals("3.0.4") || mavenVersion.equals("3.0.5") || mavenVersion.equals( "3.1.0" ) || mavenVersion.equals( "3.1.1" )) {
 	t.checkExistenceAndContentOfAFile(buildLogFile, [
-		'[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project programNameDuplicate-test: The program name: program-01-test exists more than once! -> [Help 1]',
+    '[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project programNameDuplicate-test: The program id: program-01-test exists more than once! -> [Help 1]',
 	]);
 } else {
 	t.checkExistenceAndContentOfAFile(buildLogFile, [
