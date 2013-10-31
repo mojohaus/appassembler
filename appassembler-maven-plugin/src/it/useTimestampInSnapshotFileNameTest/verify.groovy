@@ -76,7 +76,7 @@ def list_of_files_which_must_be_in_classpath3 = [
 
 def line_unix_script_with_classpath3 = "";
 unixScriptFile3.eachLine {
-    line_content, line_number -> if (line_content.startsWith('CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc')) {
+    line_content, line_number -> if (line_content.startsWith('CLASSPATH="$BASEDIR"/etc')) {
         line_unix_script_with_classpath3 = line_content;
     }
 }

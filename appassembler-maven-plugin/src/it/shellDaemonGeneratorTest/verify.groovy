@@ -60,7 +60,7 @@ def getProjectVersion() {
 def projectVersion = getProjectVersion();
 
 def unix_line = [
-    'CLASSPATH=$CLASSPATH_PREFIX:"\$BASEDIR"/etc',
+    'CLASSPATH="\$BASEDIR"/etc',
     '"\$REPO"/org/codehaus/plexus/plexus-utils/1.1/plexus-utils-1.1.jar',
     '"\$REPO"/org/codehaus/mojo/appassembler/appassembler-booter/' + projectVersion + '/appassembler-booter-' + projectVersion + '.jar',
     '"\$REPO"/org/codehaus/mojo/appassembler/appassembler-model/' + projectVersion + '/appassembler-model-' + projectVersion + '.jar',

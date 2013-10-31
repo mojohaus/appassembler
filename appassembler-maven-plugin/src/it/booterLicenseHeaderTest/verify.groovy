@@ -58,7 +58,7 @@ t.checkExistenceAndContentOfAFile(new File( fileBinFolder, "booter-windows/bin/b
     '@REM ******************************************',
     '@REM --- This is my own license header file ---',
     '@REM ******************************************',
-    '%JAVACMD% %JAVA_OPTS%  -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="booterLicenseHeaderTest" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.booter.AppassemblerBooter %CMD_LINE_ARGS%',
+    '%JAVACMD% %JAVA_OPTS%  -classpath %CLASSPATH% -Dapp.name="booterLicenseHeaderTest" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.booter.AppassemblerBooter %CMD_LINE_ARGS%',
 ])
 
 t.checkExistenceAndContentOfAFile(new File( fileBinFolder, "booter-windows/etc/booterLicenseHeaderTest.xml" ), [
@@ -95,7 +95,7 @@ t.checkExistenceAndContentOfAFile(new File( fileBinFolder, "booter-windows/bin/b
     '@REM ******************************************',
     '@REM --- This is LicenseHeader File 01      ---',
     '@REM ******************************************',
-    '%JAVACMD% %JAVA_OPTS%  -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="booterLicenseHeaderTest-01" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.booter.AppassemblerBooter %CMD_LINE_ARGS%',
+    '%JAVACMD% %JAVA_OPTS%  -classpath %CLASSPATH% -Dapp.name="booterLicenseHeaderTest-01" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.booter.AppassemblerBooter %CMD_LINE_ARGS%',
 ])
 
 t.checkExistenceAndContentOfAFile(new File( fileBinFolder, "booter-windows/etc/booterLicenseHeaderTest-01.xml" ), [

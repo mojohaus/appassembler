@@ -77,7 +77,7 @@ def list_of_files_which_must_be_in_classpath = [
 
 def line_unix_script_with_classpath = "";
 unixScriptFile.eachLine {
-    line_content, line_number -> if (line_content.startsWith('CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc')) {
+    line_content, line_number -> if (line_content.startsWith('CLASSPATH="$BASEDIR"/etc')) {
         line_unix_script_with_classpath = line_content;
     }
 }

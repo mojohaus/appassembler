@@ -35,7 +35,7 @@ def fileBinFolder = new File( basedir, "target/appassembler/bin");
 def unixScriptFile = new File( fileBinFolder, "basic-test" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
-    'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/basic-test/1.0-SNAPSHOT/basic-test-1.0-SNAPSHOT.jar',
+    'CLASSPATH="$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/basic-test/1.0-SNAPSHOT/basic-test-1.0-SNAPSHOT.jar',
 ])
 
 

@@ -36,7 +36,7 @@ def unixScriptFile = new File( fileBinFolder, "basic-test" );
 
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
-    'CLASSPATH=$CLASSPATH_PREFIX:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/assembleDirectory-test/1.0-SNAPSHOT/assembleDirectory-test-1.0-SNAPSHOT.jar',
+    'CLASSPATH="$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/assembleDirectory-test/1.0-SNAPSHOT/assembleDirectory-test-1.0-SNAPSHOT.jar',
 ])
 
 // Check the existence of the generated windows script

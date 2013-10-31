@@ -35,7 +35,7 @@ def fileBinFolder = new File( basedir, "target/appassembler/bin");
 def unixScriptFile = new File( fileBinFolder, "basic-test" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
-    'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/config:"$REPO"/*',
+    'CLASSPATH="$BASEDIR"/config:"$REPO"/*',
 ])
 
 File windowsBatchFile = new File( fileBinFolder, "basic-test.bat" );

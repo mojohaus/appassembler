@@ -35,7 +35,7 @@ def unixScriptFile = new File( fileBinFolder, "basic-test" );
 t = new IntegrationBase();
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
-    'CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/org.codehaus.mojo.appassembler-maven-plugin.it/jars/repositoryLayoutLegacy-test-1.0-SNAPSHOT.jar',
+    'CLASSPATH="$BASEDIR"/etc:"$REPO"/org.codehaus.mojo.appassembler-maven-plugin.it/jars/repositoryLayoutLegacy-test-1.0-SNAPSHOT.jar',
 ])
 
 //Check the existence of the generated repository.
