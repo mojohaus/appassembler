@@ -71,6 +71,9 @@ if "%JAVACMD%"=="" set JAVACMD=java
 
 if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
+set ENDORSED_DIR=
+if NOT "%ENDORSED_DIR%" == "" set CLASSPATH_PREFIX=%CLASSPATH_PREFIX%;"%BASEDIR%"\%ENDORSED_DIR%\*
+
 set CLASSPATH=
 goto endInit
 

@@ -122,6 +122,16 @@ public abstract class AbstractAppAssemblerMojo
      */
     protected PlexusContainer container;
 
+    /**
+     * Location under base directory where all of it files are loaded before the generated classpath. Java 6+ only
+     * This is a convenient way to have user adding additional artifacts that not possible to be part of distributions
+     * such ask LGPL/GPL artifacts
+     * 
+     * @parameter
+     * @since 1.6
+     */
+    protected String endorsedDir;
+    
     // -----------------------------------------------------------------------
     // Plexus Implementation
     // -----------------------------------------------------------------------

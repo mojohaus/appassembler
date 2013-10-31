@@ -125,6 +125,7 @@ public class AssembleMojo
      */
     private boolean copyConfigurationDirectory;
 
+    
     /**
      * Extra arguments that will be given to the JVM verbatim. If you define JvmSettings on the
      * {@link Program#setJvmSettings(JvmSettings)} level this part will be overwritten by the given parameters on
@@ -449,6 +450,8 @@ public class AssembleMojo
 
         daemon.setRepositoryName( repositoryName );
 
+        daemon.setEndorsedDir( endorsedDir );
+        
         List dependencies = new ArrayList();
 
         // TODO: This should be done in a more elegant way for 2.0

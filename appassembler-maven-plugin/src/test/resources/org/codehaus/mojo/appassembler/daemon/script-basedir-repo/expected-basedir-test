@@ -95,6 +95,11 @@ then
   REPO="$BASEDIR"/repo
 fi
 
+ENDORSED_DIR=
+if [ -n "$ENDORSED_DIR" ] ; then
+  CLASSPATH_PREFIX=$CLASSPATH_PREFIX:"$BASEDIR"/"$ENDORSED_DIR"/*
+fi
+
 CLASSPATH=$CLASSPATH_PREFIX:
 
 # For Cygwin, switch paths to Windows format before running java

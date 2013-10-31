@@ -56,6 +56,8 @@ public class Daemon
     private boolean showConsoleWindow = true;
 
     private String environmentSetupFileName;
+    
+    private String endorsedDir;
 
     /**
      * The daemon id which must be unique.
@@ -192,4 +194,24 @@ public class Daemon
         this.environmentSetupFileName = environmentSetupFileName;
     }
 
+    /**
+     * The directory where endorsed libraries can be found.
+     * 
+     * @return The directory where endorsed libraries can be found.
+     */
+    public String getEndorsedDir()
+    {
+        return endorsedDir;
+    }
+    
+    /**
+     * Define the endorsed directory where optional jars will be loaded.
+     * 
+     * @param endorsedDir The name of the endorsed directory.
+     */
+    public void setEndorsedDir( String endorsedDir)
+    {
+        this.endorsedDir = endorsedDir;
+    }
+    
 }

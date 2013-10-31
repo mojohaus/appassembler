@@ -194,6 +194,7 @@ public class GenerateDaemonsMojo
             modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
             modelDaemon.setUseDaemonIdAsWrapperConfName( useDaemonIdAsWrapperConfName );
             modelDaemon.setUseWildcardClassPath( isUseWildcardClassPath() );
+            modelDaemon.setEndorsedDir( endorsedDir );
 
             if ( this.unixScriptTemplate != null )
             {

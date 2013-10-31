@@ -72,6 +72,7 @@ public class DefaultDaemonMerger
         result.setLicenseHeaderFile( select( dominant.getLicenseHeaderFile(), recessive.getLicenseHeaderFile() ) );
         result.setShowConsoleWindow( dominant.isShowConsoleWindow() );
         result.setRepositoryName( select( dominant.getRepositoryName(), recessive.getRepositoryName() ) );
+        result.setEndorsedDir( select( dominant.getEndorsedDir(), recessive.getEndorsedDir() ) );
 
         return result;
     }

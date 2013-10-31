@@ -100,6 +100,7 @@ public abstract class AbstractBooterDaemonGenerator
         booterDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
 
         booterDaemon.setJvmSettings( jvmSettings );
+        booterDaemon.setEndorsedDir( daemon.getEndorsedDir() );
 
         MavenProject project = request.getMavenProject();
 

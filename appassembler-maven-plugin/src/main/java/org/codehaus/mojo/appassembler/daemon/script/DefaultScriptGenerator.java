@@ -176,6 +176,16 @@ public class DefaultScriptGenerator
             context.put( "ENV_SETUP", platform.getEnvSetup( daemon, binFolder ) );
             context.put( "REPO", daemon.getRepositoryName() );
             context.put( "LICENSE_HEADER", getLicenseHeader( platform, daemon ) );
+            
+            if (daemon.getEndorsedDir() != null) 
+            {
+                context.put( "ENDORSED_DIR", daemon.getEndorsedDir() );
+            }
+            else 
+            {
+                context.put( "ENDORSED_DIR", "" );
+            }
+            
             if ( platform.isShowConsoleWindow( daemon ) )
             {
                 context.put( "JAVA_BINARY", "java" );

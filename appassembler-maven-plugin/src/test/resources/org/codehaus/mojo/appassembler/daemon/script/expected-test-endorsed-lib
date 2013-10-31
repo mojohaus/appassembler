@@ -113,7 +113,7 @@ fi
 
 exec "$JAVACMD" $JAVA_OPTS Yo dude \
   -classpath "$CLASSPATH" \
-  -Dapp.name="test" \
+  -Dapp.name="test-endorsed-lib" \
   -Dapp.pid="$$" \
   -Dapp.repo="$REPO" \
   -Dapp.home="$BASEDIR" \

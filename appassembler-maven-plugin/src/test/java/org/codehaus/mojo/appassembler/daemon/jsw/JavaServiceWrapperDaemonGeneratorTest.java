@@ -437,6 +437,22 @@ public class JavaServiceWrapperDaemonGeneratorTest
         assertEquals( FileUtils.fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-14.bat" ) ),
                       FileUtils.fileRead( batchFile ) );
     }
+    
+    public void testGenerationWithEndorsedDirectory()
+        throws Exception
+    {
+        runTest( "jsw", "src/test/resources/project-15/pom.xml", "src/test/resources/project-15/descriptor.xml",
+                 "target/output-15-jsw" );
+
+        File jswDir = getTestFile( "target/output-15-jsw/app" );
+        assertFileExists( jswDir, "conf/wrapper.conf" );
+
+        File wrapper = new File( jswDir, "conf/wrapper.conf" );
+
+        String wrapperContents = FileUtils.fileRead( wrapper );
+
+        assertTrue( "Wrapper conf does not contain lib-endorsed", wrapperContents.contains( "lib-endorsed" ) );
+    }
 
     private static void assertFileExists( File jswDir, String file )
     {

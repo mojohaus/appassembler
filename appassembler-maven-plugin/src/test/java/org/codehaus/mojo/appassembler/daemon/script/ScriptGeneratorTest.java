@@ -56,6 +56,7 @@ public class ScriptGeneratorTest
         for ( Iterator it = Platform.getAllPlatforms().iterator(); it.hasNext(); )
         {
             testNormalShellScriptGeneration( (Platform) it.next() );
+            testNormalShellScriptWithEndorsedLibGeneration( (Platform) it.next() );
         }
     }
 
@@ -81,5 +82,28 @@ public class ScriptGeneratorTest
 
         assertEquals( FileUtils.fileRead( expectedFile ), FileUtils.fileRead( actualFile ) );
     }
+   
+    private void testNormalShellScriptWithEndorsedLibGeneration( Platform platform )
+        throws Exception
+    {
+        ScriptGenerator generator = (ScriptGenerator) lookup( ScriptGenerator.ROLE );
 
+        Daemon daemon = new Daemon();
+
+        daemon.setId( "test-endorsed-lib" );
+        daemon.setMainClass( "foo.Bar" );
+        daemon.setJvmSettings( new JvmSettings() );
+        daemon.getJvmSettings().setExtraArguments( Arrays.asList( new String[] { "Yo", "dude" } ) );
+        daemon.setEnvironmentSetupFileName( "setup" );
+        daemon.setRepositoryName( "repo" );
+        daemon.setEndorsedDir( "foo" );
+        File outputDirectory = getTestFile( "target/test-output/normal-shell-with-endorsed/" + platform.getName() );
+
+        generator.createBinScript( platform.getName(), daemon, outputDirectory, "bin" );
+
+        File expectedFile = getTestFile( PREFIX + "expected-" + daemon.getId() + platform.getBinFileExtension() );
+        File actualFile = new File( outputDirectory, "bin/" + daemon.getId() + platform.getBinFileExtension() );
+
+        assertEquals( FileUtils.fileRead( expectedFile ), FileUtils.fileRead( actualFile ) );
+    }
 }
