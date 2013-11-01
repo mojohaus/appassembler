@@ -82,7 +82,7 @@ t.checkExistenceAndContentOfAFile(wrapperConfFile, [
     'wrapper.java.classpath.1=lib/wrapper.jar',
     'wrapper.java.classpath.2=%REPO_DIR%/project-7-1.0-SNAPSHOT.jar',
     'wrapper.java.classpath.3=%REPO_DIR%/appassembler-model-' + projectVersion + '.jar',
-    'wrapper.java.classpath.4=%REPO_DIR%/plexus-utils-3.0.14.jar',
+    'wrapper.java.classpath.4=%REPO_DIR%/plexus-utils-3.0.15.jar',
     'wrapper.java.classpath.5=%REPO_DIR%/stax-api-1.0.1.jar',
     'wrapper.java.classpath.6=%REPO_DIR%/stax-utils-20060502.jar',
     'wrapper.java.classpath.7=%REPO_DIR%/stax-1.1.1-dev.jar',
