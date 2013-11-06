@@ -56,6 +56,14 @@ public class ScriptGeneratorTest
         for ( Iterator it = Platform.getAllPlatforms().iterator(); it.hasNext(); )
         {
             testNormalShellScriptGeneration( (Platform) it.next() );
+        }
+    }
+    
+    public void testNormalShellScriptWithEndorsedLibGeneration()
+        throws Exception
+    {
+        for ( Iterator it = Platform.getAllPlatforms().iterator(); it.hasNext(); )
+        {
             testNormalShellScriptWithEndorsedLibGeneration( (Platform) it.next() );
         }
     }
