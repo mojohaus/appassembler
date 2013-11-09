@@ -36,6 +36,8 @@ public class Daemon
     private String id;
 
     private String mainClass;
+    
+    private String wrapperMainClass = "org.tanukisoftware.wrapper.WrapperSimpleApp";
 
     private String descriptor;
 
@@ -79,6 +81,16 @@ public class Daemon
         return mainClass;
     }
 
+    /**
+     * Wrapper main class
+     * 
+     * @return classname of wrapper main class
+     */
+    public String getWrapperMainClass()
+    {
+        return wrapperMainClass;
+    }
+    
     /**
      * The descriptor.
      * 

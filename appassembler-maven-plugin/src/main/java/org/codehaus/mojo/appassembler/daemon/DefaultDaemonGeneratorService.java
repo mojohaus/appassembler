@@ -206,14 +206,19 @@ public class DefaultDaemonGeneratorService
         //
         // -----------------------------------------------------------------------
 
-        if ( StringUtils.isEmpty( mainClass ) )
+        if ( StringUtils.isEmpty( daemon.getWrapperMainClass() ) && StringUtils.isEmpty( mainClass ) )
         {
-            throw new DaemonGeneratorException( missingRequiredField + "main class." );
+            throw new DaemonGeneratorException( missingRequiredField + "mainClass or wrapperMainClass" );
         }
 
         if ( StringUtils.isEmpty( daemon.getId() ) )
         {
             String id = mainClass;
+
+            if ( StringUtils.isEmpty( id ) )
+            {
+                throw new DaemonGeneratorException( missingRequiredField + "id" );
+            }
 
             int i = id.lastIndexOf( '.' );
 

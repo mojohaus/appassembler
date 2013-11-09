@@ -50,7 +50,7 @@ public class DaemonGeneratorServiceTest
         catch ( DaemonGeneratorException e )
         {
             assertTrue( e.getMessage().indexOf( "Missing required field from" ) > -1 );
-            assertTrue( e.getMessage().indexOf( "main class" ) > -1 );
+            assertTrue( e.getMessage().indexOf( "mainClass or wrapperMainClass" ) > -1 );
         }
 
         // -----------------------------------------------------------------------

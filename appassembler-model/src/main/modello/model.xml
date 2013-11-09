@@ -48,6 +48,12 @@
           <version>1.0.0+</version>
           <type>String</type>
         </field>
+         <field>
+           <name>wrapperMainClass</name>
+           <version>1.0.0+</version>
+           <type>String</type>
+           <defaultValue>org.tanukisoftware.wrapper.WrapperSimpleApp</defaultValue>
+        </field>         
         <field>
           <name>classpath</name>
           <version>1.0.0+</version>

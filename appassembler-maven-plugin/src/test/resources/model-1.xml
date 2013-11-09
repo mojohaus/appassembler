@@ -24,6 +24,7 @@
 
 <!-- this is not valid, missing main class -->
 <daemon>
-
+  <wrapperMainClass></wrapperMainClass>
+  <mainClass></mainClass>
 </daemon>
   

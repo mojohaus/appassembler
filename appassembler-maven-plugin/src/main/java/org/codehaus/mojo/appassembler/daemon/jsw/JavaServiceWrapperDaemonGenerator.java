@@ -218,7 +218,11 @@ public class JavaServiceWrapperDaemonGenerator
             confFile.setProperty( "wrapper.java.maxmemory", daemon.getJvmSettings().getMaxMemorySize() );
         }
 
-        confFile.setProperty( "wrapper.app.parameter.1", daemon.getMainClass() );
+        confFile.setProperty( "wrapper.java.mainclass", daemon.getWrapperMainClass() );
+        if ( ! StringUtils.isEmpty( daemon.getMainClass() ) ) 
+        {
+            confFile.setProperty( "wrapper.app.parameter.1", daemon.getMainClass() );
+        }
 
         createClasspath( daemon, request, confFile, configuration );
         createAdditional( daemon, confFile );
@@ -441,7 +445,8 @@ public class JavaServiceWrapperDaemonGenerator
 
     private static void createParameters( Daemon daemon, FormattedProperties confFile )
     {
-        int count = 2;
+        int count = StringUtils.isEmpty( daemon.getMainClass() )?1:2;
+
         for ( Iterator i = daemon.getCommandLineArguments().iterator(); i.hasNext(); count++ )
         {
             String argument = (String) i.next();
@@ -449,6 +454,11 @@ public class JavaServiceWrapperDaemonGenerator
             {
                 confFile.setProperty( "wrapper.app.parameter." + count, argument );
             }
+        }
+        
+        if ( count == 1 )
+        { //Remove default parameter if not set
+            confFile.removeProperty( "wrapper.app.parameter.1");
         }
     }
 
