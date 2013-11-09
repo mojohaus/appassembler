@@ -55,10 +55,10 @@ Usage
         <version>${project.version}</version>        
         <configuration>
           <repositoryLayout>flat</repositoryLayout>
-          <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>         
-
+          <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
           <daemons>
             <daemon>
+              <!-- this has the implicite wrapperMainClass as org.tanukisoftware.wrapper.WrapperSimpleApp, see next example-->
               <id>app1</id>
               <mainClass>${project.groupId}.SomeMainClass</mainClass>
               <commandLineArguments>
@@ -68,6 +68,41 @@ Usage
                 <platform>jsw</platform>
               </platforms>              
             </daemon>
+            <daemon>
+              <id>app2</id>
+              <wrapperMainClass>org.tanukisoftware.wrapper.WrapperSimpleApp</wrapperMainClass>
+              <mainClass>${project.groupId}.SomeMainClass</mainClass>
+              <commandLineArguments>
+                <commandLineArgument>start</commandLineArgument>
+              </commandLineArguments>
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>              
+            </daemon>
+            <daemon>
+              <!-- support WrapperListener interface, note there should be no mainClass declared --> 
+              <id>app3</id>
+              <wrapperMainClass>${project.groupId}.SomeMainClass</wrapperMainClass>
+              <commandLineArguments>
+                <commandLineArgument>start</commandLineArgument>
+              </commandLineArguments>
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>              
+            </daemon>
+            <daemon>
+              <id>app4</id>
+              <!-- support wrapper startup method, see JSW doc for details -->
+              <wrapperMainClass>org.tanukisoftware.wrapper.WrapperStartStopApp</wrapperMainClass>
+              <mainClass>${project.groupId}.SomeMainClass</mainClass>
+              <commandLineArguments>
+                <commandLineArgument>start</commandLineArgument>
+              </commandLineArguments>
+              <platforms>
+                <platform>jsw</platform>
+              </platforms>              
+            </daemon>
+            
           </daemons>
         </configuration>
         <executions>
