@@ -173,7 +173,7 @@ public abstract class AbstractAppAssemblerMojo
                                     boolean useTimestampInSnapshotFileName )
         throws MojoExecutionException
     {
-        if ( artifact.getFile() != null )
+        if ( artifact != null && artifact.getFile() != null )
         {
             try
             {

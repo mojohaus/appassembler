@@ -45,6 +45,7 @@
         <configuration>
           <repositoryLayout>flat</repositoryLayout>
           <useWildcardClassPath>true</useWildcardClassPath>
+          <configurationDirectory>conf</configurationDirectory>
           <daemons>
             <daemon>
               <id>daemon-1</id>

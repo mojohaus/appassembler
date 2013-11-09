@@ -19,6 +19,9 @@
         <groupId>@project.groupId@</groupId>
         <artifactId>@project.artifactId@</artifactId>
         <version>@project.version@</version>
+        <configuration>
+          <configurationDirectory>conf</configurationDirectory>
+        </configuration>
         <executions>
           <execution>
             <id>generate-daemons-using-file</id>

@@ -33,6 +33,8 @@
         </executions>
         <configuration>
           <repositoryLayout>flat</repositoryLayout>
+          <configurationDirectory>conf</configurationDirectory>
+          
           <daemons>
             <daemon>
               <id>mappasm-108-test</id>

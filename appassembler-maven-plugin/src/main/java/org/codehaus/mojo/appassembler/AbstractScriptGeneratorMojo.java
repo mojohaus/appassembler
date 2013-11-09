@@ -24,14 +24,17 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
+import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
+import org.codehaus.mojo.appassembler.util.FileFilterHelper;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -90,7 +93,7 @@ public abstract class AbstractScriptGeneratorMojo
      * @since 1.2.3 (assemble), 1.3.1 (generate-daemons)
      * @parameter default-value="false"
      */
-    private boolean useWildcardClassPath;
+    protected boolean useWildcardClassPath;
 
     /**
      * The windows template of the generated script. It can be a file or resource path. If not given, an internal one is
@@ -124,7 +127,30 @@ public abstract class AbstractScriptGeneratorMojo
      * @parameter default-value="true"
      */
     protected boolean generateRepository;
-
+    
+    /**
+     * The name of the target directory for configuration files.
+     * 
+     * @parameter default-value="etc"
+     */
+    protected String configurationDirectory;
+    
+    /**
+     * The name of the source directory for configuration files.
+     * 
+     * @parameter default-value="src/main/config"
+     * @since 1.1
+     */
+    protected File configurationSourceDirectory;
+    
+    /**
+     * If the source configuration directory should be copied to the configured <code>configurationDirectory</code>.
+     * 
+     * @parameter default-value="false"
+     * @since 1.1
+     */
+    protected boolean copyConfigurationDirectory;
+    
     /**
      * Location under base directory where all of files non-recursively are added before the generated classpath. 
      * Java 6+ only since it uses wildcard classpath format.
@@ -145,13 +171,44 @@ public abstract class AbstractScriptGeneratorMojo
      */
     protected DaemonGeneratorService daemonGeneratorService;
 
+    protected void doCopyConfigurationDirectory(final String targetDirectory) throws MojoFailureException {
+        if (!configurationSourceDirectory.exists()) {
+            throw new MojoFailureException("The source directory for configuration files does not exist: "
+                + configurationSourceDirectory.getAbsolutePath());
+        }
+
+        getLog().debug("copying configuration directory.");
+        
+        File configurationTargetDirectory = new File(targetDirectory, configurationDirectory);
+
+        if (!configurationTargetDirectory.exists()) {
+            // Create (if necessary) target directory for configuration files
+            boolean success = configurationTargetDirectory.mkdirs();
+
+            if (!success) {
+                throw new MojoFailureException("Failed to create the target directory for configuration files: "
+                    + configurationTargetDirectory.getAbsolutePath());
+            }
+        }
+        try {
+            getLog().debug("Will try to copy configuration files from "
+                               + configurationSourceDirectory.getAbsolutePath() + " to "
+                               + configurationTargetDirectory.getAbsolutePath());
+
+            FileUtils.copyDirectory(configurationSourceDirectory, configurationTargetDirectory,
+                                    FileFilterHelper.createDefaultFilter());
+        } catch (IOException e) {
+            throw new MojoFailureException("Failed to copy the configuration files.");
+        }
+    }
+    
     // -----------------------------------------------------------------------
     // Protected helper methods.
     // -----------------------------------------------------------------------
     
     protected void installDependencies(final String outputDirectory, final String repositoryName)
         throws MojoExecutionException, MojoFailureException {
-        if (isGenerateRepository()) {
+        if ( generateRepository ) {
             // The repo where the jar files will be installed
             ArtifactRepository artifactRepository =
                 artifactRepositoryFactory.createDeploymentArtifactRepository("appassembler", "file://"
@@ -167,45 +224,4 @@ public abstract class AbstractScriptGeneratorMojo
         }
     }
     
-    // -----------------------------------------------------------------------
-    // Getters and setters
-    // -----------------------------------------------------------------------
-
-    /**
-     * Should the <code>/*</code> part for the classpath be used or not.
-     * 
-     * @return true if the wild card class path will be used false otherwise.
-     */
-    public boolean isUseWildcardClassPath()
-    {
-        return useWildcardClassPath;
-    }
-
-    /**
-     * Use wildcard classpath or not.
-     * 
-     * @param useWildcardClassPath true to use wildcard classpath false otherwise.
-     */
-    public void setUseWildcardClassPath( boolean useWildcardClassPath )
-    {
-        this.useWildcardClassPath = useWildcardClassPath;
-    }
-
-    /**
-     * Should we generate repository or not.
-     * 
-     * @return true if we need to generate repository, false otherwise.
-     */
-    public boolean isGenerateRepository() {
-        return generateRepository;
-    }
-
-    /**
-     * Should we generate repository or not.
-     * 
-     * @param generateRepository true to generate repository, false otherwise.
-     */
-    public void setGenerateRepository(boolean generateRepository) {
-        this.generateRepository = generateRepository;
-    }
 }

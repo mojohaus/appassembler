@@ -39,6 +39,7 @@
           </execution>
         </executions>
         <configuration>
+          <configurationDirectory>conf</configurationDirectory>
           <repositoryLayout>flat</repositoryLayout>
           <useDaemonIdAsWrapperConfName>true</useDaemonIdAsWrapperConfName>
           <daemons>

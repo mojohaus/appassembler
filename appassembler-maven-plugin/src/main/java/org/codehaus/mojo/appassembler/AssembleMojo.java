@@ -25,7 +25,6 @@ package org.codehaus.mojo.appassembler;
  */
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,7 +35,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -49,7 +47,6 @@ import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.mojo.appassembler.model.Directory;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.mojo.appassembler.util.DependencyFactory;
-import org.codehaus.mojo.appassembler.util.FileFilterHelper;
 import org.codehaus.plexus.util.StringUtils;
 
 // @deprecated Use the generate-daemons goal instead
@@ -101,30 +98,6 @@ public class AssembleMojo
      * @since 1.2
      */
     private String binFolder;
-
-    /**
-     * The name of the target directory for configuration files.
-     * 
-     * @parameter default-value="etc"
-     */
-    private String configurationDirectory;
-
-    /**
-     * The name of the source directory for configuration files.
-     * 
-     * @parameter default-value="src/main/config"
-     * @since 1.1
-     */
-    private File configurationSourceDirectory;
-
-    /**
-     * If the source configuration directory should be copied to the configured <code>configurationDirectory</code>.
-     * 
-     * @parameter default-value="false"
-     * @since 1.1
-     */
-    private boolean copyConfigurationDirectory;
-
     
     /**
      * Extra arguments that will be given to the JVM verbatim. If you define JvmSettings on the
@@ -284,12 +257,12 @@ public class AssembleMojo
     public void checkDeprecatedParameterAndFailIfOneOfThemIsUsed()
         throws MojoExecutionException
     {
-        if ( isUseAsterikClassPath() )
+        if ( useAsterikClassPath )
         {
             throw new MojoExecutionException( "The useAsterikClassPath has been marked as deprecated since version 1.4" );
         }
 
-        if ( isUseAllDependencies() )
+        if ( useAllDependencies )
         {
             throw new MojoExecutionException(
               "The useAllDependencies has been marked as deprecated since version 1.3.1" 
@@ -314,7 +287,7 @@ public class AssembleMojo
         // validate input and set defaults
         validate( defaultPlatforms );
 
-        if ( isUseWildcardClassPath() && !repositoryLayout.equalsIgnoreCase( "flat" ) )
+        if ( useWildcardClassPath && !repositoryLayout.equalsIgnoreCase( "flat" ) )
         {
             throw new MojoExecutionException( "useWildcardClassPath works only in "
                 + "combination with repositoryLayout flat." );
@@ -325,7 +298,7 @@ public class AssembleMojo
 
         ArtifactRepositoryLayout artifactRepositoryLayout = getArtifactRepositoryLayout();
 
-        if ( isUseAllProjectDependencies() )
+        if ( useAllProjectDependencies )
         {
             // TODO: This should be made different. We have to think about using
             // a default ArtifactFilter
@@ -393,9 +366,9 @@ public class AssembleMojo
         // Copy configuration directory
         // ----------------------------------------------------------------------
 
-        if ( copyConfigurationDirectory )
+        if ( this.copyConfigurationDirectory )
         {
-            copyConfigurationDirectory();
+            doCopyConfigurationDirectory(assembleDirectory.getAbsolutePath());
         }
     }
 
@@ -458,7 +431,7 @@ public class AssembleMojo
         // TODO: Check if the classpath wildcard could be used for Daemons as well?
 
         // TODO: Remove the isUseAsterikClassPath with release 1.3 ?
-        if ( isUseAsterikClassPath() || isUseWildcardClassPath() )
+        if ( useAsterikClassPath || useWildcardClassPath )
         {
             Dependency dependency = new Dependency();
             dependency.setGroupId( "" );
@@ -471,7 +444,7 @@ public class AssembleMojo
         {
             List classPathArtifacts = new ArrayList();
 
-            if ( isProjectArtifactFirstInClassPath() )
+            if ( projectArtifactFirstInClassPath )
             {
                 classPathArtifacts.add( projectArtifact );
                 classPathArtifacts.addAll( artifacts );
@@ -550,45 +523,6 @@ public class AssembleMojo
             if ( !success )
             {
                 throw new MojoFailureException( "Failed to create directory for bin files." );
-            }
-        }
-    }
-
-    private void copyConfigurationDirectory()
-        throws MojoFailureException
-    {
-        if ( !configurationSourceDirectory.exists() )
-        {
-            throw new MojoFailureException( "The source directory for configuration files does not exist: "
-                + configurationSourceDirectory.getAbsolutePath() );
-        }
-
-        getLog().debug( "copying configuration directory." );
-
-        File configurationTargetDirectory = new File( assembleDirectory.getAbsolutePath(), configurationDirectory );
-        if ( !configurationTargetDirectory.exists() )
-        {
-            // Create (if necessary) target directory for configuration files
-            boolean success = configurationTargetDirectory.mkdirs();
-
-            if ( !success )
-            {
-                throw new MojoFailureException( "Failed to create the target directory for configuration files: "
-                    + configurationTargetDirectory.getAbsolutePath() );
-            }
-
-            try
-            {
-                getLog().debug( "Will try to copy configuration files from "
-                                    + configurationSourceDirectory.getAbsolutePath() + " to "
-                                    + configurationTargetDirectory.getAbsolutePath() );
-
-                FileUtils.copyDirectory( configurationSourceDirectory, configurationTargetDirectory,
-                                         FileFilterHelper.createDefaultFilter() );
-            }
-            catch ( IOException e )
-            {
-                throw new MojoFailureException( "Failed to copy the configuration files." );
             }
         }
     }
@@ -710,87 +644,4 @@ public class AssembleMojo
         }
     }
 
-    /**
-     * Be the project the first artifact in classpath or not.
-     * 
-     * @return true if the project should be the first artifact in classpath false otherwise.
-     */
-    public boolean isProjectArtifactFirstInClassPath()
-    {
-        return projectArtifactFirstInClassPath;
-    }
-
-    /**
-     * Set if the project should be the artifact at first position or not.
-     * 
-     * @param projectArtifactFirstInClassPath true if the project artifact will be first false otherwise.
-     */
-    public void setProjectArtifactFirstInClassPath( boolean projectArtifactFirstInClassPath )
-    {
-        this.projectArtifactFirstInClassPath = projectArtifactFirstInClassPath;
-    }
-
-    /**
-     * Should all dependencies be used incl. system scoped.
-     * 
-     * @return true if set to yes false otherwise.
-     * @deprecated use {@link #isUseAllProjectDependencies()} instead.
-     */
-    public boolean isUseAllDependencies()
-    {
-        return useAllDependencies;
-    }
-
-    /**
-     * Define if all dependencies should be used or not.
-     * 
-     * @param useAllDependencies true to activate false otherwise.
-     * @deprecated use {@link #setUseAllProjectDependencies(boolean)} instead.
-     */
-    public void setUseAllDependencies( boolean useAllDependencies )
-    {
-        this.useAllDependencies = useAllDependencies;
-    }
-
-    /**
-     * Should all project dependencies be used incl. system scoped.
-     * 
-     * @return true if we will use all project dependencies false otherwise.
-     */
-    public boolean isUseAllProjectDependencies()
-    {
-        return useAllProjectDependencies;
-    }
-
-    /**
-     * Define if all project dependencies should be used or not.
-     * 
-     * @param useAllProjectDependencies true to activate false otherwise.
-     */
-    public void setUseAllProjectDependencies( boolean useAllProjectDependencies )
-    {
-        this.useAllProjectDependencies = useAllProjectDependencies;
-    }
-
-    /**
-     * Should the /* part for the classpath be used or not.
-     * 
-     * @return true if the asterik-classpath will be used false otherwise.
-     * @deprecated use {@link #isUseWildcardClassPath()} instead.
-     */
-    public boolean isUseAsterikClassPath()
-    {
-        return useAsterikClassPath;
-    }
-
-    /**
-     * Use asterik-classpath or not.
-     * 
-     * @param useAsterikClassPath true to use asterik classpath false otherwise.
-     * @deprecated use {@link #setUseWildcardClassPath(boolean)} instead.
-     */
-    public void setUseAsterikClassPath( boolean useAsterikClassPath )
-    {
-        this.useAsterikClassPath = useAsterikClassPath;
-    }
 }

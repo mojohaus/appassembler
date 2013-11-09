@@ -34,6 +34,7 @@ import java.util.Set;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.plexus.util.StringUtils;
@@ -51,6 +52,7 @@ import org.codehaus.plexus.util.StringUtils;
 public class GenerateDaemonsMojo
     extends AbstractScriptGeneratorMojo
 {
+    
     // -----------------------------------------------------------------------
     // Parameters
     // -----------------------------------------------------------------------
@@ -62,15 +64,6 @@ public class GenerateDaemonsMojo
      * @required
      */
     private File basedir;
-
-    /**
-     * The name of the target directory for configuration files.
-     * 
-     * @parameter default-value="conf"
-     * @since 1.5
-     * @todo Synchronize the default value with the other mojos in 2.0
-     */
-    private String configurationDirectory;
 
     /**
      * Set of {@linkplain Daemon}s to generate.
@@ -134,7 +127,7 @@ public class GenerateDaemonsMojo
         throws MojoExecutionException, MojoFailureException
     {
 
-        if ( isUseWildcardClassPath() && !repositoryLayout.equalsIgnoreCase( "flat" ) )
+        if ( useWildcardClassPath && !repositoryLayout.equalsIgnoreCase( "flat" ) )
         {
             throw new MojoExecutionException( "The useWildcardClassPath works only in"
                 + " combination with repositoryLayout flat." );
@@ -191,7 +184,7 @@ public class GenerateDaemonsMojo
             modelDaemon.setRepositoryName( repositoryName );
             modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
             modelDaemon.setUseDaemonIdAsWrapperConfName( useDaemonIdAsWrapperConfName );
-            modelDaemon.setUseWildcardClassPath( isUseWildcardClassPath() );
+            modelDaemon.setUseWildcardClassPath( useWildcardClassPath );
             modelDaemon.setEndorsedDir( endorsedDir );
 
             if ( this.unixScriptTemplate != null )
@@ -217,7 +210,7 @@ public class GenerateDaemonsMojo
                 String platform = (String) i.next();
 
                 File output = new File( target, platform );
-
+                
                 DaemonGenerationRequest request = new DaemonGenerationRequest();
 
                 // TODO: split platform from generator (platform = operating systems, generator = jsw, booter,
@@ -247,6 +240,14 @@ public class GenerateDaemonsMojo
                 // ----------------------------------------------------------------------
                 super.installDependencies(outputDirectory.getAbsolutePath(), repositoryName);
 
+                // ----------------------------------------------------------------------
+                // Copy configuration directory
+                // ----------------------------------------------------------------------
+                
+                if ( this.copyConfigurationDirectory )
+                {
+                    doCopyConfigurationDirectory(outputDirectory.getAbsolutePath());
+                }
             }
 
         }
@@ -338,13 +339,4 @@ public class GenerateDaemonsMojo
         return modelJvmSettings;
     }
 
-    /**
-     * Seth the daemon.
-     * 
-     * @param daemons
-     */
-    public void setDaemons( Set daemons )
-    {
-        this.daemons = daemons;
-    }
 }

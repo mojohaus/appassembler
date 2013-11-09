@@ -39,6 +39,7 @@
         </executions>
         <configuration>
           <repositoryLayout>flat</repositoryLayout>
+          <configurationDirectory>conf</configurationDirectory>
           <!-- The following can be given but will not change anything! -->
 <!--           <repositoryName>newLib</repositoryName> -->
           <daemons>
