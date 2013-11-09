@@ -195,9 +195,9 @@ public class JavaServiceWrapperDaemonGenerator
         confFile.setPropertyAfter( "wrapper.working.dir", "..", "wrapper.java.command" );
         confFile.setProperty( "wrapper.java.library.path.1", daemon.getRepositoryName() );
         confFile.setPropertyAfter( "set.default.REPO_DIR", daemon.getRepositoryName(), "wrapper.java.mainclass" );
-        
+
         confFile.setPropertyAfter( "set." + context.getProperty( "app.base.envvar" ), ".", "wrapper.java.mainclass" );
-        
+
         if ( daemon.getWrapperLogFile() == null )
         {
             // Write the default value to the wrapper.logfile.
@@ -384,17 +384,17 @@ public class JavaServiceWrapperDaemonGenerator
         ArtifactRepositoryLayout layout = request.getRepositoryLayout();
 
         // Load all jars in %ENDORSED_DIR% if specified
-        if (daemon.getEndorsedDir() != null) 
+        if ( daemon.getEndorsedDir() != null )
         {
             confFile.setProperty( wrapperClassPathPrefix + counter++, daemon.getEndorsedDir() + "/*" );
         }
-        
+
         if ( daemon.isUseWildcardClassPath() )
         {
             confFile.setProperty( wrapperClassPathPrefix + counter++, "%REPO_DIR%/*" );
         }
         else
-        {   
+        {
             confFile.setProperty( wrapperClassPathPrefix + counter++,
                                   "%REPO_DIR%/"
                                       + DependencyFactory.create( project.getArtifact(), layout, true,

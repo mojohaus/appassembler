@@ -52,7 +52,7 @@ import org.codehaus.plexus.util.StringUtils;
 public class GenerateDaemonsMojo
     extends AbstractScriptGeneratorMojo
 {
-    
+
     // -----------------------------------------------------------------------
     // Parameters
     // -----------------------------------------------------------------------
@@ -210,7 +210,7 @@ public class GenerateDaemonsMojo
                 String platform = (String) i.next();
 
                 File output = new File( target, platform );
-                
+
                 DaemonGenerationRequest request = new DaemonGenerationRequest();
 
                 // TODO: split platform from generator (platform = operating systems, generator = jsw, booter,
@@ -238,15 +238,15 @@ public class GenerateDaemonsMojo
                 // ----------------------------------------------------------------------
                 // Install dependencies in the new repository
                 // ----------------------------------------------------------------------
-                super.installDependencies(outputDirectory.getAbsolutePath(), repositoryName);
+                super.installDependencies( outputDirectory.getAbsolutePath(), repositoryName );
 
                 // ----------------------------------------------------------------------
                 // Copy configuration directory
                 // ----------------------------------------------------------------------
-                
+
                 if ( this.copyConfigurationDirectory )
                 {
-                    doCopyConfigurationDirectory(outputDirectory.getAbsolutePath());
+                    doCopyConfigurationDirectory( outputDirectory.getAbsolutePath() );
                 }
             }
 

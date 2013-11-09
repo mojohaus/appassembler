@@ -98,7 +98,7 @@ public class AssembleMojo
      * @since 1.2
      */
     private String binFolder;
-    
+
     /**
      * Extra arguments that will be given to the JVM verbatim. If you define JvmSettings on the
      * {@link Program#setJvmSettings(JvmSettings)} level this part will be overwritten by the given parameters on
@@ -223,9 +223,11 @@ public class AssembleMojo
         {
             Program program = (Program) i.next();
 
-            if (program.getName() != null) {
+            if ( program.getName() != null )
+            {
                 program.setId( program.getName() );
-                getLog().warn( "The usage of program name (" + program.getName() + ") is deprecated. Please use program.id instead." );
+                getLog().warn( "The usage of program name (" + program.getName()
+                                   + ") is deprecated. Please use program.id instead." );
             }
 
             if ( program.getMainClass() == null || program.getMainClass().trim().equals( "" ) )
@@ -265,8 +267,7 @@ public class AssembleMojo
         if ( useAllDependencies )
         {
             throw new MojoExecutionException(
-              "The useAllDependencies has been marked as deprecated since version 1.3.1" 
-            );
+                                              "The useAllDependencies has been marked as deprecated since version 1.3.1" );
         }
     }
 
@@ -314,8 +315,8 @@ public class AssembleMojo
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
         // ----------------------------------------------------------------------
-        super.installDependencies(assembleDirectory.getAbsolutePath(), repositoryName);
-        
+        super.installDependencies( assembleDirectory.getAbsolutePath(), repositoryName );
+
         // ----------------------------------------------------------------------
         // Setup
         // ----------------------------------------------------------------------
@@ -330,7 +331,8 @@ public class AssembleMojo
         {
             Program program = (Program) it.next();
 
-            if (program.getName() != null) {
+            if ( program.getName() != null )
+            {
                 program.setId( program.getName() );
             }
 
@@ -368,7 +370,7 @@ public class AssembleMojo
 
         if ( this.copyConfigurationDirectory )
         {
-            doCopyConfigurationDirectory(assembleDirectory.getAbsolutePath());
+            doCopyConfigurationDirectory( assembleDirectory.getAbsolutePath() );
         }
     }
 
@@ -377,9 +379,12 @@ public class AssembleMojo
     {
         org.codehaus.mojo.appassembler.model.Daemon daemon = new org.codehaus.mojo.appassembler.model.Daemon();
 
-        if (program.getName() == null) {
+        if ( program.getName() == null )
+        {
             daemon.setId( program.getId() );
-        } else {
+        }
+        else
+        {
             daemon.setId( program.getName() );
         }
         daemon.setMainClass( program.getMainClass() );
@@ -424,7 +429,7 @@ public class AssembleMojo
         daemon.setRepositoryName( repositoryName );
 
         daemon.setEndorsedDir( endorsedDir );
-        
+
         List dependencies = new ArrayList();
 
         // TODO: This should be done in a more elegant way for 2.0

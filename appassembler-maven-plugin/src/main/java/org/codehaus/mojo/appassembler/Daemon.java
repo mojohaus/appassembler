@@ -56,7 +56,7 @@ public class Daemon
     private boolean showConsoleWindow = true;
 
     private String environmentSetupFileName;
-    
+
     private String endorsedDir;
 
     /**
@@ -203,15 +203,15 @@ public class Daemon
     {
         return endorsedDir;
     }
-    
+
     /**
      * Define the endorsed directory where optional jars will be loaded.
      * 
      * @param endorsedDir The name of the endorsed directory.
      */
-    public void setEndorsedDir( String endorsedDir)
+    public void setEndorsedDir( String endorsedDir )
     {
         this.endorsedDir = endorsedDir;
     }
-    
+
 }

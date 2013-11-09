@@ -437,7 +437,7 @@ public class JavaServiceWrapperDaemonGeneratorTest
         assertEquals( FileUtils.fileRead( getTestFile( "src/test/resources/org/codehaus/mojo/appassembler/daemon/jsw/run-14.bat" ) ),
                       FileUtils.fileRead( batchFile ) );
     }
-    
+
     public void testGenerationWithEndorsedDirectory()
         throws Exception
     {

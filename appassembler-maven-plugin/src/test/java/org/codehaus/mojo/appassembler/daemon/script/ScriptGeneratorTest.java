@@ -58,7 +58,7 @@ public class ScriptGeneratorTest
             testNormalShellScriptGeneration( (Platform) it.next() );
         }
     }
-    
+
     public void blahTestNormalShellScriptWithEndorsedLibGeneration()
         throws Exception
     {
@@ -90,7 +90,7 @@ public class ScriptGeneratorTest
 
         assertEquals( FileUtils.fileRead( expectedFile ), FileUtils.fileRead( actualFile ) );
     }
-   
+
     private void testNormalShellScriptWithEndorsedLibGeneration( Platform platform )
         throws Exception
     {

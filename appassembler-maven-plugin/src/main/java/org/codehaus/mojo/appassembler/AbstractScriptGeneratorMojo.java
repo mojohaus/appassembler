@@ -120,21 +120,21 @@ public abstract class AbstractScriptGeneratorMojo
      * @parameter expression="${project}"
      */
     protected MavenProject mavenProject;
-    
+
     /**
      * Set to <code>false</code> to skip repository generation.
      * 
      * @parameter default-value="true"
      */
     protected boolean generateRepository;
-    
+
     /**
      * The name of the target directory for configuration files.
      * 
      * @parameter default-value="etc"
      */
     protected String configurationDirectory;
-    
+
     /**
      * The name of the source directory for configuration files.
      * 
@@ -142,7 +142,7 @@ public abstract class AbstractScriptGeneratorMojo
      * @since 1.1
      */
     protected File configurationSourceDirectory;
-    
+
     /**
      * If the source configuration directory should be copied to the configured <code>configurationDirectory</code>.
      * 
@@ -150,18 +150,17 @@ public abstract class AbstractScriptGeneratorMojo
      * @since 1.1
      */
     protected boolean copyConfigurationDirectory;
-    
+
     /**
-     * Location under base directory where all of files non-recursively are added before the generated classpath. 
-     * Java 6+ only since it uses wildcard classpath format.
-     * This is a convenient way to have user to add artifacts that not possible to be part of final assembly
-     * such as LGPL/GPL artifacts
+     * Location under base directory where all of files non-recursively are added before the generated classpath. Java
+     * 6+ only since it uses wildcard classpath format. This is a convenient way to have user to add artifacts that not
+     * possible to be part of final assembly such as LGPL/GPL artifacts
      * 
      * @parameter
      * @since 1.6
      */
     protected String endorsedDir;
-    
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -171,57 +170,68 @@ public abstract class AbstractScriptGeneratorMojo
      */
     protected DaemonGeneratorService daemonGeneratorService;
 
-    protected void doCopyConfigurationDirectory(final String targetDirectory) throws MojoFailureException {
-        if (!configurationSourceDirectory.exists()) {
-            throw new MojoFailureException("The source directory for configuration files does not exist: "
-                + configurationSourceDirectory.getAbsolutePath());
+    protected void doCopyConfigurationDirectory( final String targetDirectory )
+        throws MojoFailureException
+    {
+        if ( !configurationSourceDirectory.exists() )
+        {
+            throw new MojoFailureException( "The source directory for configuration files does not exist: "
+                + configurationSourceDirectory.getAbsolutePath() );
         }
 
-        getLog().debug("copying configuration directory.");
-        
-        File configurationTargetDirectory = new File(targetDirectory, configurationDirectory);
+        getLog().debug( "copying configuration directory." );
 
-        if (!configurationTargetDirectory.exists()) {
+        File configurationTargetDirectory = new File( targetDirectory, configurationDirectory );
+
+        if ( !configurationTargetDirectory.exists() )
+        {
             // Create (if necessary) target directory for configuration files
             boolean success = configurationTargetDirectory.mkdirs();
 
-            if (!success) {
-                throw new MojoFailureException("Failed to create the target directory for configuration files: "
-                    + configurationTargetDirectory.getAbsolutePath());
+            if ( !success )
+            {
+                throw new MojoFailureException( "Failed to create the target directory for configuration files: "
+                    + configurationTargetDirectory.getAbsolutePath() );
             }
         }
-        try {
-            getLog().debug("Will try to copy configuration files from "
-                               + configurationSourceDirectory.getAbsolutePath() + " to "
-                               + configurationTargetDirectory.getAbsolutePath());
+        try
+        {
+            getLog().debug( "Will try to copy configuration files from "
+                                + configurationSourceDirectory.getAbsolutePath() + " to "
+                                + configurationTargetDirectory.getAbsolutePath() );
 
-            FileUtils.copyDirectory(configurationSourceDirectory, configurationTargetDirectory,
-                                    FileFilterHelper.createDefaultFilter());
-        } catch (IOException e) {
-            throw new MojoFailureException("Failed to copy the configuration files.");
+            FileUtils.copyDirectory( configurationSourceDirectory, configurationTargetDirectory,
+                                     FileFilterHelper.createDefaultFilter() );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoFailureException( "Failed to copy the configuration files." );
         }
     }
-    
+
     // -----------------------------------------------------------------------
     // Protected helper methods.
     // -----------------------------------------------------------------------
-    
-    protected void installDependencies(final String outputDirectory, final String repositoryName)
-        throws MojoExecutionException, MojoFailureException {
-        if ( generateRepository ) {
+
+    protected void installDependencies( final String outputDirectory, final String repositoryName )
+        throws MojoExecutionException, MojoFailureException
+    {
+        if ( generateRepository )
+        {
             // The repo where the jar files will be installed
             ArtifactRepository artifactRepository =
-                artifactRepositoryFactory.createDeploymentArtifactRepository("appassembler", "file://"
-                    + outputDirectory + "/" + repositoryName, getArtifactRepositoryLayout(), false);
+                artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://"
+                    + outputDirectory + "/" + repositoryName, getArtifactRepositoryLayout(), false );
 
-            for (Iterator it = artifacts.iterator(); it.hasNext();) {
+            for ( Iterator it = artifacts.iterator(); it.hasNext(); )
+            {
                 Artifact artifact = (Artifact) it.next();
-                installArtifact(artifact, artifactRepository, this.useTimestampInSnapshotFileName);
+                installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
             }
 
             // install the project's artifact in the new repository
-            installArtifact(projectArtifact, artifactRepository);
+            installArtifact( projectArtifact, artifactRepository );
         }
     }
-    
+
 }

@@ -36,6 +36,7 @@ import java.util.Set;
 public class Program
 {
     private String name;
+
     private String id;
 
     private String mainClass;
@@ -111,6 +112,7 @@ public class Program
 
     /**
      * The id.
+     * 
      * @return The id of the program.
      */
     public String getId()
@@ -131,6 +133,7 @@ public class Program
 
     /**
      * Set the id.
+     * 
      * @param id
      */
     public void setId( String id )
