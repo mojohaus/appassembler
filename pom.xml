@@ -210,22 +210,6 @@
                     <ignore />
                   </action>
                 </pluginExecution>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.codehaus.modello</groupId>
-                    <artifactId>modello-maven-plugin</artifactId>
-                    <versionRange>[1.0-alpha-22,)</versionRange>
-                    <goals>
-                      <goal>java</goal>
-                      <goal>stax-reader</goal>
-                      <goal>stax-writer</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore />
-                  </action>
-                </pluginExecution>
-                
               </pluginExecutions>
             </lifecycleMappingMetadata>
           </configuration>
