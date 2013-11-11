@@ -1,27 +1,28 @@
-#*
- *
- * The MIT License
- *
- * Copyright 2006-2012 The Codehaus.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *#
+~~
+~~
+~~ The MIT License
+~~
+~~ Copyright 2006-2012 The Codehaus.
+~~
+~~ Permission is hereby granted, free of charge, to any person obtaining a copy of
+~~ this software and associated documentation files (the "Software"), to deal in
+~~ the Software without restriction, including without limitation the rights to
+~~ use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+~~ of the Software, and to permit persons to whom the Software is furnished to do
+~~ so, subject to the following conditions:
+~~
+~~ The above copyright notice and this permission notice shall be included in all
+~~ copies or substantial portions of the Software.
+~~
+~~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+~~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+~~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+~~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+~~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+~~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+~~ SOFTWARE.
+~~
+
   ------
   Usage: how create Java Service Wrapper Scripts
   ------
@@ -40,71 +41,19 @@ Usage
   version {{{http://wrapper.tanukisoftware.org/downloads/3.2.3} 3.2.3}}, using the
   {{{http://wrapper.tanukisoftware.org/doc/english/integrate.html#method1} WrapperSimpleApp Integration}}.
 
-** Minimal configuration
+** With org.tanukisoftware.wrapper.WrapperSimpleApp
 
-  In <<<pom.xml>>>:
+	This is the simplest configuration according to JSW documentation. Here is an example usage
 
 +--------------------------
 <project>
-  ...
+  [...]
   <build>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
         <version>${project.version}</version>        
-        <configuration>
-          <repositoryLayout>flat</repositoryLayout>
-          <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-          <daemons>
-            <daemon>
-              <!-- this has the implicite wrapperMainClass as org.tanukisoftware.wrapper.WrapperSimpleApp, see next example-->
-              <id>app1</id>
-              <mainClass>${project.groupId}.SomeMainClass</mainClass>
-              <commandLineArguments>
-                <commandLineArgument>start</commandLineArgument>
-              </commandLineArguments>
-              <platforms>
-                <platform>jsw</platform>
-              </platforms>              
-            </daemon>
-            <daemon>
-              <id>app2</id>
-              <wrapperMainClass>org.tanukisoftware.wrapper.WrapperSimpleApp</wrapperMainClass>
-              <mainClass>${project.groupId}.SomeMainClass</mainClass>
-              <commandLineArguments>
-                <commandLineArgument>start</commandLineArgument>
-              </commandLineArguments>
-              <platforms>
-                <platform>jsw</platform>
-              </platforms>              
-            </daemon>
-            <daemon>
-              <!-- support WrapperListener interface, note there should be no mainClass declared --> 
-              <id>app3</id>
-              <wrapperMainClass>${project.groupId}.SomeMainClass</wrapperMainClass>
-              <commandLineArguments>
-                <commandLineArgument>start</commandLineArgument>
-              </commandLineArguments>
-              <platforms>
-                <platform>jsw</platform>
-              </platforms>              
-            </daemon>
-            <daemon>
-              <id>app4</id>
-              <!-- support wrapper startup method, see JSW doc for details -->
-              <wrapperMainClass>org.tanukisoftware.wrapper.WrapperStartStopApp</wrapperMainClass>
-              <mainClass>${project.groupId}.SomeMainClass</mainClass>
-              <commandLineArguments>
-                <commandLineArgument>start</commandLineArgument>
-              </commandLineArguments>
-              <platforms>
-                <platform>jsw</platform>
-              </platforms>              
-            </daemon>
-            
-          </daemons>
-        </configuration>
         <executions>
           <execution>
             <id>generate-jsw-scripts</id>
@@ -112,13 +61,178 @@ Usage
             <goals>
               <goal>generate-daemons</goal>
             </goals>
+            <configuration>
+              <repositoryLayout>flat</repositoryLayout>
+              <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+              <daemons>
+                <daemon>
+                  <id>app1</id>
+                  <!-- the next line is added by default if you dont have wrapperMainClass's setting --> 
+                  <wrapperMainClass>org.tanukisoftware.wrapper.WrapperSimpleApp</wrapperMainClass>
+                  <mainClass>${project.groupId}.SomeMainClass</mainClass>
+                  <commandLineArguments>
+                    <commandLineArgument>start</commandLineArgument>
+                  </commandLineArguments>
+                  <platforms>
+                    <platform>jsw</platform>
+                  </platforms>              
+                </daemon>
+              </daemons>
+            </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
 </project>
+
 +--------------------------
+
+
+** With org.tanukisoftware.wrapper.WrapperStartStopApp
+
++--------------------------
+<project>
+  [...]
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <version>${project.version}</version>        
+        <executions>
+          <execution>
+            <id>generate-jsw-scripts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>generate-daemons</goal>
+            </goals>
+            <configuration>
+              <repositoryLayout>flat</repositoryLayout>
+              <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+              <daemons>
+                <daemon>
+                  <id>app1</id>
+                  <!-- the next line is added by default if you dont have wrapperMainClass's setting --> 
+                  <wrapperMainClass>org.tanukisoftware.wrapper.WrapperStartStopApp</wrapperMainClass>
+                  <mainClass>${project.groupId}.SomeMainClass</mainClass>
+                  <commandLineArguments>
+                    <commandLineArgument>fill.your.arguments</commandLineArgument>
+                  </commandLineArguments>
+                  <platforms>
+                    <platform>jsw</platform>
+                  </platforms>              
+                </daemon>
+              </daemons>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+
++--------------------------
+
+** With org.tanukisoftware.wrapper.WrapperListner
+
+	The below example assumes you have a main class that implements org.tanukisoftware.wrapper.WrapperListner interface
+
++--------------------------
+<project>
+  [...]
+  <dependencies>
+    <dependency>
+      <!-- this must match with the actual JSW runtime distribution, the scope must set as provided since this plugin already add wrapper.jar into the classpath -->
+      <groupId>tanukisoft</groupId>
+      <artifactId>wrapper</artifactId>
+      <version>3.2.3</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <version>${project.version}</version>        
+        <executions>
+          <execution>
+            <id>generate-jsw-scripts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>generate-daemons</goal>
+            </goals>
+            <configuration>
+              <repositoryLayout>flat</repositoryLayout>
+              <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+              <daemons>
+                <daemon>
+                  <id>app1</id>
+                  <wrapperMainClass>${project.groupId}.SomeMainClass</wrapperMainClass>
+                  <commandLineArguments>
+                    <commandLineArgument>fill.your.arguments</commandLineArgument>
+                  </commandLineArguments>
+                  <platforms>
+                    <platform>jsw</platform>
+                  </platforms>              
+                </daemon>
+              </daemons>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+
++--------------------------
+
+** With org.tanukisoftware.wrapper.WrapperJarApp
+
+	The below example assumes you are using org.tanukisoftware.wrapper.WrapperJarApp to start your app. And your current project has main class configure via its manifest
+
++--------------------------
+<project>
+  [...]
+  <dependencies>
+    [...]
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <version>${project.version}</version>        
+        <executions>
+          <execution>
+            <id>generate-jsw-scripts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>generate-daemons</goal>
+            </goals>
+            <configuration>
+              <repositoryLayout>flat</repositoryLayout>
+              <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+              <daemons>
+                <daemon>
+                  <id>app1</id>
+                  <wrapperMainClass>org.tanukisoftware.wrapper.WrapperJarApp</wrapperMainClass>
+                  <platforms>
+                    <platform>jsw</platform>
+                  </platforms>              
+                </daemon>
+              </daemons>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+
++--------------------------
+
 
 ** Using the generated scripts
 
