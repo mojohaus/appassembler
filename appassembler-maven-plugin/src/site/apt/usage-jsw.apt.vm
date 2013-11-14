@@ -39,11 +39,11 @@ Usage
 
   The setup is based on {{{http://wrapper.tanukisoftware.org} Java Service Wrapper (JSW)}}
   version {{{http://wrapper.tanukisoftware.org/downloads/3.2.3} 3.2.3}}, using the
-  {{{http://wrapper.tanukisoftware.org/doc/english/integrate.html#method1} WrapperSimpleApp Integration}}.
+  version {{{http://wrapper.tanukisoftware.org/downloads/3.2.3} 3.2.3}}.
 
 ** With org.tanukisoftware.wrapper.WrapperSimpleApp
 
-	This is the simplest configuration according to JSW documentation. Here is an example usage
+	This is the simplest configuration according to JSW documentation, which invokes a main method on start, and kills the VM on stop. Here is an example usage:
 
 +--------------------------
 <project>
@@ -53,7 +53,7 @@ Usage
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
-        <version>${project.version}</version>        
+        <version>${project.version}</version>
         <executions>
           <execution>
             <id>generate-jsw-scripts</id>
@@ -67,7 +67,7 @@ Usage
               <daemons>
                 <daemon>
                   <id>app1</id>
-                  <!-- the next line is added by default if you dont have wrapperMainClass's setting --> 
+                  <!-- the next line is added by default if you don't have wrapperMainClass's setting -->
                   <wrapperMainClass>org.tanukisoftware.wrapper.WrapperSimpleApp</wrapperMainClass>
                   <mainClass>${project.groupId}.SomeMainClass</mainClass>
                   <commandLineArguments>
@@ -75,7 +75,7 @@ Usage
                   </commandLineArguments>
                   <platforms>
                     <platform>jsw</platform>
-                  </platforms>              
+                  </platforms>
                 </daemon>
               </daemons>
             </configuration>
@@ -99,7 +99,7 @@ Usage
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
-        <version>${project.version}</version>        
+        <version>${project.version}</version>
         <executions>
           <execution>
             <id>generate-jsw-scripts</id>
@@ -113,7 +113,7 @@ Usage
               <daemons>
                 <daemon>
                   <id>app1</id>
-                  <!-- the next line is added by default if you dont have wrapperMainClass's setting --> 
+                  <!-- the next line is added by default if you dont have wrapperMainClass's setting -->
                   <wrapperMainClass>org.tanukisoftware.wrapper.WrapperStartStopApp</wrapperMainClass>
                   <mainClass>${project.groupId}.SomeMainClass</mainClass>
                   <commandLineArguments>
@@ -121,7 +121,7 @@ Usage
                   </commandLineArguments>
                   <platforms>
                     <platform>jsw</platform>
-                  </platforms>              
+                  </platforms>
                 </daemon>
               </daemons>
             </configuration>
@@ -134,9 +134,9 @@ Usage
 
 +--------------------------
 
-** With org.tanukisoftware.wrapper.WrapperListner
+** With org.tanukisoftware.wrapper.WrapperListener
 
-	The below example assumes you have a main class that implements org.tanukisoftware.wrapper.WrapperListner interface
+	The below example assumes you have a main class that implements org.tanukisoftware.wrapper.WrapperListener interface.
 
 +--------------------------
 <project>
@@ -155,7 +155,7 @@ Usage
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
-        <version>${project.version}</version>        
+        <version>${project.version}</version>
         <executions>
           <execution>
             <id>generate-jsw-scripts</id>
@@ -175,7 +175,7 @@ Usage
                   </commandLineArguments>
                   <platforms>
                     <platform>jsw</platform>
-                  </platforms>              
+                  </platforms>
                 </daemon>
               </daemons>
             </configuration>
@@ -190,7 +190,8 @@ Usage
 
 ** With org.tanukisoftware.wrapper.WrapperJarApp
 
-	The below example assumes you are using org.tanukisoftware.wrapper.WrapperJarApp to start your app. And your current project has main class configure via its manifest
+	The below example assumes you are using org.tanukisoftware.wrapper.WrapperJarApp to start your app,
+	and your current project has main class configured via its manifest.
 
 +--------------------------
 <project>
@@ -203,7 +204,7 @@ Usage
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
-        <version>${project.version}</version>        
+        <version>${project.version}</version>
         <executions>
           <execution>
             <id>generate-jsw-scripts</id>
@@ -220,7 +221,7 @@ Usage
                   <wrapperMainClass>org.tanukisoftware.wrapper.WrapperJarApp</wrapperMainClass>
                   <platforms>
                     <platform>jsw</platform>
-                  </platforms>              
+                  </platforms>
                 </daemon>
               </daemons>
             </configuration>
@@ -240,7 +241,7 @@ Usage
     directory.
 
   * The JSW bin scripts are placed in the <<<target/generated-resources/appassembler/jsw/app1/bin>>> directory.
-  
+
   * The JSW configuration file is placed in the <<<target/generated-resources/appassembler/jsw/app1/conf>>> directory.
 
     []
@@ -260,13 +261,13 @@ $ ps -ef | grep java
 $ target/generated-resources/appassembler/jsw/app1/bin/app1 stop
 +--------------------------
 
-** Add application specific shutdown code
+** Add application specific shutdown code, when the WrapperSimpleApp is used
 
   * The JSW default stop script use the "kill" command.
   Use a shutdown hook to override this behaviour with application specific shutdown code.
 
   E.g. add something like the following to your Main method:
-  
+
 
 +--------------------------
 Runtime.getRuntime().addShutdownHook(new Thread(){
@@ -275,5 +276,5 @@ Runtime.getRuntime().addShutdownHook(new Thread(){
         App1JmxStopper appJmxStopper = new App1JmxStopper();
         appJmxStopper.stop();
     }
-}); 
+});
 +--------------------------
