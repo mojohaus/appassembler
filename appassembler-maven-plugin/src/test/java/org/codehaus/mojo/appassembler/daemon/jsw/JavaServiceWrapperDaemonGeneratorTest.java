@@ -318,7 +318,7 @@ public class JavaServiceWrapperDaemonGeneratorTest
         File script = new File( jswDir, "bin/app" );
         String scriptContents = FileUtils.fileRead( script );
 
-        assertTrue( "Chkconfig replace did not work", scriptContents.contains( "chkconfig: 2345 21 81" ) );
+        assertTrue( "Chkconfig replace did not work", scriptContents.contains( "chkconfig: 3 21 81" ) );
     }
 
     public void testGenerationWithWrapperPidFile()

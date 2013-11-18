@@ -34,6 +34,7 @@
     <generatorConfiguration>
       <generator>jsw</generator>
       <configuration>
+        <chkconfig.run>3</chkconfig.run>
       	<chkconfig.start>21</chkconfig.start>
       	<chkconfig.stop>81</chkconfig.stop>
       </configuration>

@@ -140,6 +140,8 @@ public class JavaServiceWrapperDaemonGenerator
         String pidFile = configuration.getProperty( "wrapper.pidfile", "$BASEDIR/logs" );
 
         // Don't want these in the wrapper.conf file
+        String chkconfigRun = configuration.getProperty( "chkconfig.run", "2345" ); //2345 is the original run level, donot change this default value
+        configuration.remove( "chkconfig.level" );
         String chkconfigStart = configuration.getProperty( "chkconfig.start", "20" );
         configuration.remove( "chkconfig.start" );
         String chkconfigStop = configuration.getProperty( "chkconfig.stop", "80" );
@@ -151,6 +153,7 @@ public class JavaServiceWrapperDaemonGenerator
         context.setProperty( "run.as.user.envvar", runAsUserEnvVar );
         context.setProperty( "wrapper.conf.directory", daemon.getConfigurationDirectory() );
         context.setProperty( "wrapper.conf.fileName", this.getWrapperConfigFileName( daemon ) );
+        context.setProperty( "chkconfig.run", chkconfigRun );
         context.setProperty( "chkconfig.start", chkconfigStart );
         context.setProperty( "chkconfig.stop", chkconfigStop );
 
