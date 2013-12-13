@@ -47,6 +47,7 @@ goto repoSetup
 set BASEDIR=%~dp0\..
 
 :repoSetup
+set REPO=
 #ENV_SETUP#
 
 if "%JAVACMD%"=="" set JAVACMD=#JAVA_BINARY#
