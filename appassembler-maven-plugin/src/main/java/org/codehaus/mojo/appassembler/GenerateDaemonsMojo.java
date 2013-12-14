@@ -40,7 +40,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Generates JSW based daemon wrappers.
- * 
+ *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  * @goal generate-daemons
@@ -58,7 +58,7 @@ public class GenerateDaemonsMojo
 
     /**
      * The base directory of the project.
-     * 
+     *
      * @parameter expression="${basedir}"
      * @required
      */
@@ -66,7 +66,7 @@ public class GenerateDaemonsMojo
 
     /**
      * Set of {@linkplain Daemon}s to generate.
-     * 
+     *
      * @parameter
      * @required
      */
@@ -74,14 +74,14 @@ public class GenerateDaemonsMojo
 
     /**
      * {@linkplain JvmSettings} describing min/max memory and stack size, system properties and extra arguments.
-     * 
+     *
      * @parameter
      */
     private JvmSettings defaultJvmSettings;
 
     /**
      * Path (relative to <code>assembleDirectory</code>) of the desired output repository.
-     * 
+     *
      * @parameter default-value="lib"
      * @since 1.5
      * @todo Synchronize the default value with the other mojos in 2.0
@@ -90,7 +90,7 @@ public class GenerateDaemonsMojo
 
     /**
      * Target directory for generated daemons.
-     * 
+     *
      * @parameter default-value="${project.build.directory}/generated-resources/appassembler"
      * @required
      */
@@ -98,7 +98,7 @@ public class GenerateDaemonsMojo
 
     /**
      * When enable, name wrapper configuration file as wrapper-${daemon.id}.conf
-     * 
+     *
      * @parameter default-value="false"
      * @since 1.3
      */
@@ -107,11 +107,20 @@ public class GenerateDaemonsMojo
     /**
      * Use this option to override the current built-in delta pack binary. You will need to unpack your delta pack
      * version to a known location set by this option
-     * 
+     *
      * @since 1.4.0
      * @parameter expression="${externalDeltaPackDirectory}"
      */
     private File externalDeltaPackDirectory;
+
+    /**
+     * Use this option to pre insert a content of a known file into the generated wrapper config file. For example: $include ../conf/another-wrapper.conf
+     *
+     * @since 1.7.0
+     * @parameter expression="${preWrapperConf}"
+     */
+    private File preWrapperConf;
+
 
     // -----------------------------------------------------------------------
     // AbstractMojo Implementation
@@ -119,7 +128,7 @@ public class GenerateDaemonsMojo
 
     /**
      * calling from Maven.
-     * 
+     *
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
     public void execute()
@@ -184,7 +193,16 @@ public class GenerateDaemonsMojo
             modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
             modelDaemon.setUseDaemonIdAsWrapperConfName( useDaemonIdAsWrapperConfName );
             modelDaemon.setUseWildcardClassPath( useWildcardClassPath );
-            modelDaemon.setEndorsedDir( endorsedDir );
+
+            if ( endorsedDir != null )
+            {
+                modelDaemon.setEndorsedDir( endorsedDir );
+            }
+
+            if ( preWrapperConf != null )
+            {
+                modelDaemon.setPreWrapperConf( preWrapperConf.getAbsolutePath() );
+            }
 
             if ( this.unixScriptTemplate != null )
             {
@@ -269,6 +287,8 @@ public class GenerateDaemonsMojo
         modelDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
         modelDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
         modelDaemon.setRepositoryName( daemon.getRepositoryName() );
+        modelDaemon.setEndorsedDir( daemon.getEndorsedDir() );
+        modelDaemon.setPreWrapperConf( daemon.getPreWrapperConf() );
 
         if ( daemon.getJvmSettings() != null )
         {

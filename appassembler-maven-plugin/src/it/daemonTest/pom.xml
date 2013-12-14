@@ -51,6 +51,8 @@
               <platforms>
                 <platform>jsw</platform>
               </platforms>
+              <endorsedDir>test</endorsedDir>
+              <preWrapperConf>${project.basedir}/src/pre-wrapper/snippet.txt</preWrapperConf>
             </daemon>
           </daemons>
         </configuration>

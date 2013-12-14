@@ -48,9 +48,11 @@ def fileConfFolder = new File( daemonFolder, "conf");
 def wrapperConfFile = new File( fileConfFolder, "wrapper.conf" );
 
 t.checkExistenceAndContentOfAFile(wrapperConfFile, [
+    '#include metoo',
     'wrapper.java.classpath.1=lib/wrapper.jar',
-    'wrapper.java.classpath.2=%REPO_DIR%/org/codehaus/mojo/appassembler/daemonTest/1.0-SNAPSHOT/daemonTest-1.0-SNAPSHOT.jar',
-    'wrapper.java.classpath.3=%REPO_DIR%/log4j/log4j/1.2.14/log4j-1.2.14.jar',
+    'wrapper.java.classpath.2=test/*',
+    'wrapper.java.classpath.3=%REPO_DIR%/org/codehaus/mojo/appassembler/daemonTest/1.0-SNAPSHOT/daemonTest-1.0-SNAPSHOT.jar',
+    'wrapper.java.classpath.4=%REPO_DIR%/log4j/log4j/1.2.14/log4j-1.2.14.jar',
     'wrapper.java.library.path.1=lib',
 ])
 

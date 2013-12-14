@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.project.MavenProject;
@@ -52,6 +51,7 @@ import org.codehaus.mojo.appassembler.model.GeneratorConfiguration;
 import org.codehaus.mojo.appassembler.util.DependencyFactory;
 import org.codehaus.mojo.appassembler.util.FormattedProperties;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
 import org.codehaus.plexus.util.StringInputStream;
@@ -222,7 +222,7 @@ public class JavaServiceWrapperDaemonGenerator
         }
 
         confFile.setProperty( "wrapper.java.mainclass", daemon.getWrapperMainClass() );
-        if ( ! StringUtils.isEmpty( daemon.getMainClass() ) ) 
+        if ( ! StringUtils.isEmpty( daemon.getMainClass() ) )
         {
             confFile.setProperty( "wrapper.app.parameter.1", daemon.getMainClass() );
         }
@@ -252,8 +252,31 @@ public class JavaServiceWrapperDaemonGenerator
 
         Reader reader = new InputStreamReader( new StringInputStream( string.toString() ) );
 
-        writeFilteredFile( request, daemon, reader, new File( outputDirectory, daemon.getConfigurationDirectory() + "/"
-            + getWrapperConfigFileName( daemon ) ), context );
+        File wrapperConf = new File( outputDirectory, daemon.getConfigurationDirectory() + "/" + getWrapperConfigFileName( daemon ) );
+        writeFilteredFile( request, daemon, reader, wrapperConf, context );
+
+        if ( daemon.getPreWrapperConf() != null )
+        {
+            insertPreWrapperConf( wrapperConf, new File( daemon.getPreWrapperConf() ) );
+        }
+
+    }
+
+    private void insertPreWrapperConf( File wrapperConf, File preWrapperConf )
+        throws DaemonGeneratorException
+    {
+        try
+        {
+            StringBuilder buffer = new StringBuilder();
+            buffer.append( FileUtils.fileRead( preWrapperConf ) );
+            buffer.append( "\n" );
+            buffer.append( FileUtils.fileRead( wrapperConf ) );
+            FileUtils.fileWrite( wrapperConf,  buffer.toString() );
+        }
+        catch ( IOException e )
+        {
+            throw new DaemonGeneratorException( "Unable to merge pre wrapper config file." );
+        }
     }
 
     private String getWrapperConfigFileName( Daemon daemon )
@@ -458,7 +481,7 @@ public class JavaServiceWrapperDaemonGenerator
                 confFile.setProperty( "wrapper.app.parameter." + count, argument );
             }
         }
-        
+
         if ( count == 1 )
         { //Remove default parameter if not set
             confFile.removeProperty( "wrapper.app.parameter.1");

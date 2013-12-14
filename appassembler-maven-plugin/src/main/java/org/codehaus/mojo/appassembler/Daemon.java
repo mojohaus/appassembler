@@ -36,7 +36,7 @@ public class Daemon
     private String id;
 
     private String mainClass;
-    
+
     private String wrapperMainClass = "org.tanukisoftware.wrapper.WrapperSimpleApp";
 
     private String descriptor;
@@ -61,9 +61,11 @@ public class Daemon
 
     private String endorsedDir;
 
+    private String preWrapperConf;
+
     /**
      * The daemon id which must be unique.
-     * 
+     *
      * @return The name of the id.
      */
     public String getId()
@@ -73,7 +75,7 @@ public class Daemon
 
     /**
      * The FQN of the main class.
-     * 
+     *
      * @return The name of the main class.
      */
     public String getMainClass()
@@ -83,17 +85,17 @@ public class Daemon
 
     /**
      * Wrapper main class
-     * 
+     *
      * @return classname of wrapper main class
      */
     public String getWrapperMainClass()
     {
         return wrapperMainClass;
     }
-    
+
     /**
      * The descriptor.
-     * 
+     *
      * @return The descriptor string.
      */
     public String getDescriptor()
@@ -103,7 +105,7 @@ public class Daemon
 
     /**
      * The list of platforms.
-     * 
+     *
      * @return The list of platforms or an empty list if non have been defined before.
      */
     public List getPlatforms()
@@ -118,7 +120,7 @@ public class Daemon
 
     /**
      * Get the list of command line arguments.
-     * 
+     *
      * @return The list of command line arguments.
      */
     public List getCommandLineArguments()
@@ -128,7 +130,7 @@ public class Daemon
 
     /**
      * Return the configuration directory.
-     * 
+     *
      * @return The configuration directory.
      */
     public String getConfigurationDirectory()
@@ -138,7 +140,7 @@ public class Daemon
 
     /**
      * Get the current JVM settings.
-     * 
+     *
      * @return The instance with the current JVM settings back.
      */
     public JvmSettings getJvmSettings()
@@ -148,7 +150,7 @@ public class Daemon
 
     /**
      * Return the generator configurations.
-     * 
+     *
      * @return The list of generator configurations.
      */
     public List getGeneratorConfigurations()
@@ -158,7 +160,7 @@ public class Daemon
 
     /**
      * Return the name of the license header file.
-     * 
+     *
      * @return The name of the license header file.
      */
     public String getLicenseHeaderFile()
@@ -168,7 +170,7 @@ public class Daemon
 
     /**
      * Return the repository name.
-     * 
+     *
      * @return The repository name.
      */
     public String getRepositoryName()
@@ -178,7 +180,7 @@ public class Daemon
 
     /**
      * Return the state of the {@link #showConsoleWindow} flag.
-     * 
+     *
      * @return true if ShowConsoleWindow is active false otherwise.
      */
     public boolean isShowConsoleWindow()
@@ -188,7 +190,7 @@ public class Daemon
 
     /**
      * The file name as string.
-     * 
+     *
      * @return The environment setup file name.
      */
     public String getEnvironmentSetupFileName()
@@ -198,7 +200,7 @@ public class Daemon
 
     /**
      * Define the environment setup file name.
-     * 
+     *
      * @param environmentSetupFileName The filename as string.
      */
     public void setEnvironmentSetupFileName( String environmentSetupFileName )
@@ -208,7 +210,7 @@ public class Daemon
 
     /**
      * The directory where endorsed libraries can be found.
-     * 
+     *
      * @return The directory where endorsed libraries can be found.
      */
     public String getEndorsedDir()
@@ -218,12 +220,23 @@ public class Daemon
 
     /**
      * Define the endorsed directory where optional jars will be loaded.
-     * 
+     *
      * @param endorsedDir The name of the endorsed directory.
      */
     public void setEndorsedDir( String endorsedDir )
     {
         this.endorsedDir = endorsedDir;
     }
+
+    public String getPreWrapperConf()
+    {
+        return preWrapperConf;
+    }
+
+    public void setPreWrapperConf( String preWrapperConf )
+    {
+        this.preWrapperConf = preWrapperConf;
+    }
+
 
 }
