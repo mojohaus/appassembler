@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * This is intended to collect all generic parts of the script generating Mojos assemble and generate-daemons into a
  * single class. A first step of hopefully merging the two into one some day.
- * 
+ *
  * @author Dennis Lundberg
  * @version $Id$
  */
@@ -59,7 +59,7 @@ public abstract class AbstractScriptGeneratorMojo
      * WRAPPER_CONF_OVERRIDES variable, it will be passed into JSW native launcher's command line arguments to override
      * wrapper.conf's properties. See http://wrapper.tanukisoftware.com/doc/english/props-command-line.html for details.
      * </p>
-     * 
+     *
      * @parameter
      * @since 1.2.3 (generate-daemons)
      */
@@ -67,7 +67,7 @@ public abstract class AbstractScriptGeneratorMojo
 
     /**
      * You can define a license header file which will be used instead the default header in the generated scripts.
-     * 
+     *
      * @parameter
      * @since 1.2
      */
@@ -75,8 +75,8 @@ public abstract class AbstractScriptGeneratorMojo
 
     /**
      * The unix template of the generated script. It can be a file or resource path. If not given, an internal one is
-     * used. Use with case since it is not guaranteed to be compatible with new plugin release.
-     * 
+     * used. Use with care since it is not guaranteed to be compatible with new plugin release.
+     *
      * @parameter expression="${unixScriptTemplate}"
      * @since 1.3
      */
@@ -89,7 +89,7 @@ public abstract class AbstractScriptGeneratorMojo
      * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html" >classpath wildcard</a> (REPO/*).
      * But be aware that this works only in combination with Java 1.6 and above and with {@link #repositoryLayout}
      * <code>flat</code>. Otherwise this configuration will not work.
-     * 
+     *
      * @since 1.2.3 (assemble), 1.3.1 (generate-daemons)
      * @parameter default-value="false"
      */
@@ -98,7 +98,7 @@ public abstract class AbstractScriptGeneratorMojo
     /**
      * The windows template of the generated script. It can be a file or resource path. If not given, an internal one is
      * used. Use with care since it is not guaranteed to be compatible with new plugin release.
-     * 
+     *
      * @parameter expression="${windowsScriptTemplate}"
      * @since 1.3
      */
@@ -123,21 +123,21 @@ public abstract class AbstractScriptGeneratorMojo
 
     /**
      * Set to <code>false</code> to skip repository generation.
-     * 
+     *
      * @parameter default-value="true"
      */
     protected boolean generateRepository;
 
     /**
      * The name of the target directory for configuration files.
-     * 
+     *
      * @parameter default-value="etc"
      */
     protected String configurationDirectory;
 
     /**
      * The name of the source directory for configuration files.
-     * 
+     *
      * @parameter default-value="src/main/config"
      * @since 1.1
      */
@@ -145,7 +145,7 @@ public abstract class AbstractScriptGeneratorMojo
 
     /**
      * If the source configuration directory should be copied to the configured <code>configurationDirectory</code>.
-     * 
+     *
      * @parameter default-value="false"
      * @since 1.1
      */
@@ -155,7 +155,7 @@ public abstract class AbstractScriptGeneratorMojo
      * Location under base directory where all of files non-recursively are added before the generated classpath. Java
      * 6+ only since it uses wildcard classpath format. This is a convenient way to have user to add artifacts that not
      * possible to be part of final assembly such as LGPL/GPL artifacts
-     * 
+     *
      * @parameter
      * @since 1.6
      */
