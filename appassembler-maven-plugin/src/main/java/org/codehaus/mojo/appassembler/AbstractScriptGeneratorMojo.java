@@ -147,7 +147,7 @@ public abstract class AbstractScriptGeneratorMojo
      * If the source configuration directory should be copied to the configured <code>configurationDirectory</code>.
      *
      * @parameter default-value="false"
-     * @since 1.1
+     * @since 1.1 (assemble), 1.7 (generate-daemons)
      */
     protected boolean copyConfigurationDirectory;
 
