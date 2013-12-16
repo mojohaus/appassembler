@@ -59,7 +59,7 @@ public class ScriptGeneratorTest
         }
     }
 
-    public void blahTestNormalShellScriptWithEndorsedLibGeneration()
+    public void testNormalShellScriptWithEndorsedLibGeneration()
         throws Exception
     {
         for ( Iterator it = Platform.getAllPlatforms().iterator(); it.hasNext(); )
