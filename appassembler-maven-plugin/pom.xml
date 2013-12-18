@@ -9,14 +9,15 @@
   THE ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
   TORT OR OTHERWISE, ARISING FROM, ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE ~ SOFTWARE. -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   
   <modelVersion>4.0.0</modelVersion>
   
   <parent>
     <artifactId>appassembler</artifactId>
     <groupId>org.codehaus.mojo.appassembler</groupId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.7-SNAPSHOT</version>
   </parent>
   
   <groupId>org.codehaus.mojo</groupId>
@@ -146,20 +147,37 @@
             <configuration>
               <target>
 
-                <copy file="${project.build.directory}/dependency/sonatype-jsw-binaries/windows-x86-64/lib/wrapper.dll" tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/wrapper-windows-x86-64.dll" />
-                <copy file="${project.build.directory}/dependency/sonatype-jsw-binaries/windows-x86-64/wrapper.exe" tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-windows-x86-64.exe" />
+                <copy file="${project.build.directory}/dependency/sonatype-jsw-binaries/windows-x86-64/lib/wrapper.dll"
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/wrapper-windows-x86-64.dll" />
+                <copy file="${project.build.directory}/dependency/sonatype-jsw-binaries/windows-x86-64/wrapper.exe"
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-windows-x86-64.exe" />
 
-                <copy file="${project.build.directory}/dependency/sonatype-jsw-binaries/macosx-universal-64/lib/libwrapper.jnilib" tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-macosx-universal-64.jnilib" />
-                <copy file="${project.build.directory}/dependency/sonatype-jsw-binaries/macosx-universal-64/wrapper" tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-macosx-universal-64" />
+                <copy
+                  file="${project.build.directory}/dependency/sonatype-jsw-binaries/macosx-universal-64/lib/libwrapper.jnilib"
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-macosx-universal-64.jnilib" />
+                <copy file="${project.build.directory}/dependency/sonatype-jsw-binaries/macosx-universal-64/wrapper"
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-macosx-universal-64" />
 
-                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc32/libwrapper.a" tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-aix-ppc-32.a" />
-                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc32/karaf-wrapper" tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-aix-ppc-32" />
+                <copy
+                  file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc32/libwrapper.a"
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-aix-ppc-32.a" />
+                <copy
+                  file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc32/karaf-wrapper"
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-aix-ppc-32" />
 
-                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc64/libwrapper.a" tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-aix-ppc-64.a" />
-                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc64/karaf-wrapper" tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-aix-ppc-64" />
+                <copy
+                  file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc64/libwrapper.a"
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-aix-ppc-64.a" />
+                <copy
+                  file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/aix/ppc64/karaf-wrapper"
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-aix-ppc-64" />
 
-                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/hpux/parisc64/libwrapper.sl" tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-hpux-parisc-64.sl" />
-                <copy file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/hpux/parisc64/karaf-wrapper" tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-hpux-parisc-64" />
+                <copy
+                  file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/hpux/parisc64/libwrapper.sl"
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/lib/libwrapper-hpux-parisc-64.sl" />
+                <copy
+                  file="${project.build.directory}/dependency/karaf-jsw-binaries/org/apache/karaf/shell/wrapper/hpux/parisc64/karaf-wrapper"
+                  tofile="${project.build.directory}/dependency/wrapper-delta-pack-3.2.3/bin/wrapper-hpux-parisc-64" />
 
               </target>
             </configuration>
