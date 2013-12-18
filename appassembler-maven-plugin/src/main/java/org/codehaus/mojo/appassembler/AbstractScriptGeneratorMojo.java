@@ -129,7 +129,7 @@ public abstract class AbstractScriptGeneratorMojo
     protected boolean generateRepository;
 
     /**
-     * The name of the target directory for configuration files.
+     * The name of the target directory for configuration files. Prior to version 1.7 this value defaults to 'conf' for assemble goal and 'etc' for generate-daemons
      *
      * @parameter default-value="etc"
      */
@@ -147,7 +147,7 @@ public abstract class AbstractScriptGeneratorMojo
      * If the source configuration directory should be copied to the configured <code>configurationDirectory</code>.
      *
      * @parameter default-value="false"
-     * @since 1.1
+     * @since 1.1 (assemble), 1.7 (generate-daemons)
      */
     protected boolean copyConfigurationDirectory;
 
