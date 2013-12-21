@@ -24,6 +24,8 @@ package org.codehaus.mojo.appassembler.daemon.jsw;
  * SOFTWARE.
  */
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -54,8 +56,6 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.InterpolationFilterReader;
-import org.codehaus.plexus.util.StringInputStream;
-import org.codehaus.plexus.util.StringOutputStream;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -247,10 +247,10 @@ public class JavaServiceWrapperDaemonGenerator
             }
         }
 
-        StringOutputStream string = new StringOutputStream();
+        ByteArrayOutputStream string = new ByteArrayOutputStream();
         confFile.save( string );
 
-        Reader reader = new InputStreamReader( new StringInputStream( string.toString() ) );
+        Reader reader = new InputStreamReader( new ByteArrayInputStream( string.toByteArray() ) );
 
         File wrapperConf = new File( outputDirectory, daemon.getConfigurationDirectory() + "/" + getWrapperConfigFileName( daemon ) );
         writeFilteredFile( request, daemon, reader, wrapperConf, context );
