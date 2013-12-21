@@ -17,7 +17,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <!--  This dependency is only added to get the version in the verify.groovy scropt 
+  <!--  This dependency is only added to get the version in the verify.groovy scropt
   of the current build artifacts. -->
   <dependencies>
     <dependency>
@@ -45,7 +45,7 @@
         <configuration>
           <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
           <!--  This configuration must fail, cause the repositoryLayout has not been set to flat. -->
-          <useAsterikClassPath>true</useAsterikClassPath>
+          <useWildcardClassPath>true</useWildcardClassPath>
           <assembleDirectory>${project.build.directory}/appassembler</assembleDirectory>
           <configurationDirectory>config</configurationDirectory>
           <extraJvmArguments>-Xms16m</extraJvmArguments>

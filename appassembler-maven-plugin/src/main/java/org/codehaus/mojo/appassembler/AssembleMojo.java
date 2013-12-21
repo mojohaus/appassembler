@@ -53,7 +53,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Assembles the artifacts and generates bin scripts for the configured applications
- * 
+ *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
  * @version $Id$
  * @goal assemble
@@ -70,7 +70,7 @@ public class AssembleMojo
 
     /**
      * The directory that will be used to assemble the artifacts in and place the bin scripts.
-     * 
+     *
      * @required
      * @parameter expression="${assembleDirectory}" default-value="${project.build.directory}/appassembler"
      */
@@ -79,13 +79,13 @@ public class AssembleMojo
     /**
      * The file extensions to use for bin files. The file extensions are stored in a Map that uses the platform name as
      * key. To change the file extension for Unix bin files to ".sh" use this configuration:
-     * 
+     *
      * <pre>
      *          &lt;binFileExtensions&gt;
      *            &lt;unix&gt;.sh&lt;/unix&gt;
      *          &lt;/binFileExtensions&gt;
      * </pre>
-     * 
+     *
      * @parameter
      * @since 1.1
      */
@@ -93,7 +93,7 @@ public class AssembleMojo
 
     /**
      * Define the name of binary folder.
-     * 
+     *
      * @parameter default-value="bin"
      * @since 1.2
      */
@@ -108,7 +108,7 @@ public class AssembleMojo
      * extraJvmArguments not for the rest of the {@link JvmSettings#}. Since 1.2 it's possible to use place holders
      * <code>@BASEDIR@</code> and <code>@REPO@</code> which will be expanded based on the platform for which the
      * appropriate scripts will be generated.
-     * 
+     *
      * @parameter
      */
     private String extraJvmArguments;
@@ -116,7 +116,7 @@ public class AssembleMojo
     /**
      * If the <code>configurationDirectory</code> (<code>etc</code> by default) should be included in the beginning of
      * the classpath in the generated bin files.
-     * 
+     *
      * @parameter default-value="true"
      */
     private boolean includeConfigurationDirectoryInClasspath;
@@ -124,14 +124,14 @@ public class AssembleMojo
     /**
      * The default platforms the plugin will generate bin files for. Configure with string values - "all"(default/empty)
      * | "windows" | "unix".
-     * 
+     *
      * @parameter
      */
     private Set platforms;
 
     /**
      * The set of Programs that bin files will be generated for.
-     * 
+     *
      * @required
      * @parameter
      */
@@ -141,7 +141,7 @@ public class AssembleMojo
      * This can be used to put the project artifact as the first entry in the classpath after the configuration folder (
      * <code>etc</code> by default). The default behavior is to have the project artifact at the last position in
      * classpath.
-     * 
+     *
      * @since 1.2.1
      * @parameter default-value="false"
      */
@@ -149,7 +149,7 @@ public class AssembleMojo
 
     /**
      * Path (relative to <code>assembleDirectory</code>) of the desired output repository.
-     * 
+     *
      * @parameter default-value="repo"
      */
     private String repositoryName;
@@ -157,43 +157,19 @@ public class AssembleMojo
     /**
      * Show console window when execute this application. When false, the generated java command runs in background.
      * This works best for Swing application where the command line invocation is not blocked.
-     * 
+     *
      * @parameter default-value="true"
      */
     private boolean showConsoleWindow;
 
     /**
-     * The following can be used to use all dependencies instead of the default behavior which represents runtime
-     * dependencies only.
-     * 
-     * @since 1.2.1
-     * @parameter default-value="false"
-     * @deprecated Use <code>useAllProjectDependencies</code> instead otherwise your build will fail.
-     */
-    private boolean useAllDependencies;
-
-    /**
      * The following can be used to use all project dependencies instead of the default behavior which represents
      * <code>runtime</code> dependencies only.
-     * 
+     *
      * @since 1.2.3
      * @parameter default-value="false"
      */
     private boolean useAllProjectDependencies;
-
-    /**
-     * Sometimes it happens that you have many dependencies which means in other words having a very long classpath. And
-     * sometimes the classpath becomes too long (in particular on Windows based platforms). This option can help in such
-     * situation. If you activate that your classpath contains only a <a href=
-     * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html" >classpath wildcard</a> (REPO/*).
-     * But be aware that this works only in combination with Java 1.6 and with {@link #repositoryLayout}
-     * <code>flat</code>. Otherwise this configuration will not work.
-     * 
-     * @since 1.2.2
-     * @parameter default-value="false"
-     * @deprecated Use <code>useWildcardClassPath</code> instead otherwise your build will fail.
-     */
-    private boolean useAsterikClassPath;
 
     // -----------------------------------------------------------------------
     // Components
@@ -259,21 +235,11 @@ public class AssembleMojo
     public void checkDeprecatedParameterAndFailIfOneOfThemIsUsed()
         throws MojoExecutionException
     {
-        if ( useAsterikClassPath )
-        {
-            throw new MojoExecutionException( "The useAsterikClassPath has been marked as deprecated since version 1.4" );
-        }
-
-        if ( useAllDependencies )
-        {
-            throw new MojoExecutionException(
-                                              "The useAllDependencies has been marked as deprecated since version 1.3.1" );
-        }
     }
 
     /**
      * calling from Maven.
-     * 
+     *
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      * @throws {@link MojoExecutionException}
      * @throws {@link MojoFailureException}
@@ -435,8 +401,7 @@ public class AssembleMojo
         // TODO: This should be done in a more elegant way for 2.0
         // TODO: Check if the classpath wildcard could be used for Daemons as well?
 
-        // TODO: Remove the isUseAsterikClassPath with release 1.3 ?
-        if ( useAsterikClassPath || useWildcardClassPath )
+        if ( useWildcardClassPath )
         {
             Dependency dependency = new Dependency();
             dependency.setGroupId( "" );
@@ -556,7 +521,7 @@ public class AssembleMojo
 
     /**
      * This will tokenize the given argument or give the extraJvmArguments back if the given argument is empty.
-     * 
+     *
      * @param arg The argument to parse.
      * @return List of arguments.
      */

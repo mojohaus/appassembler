@@ -36,7 +36,7 @@ t = new IntegrationBase();
  */
  def getProjectVersion() {
     def pom = new XmlSlurper().parse(new File(basedir, 'pom.xml'))
-    
+
     def allPlugins = pom.build.plugins
 
     def dependencies = allPlugins.plugin
@@ -47,7 +47,7 @@ t = new IntegrationBase();
 
    return appassemblerModule.version;
 }
- 
+
 def projectVersion = getProjectVersion();
 
 def buildLog = new File( basedir, "build.log")
@@ -75,19 +75,5 @@ def getMavenVersion(buildLog) {
 
 def mavenVersion = getMavenVersion(buildLog)
 
-//This is really needed, cause the output of Maven 3.X and Maven 2.2.1 are different.
-//But we have to check if the correct exceptions are printed out.
-
-if (mavenVersion.equals("3.0.4") || mavenVersion.equals("3.0.5") || mavenVersion.equals( "3.1.0" ) || mavenVersion.equals( "3.1.1" )) {
-    t.checkExistenceAndContentOfAFile(buildLog, [
-      '[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project systemDependency-test: The useAllDependencies has been marked as deprecated since version 1.3.1 -> [Help 1]',
-      'org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project systemDependency-test: The useAllDependencies has been marked as deprecated since version 1.3.1',
-    ])
-} else {
-    t.checkExistenceAndContentOfAFile(buildLog, [
-        'org.apache.maven.lifecycle.LifecycleExecutionException: The useAllDependencies has been marked as deprecated since version 1.3.1',
-        'Caused by: org.apache.maven.plugin.MojoExecutionException: The useAllDependencies has been marked as deprecated since version 1.3.1',
-    ])
-}
-
+// this test does nothing, should we remove it from the suite?
 return true;

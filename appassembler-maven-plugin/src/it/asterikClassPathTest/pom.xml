@@ -34,7 +34,7 @@
         <configuration>
           <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
           <repositoryLayout>flat</repositoryLayout>
-          <useAsterikClassPath>true</useAsterikClassPath>
+          <useWildcardClassPath>true</useWildcardClassPath>
           <assembleDirectory>${project.build.directory}/appassembler</assembleDirectory>
           <configurationDirectory>config</configurationDirectory>
           <extraJvmArguments>-Xms16m</extraJvmArguments>

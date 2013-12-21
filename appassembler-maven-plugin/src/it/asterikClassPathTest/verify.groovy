@@ -29,8 +29,8 @@ import java.util.*
 t = new IntegrationBase()
 
 /**
- * This will filter out the version of the 
- * appassembler-maven-plugin whcih is configured 
+ * This will filter out the version of the
+ * appassembler-maven-plugin whcih is configured
  * within the integration test.
  * @return Version information.
  */
@@ -76,18 +76,6 @@ def getMavenVersion(buildLog) {
 }
 
 def mavenVersion = getMavenVersion(buildLog)
-
-if (mavenVersion.equals("3.0.4") || mavenVersion.equals("3.0.5") || mavenVersion.equals( "3.1.0" ) || mavenVersion.equals( "3.1.1" )) {
-    t.checkExistenceAndContentOfAFile(buildLog, [
-        '[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project asterikClassPath-test: The useAsterikClassPath has been marked as deprecated since version 1.4 -> [Help 1]',
-        'org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project asterikClassPath-test: The useAsterikClassPath has been marked as deprecated since version 1.4',
-    ])
-} else {
-    t.checkExistenceAndContentOfAFile(buildLog, [
-        'Caused by: org.apache.maven.plugin.MojoExecutionException: The useAsterikClassPath has been marked as deprecated since version 1.4',
-        'org.apache.maven.lifecycle.LifecycleExecutionException: The useAsterikClassPath has been marked as deprecated since version 1.4',
-    ])
-}
 
 def targetFolder = new File( basedir, "target")
 
