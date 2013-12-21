@@ -48,15 +48,16 @@ def fileConfFolder = new File( daemonFolder, "conf");
 def wrapperConfFile = new File( fileConfFolder, "wrapper.conf" );
 
 t.checkExistenceAndContentOfAFile(wrapperConfFile, [
-    'wrapper.java.classpath.1=lib/wrapper.jar',
+    'set.default.REPO_DIR=newLib',
+    'wrapper.java.classpath.1=newLib/wrapper.jar',
     'wrapper.java.classpath.2=%REPO_DIR%/daemonMultipleTest-1.0-SNAPSHOT.jar',
     'wrapper.java.classpath.3=%REPO_DIR%/log4j-1.2.14.jar',
-    'wrapper.java.library.path.1=lib',
+    'wrapper.java.library.path.1=newLib',
     'wrapper.java.additional.1=-Dtest=this',
     'wrapper.java.additional.2=-Dxyz=those',
     'wrapper.java.additional.3=-DTest',
     'wrapper.java.additional.4=-DXXX',
-    
+
 ])
 
 return true;

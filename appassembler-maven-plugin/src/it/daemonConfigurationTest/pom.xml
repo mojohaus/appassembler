@@ -40,8 +40,7 @@
         <configuration>
           <repositoryLayout>flat</repositoryLayout>
           <configurationDirectory>conf</configurationDirectory>
-          <!-- The following can be given but will not change anything! -->
-<!--           <repositoryName>newLib</repositoryName> -->
+          <repositoryName>newLib</repositoryName>
           <daemons>
             <daemon>
               <id>daemon-1</id>

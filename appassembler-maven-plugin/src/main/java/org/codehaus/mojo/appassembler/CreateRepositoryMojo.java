@@ -47,7 +47,7 @@ import org.apache.maven.plugin.MojoFailureException;
 /**
  * Creates an appassembler repository. Note that this is deliberately a bit more specific than the assembly plugin
  * version - if that could generate a flat layout and exclude JARs, it may be a suitable replacement.
- * 
+ *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
  * @version $Id$
  * @goal create-repository
@@ -64,7 +64,7 @@ public class CreateRepositoryMojo
 
     /**
      * The directory that will be used to assemble the artifacts in and place the bin scripts.
-     * 
+     *
      * @required
      * @parameter expression="${project.build.directory}/appassembler"
      */
@@ -73,24 +73,14 @@ public class CreateRepositoryMojo
     /**
      * Whether to install the booter artifacts into the repository. This may be needed if you are using the Shell script
      * generators.
-     * 
+     *
      * @parameter default-value="false"
      */
     private boolean installBooterArtifacts;
 
     /**
-     * The directory that will be used for the dependencies, relative to <code>assembleDirectory</code>.
-     * 
-     * @required
-     * @parameter default-value="repo"
-     * @deprecated Use <code>repositoryName</code> instead.
-     * @todo customisation doesn't work due to the shell scripts not honouring it
-     */
-    private String repoPath;
-
-    /**
      * Path (relative to <code>assembleDirectory</code>) of the desired output repository.
-     * 
+     *
      * @parameter default-value="repo"
      * @since 1.3.1
      * @todo Customization doesn't work due to the shell scripts not honouring it
@@ -132,7 +122,7 @@ public class CreateRepositoryMojo
 
     /**
      * calling from Maven.
-     * 
+     *
      * @see org.apache.maven.plugin.AbstractMojo#execute()
      */
     public void execute()
@@ -150,16 +140,7 @@ public class CreateRepositoryMojo
 
         StringBuffer path = new StringBuffer( "file://" + assembleDirectory.getAbsolutePath() + "/" );
 
-        // If repositoryName is configured to anything but the default value - use it
-        if ( !"repo".equals( repositoryName ) )
-        {
-            path.append( repositoryName );
-        }
-        else
-        {
-            // Fall back to deprecated parameter for backwards compatibility
-            path.append( repoPath );
-        }
+        path.append( repositoryName );
 
         ArtifactRepository artifactRepository =
             artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", path.toString(),
