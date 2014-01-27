@@ -36,7 +36,12 @@ Simple example
   generated with:
 
 +--------------------------
-mvn archetype:create -DgroupId=com.mycompany.app -DartifactId=my-app
+mvn archetype:generate \
+  -DarchetypeGroupId=org.apache.maven.archetypes \
+  -DarchetypeArtifactId=maven-archetype-quickstart \
+  -DgroupId=com.mycompany.app \
+  -DartifactId=my-app \
+  -Dversion=1.0-SNAPSHOT
 +--------------------------
 
   Configuring the plugin in <<<pom.xml>>>:
