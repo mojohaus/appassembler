@@ -45,5 +45,9 @@
       <groupId>org.codehaus.mojo.appassembler</groupId>
       <artifactId>appassembler-model</artifactId>
     </dependency>
+    <dependency>
+      <groupId>stax</groupId>
+      <artifactId>stax-api</artifactId>
+    </dependency>
   </dependencies>
 </project>
