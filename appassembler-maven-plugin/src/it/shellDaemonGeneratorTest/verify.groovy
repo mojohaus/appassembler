@@ -69,14 +69,15 @@ def unix_line = [
     '"\$REPO"/stax/stax/1.1.1-dev/stax-1.1.1-dev.jar', 
     '"\$REPO"/junit/junit/3.8.1/junit-3.8.1.jar', 
     '"\$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/shellDaemonGeneratorTest/1.0-SNAPSHOT/shellDaemonGeneratorTest-1.0-SNAPSHOT.jar',
-].join(":")
+]
 
 // Check the existence of the generated unix script
-def unixScriptFile = new File( fileBinFolder, "app" );
+File unixScriptFile = new File( fileBinFolder, "app" );
+assert unixScriptFile.exists()
 
-t.checkExistenceAndContentOfAFile(unixScriptFile, [
-    unix_line
-])
+unix_line.each {
+    line -> assert unixScriptFile.getText().count( line ) == 1;
+}
 
 def windows_line = [
     'set CLASSPATH="%BASEDIR%"\\etc', 
@@ -88,14 +89,15 @@ def windows_line = [
     '"%REPO%"\\stax\\stax\\1.1.1-dev\\stax-1.1.1-dev.jar', 
     '"%REPO%"\\junit\\junit\\3.8.1\\junit-3.8.1.jar', 
     '"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\shellDaemonGeneratorTest\\1.0-SNAPSHOT\\shellDaemonGeneratorTest-1.0-SNAPSHOT.jar',
-].join(";")
+]
 
 // Check the existence of the generated windows batch file.
-def windowsBatchFile = new File( fileBinFolder, "app.bat" );
+File windowsBatchFile = new File( fileBinFolder, "app.bat" );
+assert windowsBatchFile.exists()
 
-t.checkExistenceAndContentOfAFile(windowsBatchFile, [
-    windows_line
-])
+windows_line.each {
+    line -> assert windowsBatchFile.getText().count( line ) == 1;
+}
 
 
 return true;
