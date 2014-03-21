@@ -43,7 +43,7 @@ def configurationFile = new File( configurationDirectory, "config.txt" );
 
 // Verify that the content is unfiltered and that encoding is working
 t.checkExistenceAndContentOfAFile( configurationFile, [
-        "This contains filtered values like \${project.name} and \${customProperty}",
+        "This contains filtered values like \${project.version} and \${customProperty}",
         "Here are some characters that require a correct encoding to work åäö",
 ] )
 

@@ -23,5 +23,5 @@
 #
 
 This is a simple message
-This contains filtered values like ${project.name} and ${customProperty}
+This contains filtered values like ${project.version} and ${customProperty}
 Here are some characters that require a correct encoding to work åäö
