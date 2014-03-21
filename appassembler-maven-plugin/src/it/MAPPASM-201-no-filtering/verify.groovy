@@ -22,30 +22,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import java.io.*
 
-class IntegrationBase {
-    void checkExistenceAndContentOfAFile( file, contents ) {
-        if ( !file.canRead() ) {
-            throw new FileNotFoundException( "Could not find the file '" + file + "'." );
-        }
+t = new IntegrationBase()
 
-        def lines_to_check_in_unix_script_marker = [:];
-        ( 0..contents.size() ).each { index ->
-            lines_to_check_in_unix_script_marker[index] = false
-        }
+// The folder where we expect to find content copied from src/main/config
+def configurationDirectory = new File( basedir, "target/appassembler/etc" );
 
-        file.eachLine { file_content, file_line ->
-            contents.eachWithIndex { contents_expected, index ->
-                if ( file_content.equals( contents_expected ) ) {
-                    lines_to_check_in_unix_script_marker[index] = true;
-                }
-            }
-        }
-
-        contents.eachWithIndex { value, index ->
-            if ( lines_to_check_in_unix_script_marker[index] == false ) {
-              throw new Exception( "The expected content '" + contents[index] + "' in the file '" + file + "' couldn't be found." );
-            }
-        }
-    }
+if ( !configurationDirectory.canRead() ) {
+    throw new FileNotFoundException( "Could not find the generated etc folder '" + configurationDirectory + "'." );
 }
+
+def emptyDirectory = new File( configurationDirectory, "emptyDirectory" );
+
+if ( !emptyDirectory.canRead() ) {
+    throw new FileNotFoundException( "Could not find the empty directory '" + emptyDirectory + "'." );
+}
+
+def configurationFile = new File( configurationDirectory, "config.txt" );
+
+// Verify that the content is unfiltered and that encoding is working
+t.checkExistenceAndContentOfAFile( configurationFile, [
+        "This contains filtered values like \${project.name} and \${customProperty}",
+        "Here are some characters that require a correct encoding to work åäö",
+] )
+
+return true;
