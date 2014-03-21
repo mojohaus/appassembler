@@ -24,17 +24,22 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.filtering.MavenFilteringException;
+import org.apache.maven.shared.filtering.MavenResourcesExecution;
+import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
-import org.codehaus.mojo.appassembler.util.FileFilterHelper;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -161,6 +166,50 @@ public abstract class AbstractScriptGeneratorMojo
      */
     protected String endorsedDir;
 
+    /**
+     * Project build filters.
+     *
+     * @parameter expression="${project.build.filters}"
+     * @readonly
+     * @since 1.8
+     */
+    protected List buildFilters;
+
+    /**
+     * The character encoding scheme to be applied when filtering the source
+     * configuration directory.
+     * 
+     * @parameter expression="${project.build.sourceEncoding}"
+     * @since 1.8
+     */
+    protected String encoding;
+
+    /**
+     * Expressions preceded with this String won't be interpolated.
+     * <code>\${foo}</code> will be replaced with <code>${foo}</code>.
+     *
+     * @parameter
+     * @since 1.8
+     */
+    protected String escapeString;
+
+    /**
+     * If the source configuration directory should be filtered when copied to
+     * the configured <code>configurationDirectory</code>.
+     *
+     * @parameter default-value="false"
+     * @since 1.8
+     */
+    protected boolean filterConfigurationDirectory;
+
+    /**
+     * @parameter expression="${session}"
+     * @readonly
+     * @required
+     * @since 1.8
+     */
+    private MavenSession session;
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -169,6 +218,15 @@ public abstract class AbstractScriptGeneratorMojo
      * @component
      */
     protected DaemonGeneratorService daemonGeneratorService;
+
+    /**
+     * The filtering component used when copying the source configuration
+     * directory.
+     * 
+     * @component role="org.apache.maven.shared.filtering.MavenResourcesFiltering" roleHint="default"
+     * @since 1.8
+     */
+    protected MavenResourcesFiltering mavenResourcesFiltering;
 
     protected void doCopyConfigurationDirectory( final String targetDirectory )
         throws MojoFailureException
@@ -181,31 +239,43 @@ public abstract class AbstractScriptGeneratorMojo
 
         getLog().debug( "copying configuration directory." );
 
-        File configurationTargetDirectory = new File( targetDirectory, configurationDirectory );
+        // Create a Resource from the configuration source directory
+        Resource resource = new Resource();
+        resource.setDirectory( configurationSourceDirectory.getAbsolutePath() );
+        resource.setFiltering( filterConfigurationDirectory );
+        resource.setTargetPath( configurationDirectory );
+        List resources = new ArrayList();
+        resources.add( resource );
 
-        if ( !configurationTargetDirectory.exists() )
-        {
-            // Create (if necessary) target directory for configuration files
-            boolean success = configurationTargetDirectory.mkdirs();
+        MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution( resources,
+                                                                                       new File( targetDirectory ),
+                                                                                       mavenProject, encoding,
+                                                                                       buildFilters,
+                                                                                       Collections.emptyList(),
+                                                                                       session );
 
-            if ( !success )
-            {
-                throw new MojoFailureException( "Failed to create the target directory for configuration files: "
-                    + configurationTargetDirectory.getAbsolutePath() );
-            }
-        }
+        mavenResourcesExecution.setEscapeString( escapeString );
+        // Include empty directories, to be backwards compatible
+        mavenResourcesExecution.setIncludeEmptyDirs( true );
+        mavenResourcesExecution.setUseDefaultFilterWrappers( true );
+
+        // @todo Possible future enhancements
+        // mavenResourcesExecution.setEscapedBackslashesInFilePath( escapedBackslashesInFilePath );
+        // mavenResourcesExecution.setOverwrite( overwrite );
+        // mavenResourcesExecution.setSupportMultiLineFiltering( supportMultiLineFiltering );
+
         try
         {
             getLog().debug( "Will try to copy configuration files from "
                                 + configurationSourceDirectory.getAbsolutePath() + " to "
-                                + configurationTargetDirectory.getAbsolutePath() );
+                                + targetDirectory + FileUtils.FS + configurationDirectory );
 
-            FileUtils.copyDirectory( configurationSourceDirectory, configurationTargetDirectory,
-                                     FileFilterHelper.createDefaultFilter() );
+            // Use a MavenResourcesFiltering component to filter and copy the configuration files
+            mavenResourcesFiltering.filterResources( mavenResourcesExecution );
         }
-        catch ( IOException e )
+        catch ( MavenFilteringException mfe )
         {
-            throw new MojoFailureException( "Failed to copy the configuration files." );
+            throw new MojoFailureException( "Failed to copy/filter the configuration files." );
         }
     }
 
@@ -233,5 +303,4 @@ public abstract class AbstractScriptGeneratorMojo
             installArtifact( projectArtifact, artifactRepository );
         }
     }
-
 }
