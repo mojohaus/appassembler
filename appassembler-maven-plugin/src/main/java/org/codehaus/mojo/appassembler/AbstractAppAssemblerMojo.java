@@ -92,7 +92,7 @@ public abstract class AbstractAppAssemblerMojo
     // Read-only parameters
     // -----------------------------------------------------------------------
 
-    @Parameter( property = "localRepository", readonly = true )
+    @Parameter( defaultValue = "${localRepository}", readonly = true )
     protected ArtifactRepository localRepository;
 
     @Parameter( defaultValue = "${project.artifact}", readonly = true )
