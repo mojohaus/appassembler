@@ -43,6 +43,11 @@ import org.apache.maven.artifact.resolver.filter.ExcludesArtifactFilter;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
  * Creates an appassembler repository. Note that this is deliberately a bit more specific than the assembly plugin
@@ -50,11 +55,8 @@ import org.apache.maven.plugin.MojoFailureException;
  *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
  * @version $Id$
- * @goal create-repository
- * @requiresDependencyResolution runtime
- * @phase package
- * @threadSafe
  */
+@Mojo( name = "create-repository", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true )
 public class CreateRepositoryMojo
     extends AbstractAppAssemblerMojo
 {
@@ -64,56 +66,47 @@ public class CreateRepositoryMojo
 
     /**
      * The directory that will be used to assemble the artifacts in and place the bin scripts.
-     *
-     * @required
-     * @parameter expression="${project.build.directory}/appassembler"
      */
+    @Parameter( defaultValue = "${project.build.directory}/appassembler", required = true )
     private File assembleDirectory;
 
     /**
      * Whether to install the booter artifacts into the repository. This may be needed if you are using the Shell script
      * generators.
-     *
-     * @parameter default-value="false"
      */
+    @Parameter( defaultValue = "false" )
     private boolean installBooterArtifacts;
 
     /**
      * Path (relative to <code>assembleDirectory</code>) of the desired output repository.
      *
-     * @parameter default-value="repo"
      * @since 1.3.1
      * @todo Customization doesn't work due to the shell scripts not honouring it
      */
+    @Parameter( defaultValue = "repo" )
     private String repositoryName;
 
     // -----------------------------------------------------------------------
     // Read-only parameters
     // -----------------------------------------------------------------------
 
-    /**
-     * @readonly
-     * @parameter expression="${project.artifacts}"
-     */
+    @Parameter( defaultValue = "${project.artifacts}", readonly = true )
     private Set artifacts;
 
-    /**
-     * @readonly
-     * @parameter expression="${plugin.version}"
-     */
+    @Parameter( defaultValue = "${plugin.version}", readonly = true )
     private String pluginVersion;
 
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
 
-    /** @component */
+    @Component
     private ArtifactFactory artifactFactory;
 
-    /** @component */
+    @Component
     private ArtifactResolver artifactResolver;
 
-    /** @component */
+    @Component
     private ArtifactMetadataSource metadataSource;
 
     // -----------------------------------------------------------------------

@@ -34,6 +34,10 @@ import java.util.Set;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.plexus.util.StringUtils;
@@ -43,11 +47,8 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
- * @goal generate-daemons
- * @requiresDependencyResolution runtime
- * @phase package
- * @threadSafe
  */
+@Mojo( name = "generate-daemons", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true )
 public class GenerateDaemonsMojo
     extends AbstractScriptGeneratorMojo
 {
@@ -58,50 +59,43 @@ public class GenerateDaemonsMojo
 
     /**
      * The base directory of the project.
-     *
-     * @parameter expression="${basedir}"
-     * @required
      */
+    @Parameter( defaultValue = "${basedir}", required = true )
     private File basedir;
 
     /**
      * Set of {@linkplain Daemon}s to generate.
-     *
-     * @parameter
-     * @required
      */
+    @Parameter( required = true )
     private Set daemons;
 
     /**
      * {@linkplain JvmSettings} describing min/max memory and stack size, system properties and extra arguments.
-     *
-     * @parameter
      */
+    @Parameter
     private JvmSettings defaultJvmSettings;
 
     /**
      * Path (relative to <code>assembleDirectory</code>) of the desired output repository.
      *
-     * @parameter default-value="lib"
      * @since 1.5
      * @todo Synchronize the default value with the other mojos in 2.0
      */
+    @Parameter( defaultValue = "lib" )
     private String repositoryName;
 
     /**
      * Target directory for generated daemons.
-     *
-     * @parameter default-value="${project.build.directory}/generated-resources/appassembler"
-     * @required
      */
+    @Parameter( defaultValue = "${project.build.directory}/generated-resources/appassembler", required = true )
     private File target;
 
     /**
      * When enable, name wrapper configuration file as wrapper-${daemon.id}.conf
      *
-     * @parameter default-value="false"
      * @since 1.3
      */
+    @Parameter( defaultValue = "false" )
     private boolean useDaemonIdAsWrapperConfName;
 
     /**
@@ -109,16 +103,16 @@ public class GenerateDaemonsMojo
      * version to a known location set by this option
      *
      * @since 1.4.0
-     * @parameter expression="${externalDeltaPackDirectory}"
      */
+    @Parameter( property = "externalDeltaPackDirectory" )
     private File externalDeltaPackDirectory;
 
     /**
      * Use this option to pre insert a content of a known file into the generated wrapper config file. For example: $include ../conf/another-wrapper.conf
      *
      * @since 1.7.0
-     * @parameter expression="${preWrapperConf}"
      */
+    @Parameter( property = "preWrapperConf" )
     private File preWrapperConf;
 
 

@@ -34,6 +34,8 @@ import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.mapping.MappingUtils;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
@@ -65,51 +67,42 @@ public abstract class AbstractAppAssemblerMojo
      * ignored.
      * </p>
      * 
-     * @parameter
      * @since 1.5
      */
+    @Parameter
     protected String outputFileNameMapping;
 
     /**
      * The layout of the generated Maven repository. Supported types - "default" (Maven2) | "legacy" (Maven1) | "flat"
      * (flat <code>lib/</code> style). The style "legacy" is only supported if you are running under Maven 2.2.1 and
      * before.
-     * 
-     * @parameter default-value="default"
      */
+    @Parameter( defaultValue = "default" )
     protected String repositoryLayout;
 
     /**
      * For those snapshots downloaded from a remote repo, replace the timestamp part with "SNAPSHOT" instead.
      * 
-     * @parameter default-value="true"
      * @since 1.2.3 (create-repository), 1.3 (assemble and generate-daemons)
      */
+    @Parameter( defaultValue = "true" )
     protected boolean useTimestampInSnapshotFileName;
 
     // -----------------------------------------------------------------------
     // Read-only parameters
     // -----------------------------------------------------------------------
 
-    /**
-     * @readonly
-     * @parameter expression="${localRepository}"
-     */
+    @Parameter( property = "localRepository", readonly = true )
     protected ArtifactRepository localRepository;
 
-    /**
-     * @readonly
-     * @parameter expression="${project.artifact}"
-     */
+    @Parameter( defaultValue = "${project.artifact}", readonly = true )
     protected Artifact projectArtifact;
 
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
 
-    /**
-     * @component
-     */
+    @Component
     protected ArtifactRepositoryFactory artifactRepositoryFactory;
 
     // ----------------------------------------------------------------------

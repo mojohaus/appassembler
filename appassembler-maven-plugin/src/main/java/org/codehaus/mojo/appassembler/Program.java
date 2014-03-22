@@ -27,6 +27,7 @@ package org.codehaus.mojo.appassembler;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
@@ -43,41 +44,39 @@ public class Program
 
     /**
      * Extra arguments which will be given the Main Class as arguments verbatim.
-     * 
-     * @parameter
      */
+    @Parameter
     private List commandLineArguments;
 
     /**
      * The License header which can be used instead of the default header.
      * 
-     * @parameter
      * @since 1.2
      */
+    @Parameter
     private File licenseHeaderFile;
 
     /**
      * Define the name of binary folder.
      * 
-     * @parameter default-value="bin"
      * @since 1.2
      */
+    @Parameter( defaultValue = "bin" )
     private File binFolder;
 
     /**
      * JvmSettings for every program.
      * 
-     * @parameter
      * @since 1.2
      */
+    @Parameter
     private org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings;
 
     /**
      * The platforms the plugin will generate bin files for. Configure with string values - "all"(default/empty) |
      * "windows" | "unix".
-     * 
-     * @parameter
      */
+    @Parameter
     private Set platforms;
 
     /**

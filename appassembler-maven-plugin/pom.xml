@@ -99,6 +99,14 @@
       <artifactId>maven-artifact</artifactId>
       <version>${maven.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>3.2</version>
+      <!-- annotations are not needed for plugin execution so you can remove this dependency
+           from execution by using provided scope -->
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   
   <build>
@@ -187,8 +195,25 @@
           </execution>
         </executions>
       </plugin>
-
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.2</version>
+        <configuration>
+          <!-- see http://jira.codehaus.org/browse/MNG-5346 -->
+          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+        </configuration>
+        <executions>
+          <execution>
+            <id>mojo-descriptor</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
+
     <resources>
       <resource>
         <directory>target/dependency/wrapper-delta-pack-3.2.3/src/conf</directory>

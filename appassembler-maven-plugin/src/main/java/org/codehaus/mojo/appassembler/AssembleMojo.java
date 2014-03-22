@@ -39,6 +39,10 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.script.Platform;
@@ -56,11 +60,8 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
  * @version $Id$
- * @goal assemble
- * @requiresDependencyResolution runtime
- * @phase package
- * @threadSafe
  */
+@Mojo( name = "assemble", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true )
 public class AssembleMojo
     extends AbstractScriptGeneratorMojo
 {
@@ -70,10 +71,8 @@ public class AssembleMojo
 
     /**
      * The directory that will be used to assemble the artifacts in and place the bin scripts.
-     *
-     * @required
-     * @parameter expression="${assembleDirectory}" default-value="${project.build.directory}/appassembler"
      */
+    @Parameter( property = "assembleDirectory", defaultValue = "${project.build.directory}/appassembler", required = true )
     private File assembleDirectory;
 
     /**
@@ -86,17 +85,17 @@ public class AssembleMojo
      *          &lt;/binFileExtensions&gt;
      * </pre>
      *
-     * @parameter
      * @since 1.1
      */
+    @Parameter
     protected Map/* <String, String> */binFileExtensions;
 
     /**
      * Define the name of binary folder.
      *
-     * @parameter default-value="bin"
      * @since 1.2
      */
+    @Parameter( defaultValue = "bin" )
     private String binFolder;
 
     /**
@@ -108,33 +107,28 @@ public class AssembleMojo
      * extraJvmArguments not for the rest of the {@link JvmSettings#}. Since 1.2 it's possible to use place holders
      * <code>@BASEDIR@</code> and <code>@REPO@</code> which will be expanded based on the platform for which the
      * appropriate scripts will be generated.
-     *
-     * @parameter
      */
+    @Parameter
     private String extraJvmArguments;
 
     /**
      * If the <code>configurationDirectory</code> (<code>etc</code> by default) should be included in the beginning of
      * the classpath in the generated bin files.
-     *
-     * @parameter default-value="true"
      */
+    @Parameter( defaultValue = "true" )
     private boolean includeConfigurationDirectoryInClasspath;
 
     /**
      * The default platforms the plugin will generate bin files for. Configure with string values - "all"(default/empty)
      * | "windows" | "unix".
-     *
-     * @parameter
      */
+    @Parameter
     private Set platforms;
 
     /**
      * The set of Programs that bin files will be generated for.
-     *
-     * @required
-     * @parameter
      */
+    @Parameter( required = true )
     private Set programs;
 
     /**
@@ -143,23 +137,21 @@ public class AssembleMojo
      * classpath.
      *
      * @since 1.2.1
-     * @parameter default-value="false"
      */
+    @Parameter( defaultValue = "false" )
     private boolean projectArtifactFirstInClassPath;
 
     /**
      * Path (relative to <code>assembleDirectory</code>) of the desired output repository.
-     *
-     * @parameter default-value="repo"
      */
+    @Parameter( defaultValue = "repo" )
     private String repositoryName;
 
     /**
      * Show console window when execute this application. When false, the generated java command runs in background.
      * This works best for Swing application where the command line invocation is not blocked.
-     *
-     * @parameter default-value="true"
      */
+    @Parameter( defaultValue = "true" )
     private boolean showConsoleWindow;
 
     /**
@@ -167,8 +159,8 @@ public class AssembleMojo
      * <code>runtime</code> dependencies only.
      *
      * @since 1.2.3
-     * @parameter default-value="false"
      */
+    @Parameter( defaultValue = "false" )
     private boolean useAllProjectDependencies;
 
     // -----------------------------------------------------------------------

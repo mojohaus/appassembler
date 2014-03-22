@@ -30,6 +30,8 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
@@ -65,26 +67,26 @@ public abstract class AbstractScriptGeneratorMojo
      * wrapper.conf's properties. See http://wrapper.tanukisoftware.com/doc/english/props-command-line.html for details.
      * </p>
      *
-     * @parameter
      * @since 1.2.3 (generate-daemons)
      */
+    @Parameter
     protected String environmentSetupFileName;
 
     /**
      * You can define a license header file which will be used instead the default header in the generated scripts.
      *
-     * @parameter
      * @since 1.2
      */
+    @Parameter
     protected File licenseHeaderFile;
 
     /**
      * The unix template of the generated script. It can be a file or resource path. If not given, an internal one is
      * used. Use with care since it is not guaranteed to be compatible with new plugin release.
      *
-     * @parameter expression="${unixScriptTemplate}"
      * @since 1.3
      */
+    @Parameter( property = "unixScriptTemplate" )
     protected String unixScriptTemplate;
 
     /**
@@ -96,64 +98,55 @@ public abstract class AbstractScriptGeneratorMojo
      * <code>flat</code>. Otherwise this configuration will not work.
      *
      * @since 1.2.3 (assemble), 1.3.1 (generate-daemons)
-     * @parameter default-value="false"
      */
+    @Parameter( defaultValue = "false" )
     protected boolean useWildcardClassPath;
 
     /**
      * The windows template of the generated script. It can be a file or resource path. If not given, an internal one is
      * used. Use with care since it is not guaranteed to be compatible with new plugin release.
      *
-     * @parameter expression="${windowsScriptTemplate}"
      * @since 1.3
      */
+    @Parameter( property = "windowsScriptTemplate" )
     protected String windowsScriptTemplate;
 
     // -----------------------------------------------------------------------
     // Read-only Parameters
     // -----------------------------------------------------------------------
 
-    /**
-     * @readonly
-     * @parameter expression="${project.runtimeArtifacts}"
-     */
+    @Parameter( defaultValue = "${project.runtimeArtifacts}", readonly = true )
     protected List artifacts;
 
-    /**
-     * @readonly
-     * @required
-     * @parameter expression="${project}"
-     */
+    @Parameter( defaultValue = "${project}", readonly = true, required = true)
     protected MavenProject mavenProject;
 
     /**
      * Set to <code>false</code> to skip repository generation.
-     *
-     * @parameter default-value="true"
      */
+    @Parameter( defaultValue = "true" )
     protected boolean generateRepository;
 
     /**
      * The name of the target directory for configuration files. Prior to version 1.7 this value defaults to 'conf' for assemble goal and 'etc' for generate-daemons
-     *
-     * @parameter default-value="etc"
      */
+    @Parameter( defaultValue = "etc" )
     protected String configurationDirectory;
 
     /**
      * The name of the source directory for configuration files.
      *
-     * @parameter default-value="src/main/config"
      * @since 1.1
      */
+    @Parameter( defaultValue = "src/main/config" )
     protected File configurationSourceDirectory;
 
     /**
      * If the source configuration directory should be copied to the configured <code>configurationDirectory</code>.
      *
-     * @parameter default-value="false"
      * @since 1.1 (assemble), 1.7 (generate-daemons)
      */
+    @Parameter( defaultValue = "false" )
     protected boolean copyConfigurationDirectory;
 
     /**
@@ -161,71 +154,66 @@ public abstract class AbstractScriptGeneratorMojo
      * 6+ only since it uses wildcard classpath format. This is a convenient way to have user to add artifacts that not
      * possible to be part of final assembly such as LGPL/GPL artifacts
      *
-     * @parameter
      * @since 1.6
      */
+    @Parameter
     protected String endorsedDir;
 
     /**
      * Project build filters.
      *
-     * @parameter expression="${project.build.filters}"
-     * @readonly
      * @since 1.8
      */
+    @Parameter( defaultValue = "${project.build.filters}", readonly = true )
     protected List buildFilters;
 
     /**
      * The character encoding scheme to be applied when filtering the source
      * configuration directory.
      * 
-     * @parameter expression="${project.build.sourceEncoding}"
      * @since 1.8
      */
+    @Parameter( defaultValue = "${project.build.sourceEncoding}" )
     protected String encoding;
 
     /**
      * Expressions preceded with this String won't be interpolated.
      * <code>\${foo}</code> will be replaced with <code>${foo}</code>.
      *
-     * @parameter
      * @since 1.8
      */
+    @Parameter
     protected String escapeString;
 
     /**
      * If the source configuration directory should be filtered when copied to
      * the configured <code>configurationDirectory</code>.
      *
-     * @parameter default-value="false"
      * @since 1.8
      */
+    @Parameter( defaultValue = "false" )
     protected boolean filterConfigurationDirectory;
 
     /**
-     * @parameter expression="${session}"
-     * @readonly
-     * @required
      * @since 1.8
      */
+    @Parameter( defaultValue = "${session}", readonly = true, required = true)
     private MavenSession session;
 
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
 
-    /**
-     * @component
-     */
+    @Component
     protected DaemonGeneratorService daemonGeneratorService;
 
     /**
      * The filtering component used when copying the source configuration
      * directory.
      * 
-     * @component role="org.apache.maven.shared.filtering.MavenResourcesFiltering" roleHint="default"
      * @since 1.8
      */
+    @Component( role = MavenResourcesFiltering.class, hint = "default" )
     protected MavenResourcesFiltering mavenResourcesFiltering;
 
     protected void doCopyConfigurationDirectory( final String targetDirectory )
@@ -244,14 +232,14 @@ public abstract class AbstractScriptGeneratorMojo
         resource.setDirectory( configurationSourceDirectory.getAbsolutePath() );
         resource.setFiltering( filterConfigurationDirectory );
         resource.setTargetPath( configurationDirectory );
-        List resources = new ArrayList();
+        List<Resource> resources = new ArrayList<Resource>();
         resources.add( resource );
 
         MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution( resources,
                                                                                        new File( targetDirectory ),
                                                                                        mavenProject, encoding,
                                                                                        buildFilters,
-                                                                                       Collections.emptyList(),
+                                                                                       Collections.<String>emptyList(),
                                                                                        session );
 
         mavenResourcesExecution.setEscapeString( escapeString );
