@@ -471,7 +471,7 @@ public class JavaServiceWrapperDaemonGenerator
 
     private static void createParameters( Daemon daemon, FormattedProperties confFile )
     {
-        int count = StringUtils.isEmpty( daemon.getMainClass() )?1:2;
+        int count = StringUtils.isEmpty( daemon.getMainClass() ) ? 1 : 2;
 
         for ( Iterator i = daemon.getCommandLineArguments().iterator(); i.hasNext(); count++ )
         {
@@ -484,7 +484,7 @@ public class JavaServiceWrapperDaemonGenerator
 
         if ( count == 1 )
         { //Remove default parameter if not set
-            confFile.removeProperty( "wrapper.app.parameter.1");
+            confFile.removeProperty( "wrapper.app.parameter.1" );
         }
     }
 
