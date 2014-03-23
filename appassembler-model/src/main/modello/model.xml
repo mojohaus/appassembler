@@ -106,6 +106,15 @@
           <defaultValue>false</defaultValue>
         </field>
         <field>
+          <name>useDaemonIdAsWrapperExePrefixName</name>
+          <version>1.0.0+</version>
+          <type>boolean</type>
+          <defaultValue>false</defaultValue>
+          <description>When enable swap the prefix of each wrapper executable ( ie wrapper-windows-x64.exe) with this
+            configuration Id. This is currently only used in JSW generator.
+          </description>
+        </field>
+        <field>
           <name>useWildcardClassPath</name>
           <version>1.0.0+</version>
           <type>boolean</type>
