@@ -22,7 +22,6 @@ package org.codehaus.mojo.appassembler.daemon.script;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
@@ -52,9 +51,8 @@ public class ScriptGeneratorBackgroundTest
     public void testNormalShellScriptGeneration()
         throws Exception
     {
-        for ( Iterator it = Platform.getAllPlatforms().iterator(); it.hasNext(); )
+        for ( Platform platform : Platform.getAllPlatforms() )
         {
-            Platform platform = (Platform) it.next();
             testShellScriptGenerationWithFalseShowConsoleWindow( platform );
         }
     }

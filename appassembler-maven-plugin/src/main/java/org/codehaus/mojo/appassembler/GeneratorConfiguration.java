@@ -43,7 +43,7 @@ public class GeneratorConfiguration
      * "linux-ppc-64", "linux-x86-32", "linux-x86-64", "macosx-ppc-32", "macosx-x86-universal-32", "solaris-sparc-32",
      * "solaris-sparc-64", "solaris-x86-32", "windows-x86-32
      */
-    private List includes;
+    private List<String> includes;
 
     /**
      * @return Current generator.
@@ -97,7 +97,7 @@ public class GeneratorConfiguration
      * 
      * @return The includes.
      */
-    public List getIncludes()
+    public List<String> getIncludes()
     {
         return includes;
     }
@@ -107,7 +107,7 @@ public class GeneratorConfiguration
      * 
      * @param includes set to the given includes.
      */
-    public void setIncludes( List includes )
+    public void setIncludes( List<String> includes )
     {
         this.includes = includes;
     }

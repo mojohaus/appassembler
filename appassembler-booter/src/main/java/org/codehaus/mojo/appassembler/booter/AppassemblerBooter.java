@@ -34,7 +34,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
@@ -115,13 +114,10 @@ public class AppassemblerBooter
     public static URLClassLoader createClassLoader( File repoDir )
         throws MalformedURLException
     {
-        List classpathUrls = new ArrayList();
-        List classPathElements = config.getAllClasspathElements();
-        Iterator iter = classPathElements.iterator();
+        List<URL> classpathUrls = new ArrayList<URL>();
 
-        while ( iter.hasNext() )
+        for ( ClasspathElement element : config.getAllClasspathElements() )
         {
-            ClasspathElement element = (ClasspathElement) iter.next();
             File artifact = new File( repoDir, element.getRelativePath() );
 
             if ( debug )
@@ -145,10 +141,8 @@ public class AppassemblerBooter
         JvmSettings jvmSettings = config.getJvmSettings();
         if ( jvmSettings != null && jvmSettings.getSystemProperties() != null )
         {
-            List systemProperties = jvmSettings.getSystemProperties();
-            for ( Iterator i = systemProperties.iterator(); i.hasNext(); )
+            for ( String line : jvmSettings.getSystemProperties() )
             {
-                String line = (String) i.next();
                 try
                 {
                     String[] strings = line.split( "=" );
@@ -204,7 +198,7 @@ public class AppassemblerBooter
     public static void executeMain( URLClassLoader classLoader, String[] args )
         throws Exception
     {
-        List arguments = config.getCommandLineArguments();
+        List<String> arguments = config.getCommandLineArguments();
 
         // -----------------------------------------------------------------------
         // Load the class and main() method
@@ -224,7 +218,7 @@ public class AppassemblerBooter
             arguments.addAll( Arrays.asList( args ) );
         }
 
-        String[] commandLineArgs = (String[]) arguments.toArray( new String[0] );
+        String[] commandLineArgs = (String[]) arguments.toArray( new String[arguments.size()] );
 
         // -----------------------------------------------------------------------
         // Setup environment

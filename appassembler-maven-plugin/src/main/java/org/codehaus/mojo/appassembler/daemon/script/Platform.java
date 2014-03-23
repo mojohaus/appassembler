@@ -61,7 +61,7 @@ public class Platform
      */
     public static final String WINDOWS_NAME = "windows";
 
-    private static final Map ALL_PLATFORMS;
+    private static final Map<String, Platform> ALL_PLATFORMS;
 
     private static final String DEFAULT_UNIX_BIN_FILE_EXTENSION = "";
 
@@ -79,7 +79,7 @@ public class Platform
 
     static
     {
-        ALL_PLATFORMS = new HashMap();
+        ALL_PLATFORMS = new HashMap<String, Platform>();
         addPlatform( new Platform( UNIX_NAME, false, DEFAULT_UNIX_BIN_FILE_EXTENSION ) );
         addPlatform( new Platform( WINDOWS_NAME, true, DEFAULT_WINDOWS_BIN_FILE_EXTENSION ) );
     }
@@ -101,7 +101,7 @@ public class Platform
     public static Platform getInstance( String platformName )
         throws DaemonGeneratorException
     {
-        Platform platform = (Platform) ALL_PLATFORMS.get( platformName );
+        Platform platform = ALL_PLATFORMS.get( platformName );
 
         if ( platform == null )
         {
@@ -116,7 +116,7 @@ public class Platform
      * 
      * @return The names of the platform.
      */
-    public static Set getAllPlatformNames()
+    public static Set<String> getAllPlatformNames()
     {
         return ALL_PLATFORMS.keySet();
     }
@@ -126,9 +126,9 @@ public class Platform
      * 
      * @return All platforms.
      */
-    public static Set getAllPlatforms()
+    public static Set<Platform> getAllPlatforms()
     {
-        return new HashSet( ALL_PLATFORMS.values() );
+        return new HashSet<Platform>( ALL_PLATFORMS.values() );
     }
 
     /**
@@ -138,10 +138,10 @@ public class Platform
      * @return The redefined platforms set.
      * @throws DaemonGeneratorException in case of an error.
      */
-    public static Set getPlatformSet( List platformList )
+    public static Set<Platform> getPlatformSet( List<String> platformList )
         throws DaemonGeneratorException
     {
-        return getPlatformSet( platformList, new HashSet( ALL_PLATFORMS.values() ) );
+        return getPlatformSet( platformList, new HashSet<Platform>( ALL_PLATFORMS.values() ) );
     }
 
     /**
@@ -152,7 +152,7 @@ public class Platform
      * @return Get the platform sets.
      * @throws DaemonGeneratorException in case of an error.
      */
-    public static Set getPlatformSet( List platformList, Set allSet )
+    public static Set<Platform> getPlatformSet( List<String> platformList, Set<Platform> allSet )
         throws DaemonGeneratorException
     {
         if ( platformList == null )
@@ -162,7 +162,7 @@ public class Platform
 
         if ( platformList.size() == 1 )
         {
-            Object first = platformList.get( 0 );
+            String first = platformList.get( 0 );
 
             if ( "all".equals( first ) )
             {
@@ -173,12 +173,10 @@ public class Platform
                                                 "The special platform 'all' can only be used if it is the only element in the platform list." );
         }
 
-        Set platformSet = new HashSet();
+        Set<Platform> platformSet = new HashSet<Platform>();
 
-        for ( Iterator it = platformList.iterator(); it.hasNext(); )
+        for ( String platformName : platformList )
         {
-            String platformName = (String) it.next();
-
             if ( platformName.equals( "all" ) )
             {
                 throw new DaemonGeneratorException(
@@ -285,11 +283,11 @@ public class Platform
     public String getClassPath( Daemon daemon )
         throws DaemonGeneratorException
     {
-        List classpath = daemon.getAllClasspathElements();
+        List<ClasspathElement> classpath = daemon.getAllClasspathElements();
 
         StringBuffer classpathBuffer = new StringBuffer();
 
-        for ( Iterator it = classpath.iterator(); it.hasNext(); )
+        for ( ClasspathElement classpathElement : classpath )
         {
             if ( classpathBuffer.length() > 0 )
             {
@@ -300,27 +298,25 @@ public class Platform
             //
             // -----------------------------------------------------------------------
 
-            Object object = it.next();
-
-            if ( object instanceof Directory )
+            if ( classpathElement instanceof Directory )
             {
-                Directory directory = (Directory) object;
+                Directory directory = (Directory) classpathElement;
 
                 if ( directory.getRelativePath().charAt( 0 ) != '/' )
                 {
                     classpathBuffer.append( getBasedir() ).append( getSeparator() );
                 }
             }
-            else if ( object instanceof Dependency )
+            else if ( classpathElement instanceof Dependency )
             {
                 classpathBuffer.append( getRepo() ).append( getSeparator() );
             }
             else
             {
-                throw new DaemonGeneratorException( "Unknown classpath element type: " + object.getClass().getName() );
+                throw new DaemonGeneratorException( "Unknown classpath element type: " + classpathElement.getClass().getName() );
             }
 
-            classpathBuffer.append( StringUtils.replace( ( (ClasspathElement) object ).getRelativePath(), "/",
+            classpathBuffer.append( StringUtils.replace( classpathElement.getRelativePath(), "/",
                                                          getSeparator() ) );
         }
 
@@ -332,7 +328,7 @@ public class Platform
         StringReader sr = new StringReader( content );
         StringWriter result = new StringWriter();
 
-        Map context = new HashMap();
+        Map<String, String> context = new HashMap<String, String>();
 
         context.put( "BASEDIR", StringUtils.quoteAndEscape( getBasedir(), '"' ) );
         context.put( "REPO", StringUtils.quoteAndEscape( getRepo(), '"' ) );
@@ -348,17 +344,16 @@ public class Platform
         return result.toString();
     }
 
-    private List convertArguments( List strings )
+    private List<String> convertArguments( List<String> strings )
     {
         if ( strings == null )
         {
             return strings;
         }
 
-        ArrayList result = new ArrayList();
-        for ( Iterator iterator = strings.iterator(); iterator.hasNext(); )
+        ArrayList<String> result = new ArrayList<String>();
+        for ( String argument : strings )
         {
-            String argument = (String) iterator.next();
             result.add( interpolateBaseDirAndRepo( argument ) );
         }
 
@@ -392,18 +387,14 @@ public class Platform
         return vmArgs.trim();
     }
 
-    private String arrayToString( List strings, String separator )
+    private String arrayToString( List<String> strings, String separator )
     {
         String string = "";
 
         if ( strings != null )
         {
-            Iterator it = strings.iterator();
-
-            while ( it.hasNext() )
+            for ( String s : strings )
             {
-                String s = (String) it.next();
-
                 if ( s.indexOf( ' ' ) == -1 )
                 {
                     string += " " + separator + s;
@@ -426,7 +417,7 @@ public class Platform
      */
     public String getAppArguments( Daemon descriptor )
     {
-        List commandLineArguments = convertArguments( descriptor.getCommandLineArguments() );
+        List<String> commandLineArguments = convertArguments( descriptor.getCommandLineArguments() );
 
         if ( commandLineArguments == null || commandLineArguments.size() == 0 )
         {
@@ -435,12 +426,12 @@ public class Platform
 
         if ( commandLineArguments.size() == 1 )
         {
-            return (String) commandLineArguments.get( 0 );
+            return commandLineArguments.get( 0 );
         }
 
-        Iterator it = commandLineArguments.iterator();
+        Iterator<String> it = commandLineArguments.iterator();
 
-        String appArguments = (String) it.next();
+        String appArguments = it.next();
 
         while ( it.hasNext() )
         {

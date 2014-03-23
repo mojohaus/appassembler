@@ -76,7 +76,7 @@ public class DefaultScriptGenerator
     private String getLicenseHeader( Platform platform, Daemon daemon )
         throws DaemonGeneratorException
     {
-        List lines = null;
+        List<String> lines = null;
         if ( isDefaultLicenseHeaderRequested( daemon ) )
         {
             getLogger().debug( "Using default licence file (" + DEFAULT_LICENSE_HEADER + ")." );
@@ -96,10 +96,10 @@ public class DefaultScriptGenerator
         return resultLines.toString();
     }
 
-    private List readLicenseHeader()
+    private List<String> readLicenseHeader()
         throws DaemonGeneratorException
     {
-        ArrayList result = new ArrayList();
+        ArrayList<String> result = new ArrayList<String>();
 
         InputStream in = getClass().getResourceAsStream( DEFAULT_LICENSE_HEADER );
 
@@ -122,10 +122,10 @@ public class DefaultScriptGenerator
         return result;
     }
 
-    private List readLicenseHeaderFromFile( File licenseHeader )
+    private List<String> readLicenseHeaderFromFile( File licenseHeader )
         throws DaemonGeneratorException
     {
-        ArrayList result = new ArrayList();
+        ArrayList<String> result = new ArrayList<String>();
         try
         {
             BufferedReader in = new BufferedReader( new FileReader( licenseHeader ) );
@@ -168,7 +168,7 @@ public class DefaultScriptGenerator
 
             InputStreamReader reader = new InputStreamReader( getScriptTemplate( platformName, daemon ) );
 
-            Map context = new HashMap();
+            Map<String, String> context = new HashMap<String, String>();
             context.put( "MAINCLASS", daemon.getMainClass() );
             context.put( "CLASSPATH", platform.getClassPath( daemon ) );
             context.put( "EXTRA_JVM_ARGUMENTS", platform.getExtraJvmArguments( daemon.getJvmSettings() ) );

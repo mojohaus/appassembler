@@ -22,7 +22,6 @@ package org.codehaus.mojo.appassembler.daemon.script;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
@@ -53,18 +52,18 @@ public class ScriptGeneratorTest
     public void testNormalShellScriptGeneration()
         throws Exception
     {
-        for ( Iterator it = Platform.getAllPlatforms().iterator(); it.hasNext(); )
+        for ( Platform platform : Platform.getAllPlatforms() )
         {
-            testNormalShellScriptGeneration( (Platform) it.next() );
+            testNormalShellScriptGeneration( platform );
         }
     }
 
     public void testNormalShellScriptWithEndorsedLibGeneration()
         throws Exception
     {
-        for ( Iterator it = Platform.getAllPlatforms().iterator(); it.hasNext(); )
+        for ( Platform platform : Platform.getAllPlatforms() )
         {
-            testNormalShellScriptWithEndorsedLibGeneration( (Platform) it.next() );
+            testNormalShellScriptWithEndorsedLibGeneration( platform );
         }
     }
 

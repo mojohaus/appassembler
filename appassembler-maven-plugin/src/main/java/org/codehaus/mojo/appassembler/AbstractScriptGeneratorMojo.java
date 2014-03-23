@@ -42,7 +42,6 @@ import org.codehaus.plexus.util.FileUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -116,7 +115,7 @@ public abstract class AbstractScriptGeneratorMojo
     // -----------------------------------------------------------------------
 
     @Parameter( defaultValue = "${project.runtimeArtifacts}", readonly = true )
-    protected List artifacts;
+    protected List<Artifact> artifacts;
 
     @Parameter( defaultValue = "${project}", readonly = true, required = true)
     protected MavenProject mavenProject;
@@ -165,7 +164,7 @@ public abstract class AbstractScriptGeneratorMojo
      * @since 1.8
      */
     @Parameter( defaultValue = "${project.build.filters}", readonly = true )
-    protected List buildFilters;
+    protected List<String> buildFilters;
 
     /**
      * The character encoding scheme to be applied when filtering the source
@@ -281,9 +280,8 @@ public abstract class AbstractScriptGeneratorMojo
                 artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", "file://"
                     + outputDirectory + "/" + repositoryName, getArtifactRepositoryLayout(), false );
 
-            for ( Iterator it = artifacts.iterator(); it.hasNext(); )
+            for ( Artifact artifact : artifacts )
             {
-                Artifact artifact = (Artifact) it.next();
                 installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
             }
 

@@ -22,7 +22,6 @@ package org.codehaus.mojo.appassembler.daemon.script;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -58,10 +57,8 @@ public class PlatformTest
     public void testGetAppArgumentsUnix()
         throws Exception
     {
-        for ( Iterator it = Platform.getPlatformSet( Collections.singletonList( "all" ) ).iterator(); it.hasNext(); )
+        for ( Platform platform : Platform.getPlatformSet( Collections.singletonList( "all" ) ) )
         {
-            Platform platform = (Platform) it.next();
-
             testGetAppArguments( platform );
         }
     }
@@ -72,7 +69,7 @@ public class PlatformTest
         Daemon daemon = new Daemon();
         assertEquals( null, util.getAppArguments( daemon ) );
 
-        List commandLineArguments = new ArrayList();
+        List<String> commandLineArguments = new ArrayList<String>();
         daemon.setCommandLineArguments( commandLineArguments );
 
         assertEquals( null, util.getAppArguments( daemon ) );
@@ -96,12 +93,13 @@ public class PlatformTest
 
         assertEquals( "", util.getClassPath( daemon ) );
 
-        List classpath = daemon.getClasspath().getDirectories();
-        classpath.add( createDirectory( asserts[0] ) );
-        classpath.add( createDirectory( asserts[1] ) );
+        List<Directory> classpathDirectories = daemon.getClasspath().getDirectories();
+        classpathDirectories.add( createDirectory( asserts[0] ) );
+        classpathDirectories.add( createDirectory( asserts[1] ) );
         assertEquals( asserts[2], util.getClassPath( daemon ) );
 
-        classpath.add( createDependency( asserts[3] ) );
+        List<Dependency> classpathDependencies = daemon.getClasspath().getDependencies();
+        classpathDependencies.add( createDependency( asserts[3] ) );
         assertEquals( asserts[4], util.getClassPath( daemon ) );
     }
 

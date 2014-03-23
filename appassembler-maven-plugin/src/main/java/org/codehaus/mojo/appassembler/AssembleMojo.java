@@ -88,7 +88,7 @@ public class AssembleMojo
      * @since 1.1
      */
     @Parameter
-    protected Map/* <String, String> */binFileExtensions;
+    protected Map<String, String> binFileExtensions;
 
     /**
      * Define the name of binary folder.
@@ -123,13 +123,13 @@ public class AssembleMojo
      * | "windows" | "unix".
      */
     @Parameter
-    private Set platforms;
+    private Set<String> platforms;
 
     /**
      * The set of Programs that bin files will be generated for.
      */
     @Parameter( required = true )
-    private Set programs;
+    private Set<Program> programs;
 
     /**
      * This can be used to put the project artifact as the first entry in the classpath after the configuration folder (
@@ -171,26 +171,24 @@ public class AssembleMojo
     // CONSTANTS
     // ----------------------------------------------------------------------
 
-    private static final Set VALID_PLATFORMS = Collections.unmodifiableSet( new HashSet( Arrays.asList( new String[] {
+    private static final Set<String> VALID_PLATFORMS = Collections.unmodifiableSet( new HashSet<String>( Arrays.asList( new String[] {
         "unix", "windows" } ) ) );
 
     // ----------------------------------------------------------------------
     // Validate
     // ----------------------------------------------------------------------
 
-    private void validate( Set defaultPlatforms )
+    private void validate( Set<String> defaultPlatforms )
         throws MojoFailureException, MojoExecutionException
     {
         // ----------------------------------------------------------------------
         // Validate Programs
         // ----------------------------------------------------------------------
 
-        ArrayList programNames = new ArrayList();
+        ArrayList<String> programNames = new ArrayList<String>();
 
-        for ( Iterator i = programs.iterator(); i.hasNext(); )
+        for ( Program program : programs )
         {
-            Program program = (Program) i.next();
-
             if ( program.getName() != null )
             {
                 program.setId( program.getName() );
@@ -239,7 +237,7 @@ public class AssembleMojo
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
-        Set defaultPlatforms = validatePlatforms( platforms, VALID_PLATFORMS );
+        Set<String> defaultPlatforms = validatePlatforms( platforms, VALID_PLATFORMS );
 
         checkDeprecatedParameterAndFailIfOneOfThemIsUsed();
 
@@ -262,7 +260,7 @@ public class AssembleMojo
             // TODO: This should be made different. We have to think about using
             // a default ArtifactFilter
             Set dependencyArtifacts = mavenProject.getDependencyArtifacts();
-            artifacts = new ArrayList();
+            artifacts = new ArrayList<Artifact>();
             for ( Iterator it = dependencyArtifacts.iterator(); it.hasNext(); )
             {
                 Artifact artifact = (Artifact) it.next();
@@ -285,21 +283,17 @@ public class AssembleMojo
         // Create bin files
         // ----------------------------------------------------------------------
 
-        for ( Iterator it = programs.iterator(); it.hasNext(); )
+        for ( Program program : programs )
         {
-            Program program = (Program) it.next();
-
             if ( program.getName() != null )
             {
                 program.setId( program.getName() );
             }
 
-            Set validatedPlatforms = validatePlatforms( program.getPlatforms(), defaultPlatforms );
+            Set<String> validatedPlatforms = validatePlatforms( program.getPlatforms(), defaultPlatforms );
 
-            for ( Iterator platformIt = validatedPlatforms.iterator(); platformIt.hasNext(); )
+            for ( String platform : validatedPlatforms )
             {
-                String platform = (String) platformIt.next();
-
                 // TODO: seems like a bug in the generator that the request is
                 // modified
                 org.codehaus.mojo.appassembler.model.Daemon daemon =
@@ -368,7 +362,7 @@ public class AssembleMojo
             }
         }
 
-        List directories = new ArrayList();
+        List<Directory> directories = new ArrayList<Directory>();
 
         if ( includeConfigurationDirectoryInClasspath )
         {
@@ -388,7 +382,7 @@ public class AssembleMojo
 
         daemon.setEndorsedDir( endorsedDir );
 
-        List dependencies = new ArrayList();
+        List<Dependency> dependencies = new ArrayList<Dependency>();
 
         // TODO: This should be done in a more elegant way for 2.0
         // TODO: Check if the classpath wildcard could be used for Daemons as well?
@@ -404,7 +398,7 @@ public class AssembleMojo
         }
         else
         {
-            List classPathArtifacts = new ArrayList();
+            List<Artifact> classPathArtifacts = new ArrayList<Artifact>();
 
             if ( projectArtifactFirstInClassPath )
             {
@@ -417,10 +411,8 @@ public class AssembleMojo
                 classPathArtifacts.add( projectArtifact );
             }
 
-            for ( Iterator it = classPathArtifacts.iterator(); it.hasNext(); )
+            for ( Artifact artifact : classPathArtifacts )
             {
-                Artifact artifact = (Artifact) it.next();
-
                 dependencies.add( DependencyFactory.create( artifact, artifactRepositoryLayout,
                                                             this.useTimestampInSnapshotFileName, outputFileNameMapping ) );
             }
@@ -489,7 +481,7 @@ public class AssembleMojo
         }
     }
 
-    private Set validatePlatforms( Set platformsToValidate, Set defaultPlatforms )
+    private Set<String> validatePlatforms( Set<String> platformsToValidate, Set<String> defaultPlatforms )
         throws MojoFailureException
     {
         if ( platformsToValidate == null )
@@ -517,9 +509,9 @@ public class AssembleMojo
      * @param arg The argument to parse.
      * @return List of arguments.
      */
-    public static List parseTokens( String arg )
+    public static List<String> parseTokens( String arg )
     {
-        List extraJvmArguments = new ArrayList();
+        List<String> extraJvmArguments = new ArrayList<String>();
 
         if ( StringUtils.isEmpty( arg ) )
         {
@@ -580,11 +572,8 @@ public class AssembleMojo
     {
         if ( binFileExtensions != null )
         {
-            Set keySet = binFileExtensions.keySet();
-            Iterator iterator = keySet.iterator();
-            while ( iterator.hasNext() )
+            for ( String platformName : binFileExtensions.keySet() )
             {
-                String platformName = (String) iterator.next();
                 if ( !VALID_PLATFORMS.contains( platformName ) )
                 {
                     getLog().warn( "Bin file extension configured for a non-valid platform (" + platformName
@@ -595,7 +584,7 @@ public class AssembleMojo
                     try
                     {
                         Platform platform = Platform.getInstance( platformName );
-                        platform.setBinFileExtension( (String) binFileExtensions.get( platformName ) );
+                        platform.setBinFileExtension( binFileExtensions.get( platformName ) );
                     }
                     catch ( DaemonGeneratorException e )
                     {

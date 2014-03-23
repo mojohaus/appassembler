@@ -49,7 +49,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import junit.framework.TestCase;
 
@@ -114,13 +113,11 @@ public class AppassemblerBooterTest
         System.setProperty( "app.name", "org/codehaus/mojo/appassembler/booter/largeApp" );
         System.setProperty( "app.booter.debug", "true" );
         URLClassLoader classLoader = AppassemblerBooter.setup();
-        ArrayList urls = new ArrayList();
+        ArrayList<URL> urls = new ArrayList<URL>();
         urls.addAll( Arrays.asList( classLoader.getURLs() ) );
-        Iterator iter = urls.iterator();
-        while ( iter.hasNext() )
+        for ( URL url : urls  )
         {
-            String url = ( (URL) iter.next() ).getPath();
-            if ( url.indexOf( "appassembler-booter/adgenerator-api-1.0-I11-SNAPSHOT.jar" ) >= 0 )
+            if ( url.getPath().contains( "appassembler-booter/adgenerator-api-1.0-I11-SNAPSHOT.jar" ) )
             {
                 fail( "Broken path" );
             }

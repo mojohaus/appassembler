@@ -67,7 +67,7 @@ public class JavaServiceWrapperDaemonGenerator
     extends AbstractLogEnabled
     implements DaemonGenerator
 {
-    private static final Map JSW_PLATFORMS_MAP = new HashMap()
+    private static final Map<String, String> JSW_PLATFORMS_MAP = new HashMap<String, String>()
     {
         {
             put( "aix-ppc-32-lib", "libwrapper-aix-ppc-32.a" );
@@ -161,7 +161,7 @@ public class JavaServiceWrapperDaemonGenerator
 
         writeScriptFiles( request, daemon, outputDirectory, context );
 
-        List jswPlatformIncludes = getJswPlatformIncludes( daemon );
+        List<String> jswPlatformIncludes = getJswPlatformIncludes( daemon );
 
         writeLibraryFiles( outputDirectory, daemon, jswPlatformIncludes );
 
@@ -231,10 +231,8 @@ public class JavaServiceWrapperDaemonGenerator
         createAdditional( daemon, confFile );
         createParameters( daemon, confFile );
 
-        for ( Iterator i = configuration.entrySet().iterator(); i.hasNext(); )
+        for ( Map.Entry entry : configuration.entrySet() )
         {
-            Map.Entry entry = (Map.Entry) i.next();
-
             String key = (String) entry.getKey();
             String value = (String) entry.getValue();
             if ( value.length() > 0 )
@@ -294,10 +292,8 @@ public class JavaServiceWrapperDaemonGenerator
     {
         Properties configuration = new Properties();
 
-        for ( Iterator i = daemon.getGeneratorConfigurations().iterator(); i.hasNext(); )
+        for ( GeneratorConfiguration generatorConfiguration : daemon.getGeneratorConfigurations() )
         {
-            GeneratorConfiguration generatorConfiguration = (GeneratorConfiguration) i.next();
-
             if ( generatorConfiguration.getGenerator().equals( "jsw" ) )
             {
                 configuration.putAll( generatorConfiguration.getConfiguration() );
@@ -584,7 +580,7 @@ public class JavaServiceWrapperDaemonGenerator
         return is;
     }
 
-    private void writeLibraryFiles( File outputDirectory, Daemon daemon, List jswPlatformIncludes )
+    private void writeLibraryFiles( File outputDirectory, Daemon daemon, List<String> jswPlatformIncludes )
         throws DaemonGeneratorException
     {
         if ( daemon.getExternalDeltaPackDirectory() != null )
@@ -597,10 +593,9 @@ public class JavaServiceWrapperDaemonGenerator
             copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, "wrapper.jar" );
         }
 
-        for ( Iterator iter = jswPlatformIncludes.iterator(); iter.hasNext(); )
+        for ( String platform : jswPlatformIncludes )
         {
-            String platform = (String) iter.next();
-            String libFile = (String) JSW_PLATFORMS_MAP.get( platform + "-lib" );
+            String libFile = JSW_PLATFORMS_MAP.get( platform + "-lib" );
             if ( libFile != null )
             {
                 if ( daemon.getExternalDeltaPackDirectory() != null )
@@ -620,13 +615,12 @@ public class JavaServiceWrapperDaemonGenerator
         }
     }
 
-    private void writeExecutableFiles( File outputDirectory, Daemon daemon, List jswPlatformIncludes )
+    private void writeExecutableFiles( File outputDirectory, Daemon daemon, List<String> jswPlatformIncludes )
         throws DaemonGeneratorException
     {
-        for ( Iterator iter = jswPlatformIncludes.iterator(); iter.hasNext(); )
+        for ( String platform : jswPlatformIncludes )
         {
-            String platform = (String) iter.next();
-            String execFile = (String) JSW_PLATFORMS_MAP.get( platform + "-exec" );
+            String execFile = JSW_PLATFORMS_MAP.get( platform + "-exec" );
             if ( execFile != null )
             {
                 if ( daemon.getExternalDeltaPackDirectory() != null )
@@ -674,13 +668,11 @@ public class JavaServiceWrapperDaemonGenerator
         writeFile( new File( outputDirectory, fileName ), batchFileInputStream );
     }
 
-    private List getJswPlatformIncludes( Daemon daemon )
+    private List<String> getJswPlatformIncludes( Daemon daemon )
     {
-        List jswPlatformIncludes = null;
-        for ( Iterator i = daemon.getGeneratorConfigurations().iterator(); i.hasNext(); )
+        List<String> jswPlatformIncludes = null;
+        for ( GeneratorConfiguration generatorConfiguration : daemon.getGeneratorConfigurations() )
         {
-            GeneratorConfiguration generatorConfiguration = (GeneratorConfiguration) i.next();
-
             if ( generatorConfiguration.getGenerator().equals( "jsw" ) )
             {
                 jswPlatformIncludes = generatorConfiguration.getIncludes();
@@ -690,7 +682,7 @@ public class JavaServiceWrapperDaemonGenerator
         // set default if none is specified
         if ( jswPlatformIncludes == null || jswPlatformIncludes.isEmpty() )
         {
-            jswPlatformIncludes = new ArrayList();
+            jswPlatformIncludes = new ArrayList<String>();
             jswPlatformIncludes.add( "aix-ppc-32" );
             jswPlatformIncludes.add( "aix-ppc-64" );
             jswPlatformIncludes.add( "linux-x86-32" );

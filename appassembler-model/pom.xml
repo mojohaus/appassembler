@@ -91,6 +91,7 @@
           <models>
             <model>src/main/modello/model.xml</model>
           </models>
+          <useJava5>true</useJava5>
           <version>1.5.0</version>
         </configuration>
       </plugin>

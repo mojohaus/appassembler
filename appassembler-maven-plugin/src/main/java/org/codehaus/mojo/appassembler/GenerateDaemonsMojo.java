@@ -27,7 +27,6 @@ package org.codehaus.mojo.appassembler;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -67,7 +66,7 @@ public class GenerateDaemonsMojo
      * Set of {@linkplain Daemon}s to generate.
      */
     @Parameter( required = true )
-    private Set daemons;
+    private Set<Daemon> daemons;
 
     /**
      * {@linkplain JvmSettings} describing min/max memory and stack size, system properties and extra arguments.
@@ -135,10 +134,8 @@ public class GenerateDaemonsMojo
                 + " combination with repositoryLayout flat." );
         }
 
-        for ( Iterator itd = daemons.iterator(); itd.hasNext(); )
+        for ( Daemon daemon : daemons )
         {
-            Daemon daemon = (Daemon) itd.next();
-
             // -----------------------------------------------------------------------
             // Load the optional template daemon descriptor
             // -----------------------------------------------------------------------
@@ -216,10 +213,8 @@ public class GenerateDaemonsMojo
             //
             // -----------------------------------------------------------------------
 
-            for ( Iterator i = daemon.getPlatforms().iterator(); i.hasNext(); )
+            for ( String platform : daemon.getPlatforms() )
             {
-                String platform = (String) i.next();
-
                 File output = new File( target, platform );
 
                 DaemonGenerationRequest request = new DaemonGenerationRequest();
@@ -301,13 +296,11 @@ public class GenerateDaemonsMojo
         return modelDaemon;
     }
 
-    private List convertGeneratorConfigurations( List generatorConfigurations )
+    private List<org.codehaus.mojo.appassembler.model.GeneratorConfiguration> convertGeneratorConfigurations( List<GeneratorConfiguration> generatorConfigurations )
     {
-        List value = new ArrayList( generatorConfigurations.size() );
-        for ( Iterator i = generatorConfigurations.iterator(); i.hasNext(); )
+        List<org.codehaus.mojo.appassembler.model.GeneratorConfiguration> value = new ArrayList<org.codehaus.mojo.appassembler.model.GeneratorConfiguration>( generatorConfigurations.size() );
+        for ( GeneratorConfiguration config : generatorConfigurations )
         {
-            GeneratorConfiguration config = (GeneratorConfiguration) i.next();
-
             value.add( convertGeneratorConfiguration( config ) );
         }
         return value;
@@ -335,7 +328,7 @@ public class GenerateDaemonsMojo
         modelJvmSettings.setMaxStackSize( jvmSettings.getMaxStackSize() );
         if ( jvmSettings.getSystemProperties() == null )
         {
-            modelJvmSettings.setSystemProperties( new ArrayList() );
+            modelJvmSettings.setSystemProperties( new ArrayList<String>() );
         }
         else
         {
@@ -343,7 +336,7 @@ public class GenerateDaemonsMojo
         }
         if ( jvmSettings.getExtraArguments() == null )
         {
-            modelJvmSettings.setExtraArguments( new ArrayList() );
+            modelJvmSettings.setExtraArguments( new ArrayList<String>() );
         }
         else
         {

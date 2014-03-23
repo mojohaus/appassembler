@@ -93,7 +93,7 @@ public class DefaultDaemonMerger
         }
     }
 
-    private List select( List dominant, List recessive )
+    private List<String> select( List<String> dominant, List<String> recessive )
     {
         // Even if the list is empty, return it. This makes it possible to clear the default list.
 

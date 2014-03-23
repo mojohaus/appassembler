@@ -46,7 +46,7 @@ public class Program
      * Extra arguments which will be given the Main Class as arguments verbatim.
      */
     @Parameter
-    private List commandLineArguments;
+    private List<String> commandLineArguments;
 
     /**
      * The License header which can be used instead of the default header.
@@ -77,7 +77,7 @@ public class Program
      * "windows" | "unix".
      */
     @Parameter
-    private Set platforms;
+    private Set<String> platforms;
 
     /**
      * The default constructor.
@@ -165,7 +165,7 @@ public class Program
      * 
      * @return The set of platforms.
      */
-    public Set getPlatforms()
+    public Set<String> getPlatforms()
     {
         return platforms;
     }
@@ -175,7 +175,7 @@ public class Program
      * 
      * @param platforms The set with the platforms.
      */
-    public void setPlatforms( Set platforms )
+    public void setPlatforms( Set<String> platforms )
     {
         this.platforms = platforms;
     }
@@ -185,7 +185,7 @@ public class Program
      * 
      * @return The list of command line arguments.
      */
-    public List getCommandLineArguments()
+    public List<String> getCommandLineArguments()
     {
         return this.commandLineArguments;
     }
@@ -195,7 +195,7 @@ public class Program
      * 
      * @param arguments The list of command line arguments.
      */
-    public void setCommandLineArguments( List arguments )
+    public void setCommandLineArguments( List<String> arguments )
     {
         this.commandLineArguments = arguments;
     }

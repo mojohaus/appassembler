@@ -59,22 +59,22 @@ public class FormattedProperties
     /**
      * The last line where a given property was encountered.
      */
-    private Map propertyLines;
+    private Map<String, Integer> propertyLines;
 
     /**
      * The actual lines of the file for writing back as it was.
      */
-    private List fileLines;
+    private List<String> fileLines;
 
     /**
      * Keeping track of properties that are lists.
      */
-    private Map listProperties = new HashMap();
+    private Map<String, List<String>> listProperties = new HashMap<String, List<String>>();
 
     /**
      * A map of property chains to add properties after.
      */
-    private Map afterProperties = new HashMap();
+    private Map<String, List<String>> afterProperties = new HashMap<String, List<String>>();
 
     public void setProperty( String key, String value )
     {
@@ -89,10 +89,10 @@ public class FormattedProperties
                 String listKey = m.group( 1 );
 
                 // add the property to a list keyed by the base key of the list
-                List p = (List) listProperties.get( listKey );
+                List<String> p = listProperties.get( listKey );
                 if ( p == null )
                 {
-                    p = new ArrayList();
+                    p = new ArrayList<String>();
                     listProperties.put( listKey, p );
                 }
                 p.add( key );
@@ -137,8 +137,8 @@ public class FormattedProperties
     {
         synchronized ( properties )
         {
-            fileLines = new ArrayList();
-            propertyLines = new HashMap();
+            fileLines = new ArrayList<String>();
+            propertyLines = new HashMap<String, Integer>();
 
             BufferedReader r = new BufferedReader( new InputStreamReader( inputStream ) );
 
@@ -207,12 +207,12 @@ public class FormattedProperties
             // TODO: we should be updating the fileLines and propertyLines as a result of this too
             try
             {
-                Set writtenProperties = new HashSet();
+                Set<String> writtenProperties = new HashSet<String>();
 
                 // tracking the old file lines, we'll just add ours in as we go
                 for ( int i = 0; i < fileLines.size(); i++ )
                 {
-                    String line = (String) fileLines.get( i );
+                    String line = fileLines.get( i );
 
                     // skip processing empty lines (though they are written later)
                     if ( line.trim().length() > 0 )
@@ -243,11 +243,9 @@ public class FormattedProperties
                         // look for chained properties to add
                         if ( afterProperties.containsKey( key ) )
                         {
-                            List p = (List) afterProperties.get( key );
-                            for ( Iterator j = p.iterator(); j.hasNext(); )
+                            List<String> p = afterProperties.get( key );
+                            for ( String pKey : p )
                             {
-                                String pKey = (String) j.next();
-
                                 String value = properties.getProperty( pKey );
                                 if ( value != null && !writtenProperties.contains( pKey ) )
                                 {
@@ -265,13 +263,11 @@ public class FormattedProperties
 
                             if ( new Integer( i + 1 ).equals( propertyLines.get( key ) ) )
                             {
-                                List p = (List) listProperties.get( key );
+                                List<String> p = listProperties.get( key );
                                 if ( p != null )
                                 {
-                                    for ( Iterator j = p.iterator(); j.hasNext(); )
+                                    for ( String itemKey : p )
                                     {
-                                        String itemKey = (String) j.next();
-
                                         if ( !writtenProperties.contains( itemKey ) )
                                         {
                                             String value = properties.getProperty( itemKey );
@@ -314,10 +310,10 @@ public class FormattedProperties
 
     public void setPropertyAfter( String key, String value, String afterProperty )
     {
-        List p = (List) afterProperties.get( afterProperty );
+        List<String> p = afterProperties.get( afterProperty );
         if ( p == null )
         {
-            p = new ArrayList();
+            p = new ArrayList<String>();
             afterProperties.put( afterProperty, p );
         }
         p.add( key );

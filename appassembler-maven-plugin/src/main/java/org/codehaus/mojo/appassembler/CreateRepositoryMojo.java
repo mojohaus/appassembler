@@ -91,7 +91,7 @@ public class CreateRepositoryMojo
     // -----------------------------------------------------------------------
 
     @Parameter( defaultValue = "${project.artifacts}", readonly = true )
-    private Set artifacts;
+    private Set<Artifact> artifacts;
 
     @Parameter( defaultValue = "${plugin.version}", readonly = true )
     private String pluginVersion;
@@ -150,10 +150,8 @@ public class CreateRepositoryMojo
         // ----------------------------------------------------------------------
 
         // TODO: merge with the artifacts below so no duplicate versions included
-        for ( Iterator it = artifacts.iterator(); it.hasNext(); )
+        for ( Artifact artifact : artifacts )
         {
-            Artifact artifact = (Artifact) it.next();
-
             installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
         }
 

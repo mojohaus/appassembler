@@ -41,15 +41,15 @@ public class Daemon
 
     private String descriptor;
 
-    private List platforms;
+    private List<String> platforms;
 
-    private List commandLineArguments;
+    private List<String> commandLineArguments;
 
     private String configurationDirectory;
 
     private JvmSettings jvmSettings;
 
-    private List generatorConfigurations;
+    private List<GeneratorConfiguration> generatorConfigurations;
 
     private String licenseHeaderFile;
 
@@ -108,11 +108,11 @@ public class Daemon
      *
      * @return The list of platforms or an empty list if non have been defined before.
      */
-    public List getPlatforms()
+    public List<String> getPlatforms()
     {
         if ( platforms == null )
         {
-            platforms = new ArrayList();
+            platforms = new ArrayList<String>();
         }
 
         return platforms;
@@ -123,7 +123,7 @@ public class Daemon
      *
      * @return The list of command line arguments.
      */
-    public List getCommandLineArguments()
+    public List<String> getCommandLineArguments()
     {
         return commandLineArguments;
     }
@@ -153,7 +153,7 @@ public class Daemon
      *
      * @return The list of generator configurations.
      */
-    public List getGeneratorConfigurations()
+    public List<GeneratorConfiguration> getGeneratorConfigurations()
     {
         return generatorConfigurations;
     }

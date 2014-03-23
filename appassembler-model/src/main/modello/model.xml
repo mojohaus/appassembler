@@ -166,14 +166,14 @@
         <codeSegment>
           <version>1.0.0+</version>
           <code><![CDATA[
-            public java.util.List getAllClasspathElements()
+            public java.util.List<ClasspathElement> getAllClasspathElements()
             {
                 if ( classpath == null )
                 {
                     return java.util.Collections.EMPTY_LIST;
                 }
 
-                java.util.List elements = new java.util.ArrayList(
+                java.util.List<ClasspathElement> elements = new java.util.ArrayList<ClasspathElement>(
                     classpath.getDependencies().size() + classpath.getDirectories().size() );
                 elements.addAll( classpath.getDirectories() );
                 elements.addAll( classpath.getDependencies() );
