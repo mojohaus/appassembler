@@ -156,6 +156,11 @@ public class JavaServiceWrapperDaemonGenerator
         context.setProperty( "chkconfig.run", chkconfigRun );
         context.setProperty( "chkconfig.start", chkconfigStart );
         context.setProperty( "chkconfig.stop", chkconfigStop );
+        context.setProperty( "wrapper.exe.prefix", "wrapper" );
+        if ( daemon.isUseDaemonIdAsWrapperExePrefixName() )
+        {
+            context.setProperty( "wrapper.exe.prefix", daemon.getId() );
+        }
 
         writeWrapperConfFile( request, daemon, outputDirectory, context, configuration );
 
@@ -590,7 +595,7 @@ public class JavaServiceWrapperDaemonGenerator
         }
         else
         {
-            copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, "wrapper.jar" );
+            copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, "wrapper.jar", "wrapper.jar" );
         }
 
         for ( String platform : jswPlatformIncludes )
@@ -605,7 +610,7 @@ public class JavaServiceWrapperDaemonGenerator
                 }
                 else
                 {
-                    copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, libFile );
+                    copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, libFile, libFile );
                 }
             }
             else
@@ -623,14 +628,20 @@ public class JavaServiceWrapperDaemonGenerator
             String execFile = JSW_PLATFORMS_MAP.get( platform + "-exec" );
             if ( execFile != null )
             {
+                String outputExecFile = execFile;
+                if ( daemon.isUseDaemonIdAsWrapperExePrefixName() )
+                {
+                    outputExecFile = StringUtils.replaceOnce( execFile, "wrapper", daemon.getId() );
+                }
+
                 if ( daemon.getExternalDeltaPackDirectory() != null )
                 {
                     copyExternalFile( new File( daemon.getExternalDeltaPackDirectory(), JSW_BIN_DIR + "/" + execFile ),
-                                      new File( outputDirectory, JSW_BIN_DIR + "/" + execFile ) );
+                                      new File( outputDirectory, JSW_BIN_DIR + "/" + outputExecFile ) );
                 }
                 else
                 {
-                    copyResourceFile( new File( outputDirectory, JSW_BIN_DIR ), JSW_BIN_DIR, execFile );
+                    copyResourceFile( new File( outputDirectory, JSW_BIN_DIR ), JSW_BIN_DIR, execFile, outputExecFile );
                 }
             }
             else
@@ -655,7 +666,7 @@ public class JavaServiceWrapperDaemonGenerator
 
     }
 
-    private void copyResourceFile( File outputDirectory, String inputDirectory, String fileName )
+    private void copyResourceFile( File outputDirectory, String inputDirectory, String fileName, String outFileName )
         throws DaemonGeneratorException
     {
         InputStream batchFileInputStream = this.getClass().getResourceAsStream( inputDirectory + "/" + fileName );
@@ -665,7 +676,7 @@ public class JavaServiceWrapperDaemonGenerator
             throw new DaemonGeneratorException( "Could not load library file: " + fileName );
         }
 
-        writeFile( new File( outputDirectory, fileName ), batchFileInputStream );
+        writeFile( new File( outputDirectory, outFileName ), batchFileInputStream );
     }
 
     private List<String> getJswPlatformIncludes( Daemon daemon )

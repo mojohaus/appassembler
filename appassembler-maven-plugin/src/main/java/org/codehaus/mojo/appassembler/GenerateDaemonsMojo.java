@@ -98,6 +98,14 @@ public class GenerateDaemonsMojo
     private boolean useDaemonIdAsWrapperConfName;
 
     /**
+     * When enable, prefix the wrapper executable as ${daemon.id}. Otherwise, use the original name( ie wrapper )
+     *
+     * @since 1.8
+     */
+    @Parameter( defaultValue = "false" )
+    private boolean useDaemonIdAsWrapperExePrefixName;
+
+    /**
      * Use this option to override the current built-in delta pack binary. You will need to unpack your delta pack
      * version to a known location set by this option
      *
@@ -183,6 +191,7 @@ public class GenerateDaemonsMojo
             modelDaemon.setRepositoryName( repositoryName );
             modelDaemon.setUseTimestampInSnapshotFileName( useTimestampInSnapshotFileName );
             modelDaemon.setUseDaemonIdAsWrapperConfName( useDaemonIdAsWrapperConfName );
+            modelDaemon.setUseDaemonIdAsWrapperExePrefixName( useDaemonIdAsWrapperExePrefixName );
             modelDaemon.setUseWildcardClassPath( useWildcardClassPath );
 
             if ( endorsedDir != null )
