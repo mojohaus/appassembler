@@ -117,7 +117,7 @@ public abstract class AbstractScriptGeneratorMojo
     @Parameter( defaultValue = "${project.runtimeArtifacts}", readonly = true )
     protected List<Artifact> artifacts;
 
-    @Parameter( defaultValue = "${project}", readonly = true, required = true)
+    @Parameter( defaultValue = "${project}", readonly = true, required = true )
     protected MavenProject mavenProject;
 
     /**
@@ -196,7 +196,7 @@ public abstract class AbstractScriptGeneratorMojo
     /**
      * @since 1.8
      */
-    @Parameter( defaultValue = "${session}", readonly = true, required = true)
+    @Parameter( defaultValue = "${session}", readonly = true, required = true )
     private MavenSession session;
 
     // -----------------------------------------------------------------------
