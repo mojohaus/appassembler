@@ -324,6 +324,12 @@ public class AssembleMojo
         {
             doCopyConfigurationDirectory( assembleDirectory.getAbsolutePath() );
         }
+
+        // ----------------------------------------------------------------------
+        // Create logs and temp dirs if specified
+        // ----------------------------------------------------------------------
+
+        doCreateExtraDirectories( assembleDirectory );
     }
 
     private org.codehaus.mojo.appassembler.model.Daemon programToDaemon( Program program,

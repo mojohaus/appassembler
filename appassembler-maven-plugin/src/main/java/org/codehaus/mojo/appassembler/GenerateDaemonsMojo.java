@@ -263,6 +263,12 @@ public class GenerateDaemonsMojo
                 {
                     doCopyConfigurationDirectory( outputDirectory.getAbsolutePath() );
                 }
+
+                // ----------------------------------------------------------------------
+                // Create logs and temp dirs if specified
+                // ----------------------------------------------------------------------
+
+                doCreateExtraDirectories( outputDirectory );
             }
 
         }

@@ -199,6 +199,24 @@ public abstract class AbstractScriptGeneratorMojo
     @Parameter( defaultValue = "${session}", readonly = true, required = true )
     private MavenSession session;
 
+    /**
+     * The logs directory for the assembled project.
+     * If you specify a value for this parameter an empty directory with the name given will be created.
+     *
+     * @since 1.8
+     */
+    @Parameter( property = "logsDirectory" )
+    protected String logsDirectory;
+
+    /**
+     * The temp directory of the assembled project.
+     * If you specify a value for this parameter an empty directory with the name given will be created.
+     *
+     * @since 1.8
+     */
+    @Parameter( property = "tempDirectory" )
+    protected String tempDirectory;
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -269,6 +287,29 @@ public abstract class AbstractScriptGeneratorMojo
     // -----------------------------------------------------------------------
     // Protected helper methods.
     // -----------------------------------------------------------------------
+
+    protected void doCreateExtraDirectories( File targetDirectory )
+        throws MojoFailureException
+    {
+        if ( this.logsDirectory != null )
+        {
+            File logsDirectory = new File( targetDirectory, this.logsDirectory );
+            boolean success = logsDirectory.mkdirs();
+            if ( !success )
+            {
+                throw new MojoFailureException( "Failed to create directory for log files." );
+            }
+        }
+        if ( this.tempDirectory != null )
+        {
+            File tempDirectory = new File( targetDirectory, this.tempDirectory );
+            boolean success = tempDirectory.mkdirs();
+            if ( !success )
+            {
+                throw new MojoFailureException( "Failed to create directory for temp files." );
+            }
+        }
+    }
 
     protected void installDependencies( final String outputDirectory, final String repositoryName )
         throws MojoExecutionException, MojoFailureException
