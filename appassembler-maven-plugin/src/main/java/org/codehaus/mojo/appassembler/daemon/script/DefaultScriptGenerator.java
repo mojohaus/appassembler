@@ -41,6 +41,7 @@ import java.util.StringTokenizer;
 
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
@@ -238,8 +239,15 @@ public class DefaultScriptGenerator
             binFile = new File( binDir, programName + platform.getBinFileExtension() );
             if ( Platform.UNIX_NAME.equals( platformName ) )
             {
-                // in case it already exists, make it writable. Maybe deleting would be better?
-                ArchiveEntryUtils.chmod( binFile, 0777, getLogger(), true );
+                try
+                {
+                    // in case it already exists, make it writable. Maybe deleting would be better?
+                    ArchiveEntryUtils.chmod( binFile, 0777, getLogger(), true );
+                }
+                catch ( ArchiverException ae )
+                {
+                    // give up
+                }
             }
 
 
@@ -265,7 +273,14 @@ public class DefaultScriptGenerator
 
         if ( Platform.UNIX_NAME.equals( platformName ) )
         {
-            ArchiveEntryUtils.chmod( binFile, 0555, getLogger(), true );
+            try
+            {
+                ArchiveEntryUtils.chmod( binFile, 0555, getLogger(), true );
+            }
+            catch ( ArchiverException ae )
+            {
+                // give up.
+            }
         }
     }
 
