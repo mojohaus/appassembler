@@ -41,6 +41,7 @@ import java.util.StringTokenizer;
 
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.model.Daemon;
+import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
@@ -161,6 +162,8 @@ public class DefaultScriptGenerator
         InputStream in = null;
 
         FileWriter out = null;
+        File binFile;
+
 
         try
         {
@@ -232,11 +235,17 @@ public class DefaultScriptGenerator
 
             File binDir = new File( outputDirectory, binFolder );
             FileUtils.forceMkdir( binDir );
-            File binFile = new File( binDir, programName + platform.getBinFileExtension() );
+            binFile = new File( binDir, programName + platform.getBinFileExtension() );
+            if ( Platform.UNIX_NAME.equals( platformName ) )
+            {
+                // in case it already exists, make it writable. Maybe deleting would be better?
+                ArchiveEntryUtils.chmod( binFile, 0777, getLogger(), true );
+            }
+
 
             out = new FileWriter( binFile );
-            getLogger().debug( "Writing shell file for platform '" + platform.getName() + "' to '"
-                                   + binFile.getAbsolutePath() + "'." );
+            getLogger().debug(
+                "Writing shell file for platform '" + platform.getName() + "' to '" + binFile.getAbsolutePath() + "'." );
 
             IOUtil.copy( interpolationFilterReader, out );
         }
@@ -252,6 +261,11 @@ public class DefaultScriptGenerator
         {
             IOUtil.close( out );
             IOUtil.close( in );
+        }
+
+        if ( Platform.UNIX_NAME.equals( platformName ) )
+        {
+            ArchiveEntryUtils.chmod( binFile, 0555, getLogger(), true );
         }
     }
 

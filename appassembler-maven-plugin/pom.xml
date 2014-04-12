@@ -107,6 +107,17 @@
            from execution by using provided scope -->
       <scope>provided</scope>
     </dependency>
+      <dependency>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-archiver</artifactId>
+          <version>2.4.4</version>
+          <exclusions>
+              <exclusion>
+                  <groupId>org.codehaus.plexus</groupId>
+                  <artifactId>plexus-component-api</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
   </dependencies>
   
   <build>
