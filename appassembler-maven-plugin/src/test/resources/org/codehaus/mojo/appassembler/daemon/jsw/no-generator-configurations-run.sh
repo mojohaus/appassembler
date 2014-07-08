@@ -183,7 +183,7 @@ then
 fi
 
 # Resolve the os
-DIST_OS=`uname -s | tr [:upper:] [:lower:] | tr -d [:blank:]`
+DIST_OS=`uname -s | tr "[:upper:]" "[:lower:]" | tr -d [:blank:]`
 case "$DIST_OS" in
     'sunos')
         DIST_OS="solaris"
@@ -200,10 +200,10 @@ case "$DIST_OS" in
 esac
 
 # Resolve the architecture
-DIST_ARCH=`uname -p | tr [:upper:] [:lower:] | tr -d [:blank:]`
+DIST_ARCH=`uname -p | tr "[:upper:]" "[:lower:]" | tr -d [:blank:]`
 if [ "$DIST_ARCH" = "unknown" ]
 then
-    DIST_ARCH=`uname -m | tr [:upper:] [:lower:] | tr -d [:blank:]`
+    DIST_ARCH=`uname -m | tr "[:upper:]" "[:lower:]" | tr -d [:blank:]`
 fi
 case "$DIST_ARCH" in
     'amd64' | 'athlon' | 'ia32' | 'ia64' | 'i386' | 'i486' | 'i586' | 'i686' | 'x86_64')
