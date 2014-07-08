@@ -53,30 +53,7 @@ println "ProjectVersion:" + projectVersion
 
 def buildLogFile = new File( basedir, "build.log");
 
-def getMavenVersion(buildLog) {
-	def maven = null;
-	buildLog.eachLine { line ->
-		if (line.startsWith("Apache Maven 2.2.1")) {
-			maven = "2.2.1";
-		} else if (line.startsWith("Apache Maven 3.0.3")) {
-			maven = "3.0.3";
-		} else if (line.startsWith("Apache Maven 3.0.4")) {
-			maven = "3.0.4";
-		} else if (line.startsWith("Apache Maven 3.0.5")) {
-			maven = "3.0.5";
-		} else if (line.startsWith("Apache Maven 3.1.0")) {
-			maven = "3.1.0";
-		} else if (line.startsWith("Apache Maven 3.1.1")) {
-			maven = "3.1.1";
-		}
-	}
-
-	return maven
-}
-
-def mavenVersion = getMavenVersion(buildLogFile)
-
-if (mavenVersion.equals("3.0.4") || mavenVersion.equals("3.0.5") || mavenVersion.equals( "3.1.0" ) || mavenVersion.equals( "3.1.1" )) {
+if (mavenVersion.equals("3.0.4") || mavenVersion.equals("3.0.5") || mavenVersion.equals( "3.1.0" ) || mavenVersion.equals( "3.1.1" ) || mavenVersion.equals( "3.2.1" ) || mavenVersion.equals( "3.2.2" )) {
 	t.checkExistenceAndContentOfAFile(buildLogFile, [
     '[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project programNameDuplicate-test: The program id: program-01-test exists more than once! -> [Help 1]',
 	]);

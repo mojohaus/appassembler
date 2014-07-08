@@ -52,28 +52,5 @@ def projectVersion = getProjectVersion();
 
 def buildLog = new File( basedir, "build.log")
 
-def getMavenVersion(buildLog) {
-    def maven = null;
-    buildLog.eachLine { line ->
-        if (line.startsWith("Apache Maven 2.2.1")) {
-            maven = "2.2.1";
-        } else if (line.startsWith("Apache Maven 3.0.3")) {
-            maven = "3.0.3";
-        } else if (line.startsWith("Apache Maven 3.0.4")) {
-            maven = "3.0.4";
-        } else if (line.startsWith("Apache Maven 3.0.5")) {
-            maven = "3.0.5";
-        } else if (line.startsWith("Apache Maven 3.1.0")) {
-            maven = "3.1.0";
-        } else if (line.startsWith("Apache Maven 3.1.1")) {
-            maven = "3.1.1";
-        }
-    }
-
-    return maven
-}
-
-def mavenVersion = getMavenVersion(buildLog)
-
 // this test does nothing, should we remove it from the suite?
 return true;
