@@ -165,7 +165,6 @@ public class DefaultScriptGenerator
         FileWriter out = null;
         File binFile;
 
-
         try
         {
             in = getScriptTemplate( platformName, daemon );
@@ -239,21 +238,24 @@ public class DefaultScriptGenerator
             binFile = new File( binDir, programName + platform.getBinFileExtension() );
             if ( Platform.UNIX_NAME.equals( platformName ) )
             {
-                try
+                // Only in case of an existing file it does make sense
+                if ( binFile.exists() )
                 {
-                    // in case it already exists, make it writable. Maybe deleting would be better?
-                    ArchiveEntryUtils.chmod( binFile, 0777, getLogger(), true );
-                }
-                catch ( ArchiverException ae )
-                {
-                    // give up
+                    try
+                    {
+                        // in case it already exists, make it writable. Maybe deleting would be better?
+                        ArchiveEntryUtils.chmod( binFile, 0777, getLogger(), true );
+                    }
+                    catch ( ArchiverException ae )
+                    {
+                        throw new DaemonGeneratorException( "Failed to change permission for bin file.", ae );
+                    }
                 }
             }
 
-
             out = new FileWriter( binFile );
-            getLogger().debug(
-                "Writing shell file for platform '" + platform.getName() + "' to '" + binFile.getAbsolutePath() + "'." );
+            getLogger().debug( "Writing shell file for platform '" + platform.getName() + "' to '"
+                                   + binFile.getAbsolutePath() + "'." );
 
             IOUtil.copy( interpolationFilterReader, out );
         }
@@ -275,11 +277,12 @@ public class DefaultScriptGenerator
         {
             try
             {
-                ArchiveEntryUtils.chmod( binFile, 0555, getLogger(), true );
+                // TODO: The permissions should be made configurable.
+                ArchiveEntryUtils.chmod( binFile, 0755, getLogger(), true );
             }
             catch ( ArchiverException ae )
             {
-                // give up.
+                throw new DaemonGeneratorException( "Failed to change permission for bin file.", ae );
             }
         }
     }
