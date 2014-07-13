@@ -53,11 +53,13 @@ println "ProjectVersion:" + projectVersion
 
 def buildLogFile = new File( basedir, "build.log");
 
-if (mavenVersion.equals("3.0.4") || mavenVersion.equals("3.0.5") || mavenVersion.equals( "3.1.0" ) || mavenVersion.equals( "3.1.1" ) || mavenVersion.equals( "3.2.1" ) || mavenVersion.equals( "3.2.2" )) {
+//All Maven 3.X versions
+if (mavenVersion.startsWith("3.")) {
 	t.checkExistenceAndContentOfAFile(buildLogFile, [
     '[ERROR] Failed to execute goal org.codehaus.mojo:appassembler-maven-plugin:' + projectVersion + ':assemble (default) on project programNameDuplicate-test: The program id: program-01-test exists more than once! -> [Help 1]',
 	]);
 } else {
+  //Maven 2.X output looks different...
 	t.checkExistenceAndContentOfAFile(buildLogFile, [
 		'org.apache.maven.BuildFailureException: The program id: program-01-test exists more than once!',
 	]);
