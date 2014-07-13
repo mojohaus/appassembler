@@ -242,11 +242,13 @@ public class DefaultScriptGenerator
                 try
                 {
                     // in case it already exists, make it writable. Maybe deleting would be better?
-                    ArchiveEntryUtils.chmod( binFile, 0777, getLogger(), true );
+                    //NOTE: To make it writable it only needs 07XX having permission for the current user but NOT 0777...
+                    //TODO: The permissions should be made configurable.
+                    ArchiveEntryUtils.chmod( binFile, 0755, getLogger(), true );
                 }
                 catch ( ArchiverException ae )
                 {
-                    // give up
+                    throw new DaemonGeneratorException( "Failed to change permission for bin file.", ae );
                 }
             }
 
@@ -275,11 +277,12 @@ public class DefaultScriptGenerator
         {
             try
             {
-                ArchiveEntryUtils.chmod( binFile, 0555, getLogger(), true );
+                //TODO: The permissions should be made configurable.
+                ArchiveEntryUtils.chmod( binFile, 0755, getLogger(), true );
             }
             catch ( ArchiverException ae )
             {
-                // give up.
+                throw new DaemonGeneratorException( "Failed to change permission for bin file.", ae );
             }
         }
     }
