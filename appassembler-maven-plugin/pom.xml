@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ~ The MIT License ~ ~ Copyright 2006-2012 The Codehaus. ~ ~ Permission is hereby granted, free of charge, to any person 
-  obtaining a copy of ~ this software and associated documentation files (the "Software"), to deal in ~ the Software without 
-  restriction, including without limitation the rights to ~ use, copy, modify, merge, publish, distribute, sublicense, and/or 
-  sell copies ~ of the Software, and to permit persons to whom the Software is furnished to do ~ so, subject to the following 
-  conditions: ~ ~ The above copyright notice and this permission notice shall be included in all ~ copies or substantial portions 
-  of the Software. ~ ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR ~ IMPLIED, INCLUDING BUT 
-  NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-  THE ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+<!-- ~ The MIT License ~ ~ Copyright 2006-2012 The Codehaus. ~ ~ Permission is hereby granted, free of charge, to any person
+  obtaining a copy of ~ this software and associated documentation files (the "Software"), to deal in ~ the Software without
+  restriction, including without limitation the rights to ~ use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies ~ of the Software, and to permit persons to whom the Software is furnished to do ~ so, subject to the following
+  conditions: ~ ~ The above copyright notice and this permission notice shall be included in all ~ copies or substantial portions
+  of the Software. ~ ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR ~ IMPLIED, INCLUDING BUT
+  NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+  THE ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
   TORT OR OTHERWISE, ARISING FROM, ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE ~ SOFTWARE. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  
+
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <artifactId>appassembler</artifactId>
     <groupId>org.codehaus.mojo.appassembler</groupId>
     <version>1.8.2-SNAPSHOT</version>
   </parent>
-  
+
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>appassembler-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
@@ -119,7 +119,7 @@
           </exclusions>
       </dependency>
   </dependencies>
-  
+
   <build>
     <plugins>
       <plugin>
@@ -133,9 +133,6 @@
           </execution>
         </executions>
       </plugin>
-      <!-- Here, we download the wrapper bundle and incorporate into the plugin directly -->
-      <!-- TODO: improve by doing this dynamically in the plugin so that non-JSW users aren't burdened by the size of the 
-        plugin, and so the user can choose an alternate version -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -280,8 +277,8 @@
     <profile>
       <id>run-its</id>
       <dependencies>
-        <!-- This is given as dependencies, cause some integration tests use this artifact. But i don't want to add this 
-          as an default dependencies, cause all users will download it with the appassembler-maven-plugin independent if they use it 
+        <!-- This is given as dependencies, cause some integration tests use this artifact. But i don't want to add this
+          as an default dependencies, cause all users will download it with the appassembler-maven-plugin independent if they use it
           or not. -->
         <dependency>
           <groupId>org.codehaus.mojo.appassembler</groupId>
@@ -444,8 +441,8 @@
                   <rules>
                     <requirePluginVersions>
                       <banSnapshots>false</banSnapshots>
-                      <!-- oups documentation sucks !! http://maven.apache.org/enforcer/enforcer-rules/requirePluginVersions.html 
-                        log says Cause: Cannot find setter nor field in org.apache.maven.plugins.enforcer.RequirePluginVersions for 'unCheckedPluginsList' 
+                      <!-- oups documentation sucks !! http://maven.apache.org/enforcer/enforcer-rules/requirePluginVersions.html
+                        log says Cause: Cannot find setter nor field in org.apache.maven.plugins.enforcer.RequirePluginVersions for 'unCheckedPluginsList'
                         <unCheckedPluginsList>org.apache.maven.plugins:maven-invoker-plugin</unCheckedPluginsList> -->
                     </requirePluginVersions>
                   </rules>
