@@ -33,11 +33,6 @@
   <artifactId>appassembler-model</artifactId>
   <name>Appassembler :: Model</name>
   <dependencies>
-    <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <scope>test</scope>
-    </dependency>
     <!-- Temporary until modello stax plugin makes buildDom method generation optional -->
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
