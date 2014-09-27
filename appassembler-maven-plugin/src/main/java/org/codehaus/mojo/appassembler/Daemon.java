@@ -62,6 +62,8 @@ public class Daemon
     private String endorsedDir;
 
     private String preWrapperConf;
+    
+    private String wrapperLogFile;
 
     /**
      * The daemon id which must be unique.
@@ -236,6 +238,16 @@ public class Daemon
     public void setPreWrapperConf( String preWrapperConf )
     {
         this.preWrapperConf = preWrapperConf;
+    }
+
+    public String getWrapperLogFile()
+    {
+        return wrapperLogFile;
+    }
+
+    public void setWrapperLogFile( String wrapperLogFile )
+    {
+        this.wrapperLogFile = wrapperLogFile;
     }
 
 

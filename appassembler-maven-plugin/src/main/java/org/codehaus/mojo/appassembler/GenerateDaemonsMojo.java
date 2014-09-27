@@ -285,6 +285,7 @@ public class GenerateDaemonsMojo
         modelDaemon.setId( daemon.getId() );
         modelDaemon.setMainClass( daemon.getMainClass() );
         modelDaemon.setWrapperMainClass( daemon.getWrapperMainClass() );
+        modelDaemon.setWrapperLogFile( daemon.getWrapperLogFile() );
         modelDaemon.setCommandLineArguments( daemon.getCommandLineArguments() );
         modelDaemon.setConfigurationDirectory( daemon.getConfigurationDirectory() );
         modelDaemon.setLicenseHeaderFile( daemon.getLicenseHeaderFile() );

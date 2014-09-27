@@ -103,6 +103,7 @@
            from execution by using provided scope -->
       <scope>provided</scope>
     </dependency>
+    <!-- TODO: Check if it's worth to update to 2.5 -->
       <dependency>
           <groupId>org.codehaus.plexus</groupId>
           <artifactId>plexus-archiver</artifactId>
