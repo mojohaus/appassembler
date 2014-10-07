@@ -100,7 +100,7 @@ public class DaemonToolsDaemonGenerator
 
         InputStreamReader reader = new InputStreamReader( in );
 
-        Map<String, String> context = new HashMap<String, String>();
+        Map<Object, Object> context = new HashMap<Object, Object>();
         context.put( "MAINCLASS", daemon.getMainClass() );
         context.put( "NAME", daemon.getId() );
 

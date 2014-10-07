@@ -171,7 +171,7 @@ public class DefaultScriptGenerator
 
             InputStreamReader reader = new InputStreamReader( getScriptTemplate( platformName, daemon ) );
 
-            Map<String, String> context = new HashMap<String, String>();
+            Map<Object, Object> context = new HashMap<Object, Object>();
             context.put( "MAINCLASS", daemon.getMainClass() );
             context.put( "CLASSPATH", platform.getClassPath( daemon ) );
             context.put( "EXTRA_JVM_ARGUMENTS", platform.getExtraJvmArguments( daemon.getJvmSettings() ) );

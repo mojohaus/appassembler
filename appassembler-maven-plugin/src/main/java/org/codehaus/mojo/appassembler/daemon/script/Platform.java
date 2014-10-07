@@ -328,7 +328,7 @@ public class Platform
         StringReader sr = new StringReader( content );
         StringWriter result = new StringWriter();
 
-        Map<String, String> context = new HashMap<String, String>();
+        Map<Object, Object> context = new HashMap<Object, Object>();
 
         context.put( "BASEDIR", StringUtils.quoteAndEscape( getBasedir(), '"' ) );
         context.put( "REPO", StringUtils.quoteAndEscape( getRepo(), '"' ) );
