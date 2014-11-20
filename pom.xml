@@ -33,7 +33,7 @@
   <artifactId>appassembler</artifactId>
   <packaging>pom</packaging>
   <groupId>org.codehaus.mojo.appassembler</groupId>
-  <version>1.8.2-SNAPSHOT</version>
+  <version>1.9.0</version>
   <name>Appassembler</name>
   <inceptionYear>2006</inceptionYear>
   <issueManagement>
@@ -125,9 +125,9 @@
     <module>appassembler-maven-plugin</module>
   </modules>
   <scm>
-    <connection>scm:svn:http://svn.codehaus.org/mojo/trunk/mojo/appassembler</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/appassembler</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/appassembler</url>
+    <connection>scm:svn:http://svn.codehaus.org/mojo/tags/appassembler-1.9.0</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/tags/appassembler-1.9.0</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/mojo/tags/appassembler-1.9.0</url>
   </scm>
 
   <dependencyManagement>
