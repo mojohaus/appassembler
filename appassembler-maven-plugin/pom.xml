@@ -16,7 +16,7 @@
   <parent>
     <artifactId>appassembler</artifactId>
     <groupId>org.codehaus.mojo.appassembler</groupId>
-    <version>1.9</version>
+    <version>1.10-SNAPSHOT</version>
   </parent>
 
   <groupId>org.codehaus.mojo</groupId>
