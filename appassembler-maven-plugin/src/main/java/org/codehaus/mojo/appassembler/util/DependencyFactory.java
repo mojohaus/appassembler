@@ -24,6 +24,8 @@ package org.codehaus.mojo.appassembler.util;
  * SOFTWARE.
  */
 
+import java.io.File;
+
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.project.MavenProject;
@@ -32,8 +34,6 @@ import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.model.Dependency;
 import org.codehaus.plexus.interpolation.InterpolationException;
 import org.codehaus.plexus.util.StringUtils;
-
-import java.io.File;
 
 /**
  * A factory that creates Dependency objects.

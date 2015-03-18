@@ -24,6 +24,11 @@ package org.codehaus.mojo.appassembler;
  * SOFTWARE.
  */
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.execution.MavenSession;
@@ -38,11 +43,6 @@ import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
 import org.codehaus.plexus.util.FileUtils;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * This is intended to collect all generic parts of the script generating Mojos assemble and generate-daemons into a

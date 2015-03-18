@@ -27,6 +27,7 @@ package org.codehaus.mojo.appassembler;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.maven.plugins.annotations.Parameter;
 
 /**
