@@ -250,5 +250,4 @@ public class Daemon
         this.wrapperLogFile = wrapperLogFile;
     }
 
-
 }

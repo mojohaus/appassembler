@@ -115,13 +115,13 @@ public class GenerateDaemonsMojo
     private File externalDeltaPackDirectory;
 
     /**
-     * Use this option to pre insert a content of a known file into the generated wrapper config file. For example: $include ../conf/another-wrapper.conf
+     * Use this option to pre insert a content of a known file into the generated wrapper config file. For example:
+     * $include ../conf/another-wrapper.conf
      *
      * @since 1.7.0
      */
     @Parameter( property = "preWrapperConf" )
     private File preWrapperConf;
-
 
     // -----------------------------------------------------------------------
     // AbstractMojo Implementation
@@ -314,7 +314,8 @@ public class GenerateDaemonsMojo
 
     private List<org.codehaus.mojo.appassembler.model.GeneratorConfiguration> convertGeneratorConfigurations( List<GeneratorConfiguration> generatorConfigurations )
     {
-        List<org.codehaus.mojo.appassembler.model.GeneratorConfiguration> value = new ArrayList<org.codehaus.mojo.appassembler.model.GeneratorConfiguration>( generatorConfigurations.size() );
+        List<org.codehaus.mojo.appassembler.model.GeneratorConfiguration> value =
+            new ArrayList<org.codehaus.mojo.appassembler.model.GeneratorConfiguration>( generatorConfigurations.size() );
         for ( GeneratorConfiguration config : generatorConfigurations )
         {
             value.add( convertGeneratorConfiguration( config ) );

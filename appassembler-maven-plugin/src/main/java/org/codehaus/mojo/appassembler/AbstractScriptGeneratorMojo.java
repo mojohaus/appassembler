@@ -127,7 +127,8 @@ public abstract class AbstractScriptGeneratorMojo
     protected boolean generateRepository;
 
     /**
-     * The name of the target directory for configuration files. Prior to version 1.7 this value defaults to 'conf' for assemble goal and 'etc' for generate-daemons
+     * The name of the target directory for configuration files. Prior to version 1.7 this value defaults to 'conf' for
+     * assemble goal and 'etc' for generate-daemons
      */
     @Parameter( defaultValue = "etc" )
     protected String configurationDirectory;
@@ -167,8 +168,7 @@ public abstract class AbstractScriptGeneratorMojo
     protected List<String> buildFilters;
 
     /**
-     * The character encoding scheme to be applied when filtering the source
-     * configuration directory.
+     * The character encoding scheme to be applied when filtering the source configuration directory.
      *
      * @since 1.8
      */
@@ -176,8 +176,8 @@ public abstract class AbstractScriptGeneratorMojo
     protected String encoding;
 
     /**
-     * Expressions preceded with this String won't be interpolated.
-     * <code>\${foo}</code> will be replaced with <code>${foo}</code>.
+     * Expressions preceded with this String won't be interpolated. <code>\${foo}</code> will be replaced with
+     * <code>${foo}</code>.
      *
      * @since 1.8
      */
@@ -185,8 +185,8 @@ public abstract class AbstractScriptGeneratorMojo
     protected String escapeString;
 
     /**
-     * If the source configuration directory should be filtered when copied to
-     * the configured <code>configurationDirectory</code>.
+     * If the source configuration directory should be filtered when copied to the configured
+     * <code>configurationDirectory</code>.
      *
      * @since 1.8
      */
@@ -200,8 +200,8 @@ public abstract class AbstractScriptGeneratorMojo
     private MavenSession session;
 
     /**
-     * The logs directory for the assembled project.
-     * If you specify a value for this parameter an empty directory with the name given will be created.
+     * The logs directory for the assembled project. If you specify a value for this parameter an empty directory with
+     * the name given will be created.
      *
      * @since 1.8
      */
@@ -209,8 +209,8 @@ public abstract class AbstractScriptGeneratorMojo
     protected String logsDirectory;
 
     /**
-     * The temp directory of the assembled project.
-     * If you specify a value for this parameter an empty directory with the name given will be created.
+     * The temp directory of the assembled project. If you specify a value for this parameter an empty directory with
+     * the name given will be created.
      *
      * @since 1.8
      */
@@ -225,8 +225,7 @@ public abstract class AbstractScriptGeneratorMojo
     protected DaemonGeneratorService daemonGeneratorService;
 
     /**
-     * The filtering component used when copying the source configuration
-     * directory.
+     * The filtering component used when copying the source configuration directory.
      *
      * @since 1.8
      */
@@ -252,12 +251,9 @@ public abstract class AbstractScriptGeneratorMojo
         List<Resource> resources = new ArrayList<Resource>();
         resources.add( resource );
 
-        MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution( resources,
-                                                                                       new File( targetDirectory ),
-                                                                                       mavenProject, encoding,
-                                                                                       buildFilters,
-                                                                                       Collections.<String>emptyList(),
-                                                                                       session );
+        MavenResourcesExecution mavenResourcesExecution =
+            new MavenResourcesExecution( resources, new File( targetDirectory ), mavenProject, encoding, buildFilters,
+                                         Collections.<String>emptyList(), session );
 
         mavenResourcesExecution.setEscapeString( escapeString );
         // Include empty directories, to be backwards compatible
@@ -272,8 +268,8 @@ public abstract class AbstractScriptGeneratorMojo
         try
         {
             getLog().debug( "Will try to copy configuration files from "
-                                + configurationSourceDirectory.getAbsolutePath() + " to "
-                                + targetDirectory + FileUtils.FS + configurationDirectory );
+                                + configurationSourceDirectory.getAbsolutePath() + " to " + targetDirectory
+                                + FileUtils.FS + configurationDirectory );
 
             // Use a MavenResourcesFiltering component to filter and copy the configuration files
             mavenResourcesFiltering.filterResources( mavenResourcesExecution );
@@ -294,8 +290,10 @@ public abstract class AbstractScriptGeneratorMojo
         if ( this.logsDirectory != null )
         {
             File logsDirectory = new File( targetDirectory, this.logsDirectory );
-            if (logsDirectory.exists()) {
-                if (!logsDirectory.delete()) {
+            if ( logsDirectory.exists() )
+            {
+                if ( !logsDirectory.delete() )
+                {
                     throw new MojoFailureException( "Failed to delete existing directory for log files." );
                 }
             }
@@ -308,8 +306,10 @@ public abstract class AbstractScriptGeneratorMojo
         if ( this.tempDirectory != null )
         {
             File tempDirectory = new File( targetDirectory, this.tempDirectory );
-            if (tempDirectory.exists()) {
-                if (!tempDirectory.delete()) {
+            if ( tempDirectory.exists() )
+            {
+                if ( !tempDirectory.delete() )
+                {
                     throw new MojoFailureException( "Failed to delete existing directory for temp files." );
                 }
             }

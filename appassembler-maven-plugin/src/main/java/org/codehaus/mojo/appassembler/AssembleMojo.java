@@ -171,8 +171,8 @@ public class AssembleMojo
     // CONSTANTS
     // ----------------------------------------------------------------------
 
-    private static final Set<String> VALID_PLATFORMS = Collections.unmodifiableSet( new HashSet<String>( Arrays.asList( new String[] {
-        "unix", "windows" } ) ) );
+    private static final Set<String> VALID_PLATFORMS =
+        Collections.unmodifiableSet( new HashSet<String>( Arrays.asList( new String[] { "unix", "windows" } ) ) );
 
     // ----------------------------------------------------------------------
     // Validate

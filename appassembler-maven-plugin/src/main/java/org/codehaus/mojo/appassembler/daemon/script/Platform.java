@@ -313,11 +313,11 @@ public class Platform
             }
             else
             {
-                throw new DaemonGeneratorException( "Unknown classpath element type: " + classpathElement.getClass().getName() );
+                throw new DaemonGeneratorException( "Unknown classpath element type: "
+                    + classpathElement.getClass().getName() );
             }
 
-            classpathBuffer.append( StringUtils.replace( classpathElement.getRelativePath(), "/",
-                                                         getSeparator() ) );
+            classpathBuffer.append( StringUtils.replace( classpathElement.getRelativePath(), "/", getSeparator() ) );
         }
 
         return classpathBuffer.toString();

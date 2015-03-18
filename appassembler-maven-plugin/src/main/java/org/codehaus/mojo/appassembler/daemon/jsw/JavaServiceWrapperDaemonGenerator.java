@@ -140,7 +140,8 @@ public class JavaServiceWrapperDaemonGenerator
         String pidFile = configuration.getProperty( "wrapper.pidfile", "$BASEDIR/logs" );
 
         // Don't want these in the wrapper.conf file
-        String chkconfigRun = configuration.getProperty( "chkconfig.run", "2345" ); //2345 is the original run level, donot change this default value
+        String chkconfigRun = configuration.getProperty( "chkconfig.run", "2345" ); // 2345 is the original run level,
+                                                                                    // donot change this default value
         configuration.remove( "chkconfig.level" );
         String chkconfigStart = configuration.getProperty( "chkconfig.start", "20" );
         configuration.remove( "chkconfig.start" );
@@ -227,7 +228,7 @@ public class JavaServiceWrapperDaemonGenerator
         }
 
         confFile.setProperty( "wrapper.java.mainclass", daemon.getWrapperMainClass() );
-        if ( ! StringUtils.isEmpty( daemon.getMainClass() ) )
+        if ( !StringUtils.isEmpty( daemon.getMainClass() ) )
         {
             confFile.setProperty( "wrapper.app.parameter.1", daemon.getMainClass() );
         }
@@ -255,7 +256,8 @@ public class JavaServiceWrapperDaemonGenerator
 
         Reader reader = new InputStreamReader( new ByteArrayInputStream( string.toByteArray() ) );
 
-        File wrapperConf = new File( outputDirectory, daemon.getConfigurationDirectory() + "/" + getWrapperConfigFileName( daemon ) );
+        File wrapperConf =
+            new File( outputDirectory, daemon.getConfigurationDirectory() + "/" + getWrapperConfigFileName( daemon ) );
         writeFilteredFile( request, daemon, reader, wrapperConf, context );
 
         if ( daemon.getPreWrapperConf() != null )
@@ -274,7 +276,7 @@ public class JavaServiceWrapperDaemonGenerator
             buffer.append( FileUtils.fileRead( preWrapperConf ) );
             buffer.append( "\n" );
             buffer.append( FileUtils.fileRead( wrapperConf ) );
-            FileUtils.fileWrite( wrapperConf,  buffer.toString() );
+            FileUtils.fileWrite( wrapperConf, buffer.toString() );
         }
         catch ( IOException e )
         {
@@ -484,7 +486,7 @@ public class JavaServiceWrapperDaemonGenerator
         }
 
         if ( count == 1 )
-        { //Remove default parameter if not set
+        { // Remove default parameter if not set
             confFile.removeProperty( "wrapper.app.parameter.1" );
         }
     }
@@ -595,7 +597,8 @@ public class JavaServiceWrapperDaemonGenerator
         }
         else
         {
-            copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, "wrapper.jar", "wrapper.jar" );
+            copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, "wrapper.jar",
+                              "wrapper.jar" );
         }
 
         for ( String platform : jswPlatformIncludes )
@@ -610,7 +613,8 @@ public class JavaServiceWrapperDaemonGenerator
                 }
                 else
                 {
-                    copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, libFile, libFile );
+                    copyResourceFile( new File( outputDirectory, daemon.getRepositoryName() ), JSW_LIB_DIR, libFile,
+                                      libFile );
                 }
             }
             else
