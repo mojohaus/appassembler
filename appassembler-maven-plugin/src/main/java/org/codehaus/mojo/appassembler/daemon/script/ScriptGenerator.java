@@ -42,7 +42,7 @@ public interface ScriptGenerator
 
     /**
      * Generate the binary script based on platform, daemon into the given outputDirectory and the binFolder.
-     * 
+     *
      * @param platform The platform.
      * @param daemon The Daemon.
      * @param outputDirectory The output folder where the script will be generated into.

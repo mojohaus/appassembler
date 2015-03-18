@@ -29,7 +29,7 @@ import org.codehaus.mojo.appassembler.daemon.DaemonGenerator;
 /**
  * The abstract script daemon generator which contains all common parameters and methods for
  * AbstractBooterDaemonGenerator, UnixScriptDaemonGenerator and WindowsScriptDaemonGenerator
- * 
+ *
  * @author <a href="mailto:khmarbaise@soebes.de">Karl-Heinz Marbaise</a>
  */
 public abstract class AbstactScriptDaemonGenerator

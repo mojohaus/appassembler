@@ -19,7 +19,7 @@ public class FileFilterHelperTest
 
     /**
      * Just copied from FileUitlsTest.java (plexus-utils)
-     * 
+     *
      * @param size
      * @return
      */
@@ -39,7 +39,7 @@ public class FileFilterHelperTest
 
     /**
      * Just copied from FileUitlsTest.java (plexus-utils)
-     * 
+     *
      * @param size
      * @return
      */
@@ -55,7 +55,7 @@ public class FileFilterHelperTest
 
     /**
      * Just copied from FileUitlsTest.java (plexus-utils)
-     * 
+     *
      * @param size
      * @return
      */

@@ -128,7 +128,7 @@ public class FormattedProperties
      * Read in the properties from the given stream. Note that this will be used as the basis of the next formatted
      * write, even though properties from any previous read are still retained. This allows adding properties to the top
      * of the file.
-     * 
+     *
      * @param inputStream the stream to read from
      * @throws IOException if there is a problem reading the stream
      */

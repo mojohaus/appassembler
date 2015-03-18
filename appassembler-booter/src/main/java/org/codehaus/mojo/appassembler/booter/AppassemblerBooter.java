@@ -45,7 +45,7 @@ import org.codehaus.mojo.appassembler.model.io.stax.AppassemblerModelStaxReader;
 
 /**
  * Reads the appassembler manifest file from the repo, and executes the specified main class.
- * 
+ *
  * @author <a href="mailto:kaare.nilsen@gmail.com">Kaare Nilsen</a>
  * @todo get rid of all the statics
  */

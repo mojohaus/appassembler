@@ -34,7 +34,7 @@ import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
  * The code in this class is taken from DefaultRepositorylayout, located at:
  * http://svn.apache.org/viewvc/maven/components/trunk/maven-artifact/src/main/java/org/apache/maven/artifact/repository
  * /layout/DefaultRepositoryLayout.java
- * 
+ *
  * @version $Id$
  * @plexus.component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout" role-hint="flat"
  */

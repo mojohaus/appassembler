@@ -31,7 +31,7 @@ import org.codehaus.mojo.appassembler.daemon.script.Platform;
 
 /**
  * Generates unix and/or windows wrapperscripts.
- * 
+ *
  * @plexus.component role-hint="unix"
  */
 public class UnixScriptDaemonGenerator

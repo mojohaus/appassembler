@@ -28,7 +28,7 @@ import org.codehaus.mojo.appassembler.daemon.script.Platform;
 
 /**
  * Generates windows wrapperscripts.
- * 
+ *
  * @author <a href="mailto:kaare.nilsen@gmail.com">Kaare Nilsen</a>
  * @plexus.component role-hint="booter-windows"
  */

@@ -62,7 +62,7 @@ public class Daemon
     private String endorsedDir;
 
     private String preWrapperConf;
-    
+
     private String wrapperLogFile;
 
     /**

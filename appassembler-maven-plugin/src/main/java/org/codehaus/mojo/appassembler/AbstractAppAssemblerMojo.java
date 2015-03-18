@@ -48,7 +48,7 @@ import org.codehaus.plexus.util.FileUtils;
 
 /**
  * This is intended to summarize all generic parts of the Mojos into a single class. First step of refactoring code.
- * 
+ *
  * @author <a href="mailto:codehaus@soebes.de">Karl Heinz Marbaise</a>
  */
 public abstract class AbstractAppAssemblerMojo
@@ -66,7 +66,7 @@ public abstract class AbstractAppAssemblerMojo
      * <b>Note: </b> if you use this parameter, then the <code>useTimestampInSnapshotFileName</code> parameter will be
      * ignored.
      * </p>
-     * 
+     *
      * @since 1.5
      */
     @Parameter
@@ -82,7 +82,7 @@ public abstract class AbstractAppAssemblerMojo
 
     /**
      * For those snapshots downloaded from a remote repo, replace the timestamp part with "SNAPSHOT" instead.
-     * 
+     *
      * @since 1.2.3 (create-repository), 1.3 (assemble and generate-daemons)
      */
     @Parameter( defaultValue = "true" )
@@ -156,7 +156,7 @@ public abstract class AbstractAppAssemblerMojo
 
     /**
      * Copy artifact to another repository, with an option not to use timestamp in the snapshot filename.
-     * 
+     *
      * @param artifact The artifact to install.
      * @param artifactRepository The repository where to install.
      * @param useTimestampInSnapshotFileName Using timestamp for SNAPSHOT's.
@@ -221,7 +221,7 @@ public abstract class AbstractAppAssemblerMojo
 
     /**
      * Copy artifact to another repository.
-     * 
+     *
      * @param artifact
      * @param artifactRepository
      * @throws MojoExecutionException

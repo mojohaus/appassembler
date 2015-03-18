@@ -26,7 +26,7 @@ package org.codehaus.mojo.appassembler;
 
 /**
  * The class which is used to contain the JVM settings.
- * 
+ *
  * @author <a href="mailto:codehaus@soebes.de">Karl Heinz Marbaise</a>
  */
 public class JvmSettings
@@ -43,7 +43,7 @@ public class JvmSettings
 
     /**
      * The initial memory size.
-     * 
+     *
      * @return value as string.
      */
     public String getInitialMemorySize()
@@ -53,7 +53,7 @@ public class JvmSettings
 
     /**
      * The maximum memory size.
-     * 
+     *
      * @return The max memory size.
      */
     public String getMaxMemorySize()
@@ -63,7 +63,7 @@ public class JvmSettings
 
     /**
      * Max Stack Size.
-     * 
+     *
      * @return The max stack size.
      */
     public String getMaxStackSize()
@@ -73,7 +73,7 @@ public class JvmSettings
 
     /**
      * The system properties.
-     * 
+     *
      * @return The array with with the system properties.
      */
     public String[] getSystemProperties()
@@ -83,7 +83,7 @@ public class JvmSettings
 
     /**
      * Extra arguments.
-     * 
+     *
      * @return The array with the extra arguments.
      */
     public String[] getExtraArguments()

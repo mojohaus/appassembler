@@ -50,7 +50,7 @@ public class Program
 
     /**
      * The License header which can be used instead of the default header.
-     * 
+     *
      * @since 1.2
      */
     @Parameter
@@ -58,7 +58,7 @@ public class Program
 
     /**
      * Define the name of binary folder.
-     * 
+     *
      * @since 1.2
      */
     @Parameter( defaultValue = "bin" )
@@ -66,7 +66,7 @@ public class Program
 
     /**
      * JvmSettings for every program.
-     * 
+     *
      * @since 1.2
      */
     @Parameter
@@ -88,7 +88,7 @@ public class Program
 
     /**
      * The constructor.
-     * 
+     *
      * @param name The name of the program.
      * @param mainClass The main class of the program.
      */
@@ -100,7 +100,7 @@ public class Program
 
     /**
      * The name.
-     * 
+     *
      * @return The name of the program.
      * @deprecated Please use @{link {@link #getId()} instead.
      */
@@ -111,7 +111,7 @@ public class Program
 
     /**
      * The id.
-     * 
+     *
      * @return The id of the program.
      */
     public String getId()
@@ -121,7 +121,7 @@ public class Program
 
     /**
      * Set the name.
-     * 
+     *
      * @param name The name of the program.
      * @deprecated Use {@link #setId(String)} instead.
      */
@@ -132,7 +132,7 @@ public class Program
 
     /**
      * Set the id.
-     * 
+     *
      * @param id
      */
     public void setId( String id )
@@ -142,7 +142,7 @@ public class Program
 
     /**
      * Get the main class.
-     * 
+     *
      * @return The name of the main class.
      */
     public String getMainClass()
@@ -152,7 +152,7 @@ public class Program
 
     /**
      * Set the main class.
-     * 
+     *
      * @param mainClass The name of the main class.
      */
     public void setMainClass( String mainClass )
@@ -162,7 +162,7 @@ public class Program
 
     /**
      * The platforms.
-     * 
+     *
      * @return The set of platforms.
      */
     public Set<String> getPlatforms()
@@ -172,7 +172,7 @@ public class Program
 
     /**
      * The platforms.
-     * 
+     *
      * @param platforms The set with the platforms.
      */
     public void setPlatforms( Set<String> platforms )
@@ -182,7 +182,7 @@ public class Program
 
     /**
      * Get the command line arguments.
-     * 
+     *
      * @return The list of command line arguments.
      */
     public List<String> getCommandLineArguments()
@@ -192,7 +192,7 @@ public class Program
 
     /**
      * Set the argument list.
-     * 
+     *
      * @param arguments The list of command line arguments.
      */
     public void setCommandLineArguments( List<String> arguments )
@@ -202,7 +202,7 @@ public class Program
 
     /**
      * Add an command line arguments.
-     * 
+     *
      * @param argument The argument which will be aded to list of arguments.
      */
     public void addCommandLineArgument( String argument )
@@ -212,7 +212,7 @@ public class Program
 
     /**
      * Get the JVM settings.
-     * 
+     *
      * @return An instance of the JVM settings.
      * @see JvmSettings
      */
@@ -223,7 +223,7 @@ public class Program
 
     /**
      * Set the JVM settings.
-     * 
+     *
      * @param jvmSettings The instance of the JVM settings which will be used.
      */
     public void setJvmSettings( org.codehaus.mojo.appassembler.model.JvmSettings jvmSettings )
@@ -233,7 +233,7 @@ public class Program
 
     /**
      * Get the current license header file which is used.
-     * 
+     *
      * @return The file instance of the header file.
      */
     public File getLicenseHeaderFile()
@@ -243,7 +243,7 @@ public class Program
 
     /**
      * Set the license header file.
-     * 
+     *
      * @param licenseHeaderFile The File instance.
      */
     public void setLicenseHeaderFile( File licenseHeaderFile )
@@ -253,7 +253,7 @@ public class Program
 
     /**
      * The bin folder.
-     * 
+     *
      * @return The bin folder.
      */
     public File getBinFolder()
@@ -263,7 +263,7 @@ public class Program
 
     /**
      * Set the bin folder.
-     * 
+     *
      * @param binFolder The new bin folder name.
      */
     public void setBinFolder( File binFolder )

@@ -29,7 +29,7 @@ import java.util.Properties;
 
 /**
  * This class contains the generator configuration.
- * 
+ *
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  */
 public class GeneratorConfiguration
@@ -55,7 +55,7 @@ public class GeneratorConfiguration
 
     /**
      * Set the generator.
-     * 
+     *
      * @param generator
      */
     public void setGenerator( String generator )
@@ -65,7 +65,7 @@ public class GeneratorConfiguration
 
     /**
      * Get the configuration.
-     * 
+     *
      * @return The configuration.
      */
     public Properties getConfiguration()
@@ -75,7 +75,7 @@ public class GeneratorConfiguration
 
     /**
      * Set the configuration.
-     * 
+     *
      * @param configuration Set the given configuration.
      */
     public void setConfiguration( Properties configuration )
@@ -94,7 +94,7 @@ public class GeneratorConfiguration
 
     /**
      * Get the includes.
-     * 
+     *
      * @return The includes.
      */
     public List<String> getIncludes()
@@ -104,7 +104,7 @@ public class GeneratorConfiguration
 
     /**
      * Define the includes.
-     * 
+     *
      * @param includes set to the given includes.
      */
     public void setIncludes( List<String> includes )

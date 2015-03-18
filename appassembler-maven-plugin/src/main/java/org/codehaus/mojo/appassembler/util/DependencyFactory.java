@@ -37,7 +37,7 @@ import java.io.File;
 
 /**
  * A factory that creates Dependency objects.
- * 
+ *
  * @author Dennis Lundberg
  */
 public class DependencyFactory

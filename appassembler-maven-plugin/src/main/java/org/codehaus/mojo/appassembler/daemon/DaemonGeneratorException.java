@@ -32,13 +32,13 @@ public class DaemonGeneratorException
     extends Exception
 {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 6989317744526360832L;
 
     /**
      * Exception with message.
-     * 
+     *
      * @param message The message for the execption.
      */
     public DaemonGeneratorException( String message )
@@ -48,7 +48,7 @@ public class DaemonGeneratorException
 
     /**
      * The exception with an appropriate message and the cause of the failure.
-     * 
+     *
      * @param message The message to show.
      * @param cause The root cause.
      */

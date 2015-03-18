@@ -93,7 +93,7 @@ public class Platform
 
     /**
      * Get an instance of the named platform.
-     * 
+     *
      * @param platformName The name of the wished platform.
      * @return Instance of the platform.
      * @throws DaemonGeneratorException in case of an wrong platformname.
@@ -113,7 +113,7 @@ public class Platform
 
     /**
      * Get the names of all available platforms.
-     * 
+     *
      * @return The names of the platform.
      */
     public static Set<String> getAllPlatformNames()
@@ -123,7 +123,7 @@ public class Platform
 
     /**
      * Get all platforms.
-     * 
+     *
      * @return All platforms.
      */
     public static Set<Platform> getAllPlatforms()
@@ -133,7 +133,7 @@ public class Platform
 
     /**
      * Redefine the list of platforms with the given one.
-     * 
+     *
      * @param platformList The new list of platforms.
      * @return The redefined platforms set.
      * @throws DaemonGeneratorException in case of an error.
@@ -146,7 +146,7 @@ public class Platform
 
     /**
      * Get back all platforms.
-     * 
+     *
      * @param platformList The list of platforms.
      * @param allSet The all set list.
      * @return Get the platform sets.
@@ -208,7 +208,7 @@ public class Platform
 
     /**
      * The interpolation token either for windows or unix.
-     * 
+     *
      * @return The token which is used.
      */
     public String getInterpolationToken()
@@ -275,7 +275,7 @@ public class Platform
 
     /**
      * Get the ClassPath based on the given Daemon.
-     * 
+     *
      * @param daemon The Daemon instance.
      * @return The classpath as a string.
      * @throws DaemonGeneratorException in case of an error.
@@ -362,7 +362,7 @@ public class Platform
 
     /**
      * Get the extra JVMArguments.
-     * 
+     *
      * @param jvmSettings The JVM settings
      * @return The created string which contains <code>-X</code> options for the JVM settings.
      * @throws IOException in case of an error.
@@ -411,7 +411,7 @@ public class Platform
 
     /**
      * Get the application arguments.
-     * 
+     *
      * @param descriptor Instance of the daemon descriptor.
      * @return The list of application arguments.
      */
@@ -453,7 +453,7 @@ public class Platform
 
     /**
      * Get the environment setup file.
-     * 
+     *
      * @param daemon The instance of the Daemon for which this is beeing produced.
      * @return The created string which contains the path to the setup file.
      */
@@ -517,7 +517,7 @@ public class Platform
 
     /**
      * The name of the platform.
-     * 
+     *
      * @return The name of the platform.
      */
     public String getName()
@@ -527,7 +527,7 @@ public class Platform
 
     /**
      * ShowConsole window.
-     * 
+     *
      * @param daemon
      * @return true yes false otherwise.
      */
@@ -542,7 +542,7 @@ public class Platform
 
     /**
      * Set the bin file extension.
-     * 
+     *
      * @param binFileExtension The extension of the binary file.
      */
     public void setBinFileExtension( String binFileExtension )

@@ -30,14 +30,14 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
 
 /**
  * This is helper class to summarize all filters.
- * 
+ *
  * @author <a href="mailto:codehaus@soebes.de">Karl Heinz Marbaise</a>
  */
 public class FileFilterHelper
 {
     /**
      * Make the given IOFileFilter aware of directories.
-     * 
+     *
      * @param filter The filter to make aware of directories.
      * @param directoryName The directory name which should be payed attention to.
      * @return The new generated filter.
@@ -54,7 +54,7 @@ public class FileFilterHelper
 
     /**
      * Make the given IOFileFilter aware of files.
-     * 
+     *
      * @param filter The filter to make aware of files.
      * @param fileName The file name which should be payed attention to.
      * @return The new generated filter.
@@ -70,7 +70,7 @@ public class FileFilterHelper
 
     /**
      * Make the given IOFileFilter aware of an suffix.
-     * 
+     *
      * @param filter The filter to make aware of an suffix.
      * @param suffixFileName The suffix name which should be payed attention to.
      * @return The new generated filter.
@@ -86,7 +86,7 @@ public class FileFilterHelper
 
     /**
      * Make the given IOFileFilter aware of the given pattern.
-     * 
+     *
      * @param filter The filter to make aware of the pattern.
      * @param pattern The pattern which should be payed attention to.
      * @return The new generated filter.
@@ -102,7 +102,7 @@ public class FileFilterHelper
 
     /**
      * This will create a FileFilter which is the same as in plexus-utils (DirectoryScanner.DEFAULTEXCLUDES).
-     * 
+     *
      * @return The initialized filter.
      */
     public static IOFileFilter createDefaultFilter()

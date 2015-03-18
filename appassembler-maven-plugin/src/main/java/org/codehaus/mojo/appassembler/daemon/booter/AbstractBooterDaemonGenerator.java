@@ -40,7 +40,7 @@ import org.codehaus.mojo.appassembler.util.DependencyFactory;
 /**
  * This contains all common code which is used in the {@link UnixBooterDaemonGenerator} and in the
  * {@link WindowsBooterDaemonGenerator}.
- * 
+ *
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
  * @version $Id$
  */

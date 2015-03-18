@@ -169,7 +169,7 @@ public abstract class AbstractScriptGeneratorMojo
     /**
      * The character encoding scheme to be applied when filtering the source
      * configuration directory.
-     * 
+     *
      * @since 1.8
      */
     @Parameter( defaultValue = "${project.build.sourceEncoding}" )
@@ -227,7 +227,7 @@ public abstract class AbstractScriptGeneratorMojo
     /**
      * The filtering component used when copying the source configuration
      * directory.
-     * 
+     *
      * @since 1.8
      */
     @Component( role = MavenResourcesFiltering.class, hint = "default" )
