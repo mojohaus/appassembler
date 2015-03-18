@@ -142,12 +142,38 @@ public abstract class AbstractScriptGeneratorMojo
     protected File configurationSourceDirectory;
 
     /**
+     * If the source configuration directory should be filtered when copied to the configured
+     * <code>configurationDirectory</code>.
+     *
+     * @since 1.8
+     */
+    @Parameter( defaultValue = "false" )
+    protected boolean filterConfigurationDirectory;
+
+    /**
      * If the source configuration directory should be copied to the configured <code>configurationDirectory</code>.
      *
      * @since 1.1 (assemble), 1.7 (generate-daemons)
      */
     @Parameter( defaultValue = "false" )
     protected boolean copyConfigurationDirectory;
+
+    /**
+     * Directory to be merged with final assemble directory
+     *
+     * @since 1.10
+     */
+    @Parameter
+    protected File preAssembleDirectory;
+
+    /**
+     * If the source pre-assemble directory should be filtered when copied to the configured
+     * <code>assembleDirectory</code>.
+     *
+     * @since 1.10
+     */
+    @Parameter( defaultValue = "false" )
+    protected boolean filterPreAssembleDirectory;
 
     /**
      * Location under base directory where all of files non-recursively are added before the generated classpath. Java
@@ -183,15 +209,6 @@ public abstract class AbstractScriptGeneratorMojo
      */
     @Parameter
     protected String escapeString;
-
-    /**
-     * If the source configuration directory should be filtered when copied to the configured
-     * <code>configurationDirectory</code>.
-     *
-     * @since 1.8
-     */
-    @Parameter( defaultValue = "false" )
-    protected boolean filterConfigurationDirectory;
 
     /**
      * @since 1.8
@@ -235,12 +252,6 @@ public abstract class AbstractScriptGeneratorMojo
     protected void doCopyConfigurationDirectory( final String targetDirectory )
         throws MojoFailureException
     {
-        if ( !configurationSourceDirectory.exists() )
-        {
-            throw new MojoFailureException( "The source directory for configuration files does not exist: "
-                + configurationSourceDirectory.getAbsolutePath() );
-        }
-
         getLog().debug( "copying configuration directory." );
 
         // Create a Resource from the configuration source directory
@@ -270,6 +281,40 @@ public abstract class AbstractScriptGeneratorMojo
             getLog().debug( "Will try to copy configuration files from "
                                 + configurationSourceDirectory.getAbsolutePath() + " to " + targetDirectory
                                 + FileUtils.FS + configurationDirectory );
+
+            // Use a MavenResourcesFiltering component to filter and copy the configuration files
+            mavenResourcesFiltering.filterResources( mavenResourcesExecution );
+        }
+        catch ( MavenFilteringException mfe )
+        {
+            throw new MojoFailureException( "Failed to copy/filter the configuration files." );
+        }
+    }
+
+    protected void doCopyPreAssembleDirectory( final String targetDirectory )
+        throws MojoFailureException
+    {
+        // Create a Resource from the configuration source directory
+        Resource resource = new Resource();
+        resource.setDirectory( preAssembleDirectory.getAbsolutePath() );
+        resource.setFiltering( filterPreAssembleDirectory );
+        resource.setTargetPath( targetDirectory );
+        List<Resource> resources = new ArrayList<Resource>();
+        resources.add( resource );
+
+        MavenResourcesExecution mavenResourcesExecution =
+            new MavenResourcesExecution( resources, new File( targetDirectory ), mavenProject, encoding, buildFilters,
+                                         Collections.<String>emptyList(), session );
+
+        mavenResourcesExecution.setEscapeString( escapeString );
+        // Include empty directories, to be backwards compatible
+        mavenResourcesExecution.setIncludeEmptyDirs( true );
+        mavenResourcesExecution.setUseDefaultFilterWrappers( true );
+
+        try
+        {
+            getLog().info( "Copy pre-assemble files from " + this.preAssembleDirectory.getAbsolutePath() + " to "
+                                + targetDirectory );
 
             // Use a MavenResourcesFiltering component to filter and copy the configuration files
             mavenResourcesFiltering.filterResources( mavenResourcesExecution );

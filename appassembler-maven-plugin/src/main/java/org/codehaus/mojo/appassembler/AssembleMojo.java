@@ -320,7 +320,12 @@ public class AssembleMojo
         // Copy configuration directory
         // ----------------------------------------------------------------------
 
-        if ( this.copyConfigurationDirectory )
+        if ( this.preAssembleDirectory != null && this.preAssembleDirectory.isDirectory() )
+        {
+            doCopyPreAssembleDirectory( assembleDirectory.getAbsolutePath() );
+        }
+
+        if ( this.copyConfigurationDirectory && configurationSourceDirectory.isDirectory() )
         {
             doCopyConfigurationDirectory( assembleDirectory.getAbsolutePath() );
         }

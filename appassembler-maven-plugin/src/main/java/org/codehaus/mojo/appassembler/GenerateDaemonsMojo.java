@@ -259,7 +259,12 @@ public class GenerateDaemonsMojo
                 // Copy configuration directory
                 // ----------------------------------------------------------------------
 
-                if ( this.copyConfigurationDirectory )
+                if ( this.preAssembleDirectory != null && this.preAssembleDirectory.isDirectory() )
+                {
+                    doCopyPreAssembleDirectory( outputDirectory.getAbsolutePath() );
+                }
+
+                if ( this.copyConfigurationDirectory && configurationSourceDirectory.isDirectory() )
                 {
                     doCopyConfigurationDirectory( outputDirectory.getAbsolutePath() );
                 }
