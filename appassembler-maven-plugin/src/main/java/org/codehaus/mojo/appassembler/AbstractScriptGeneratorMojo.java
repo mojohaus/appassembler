@@ -298,7 +298,6 @@ public abstract class AbstractScriptGeneratorMojo
         Resource resource = new Resource();
         resource.setDirectory( preAssembleDirectory.getAbsolutePath() );
         resource.setFiltering( filterPreAssembleDirectory );
-        resource.setTargetPath( targetDirectory );
         List<Resource> resources = new ArrayList<Resource>();
         resources.add( resource );
 
