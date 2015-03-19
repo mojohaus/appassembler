@@ -89,12 +89,12 @@ public abstract class AbstractScriptGeneratorMojo
     protected String unixScriptTemplate;
 
     /**
-     * Sometimes it happens that you have many dependencies which means in other words having a very long classpath. And
-     * sometimes the classpath becomes too long (in particular on Windows based platforms). This option can help in such
-     * situation. If you activate that your classpath contains only a <a href=
+     * Sometimes it happens that you have many dependencies which means having a very long classpath, and
+     * becomes too long (in particular on Windows based platforms). This option can help in such
+     * situation. If you activate this option, your classpath contains only a <a href=
      * "http://docs.oracle.com/javase/6/docs/technotes/tools/windows/classpath.html" >classpath wildcard</a> (REPO/*).
      * But be aware that this works only in combination with Java 1.6 and above and with {@link #repositoryLayout}
-     * <code>flat</code>. Otherwise this configuration will not work.
+     * <code>flat</code>.
      *
      * @since 1.2.3 (assemble), 1.3.1 (generate-daemons)
      */
@@ -134,7 +134,7 @@ public abstract class AbstractScriptGeneratorMojo
     protected String configurationDirectory;
 
     /**
-     * The name of the source directory for configuration files.
+     * The source directory for configuration files.
      *
      * @since 1.1
      */
@@ -143,7 +143,8 @@ public abstract class AbstractScriptGeneratorMojo
 
     /**
      * If the source configuration directory should be filtered when copied to the configured
-     * <code>configurationDirectory</code>.
+     * <code>configurationDirectory</code>. This configuration can be replaced by a more generic
+     * <code>preAssembleDirectory</code> option
      *
      * @since 1.8
      */
@@ -159,7 +160,7 @@ public abstract class AbstractScriptGeneratorMojo
     protected boolean copyConfigurationDirectory;
 
     /**
-     * Directory to be merged with final assemble directory
+     * If exists, copy this directory's contents to the configured <code>assembleDirectory</code> with option to filter.
      *
      * @since 1.10
      */
