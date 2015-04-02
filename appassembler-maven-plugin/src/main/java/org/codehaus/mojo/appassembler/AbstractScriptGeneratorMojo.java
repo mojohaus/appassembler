@@ -161,6 +161,7 @@ public abstract class AbstractScriptGeneratorMojo
 
     /**
      * If exists, copy this directory's contents to the configured <code>assembleDirectory</code> with option to filter.
+     * This configuration can replace <i>copyConfigurationDirectory</i>
      *
      * @since 1.10
      */
