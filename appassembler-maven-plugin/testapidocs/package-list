@@ -1,0 +1,6 @@
+org.codehaus.mojo.appassembler
+org.codehaus.mojo.appassembler.daemon
+org.codehaus.mojo.appassembler.daemon.generic
+org.codehaus.mojo.appassembler.daemon.jsw
+org.codehaus.mojo.appassembler.daemon.script
+org.codehaus.mojo.appassembler.util

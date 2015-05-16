@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<rss version="0.91">
+  <channel>
+    <title>Appassembler :: Maven Plug-In - Checkstyle report</title>
+    <link>http://mojo.codehaus.org/appassembler/appassembler-maven-plugin</link>
+    <description>Appassembler :: Maven Plug-In - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2006 - 2015 Codehaus</copyright>
+    <item>
+      <title>File: 33,
+             Errors: 26,
+             Warnings: 93,
+             Infos: 6
+      </title>
+            <link>http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html</link>
+      <description>
+        <p>Click <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.script.Platform.java">org/codehaus/mojo/appassembler/daemon/script/Platform.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  5
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.booter.WindowsBooterDaemonGenerator.java">org/codehaus/mojo/appassembler/daemon/booter/WindowsBooterDaemonGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.AbstractAppAssemblerMojo.java">org/codehaus/mojo/appassembler/AbstractAppAssemblerMojo.java</a>
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  6
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.script.DefaultScriptGenerator.java">org/codehaus/mojo/appassembler/daemon/script/DefaultScriptGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  3
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.merge.DefaultDaemonMerger.java">org/codehaus/mojo/appassembler/daemon/merge/DefaultDaemonMerger.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException.java">org/codehaus/mojo/appassembler/daemon/DaemonGeneratorException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.util.ArtifactUtils.java">org/codehaus/mojo/appassembler/util/ArtifactUtils.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.util.FormattedProperties.java">org/codehaus/mojo/appassembler/util/FormattedProperties.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.booter.AbstractBooterDaemonGenerator.java">org/codehaus/mojo/appassembler/daemon/booter/AbstractBooterDaemonGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.AssembleMojo.java">org/codehaus/mojo/appassembler/AssembleMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  7
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.CreateRepositoryMojo.java">org/codehaus/mojo/appassembler/CreateRepositoryMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.GenerateDaemonsMojo.java">org/codehaus/mojo/appassembler/GenerateDaemonsMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  6
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.merge.DaemonMerger.java">org/codehaus/mojo/appassembler/daemon/merge/DaemonMerger.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.DefaultDaemonGeneratorService.java">org/codehaus/mojo/appassembler/daemon/DefaultDaemonGeneratorService.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.booter.UnixBooterDaemonGenerator.java">org/codehaus/mojo/appassembler/daemon/booter/UnixBooterDaemonGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.util.FileFilterHelper.java">org/codehaus/mojo/appassembler/util/FileFilterHelper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.DaemonGenerator.java">org/codehaus/mojo/appassembler/daemon/DaemonGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.Daemon.java">org/codehaus/mojo/appassembler/Daemon.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.repository.FlatRepositoryLayout.java">org/codehaus/mojo/appassembler/repository/FlatRepositoryLayout.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.script.ScriptGenerator.java">org/codehaus/mojo/appassembler/daemon/script/ScriptGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.Program.java">org/codehaus/mojo/appassembler/Program.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.AbstractScriptGeneratorMojo.java">org/codehaus/mojo/appassembler/AbstractScriptGeneratorMojo.java</a>
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  6
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService.java">org/codehaus/mojo/appassembler/daemon/DaemonGeneratorService.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.jsw.JavaServiceWrapperDaemonGenerator.java">org/codehaus/mojo/appassembler/daemon/jsw/JavaServiceWrapperDaemonGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  3
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.script.AbstactScriptDaemonGenerator.java">org/codehaus/mojo/appassembler/daemon/script/AbstactScriptDaemonGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.generic.GenericDaemonGenerator.java">org/codehaus/mojo/appassembler/daemon/generic/GenericDaemonGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.daemontools.DaemonToolsDaemonGenerator.java">org/codehaus/mojo/appassembler/daemon/daemontools/DaemonToolsDaemonGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.DaemonGenerationRequest.java">org/codehaus/mojo/appassembler/daemon/DaemonGenerationRequest.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.standard.WindowsScriptDaemonGenerator.java">org/codehaus/mojo/appassembler/daemon/standard/WindowsScriptDaemonGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.daemon.standard.UnixScriptDaemonGenerator.java">org/codehaus/mojo/appassembler/daemon/standard/UnixScriptDaemonGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.util.DependencyFactory.java">org/codehaus/mojo/appassembler/util/DependencyFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  15
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.GeneratorConfiguration.java">org/codehaus/mojo/appassembler/GeneratorConfiguration.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://mojo.codehaus.org/appassembler/appassembler-maven-plugin/checkstyle.html#org.codehaus.mojo.appassembler.JvmSettings.java">org/codehaus/mojo/appassembler/JvmSettings.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+
