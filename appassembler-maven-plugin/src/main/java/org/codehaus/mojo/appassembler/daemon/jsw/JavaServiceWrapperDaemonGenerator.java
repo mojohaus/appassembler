@@ -476,9 +476,9 @@ public class JavaServiceWrapperDaemonGenerator
     {
         int count = StringUtils.isEmpty( daemon.getMainClass() ) ? 1 : 2;
 
-        for ( Iterator i = daemon.getCommandLineArguments().iterator(); i.hasNext(); count++ )
+        for ( Iterator<String> i = daemon.getCommandLineArguments().iterator(); i.hasNext(); count++ )
         {
-            String argument = (String) i.next();
+            String argument = i.next();
             if ( StringUtils.isNotEmpty( argument ) )
             {
                 confFile.setProperty( "wrapper.app.parameter." + count, argument );
