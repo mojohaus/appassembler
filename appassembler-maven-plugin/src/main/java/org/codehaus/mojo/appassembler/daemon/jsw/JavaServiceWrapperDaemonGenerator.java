@@ -524,7 +524,12 @@ public class JavaServiceWrapperDaemonGenerator
 
             Reader reader = new InputStreamReader( shellScriptInputStream );
 
-            writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + daemon.getId() ), context );
+            String executableName = daemon.getId();
+            if (StringUtils.isNotEmpty( request.getBinScriptName())) {
+                executableName = request.getBinScriptName();
+            }
+            
+            writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + executableName ), context );
 
             batchFileInputStream = this.getWindowsTemplate( daemon );
 
@@ -535,7 +540,7 @@ public class JavaServiceWrapperDaemonGenerator
 
             reader = new InputStreamReader( batchFileInputStream );
 
-            writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + daemon.getId() + ".bat" ),
+            writeFilteredFile( request, daemon, reader, new File( outputDirectory, "bin/" + executableName + ".bat" ),
                                context );
         }
         finally

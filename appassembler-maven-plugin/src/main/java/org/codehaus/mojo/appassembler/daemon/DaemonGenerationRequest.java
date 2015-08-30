@@ -50,6 +50,8 @@ public class DaemonGenerationRequest
     private File outputDirectory;
 
     private String binFolder;
+    
+    private String binScriptName;
 
     private MavenProject mavenProject;
 
@@ -281,5 +283,15 @@ public class DaemonGenerationRequest
     public void setOutputFileNameMapping( String outputFileNameMapping )
     {
         this.outputFileNameMapping = outputFileNameMapping;
+    }
+
+    public String getBinScriptName()
+    {
+        return binScriptName;
+    }
+
+    public void setBinScriptName( String binScriptName )
+    {
+        this.binScriptName = binScriptName;
     }
 }

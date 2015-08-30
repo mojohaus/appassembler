@@ -123,6 +123,14 @@ public class GenerateDaemonsMojo
     @Parameter( property = "preWrapperConf" )
     private File preWrapperConf;
 
+    /**
+     * Set the name of the generated script name in bin folder instead
+     * of using {@link Daemon#getId()}.
+     * 
+     */
+    @Parameter
+    private String binFileName;
+    
     // -----------------------------------------------------------------------
     // AbstractMojo Implementation
     // -----------------------------------------------------------------------
@@ -238,6 +246,7 @@ public class GenerateDaemonsMojo
                 request.setLocalRepository( localRepository );
                 request.setRepositoryLayout( artifactRepositoryLayout );
                 request.setOutputFileNameMapping( this.outputFileNameMapping );
+                request.setBinScriptName( binFileName );
 
                 try
                 {
