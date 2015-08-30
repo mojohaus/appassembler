@@ -299,6 +299,8 @@ public class GenerateDaemonsMojo
         modelDaemon.setRepositoryName( daemon.getRepositoryName() );
         modelDaemon.setEndorsedDir( daemon.getEndorsedDir() );
         modelDaemon.setPreWrapperConf( daemon.getPreWrapperConf() );
+        modelDaemon.setName( daemon.getName() );
+        modelDaemon.setLongName( daemon.getLongName() );
 
         if ( daemon.getJvmSettings() != null )
         {

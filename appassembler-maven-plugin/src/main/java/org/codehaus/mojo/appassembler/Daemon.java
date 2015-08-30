@@ -34,7 +34,11 @@ import java.util.List;
 public class Daemon
 {
     private String id;
-
+    
+    private String name;
+    
+    private String longName;
+    
     private String mainClass;
 
     private String wrapperMainClass = "org.tanukisoftware.wrapper.WrapperSimpleApp";
@@ -248,6 +252,16 @@ public class Daemon
     public void setWrapperLogFile( String wrapperLogFile )
     {
         this.wrapperLogFile = wrapperLogFile;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public String getLongName()
+    {
+        return longName;
     }
 
 }

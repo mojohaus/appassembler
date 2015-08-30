@@ -176,7 +176,7 @@ public class JavaServiceWrapperDaemonGenerator
 
     private void writeWrapperConfFile( DaemonGenerationRequest request, Daemon daemon, File outputDirectory,
                                        Properties context, Properties configuration )
-        throws DaemonGeneratorException
+                                           throws DaemonGeneratorException
     {
         InputStream in = this.getClass().getResourceAsStream( "conf/wrapper.conf.in" );
 
@@ -311,9 +311,10 @@ public class JavaServiceWrapperDaemonGenerator
 
     private static void writeFilteredFile( DaemonGenerationRequest request, Daemon daemon, Reader reader,
                                            File outputFile, Map context )
-        throws DaemonGeneratorException
+                                               throws DaemonGeneratorException
     {
-        InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( reader, context, "@", "@" );
+        InterpolationFilterReader interpolationFilterReader =
+            new InterpolationFilterReader( reader, context, "@", "@" );
 
         writeFile( outputFile, interpolationFilterReader );
     }
@@ -321,8 +322,25 @@ public class JavaServiceWrapperDaemonGenerator
     private static Properties createContext( DaemonGenerationRequest request, Daemon daemon )
     {
         Properties context = new Properties();
-        context.setProperty( "app.long.name", request.getMavenProject().getName() );
-        context.setProperty( "app.name", daemon.getId() );
+
+        if ( StringUtils.isNotEmpty( daemon.getLongName() ) )
+        {
+            context.setProperty( "app.long.name", daemon.getLongName() );
+        }
+        else
+        {
+            context.setProperty( "app.long.name", request.getMavenProject().getName() );
+        }
+
+        if ( StringUtils.isNotEmpty( daemon.getName() ) )
+        {
+            context.setProperty( "app.name", daemon.getName() );
+        }
+        else
+        {
+            context.setProperty( "app.name", daemon.getId() );
+        }
+
         String description = request.getMavenProject().getDescription();
         if ( description == null )
         {
@@ -428,21 +446,18 @@ public class JavaServiceWrapperDaemonGenerator
         }
         else
         {
-            confFile.setProperty( wrapperClassPathPrefix + counter++,
-                                  "%REPO_DIR%/"
-                                      + DependencyFactory.create( project.getArtifact(), layout, true,
-                                                                  request.getOutputFileNameMapping() ).getRelativePath() );
+            confFile.setProperty( wrapperClassPathPrefix + counter++, "%REPO_DIR%/"
+                + DependencyFactory.create( project.getArtifact(), layout, true,
+                                            request.getOutputFileNameMapping() ).getRelativePath() );
 
             Iterator j = project.getRuntimeArtifacts().iterator();
             while ( j.hasNext() )
             {
                 Artifact artifact = (Artifact) j.next();
 
-                confFile.setProperty( wrapperClassPathPrefix + counter,
-                                      "%REPO_DIR%/"
-                                          + DependencyFactory.create( artifact, layout,
-                                                                      daemon.isUseTimestampInSnapshotFileName(),
-                                                                      request.getOutputFileNameMapping() ).getRelativePath() );
+                confFile.setProperty( wrapperClassPathPrefix + counter, "%REPO_DIR%/"
+                    + DependencyFactory.create( artifact, layout, daemon.isUseTimestampInSnapshotFileName(),
+                                                request.getOutputFileNameMapping() ).getRelativePath() );
                 counter++;
             }
         }
@@ -493,7 +508,7 @@ public class JavaServiceWrapperDaemonGenerator
 
     private void writeScriptFiles( DaemonGenerationRequest request, Daemon daemon, File outputDirectory,
                                    Properties context )
-        throws DaemonGeneratorException
+                                       throws DaemonGeneratorException
     {
         InputStream shellScriptInputStream = null;
         InputStream batchFileInputStream = null;
