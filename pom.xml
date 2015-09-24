@@ -112,6 +112,9 @@
     </contributor>
   </contributors>
 
+  <properties>
+    <mojo.java.target>1.6</mojo.java.target>
+  </properties>
   <licenses>
     <license>
       <name>The MIT License</name>
@@ -142,7 +145,7 @@
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>1.4</version>
+        <version>2.4</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
