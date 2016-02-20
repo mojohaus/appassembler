@@ -118,7 +118,7 @@
   <licenses>
     <license>
       <name>The MIT License</name>
-      <url>http://svn.codehaus.org/mojo/trunk/mojo/appassembler/LICENSE.txt</url>
+      <url>https://opensource.org/licenses/MIT</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
