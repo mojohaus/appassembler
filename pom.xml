@@ -37,8 +37,8 @@
   <name>Appassembler</name>
   <inceptionYear>2006</inceptionYear>
   <issueManagement>
-    <system>jira</system>
-    <url>http://jira.codehaus.org/browse/MAPPASM</url>
+    <system>github</system>
+    <url>https://github.com/mojohaus/appassembler/issues</url>
   </issueManagement>
   <developers>
     <developer>
