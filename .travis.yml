@@ -1,8 +1,13 @@
 language: java
 jdk:
   - openjdk6
+  - openjdk7
   - oraclejdk7
   - oraclejdk8
+# We can skip the installation
+# step, everything must run without
+# preliminary installation.
+install: true
 script: "mvn --show-version --errors --batch-mode -Prun-its clean verify"
 cache:
     directories:
