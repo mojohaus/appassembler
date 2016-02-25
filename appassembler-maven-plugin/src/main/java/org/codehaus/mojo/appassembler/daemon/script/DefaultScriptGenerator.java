@@ -89,7 +89,7 @@ public class DefaultScriptGenerator
             getLogger().debug( "Using license file: " + daemon.getLicenseHeaderFile() );
             lines = readLicenseHeaderFromFile( new File( daemon.getLicenseHeaderFile() ) );
         }
-        StringBuffer resultLines = new StringBuffer();
+        StringBuilder resultLines = new StringBuilder();
         for ( int i = 0; i < lines.size(); i++ )
         {
             String licenseLine = platform.getCommentPrefix() + lines.get( i );

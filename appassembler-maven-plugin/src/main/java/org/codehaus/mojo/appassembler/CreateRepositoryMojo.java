@@ -131,7 +131,7 @@ public class CreateRepositoryMojo
         // Initialize
         // -----------------------------------------------------------------------
 
-        StringBuffer path = new StringBuffer( "file://" + assembleDirectory.getAbsolutePath() + "/" );
+        StringBuilder path = new StringBuilder( "file://" + assembleDirectory.getAbsolutePath() + "/" );
 
         path.append( repositoryName );
 

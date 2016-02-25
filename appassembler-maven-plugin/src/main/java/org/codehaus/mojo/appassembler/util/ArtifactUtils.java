@@ -48,7 +48,7 @@ public final class ArtifactUtils
     {
         ArtifactHandler artifactHandler = artifact.getArtifactHandler();
 
-        StringBuffer fileName = new StringBuffer();
+        StringBuilder fileName = new StringBuilder();
 
         fileName.append( artifact.getArtifactId() ).append( "-" ).append( artifact.getBaseVersion() );
 
@@ -66,7 +66,7 @@ public final class ArtifactUtils
         String[] tokens = StringUtils.split( relativePath, "/" );
         tokens[tokens.length - 1] = fileName.toString();
 
-        StringBuffer path = new StringBuffer();
+        StringBuilder path = new StringBuilder();
 
         for ( int i = 0; i < tokens.length; ++i )
         {
