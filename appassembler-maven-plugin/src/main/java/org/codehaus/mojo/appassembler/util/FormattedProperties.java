@@ -140,7 +140,7 @@ public class FormattedProperties
             fileLines = new ArrayList<String>();
             propertyLines = new HashMap<String, Integer>();
 
-            BufferedReader r = new BufferedReader( new InputStreamReader( inputStream ) );
+            BufferedReader r = new BufferedReader( new InputStreamReader( inputStream, "UTF-8") );
 
             try
             {
