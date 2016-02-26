@@ -137,7 +137,7 @@ public abstract class AbstractAppAssemblerMojo
     {
         try
         {
-            ArtifactRepositoryLayout artifactRepositoryLayout = null;
+            ArtifactRepositoryLayout artifactRepositoryLayout;
             artifactRepositoryLayout =
                 (ArtifactRepositoryLayout) container.lookup( "org.apache.maven.artifact."
                     + "repository.layout.ArtifactRepositoryLayout", repositoryLayout );

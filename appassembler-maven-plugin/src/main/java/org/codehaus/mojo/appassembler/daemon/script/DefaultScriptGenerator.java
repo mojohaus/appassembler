@@ -78,7 +78,7 @@ public class DefaultScriptGenerator
     private String getLicenseHeader( Platform platform, Daemon daemon )
         throws DaemonGeneratorException
     {
-        List<String> lines = null;
+        List<String> lines;
         if ( isDefaultLicenseHeaderRequested( daemon ) )
         {
             getLogger().debug( "Using default licence file (" + DEFAULT_LICENSE_HEADER + ")." );

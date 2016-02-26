@@ -478,7 +478,7 @@ public class AssembleMojo
         throws MojoFailureException
     {
         // create (if necessary) directory for bin files
-        File binDir = new File( assembleDirectory.getAbsolutePath(), binFolder.toString() );
+        File binDir = new File( assembleDirectory.getAbsolutePath(), binFolder );
 
         if ( !binDir.exists() )
         {
