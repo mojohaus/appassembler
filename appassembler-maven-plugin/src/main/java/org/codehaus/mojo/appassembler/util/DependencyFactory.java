@@ -42,6 +42,11 @@ import org.codehaus.plexus.util.StringUtils;
  */
 public class DependencyFactory
 {
+    private DependencyFactory() 
+    {
+        
+    }
+    
     /**
      * Used by GenericDaemonGenerator.
      */

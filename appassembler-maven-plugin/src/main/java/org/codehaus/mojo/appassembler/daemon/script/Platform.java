@@ -419,7 +419,7 @@ public class Platform
     {
         List<String> commandLineArguments = convertArguments( descriptor.getCommandLineArguments() );
 
-        if ( commandLineArguments == null || commandLineArguments.size() == 0 )
+        if ( commandLineArguments == null || commandLineArguments.isEmpty() )
         {
             return null;
         }

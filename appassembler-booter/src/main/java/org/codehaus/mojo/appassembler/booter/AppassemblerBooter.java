@@ -51,6 +51,11 @@ import org.codehaus.mojo.appassembler.model.io.stax.AppassemblerModelStaxReader;
  */
 public class AppassemblerBooter
 {
+    private AppassemblerBooter() 
+    {
+        
+    }
+    
     private static boolean debug;
 
     private static Daemon config;
