@@ -185,13 +185,10 @@ public class GenerateDaemonsMojo
             // -----------------------------------------------------------------------
             // Default Handling for license file
             // -----------------------------------------------------------------------
-            if ( this.licenseHeaderFile != null )
+            if ( this.licenseHeaderFile != null && modelDaemon.getLicenseHeaderFile() == null)
             {
                 // Allow overwrite if not set otherwise the set license header file will be used.
-                if ( modelDaemon.getLicenseHeaderFile() == null )
-                {
-                    modelDaemon.setLicenseHeaderFile( this.licenseHeaderFile.toString() );
-                }
+                modelDaemon.setLicenseHeaderFile( this.licenseHeaderFile.toString() );
             }
 
             modelDaemon.setConfigurationDirectory( configurationDirectory );

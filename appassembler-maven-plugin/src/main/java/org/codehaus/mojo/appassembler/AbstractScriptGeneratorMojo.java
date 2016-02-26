@@ -336,12 +336,9 @@ public abstract class AbstractScriptGeneratorMojo
         if ( this.logsDirectory != null )
         {
             File logsDirectory = new File( targetDirectory, this.logsDirectory );
-            if ( logsDirectory.exists() )
+            if ( logsDirectory.exists() && !logsDirectory.delete() )
             {
-                if ( !logsDirectory.delete() )
-                {
-                    throw new MojoFailureException( "Failed to delete existing directory for log files." );
-                }
+                throw new MojoFailureException( "Failed to delete existing directory for log files." );
             }
             boolean success = logsDirectory.mkdirs();
             if ( !success )
@@ -352,12 +349,9 @@ public abstract class AbstractScriptGeneratorMojo
         if ( this.tempDirectory != null )
         {
             File tempDirectory = new File( targetDirectory, this.tempDirectory );
-            if ( tempDirectory.exists() )
+            if ( tempDirectory.exists() && !tempDirectory.delete() )
             {
-                if ( !tempDirectory.delete() )
-                {
-                    throw new MojoFailureException( "Failed to delete existing directory for temp files." );
-                }
+                throw new MojoFailureException( "Failed to delete existing directory for temp files." );
             }
             boolean success = tempDirectory.mkdirs();
             if ( !success )
