@@ -39,7 +39,7 @@ public class ScriptGeneratorTest
 {
     private static final String PREFIX = "src/test/resources/org/codehaus/mojo/appassembler/daemon/script/";
 
-    protected void setUp()
+    public void setUp()
         throws Exception
     {
         super.setUp();

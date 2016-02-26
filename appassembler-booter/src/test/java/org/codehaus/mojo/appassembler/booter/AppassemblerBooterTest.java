@@ -34,7 +34,7 @@ import junit.framework.TestCase;
 public class AppassemblerBooterTest
     extends TestCase
 {
-    protected void setUp()
+    public void setUp()
         throws Exception
     {
         super.setUp();

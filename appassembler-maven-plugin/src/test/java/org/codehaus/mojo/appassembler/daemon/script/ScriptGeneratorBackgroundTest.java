@@ -38,7 +38,7 @@ public class ScriptGeneratorBackgroundTest
 {
     private static final String PREFIX = "src/test/resources/org/codehaus/mojo/appassembler/daemon/script/background/";
 
-    protected void setUp()
+    public void setUp()
         throws Exception
     {
         super.setUp();
