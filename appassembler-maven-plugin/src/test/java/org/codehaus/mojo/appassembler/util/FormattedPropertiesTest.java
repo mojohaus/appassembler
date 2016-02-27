@@ -34,7 +34,7 @@ public class FormattedPropertiesTest
 {
     private FormattedProperties formattedProperties;
 
-    protected void setUp()
+    public void setUp()
         throws Exception
     {
         super.setUp();
