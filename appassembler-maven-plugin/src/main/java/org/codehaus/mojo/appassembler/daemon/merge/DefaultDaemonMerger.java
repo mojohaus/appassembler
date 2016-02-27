@@ -99,7 +99,7 @@ public class DefaultDaemonMerger
 
         // TODO: The above is not possible as long as the modello generated stuff returns an empty list on not set
         // fields.
-        if ( dominant != null && dominant.size() > 0 )
+        if ( dominant != null && !dominant.isEmpty() )
         {
             return dominant;
         }

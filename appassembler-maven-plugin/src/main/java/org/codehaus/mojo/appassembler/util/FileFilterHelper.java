@@ -35,6 +35,11 @@ import org.apache.commons.io.filefilter.RegexFileFilter;
  */
 public class FileFilterHelper
 {
+    private FileFilterHelper()
+    {
+        
+    }
+    
     /**
      * Make the given IOFileFilter aware of directories.
      *
