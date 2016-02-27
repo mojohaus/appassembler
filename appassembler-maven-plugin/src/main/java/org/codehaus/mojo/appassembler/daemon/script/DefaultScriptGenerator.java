@@ -236,20 +236,17 @@ public class DefaultScriptGenerator
             File binDir = new File( outputDirectory, binFolder );
             FileUtils.forceMkdir( binDir );
             binFile = new File( binDir, programName + platform.getBinFileExtension() );
-            if ( Platform.UNIX_NAME.equals( platformName ) )
+            if ( Platform.UNIX_NAME.equals( platformName ) && binFile.exists() )
             {
                 // Only in case of an existing file it does make sense
-                if ( binFile.exists() )
+                try
                 {
-                    try
-                    {
-                        // in case it already exists, make it writable. Maybe deleting would be better?
-                        ArchiveEntryUtils.chmod( binFile, 0777, getLogger(), true );
-                    }
-                    catch ( ArchiverException ae )
-                    {
-                        throw new DaemonGeneratorException( "Failed to change permission for bin file.", ae );
-                    }
+                    // in case it already exists, make it writable. Maybe deleting would be better?
+                    ArchiveEntryUtils.chmod( binFile, 0777, getLogger(), true );
+                }
+                catch ( ArchiverException ae )
+                {
+                    throw new DaemonGeneratorException( "Failed to change permission for bin file.", ae );
                 }
             }
 

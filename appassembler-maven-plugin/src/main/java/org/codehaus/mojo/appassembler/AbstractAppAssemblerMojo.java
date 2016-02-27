@@ -184,13 +184,10 @@ public abstract class AbstractAppAssemblerMojo
                     destination.getParentFile().mkdirs();
                 }
 
-                if ( artifact.isSnapshot() )
+                if ( artifact.isSnapshot() && !useTimestampInSnapshotFileName)
                 {
-                    if ( !useTimestampInSnapshotFileName )
-                    {
-                        // Don't want timestamp in the snapshot file during copy
-                        destination = new File( destination.getParentFile(), source.getName() );
-                    }
+                    // Don't want timestamp in the snapshot file during copy
+                    destination = new File( destination.getParentFile(), source.getName() );
                 }
 
                 if ( !source.isDirectory() )
