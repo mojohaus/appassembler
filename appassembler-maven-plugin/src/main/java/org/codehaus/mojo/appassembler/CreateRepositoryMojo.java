@@ -180,7 +180,7 @@ public class CreateRepositoryMojo
             ArtifactFilter filter = new ExcludesArtifactFilter( Collections.singletonList( "junit:junit" ) );
             ArtifactResolutionResult result =
                 artifactResolver.resolveTransitively( Collections.singleton( artifact ), p, localRepository,
-                                                      Collections.EMPTY_LIST, metadataSource, filter );
+                                                      Collections.emptyList(), metadataSource, filter );
             for ( Iterator i = result.getArtifacts().iterator(); i.hasNext(); )
             {
                 Artifact a = (Artifact) i.next();
