@@ -285,7 +285,7 @@ public class Platform
     {
         List<ClasspathElement> classpath = daemon.getAllClasspathElements();
 
-        StringBuffer classpathBuffer = new StringBuffer();
+        StringBuilder classpathBuffer = new StringBuilder();
 
         for ( ClasspathElement classpathElement : classpath )
         {
