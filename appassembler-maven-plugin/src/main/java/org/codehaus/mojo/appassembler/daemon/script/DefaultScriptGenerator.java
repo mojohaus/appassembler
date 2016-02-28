@@ -106,20 +106,28 @@ public class DefaultScriptGenerator
         InputStream in = getClass().getResourceAsStream( DEFAULT_LICENSE_HEADER );
 
         InputStreamReader inr = new InputStreamReader( in );
+        BufferedReader bufRead = null;
         try
         {
-            BufferedReader bufRead = new BufferedReader( inr );
+            bufRead = new BufferedReader( inr );
             String str;
             while ( ( str = bufRead.readLine() ) != null )
             {
                 result.add( str );
             }
-            bufRead.close();
         }
         catch ( IOException e )
         {
             throw new DaemonGeneratorException(
                                                 "Internal error: could not read license header template file (license-header.txt)" );
+        }
+        finally
+        {
+            try {
+                bufRead.close();
+            } catch (IOException e) {
+                // swallow
+            }
         }
         return result;
     }
