@@ -141,7 +141,7 @@ public class DaemonToolsDaemonGenerator
 
         try
         {
-            envReader = new InputStreamReader( this.getClass().getResourceAsStream( "env/" + envName ) );
+            envReader = new InputStreamReader( this.getClass().getResourceAsStream( "env/" + envName ), "UTF-8");
 
             // -----------------------------------------------------------------------
             // Write the file

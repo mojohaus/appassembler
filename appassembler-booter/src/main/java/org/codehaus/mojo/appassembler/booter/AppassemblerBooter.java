@@ -192,7 +192,7 @@ public class AppassemblerBooter
         try
         {
             AppassemblerModelStaxReader reader = new AppassemblerModelStaxReader();
-            return reader.read( new InputStreamReader( resource ) );
+            return reader.read( new InputStreamReader( resource, "UTF-8" ) );
         }
         finally
         {

@@ -169,7 +169,7 @@ public class DefaultScriptGenerator
         {
             in = getScriptTemplate( platformName, daemon );
 
-            InputStreamReader reader = new InputStreamReader( getScriptTemplate( platformName, daemon ) );
+            InputStreamReader reader = new InputStreamReader( getScriptTemplate( platformName, daemon ), "UTF-8" );
 
             Map<Object, Object> context = new HashMap<Object, Object>();
             context.put( "MAINCLASS", daemon.getMainClass() );
