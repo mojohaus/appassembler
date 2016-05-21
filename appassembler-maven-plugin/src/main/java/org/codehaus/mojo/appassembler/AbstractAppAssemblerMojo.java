@@ -88,6 +88,15 @@ public abstract class AbstractAppAssemblerMojo
     @Parameter( defaultValue = "true" )
     protected boolean useTimestampInSnapshotFileName;
 
+    /**
+     * Remove existing repository before populating it again to prevent unused existing artifacts accumulated over time.
+     * User is responsible not to place intended files before invocation of this goal and this setting is enable.
+     *
+     * @since 1.11
+     */
+    @Parameter( defaultValue = "false" )
+    protected boolean preClean;
+
     // -----------------------------------------------------------------------
     // Read-only parameters
     // -----------------------------------------------------------------------
@@ -227,6 +236,24 @@ public abstract class AbstractAppAssemblerMojo
         throws MojoExecutionException
     {
         installArtifact( artifact, artifactRepository, true );
+    }
+
+
+    protected void removeDirectory( File directory )
+        throws MojoExecutionException
+    {
+        if ( directory.exists() )
+        {
+            try
+            {
+                this.getLog().info( "Removing " + directory );
+                FileUtils.deleteDirectory( directory );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( e.getMessage(), e );
+            }
+        }
     }
 
 }

@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.codehaus.mojo.appassembler-maven-plugin.it</groupId>
+  <artifactId>assembleDirectory-test</artifactId>
+
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>appassembler-maven-plugin BasicTest</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <mkdir dir="${project.build.directory}/appassembler-1" />
+                <mkdir dir="${project.build.directory}/appassembler-2" />
+                <copy file="${project.basedir}/pom.xml" todir="${project.build.directory}/appassembler-1" />
+                <copy file="${project.basedir}/pom.xml" todir="${project.build.directory}/appassembler-2" />
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>@project.groupId@</groupId>
+        <artifactId>@project.artifactId@</artifactId>
+        <version>@project.version@</version>
+        <configuration>
+          <platforms>
+            <platform>unix</platform>
+          </platforms>
+          <programs>
+            <program>
+              <mainClass>org.codehaus.mojo.appassembler.example.helloworld.HelloWorld</mainClass>
+              <name>basic-test</name>
+            </program>
+          </programs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>appassembler-1</id>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+            <configuration>
+              <preClean>true</preClean>
+              <assembleDirectory>${project.build.directory}/appassembler-1</assembleDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>appassembler-2</id>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>
+            <configuration>
+              <preClean>false</preClean>
+              <assembleDirectory>${project.build.directory}/appassembler-2</assembleDirectory>
+            </configuration>
+          </execution>
+        </executions>
+
+      </plugin>
+    </plugins>
+
+  </build>
+
+</project>

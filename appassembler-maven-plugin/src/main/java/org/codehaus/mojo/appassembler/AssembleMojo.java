@@ -163,6 +163,7 @@ public class AssembleMojo
     @Parameter( defaultValue = "false" )
     private boolean useAllProjectDependencies;
 
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -271,6 +272,10 @@ public class AssembleMojo
         // ----------------------------------------------------------------------
         // Install dependencies in the new repository
         // ----------------------------------------------------------------------
+
+        if ( preClean ) {
+            removeDirectory( assembleDirectory );
+        }
         super.installDependencies( assembleDirectory.getAbsolutePath(), repositoryName );
 
         // ----------------------------------------------------------------------

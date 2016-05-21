@@ -126,11 +126,11 @@ public class GenerateDaemonsMojo
     /**
      * Set the name of the generated script name in bin folder instead
      * of using {@link Daemon#getId()}.
-     * 
+     *
      */
     @Parameter
     private String binFileName;
-    
+
     // -----------------------------------------------------------------------
     // AbstractMojo Implementation
     // -----------------------------------------------------------------------
@@ -148,6 +148,11 @@ public class GenerateDaemonsMojo
         {
             throw new MojoExecutionException( "The useWildcardClassPath works only in"
                 + " combination with repositoryLayout flat." );
+        }
+
+        if ( preClean )
+        {
+            removeDirectory( target );
         }
 
         for ( Daemon daemon : daemons )

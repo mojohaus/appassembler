@@ -96,6 +96,7 @@ public class CreateRepositoryMojo
     @Parameter( defaultValue = "${plugin.version}", readonly = true )
     private String pluginVersion;
 
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -138,6 +139,10 @@ public class CreateRepositoryMojo
         ArtifactRepository artifactRepository =
             artifactRepositoryFactory.createDeploymentArtifactRepository( "appassembler", path.toString(),
                                                                           artifactRepositoryLayout, true );
+
+        if ( preClean ) {
+            removeDirectory( new File( artifactRepository.getBasedir() ) );
+        }
 
         // -----------------------------------------------------------------------
         // Install the project's artifact in the new repository
