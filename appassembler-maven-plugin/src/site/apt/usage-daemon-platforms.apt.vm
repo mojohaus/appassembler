@@ -33,11 +33,11 @@ Daemon Platforms
 
 * Platforms
 
-  Sometimes you might want to define the platforms for which your Java Service Wrapper (JSW) 
+  Sometimes you might want to define the platforms for which your Java Service Wrapper (JSW)
   will run or not or in other words which platform you would like to support.
-  
-  The default is defined by giving within the configuration via the platforms tag: 
-  
+
+  The default is defined by giving within the configuration via the platforms tag:
+
 +----------------------------
   <platforms>
     <platform>jsw</platform>
@@ -45,24 +45,24 @@ Daemon Platforms
 +----------------------------
 
   which will generate for the following platforms by default:
-  
+
   * aix-ppc-32
-  
+
   * aix-ppc-64
-  
+
   * linux-x86-32
-  
+
   * macosx-x86-universal-32
-  
+
   * solaris-x86-32
-  
+
   * windows-x86-32
-  
+
   []
-  
+
 
   Furthermore its possible to define the platforms via the <<<generatorConfigurations>>> like this:
-  
+
 +----------------------------
   <generatorConfigurations>
     <generatorConfiguration>
@@ -76,7 +76,7 @@ Daemon Platforms
   </generatorConfigurations>
 +----------------------------
 
-   
+
   To make things a little bit more clear you will in the following example
   a complete configuration part:
 
@@ -95,7 +95,7 @@ Daemon Platforms
               <commandLineArguments>
                 <commandLineArgument>argument_one</commandLineArgument>
               </commandLineArguments>
-              
+
               <generatorConfigurations>
                 <generatorConfiguration>
                   <generator>jsw</generator>
@@ -106,7 +106,7 @@ Daemon Platforms
                   </includes>
                 </generatorConfiguration>
               </generatorConfigurations>
-              
+
               <platforms>
                 <platform>jsw</platform>
               </platforms>
@@ -119,11 +119,11 @@ Daemon Platforms
 </project>
 +--------------------------
 
-  
+
   But in some circumstances it might be useful to change the set of supported platforms
   which can be achieved by using the following configuration. In this case we only support
-  Linux x86 32 bit. 
-  
+  Linux x86 32 bit.
+
 +--------------------------
 <project>
   ...
@@ -139,7 +139,7 @@ Daemon Platforms
               <commandLineArguments>
                 <commandLineArgument>argument_one</commandLineArgument>
               </commandLineArguments>
-              
+
               <generatorConfigurations>
                 <generatorConfiguration>
                   <generator>jsw</generator>
@@ -161,40 +161,39 @@ Daemon Platforms
 +--------------------------
 
 
-* Avaiable Platforms
+* Available Platforms
 
 
   Currently the following platforms are available:
-  
+
   * aix-ppc-32
-  
+
   * aix-ppc-64
-  
+
   * hpux-parisc-64
-  
+
   * linux-x86-32
 
   * linux-x86-64
 
   * linux-ppc-64
-  
+
   * macosx-ppc-32
-  
+
   * macosx-x86-universal-32
 
   * macosx-universal-32
 
   * macosx-universal-64
-  
+
   * solaris-sparc-32
-  
+
   * solaris-sparc-64
-  
+
   * solaris-x86-32
-  
+
   * windows-x86-32
-  
+
   * windows-x86-64
-  
+
   []
-  
