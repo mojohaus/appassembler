@@ -68,9 +68,12 @@ Daemon Platforms
     <generatorConfiguration>
       <generator>jsw</generator>
       <includes>
-        <include>linux-x86-32</include>
         <include>linux-x86-64</include>
-        <include>windows-x86-32</include>
+        <include>windows-x86-64</include>
+        <include>macosx-x86-universal-64</include>
+        <include>solaris-x86-64</include>
+        <include>solaris-sparc-64</include>
+        <include>hpux-parisc-64</include>        
       </includes>
     </generatorConfiguration>
   </generatorConfigurations>
