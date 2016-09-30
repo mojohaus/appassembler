@@ -81,6 +81,13 @@ public class Program
     private Set<String> platforms;
 
     /**
+     * Show console window when execute this application. When false, the generated java command runs in background.
+     * This works best for Swing application where the command line invocation is not blocked.
+     */
+    @Parameter
+    private Boolean showConsoleWindow;
+
+    /**
      * The default constructor.
      */
     public Program()
@@ -270,6 +277,24 @@ public class Program
     public void setBinFolder( File binFolder )
     {
         this.binFolder = binFolder;
+    }
+
+    /**
+     * Should show console window.
+     *
+     * @return If console window should be shown.
+     */
+    public Boolean getShowConsoleWindow() {
+      return showConsoleWindow;
+    }
+
+    /**
+     * Set show console window.
+     *
+     * @param showConsoleWindow Console window shown.
+     */
+    public void setShowConsoleWindow(Boolean showConsoleWindow) {
+      this.showConsoleWindow = showConsoleWindow;
     }
 
 }
