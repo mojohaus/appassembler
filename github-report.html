@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20161017" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Maven Application Assembler &#x2013; Surefire Report</title>
+    <title>Maven Application Assembler &#x2013; GitHub Report</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.0.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -65,7 +65,7 @@
         Maven Application Assembler</a>
         </li>
       <li class="divider ">/</li>
-        <li class="">Surefire Report</li>
+        <li class="">GitHub Report</li>
         
                 
                     
@@ -148,12 +148,10 @@
         Project Reports</a>
                     <ul class="nav nav-list">
                       
-      <li>
+      <li class="active">
     
-                          <a href="github-report.html" title="GitHub Report">
-          <i class="none"></i>
-        GitHub Report</a>
-            </li>
+            <a href="#"><i class="none"></i>GitHub Report</a>
+          </li>
                       
       <li>
     
@@ -169,10 +167,12 @@
         Test Source Xref</a>
             </li>
                       
-      <li class="active">
+      <li>
     
-            <a href="#"><i class="none"></i>Surefire Report</a>
-          </li>
+                          <a href="surefire-report.html" title="Surefire Report">
+          <i class="none"></i>
+        Surefire Report</a>
+            </li>
               </ul>
         </li>
             </ul>
@@ -201,43 +201,219 @@
                 
         <div id="bodyColumn"  class="span9" >
                                   
-            <script type="text/javascript">
-//<![CDATA[
-function toggleDisplay(elementId) {
- var elm = document.getElementById(elementId + 'error');
- if (elm && typeof elm.style != "undefined") {
- if (elm.style.display == "none") {
- elm.style.display = "";
- document.getElementById(elementId + 'off').style.display = "none";
- document.getElementById(elementId + 'on').style.display = "inline";
- } else if (elm.style.display == "") { elm.style.display = "none";
- document.getElementById(elementId + 'off').style.display = "inline";
- document.getElementById(elementId + 'on').style.display = "none";
- } 
- } 
- }
-//]]>
-</script>
-<div class="section">
-<h2><a name="Surefire_Report"></a>Surefire Report</h2></div>
-<div class="section">
-<h2><a name="Summary"></a>Summary</h2><a name="Summary"></a><br />
-<table border="1" class="table table-striped">
+            <div class="section">
+<h2><a name="GitHub_Report"></a>GitHub Report</h2>
+<table border="0" class="table table-striped">
 <tr class="a">
-<th>Tests</th>
-<th>Errors </th>
-<th>Failures</th>
-<th>Skipped</th>
-<th>Success Rate</th>
-<th>Time</th></tr>
+<th>#</th>
+<th>Type</th>
+<th>Summary</th>
+<th>Assignee</th>
+<th>Reporter</th>
+<th>Status</th>
+<th>Created</th>
+<th>Updated</th>
+<th>Fix Version</th></tr>
 <tr class="b">
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0%</td>
-<td>0</td></tr></table><br />
-<p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div>
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/43">43</a></td>
+<td>&#160;</td>
+<td>Upgrade to mojo-parent 40</td>
+<td>&#160;</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2016-07-19</td>
+<td>2016-10-16</td>
+<td>Release 3.0.0</td></tr>
+<tr class="a">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/40">40</a></td>
+<td>&#160;</td>
+<td>Upgraded plexus-interpolation to 1.22</td>
+<td>&#160;</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2016-06-04</td>
+<td>2016-06-04</td>
+<td>Release 2.0.0</td></tr>
+<tr class="b">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/38">38</a></td>
+<td>&#160;</td>
+<td>Upgrade appassembler version 2.0.0</td>
+<td>khmarbaise</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2016-05-22</td>
+<td>2016-05-22</td>
+<td>Release 2.0.0</td></tr>
+<tr class="a">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/37">37</a></td>
+<td>&#160;</td>
+<td>Upgrade to mojo-parent 39</td>
+<td>&#160;</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2016-05-22</td>
+<td>2016-05-22</td>
+<td>Release 2.0.0</td></tr>
+<tr class="b">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/34">34</a></td>
+<td>&#160;</td>
+<td>Upgrade maven-plugin-plugin to 3.4 in appassembler-maven-plugin</td>
+<td>&#160;</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2016-05-04</td>
+<td>2016-05-22</td>
+<td>Release 2.0.0</td></tr>
+<tr class="a">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/32">32</a></td>
+<td>&#160;</td>
+<td>Upgrade plexus-archiver to 3.2 appassembler-maven-plugin pom</td>
+<td>khmarbaise</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2016-05-04</td>
+<td>2016-05-22</td>
+<td>Release 2.0.0</td></tr>
+<tr class="b">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/29">29</a></td>
+<td>&#160;</td>
+<td>Upgrade plexus-utils to 3.0.24</td>
+<td>&#160;</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2016-05-04</td>
+<td>2016-05-22</td>
+<td>Release 2.0.0</td></tr>
+<tr class="a">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/27">27</a></td>
+<td>&#160;</td>
+<td>Remove staging directory before populate it again</td>
+<td>&#160;</td>
+<td>dantran</td>
+<td>closed</td>
+<td>2016-03-31</td>
+<td>2016-05-22</td>
+<td>Release 2.0.0</td></tr>
+<tr class="b">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/25">25</a></td>
+<td>&#160;</td>
+<td>General code quality fix-2</td>
+<td>&#160;</td>
+<td>faisal-hameed</td>
+<td>closed</td>
+<td>2016-02-27</td>
+<td>2016-02-27</td>
+<td>Release 2.0.0</td></tr>
+<tr class="a">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/24">24</a></td>
+<td>&#160;</td>
+<td>General code quality fix-1</td>
+<td>&#160;</td>
+<td>faisal-hameed</td>
+<td>closed</td>
+<td>2016-02-27</td>
+<td>2016-02-27</td>
+<td>Release 2.0.0</td></tr>
+<tr class="b">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/23">23</a></td>
+<td>&#160;</td>
+<td>Code quality fix - JUnit framework methods should be declared properly.</td>
+<td>&#160;</td>
+<td>faisal-hameed</td>
+<td>closed</td>
+<td>2016-02-27</td>
+<td>2016-02-27</td>
+<td>Release 2.0.0</td></tr>
+<tr class="a">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/21">21</a></td>
+<td>&#160;</td>
+<td>Code quality fix - Collapsible &quot;if&quot; statements should be merged.</td>
+<td>&#160;</td>
+<td>faisal-hameed</td>
+<td>closed</td>
+<td>2016-02-27</td>
+<td>2016-02-27</td>
+<td>Release 2.0.0</td></tr>
+<tr class="b">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/20">20</a></td>
+<td>&#160;</td>
+<td>Code quality fix - Synchronized classes Vector, Hashtable, Stack and StringBuffer should not be used.</td>
+<td>&#160;</td>
+<td>faisal-hameed</td>
+<td>closed</td>
+<td>2016-02-27</td>
+<td>2016-02-27</td>
+<td>Release 2.0.0</td></tr>
+<tr class="a">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/11">11</a></td>
+<td>&#160;</td>
+<td>Java 1.6+ Compilation</td>
+<td>&#160;</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2015-09-24</td>
+<td>2015-09-24</td>
+<td>Release 2.0.0</td></tr>
+<tr class="b">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/10">10</a></td>
+<td>&#160;</td>
+<td>Upgrade to mojo-parent 38</td>
+<td>&#160;</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2015-09-24</td>
+<td>2015-09-24</td>
+<td>Release 2.0.0</td></tr>
+<tr class="a">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/9">9</a></td>
+<td>&#160;</td>
+<td>Cannot Customise App Long Name</td>
+<td>&#160;</td>
+<td>opticyclic</td>
+<td>closed</td>
+<td>2015-08-29</td>
+<td>2016-09-06</td>
+<td>Release 2.0.0</td></tr>
+<tr class="b">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/5">5</a></td>
+<td>&#160;</td>
+<td>generate-daemons: Name for generated batch/shell scripts should be made configurable</td>
+<td>&#160;</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2015-08-17</td>
+<td>2015-08-30</td>
+<td>Release 2.0.0</td></tr>
+<tr class="a">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/3">3</a></td>
+<td>&#160;</td>
+<td>Update to new mojo-parent</td>
+<td>&#160;</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2015-07-24</td>
+<td>2015-07-24</td>
+<td>Release 2.0.0</td></tr>
+<tr class="b">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/2">2</a></td>
+<td>&#160;</td>
+<td>Integrations are failing</td>
+<td>&#160;</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2015-07-19</td>
+<td>2015-07-19</td>
+<td>Release 2.0.0</td></tr>
+<tr class="a">
+<td><a class="externalLink" href="https://github.com/mojohaus/appassembler/issues/1">1</a></td>
+<td>&#160;</td>
+<td>Add configuration for travis-ci.org</td>
+<td>&#160;</td>
+<td>khmarbaise</td>
+<td>closed</td>
+<td>2015-07-19</td>
+<td>2015-07-19</td>
+<td>Release 2.0.0</td></tr></table></div>
                   </div>
             </div>
           </div>

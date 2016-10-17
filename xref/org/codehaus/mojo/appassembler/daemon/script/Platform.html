@@ -293,7 +293,7 @@
 <a class="jxr_linenumber" name="L285" href="#L285">285</a>     {
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>         List&lt;ClasspathElement&gt; classpath = daemon.getAllClasspathElements();
 <a class="jxr_linenumber" name="L287" href="#L287">287</a> 
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>         StringBuffer classpathBuffer = <strong class="jxr_keyword">new</strong> StringBuffer();
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>         StringBuilder classpathBuffer = <strong class="jxr_keyword">new</strong> StringBuilder();
 <a class="jxr_linenumber" name="L289" href="#L289">289</a> 
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>         <strong class="jxr_keyword">for</strong> ( ClasspathElement classpathElement : classpath )
 <a class="jxr_linenumber" name="L291" href="#L291">291</a>         {
@@ -427,7 +427,7 @@
 <a class="jxr_linenumber" name="L419" href="#L419">419</a>     {
 <a class="jxr_linenumber" name="L420" href="#L420">420</a>         List&lt;String&gt; commandLineArguments = convertArguments( descriptor.getCommandLineArguments() );
 <a class="jxr_linenumber" name="L421" href="#L421">421</a> 
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>         <strong class="jxr_keyword">if</strong> ( commandLineArguments == <strong class="jxr_keyword">null</strong> || commandLineArguments.size() == 0 )
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>         <strong class="jxr_keyword">if</strong> ( commandLineArguments == <strong class="jxr_keyword">null</strong> || commandLineArguments.isEmpty() )
 <a class="jxr_linenumber" name="L423" href="#L423">423</a>         {
 <a class="jxr_linenumber" name="L424" href="#L424">424</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L425" href="#L425">425</a>         }
@@ -568,6 +568,6 @@
 <a class="jxr_linenumber" name="L560" href="#L560">560</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2006&#x2013;2015 <a href="http://codehaus.org">Codehaus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2006&#x2013;2016 <a href="http://www.mojohaus.org">MojoHaus</a>. All rights reserved.</div>
 </body>
 </html>

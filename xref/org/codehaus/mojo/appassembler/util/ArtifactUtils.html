@@ -56,7 +56,7 @@
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      {
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>          ArtifactHandler artifactHandler = artifact.getArtifactHandler();
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>          StringBuffer fileName = <strong class="jxr_keyword">new</strong> StringBuffer();
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          StringBuilder fileName = <strong class="jxr_keyword">new</strong> StringBuilder();
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          fileName.append( artifact.getArtifactId() ).append( <span class="jxr_string">"-"</span> ).append( artifact.getBaseVersion() );
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  
@@ -74,7 +74,7 @@
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          String[] tokens = StringUtils.split( relativePath, <span class="jxr_string">"/"</span> );
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          tokens[tokens.length - 1] = fileName.toString();
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>          StringBuffer path = <strong class="jxr_keyword">new</strong> StringBuffer();
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>          StringBuilder path = <strong class="jxr_keyword">new</strong> StringBuilder();
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>          <strong class="jxr_keyword">for</strong> ( <strong class="jxr_keyword">int</strong> i = 0; i &lt; tokens.length; ++i )
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          {
@@ -93,6 +93,6 @@
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2006&#x2013;2015 <a href="http://codehaus.org">Codehaus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2006&#x2013;2016 <a href="http://www.mojohaus.org">MojoHaus</a>. All rights reserved.</div>
 </body>
 </html>
