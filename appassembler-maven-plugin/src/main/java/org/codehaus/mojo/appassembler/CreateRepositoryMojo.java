@@ -157,7 +157,7 @@ public class CreateRepositoryMojo
         // TODO: merge with the artifacts below so no duplicate versions included
         for ( Artifact artifact : artifacts )
         {
-            installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
+            installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName, overwriteDependencies );
         }
 
         if ( installBooterArtifacts )
@@ -189,7 +189,7 @@ public class CreateRepositoryMojo
             for ( Iterator i = result.getArtifacts().iterator(); i.hasNext(); )
             {
                 Artifact a = (Artifact) i.next();
-                installArtifact( a, artifactRepository, this.useTimestampInSnapshotFileName );
+                installArtifact( a, artifactRepository, this.useTimestampInSnapshotFileName, true );
             }
         }
         catch ( ArtifactResolutionException e )
