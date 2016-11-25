@@ -225,10 +225,18 @@ public abstract class AbstractAppAssemblerMojo
 	                    FileUtils.copyFile( source, destination );
 	                    getLog().info( "Installing artifact " + source.getPath() + " to " + destination );
                     }
-                    else if ( Files.exists( destination.toPath() ) )
+                    else
                     {
-                		FileUtils.copyFile( source, destination );
-                        getLog().info( "Skiped installing artifact " + source.getPath() + " to " + destination + ". File already exists.");
+                    	if ( !Files.exists( destination.toPath() ) )
+	                    {
+	                		FileUtils.copyFile( source, destination );
+	                    }
+                    	else
+                    	{
+                    		destination.setLastModified(System.currentTimeMillis()); //'touches' the file
+                    	}
+
+                    	getLog().info( "Skiped installing artifact " + source.getPath() + " to " + destination + ". File already exists.");
                     }
                 }
             }
