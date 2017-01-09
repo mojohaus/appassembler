@@ -260,7 +260,7 @@ public class AssembleMojo
         {
             // TODO: This should be made different. We have to think about using
             // a default ArtifactFilter
-            Set dependencyArtifacts = mavenProject.getDependencyArtifacts();
+            Set dependencyArtifacts = mavenProject.getArtifacts();
             artifacts = new ArrayList<Artifact>();
             for ( Iterator it = dependencyArtifacts.iterator(); it.hasNext(); )
             {
