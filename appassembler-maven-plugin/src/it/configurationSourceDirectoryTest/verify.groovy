@@ -36,7 +36,7 @@ def unixScriptFile = new File( fileBinFolder, "basic-test" );
 
 t.checkExistenceAndContentOfAFile(unixScriptFile, [
     'CLASSPATH="$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/configurationSourceDirectory-test/1.0-SNAPSHOT/configurationSourceDirectory-test-1.0-SNAPSHOT.jar',
-    'exec "$JAVACMD" $JAVA_OPTS -Xms16m \\',
+    'exec "$JAVACMD" -Xms16m $JAVA_OPTS \\',
     '  -classpath "$CLASSPATH" \\',
     '  -Dapp.name="basic-test" \\',
     '  -Dapp.pid="$$" \\',
@@ -51,7 +51,7 @@ File windowsBatchFile = new File( fileBinFolder, "basic-test.bat" );
 
 t.checkExistenceAndContentOfAFile(windowsBatchFile, [
     /set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org\codehaus\mojo\appassembler-maven-plugin\it\configurationSourceDirectory-test\1.0-SNAPSHOT\configurationSourceDirectory-test-1.0-SNAPSHOT.jar/,
-    '%JAVACMD% %JAVA_OPTS% -Xms16m -classpath %CLASSPATH% -Dapp.name="basic-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 %CMD_LINE_ARGS%',
+    '%JAVACMD% -Xms16m %JAVA_OPTS% -classpath %CLASSPATH% -Dapp.name="basic-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 %CMD_LINE_ARGS%',
 ])
 
 //Check the existence of the generated repository.
