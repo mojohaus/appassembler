@@ -297,6 +297,13 @@ then
     fi
 fi
 
+# If $PIDDIR is in a tmpfs (typically /var/run) the PIDDIR it is likely to not exists.
+# Make sure the folder exists
+if [ ! -d "$PIDDIR" ]; then
+    _PIDIR_CREATED=1
+    mkdir "$PIDDIR"
+fi
+
 checkUser() {
     # $1 touchLock flag
     # $2 command
@@ -342,6 +349,18 @@ checkUser() {
                 touch $LOCKFILE
                 chown $RUN_AS_USER:$RUN_AS_GROUP $LOCKFILE
             fi
+        fi
+        # If $RUN_AS_USER is defined and PIDDIR was created, the new user it will not be
+        # able to create the pid file. Make sure new user has permission over PIDDIR.
+        if [ "X$_PIDIR_CREATED" != "X" ]
+        then
+            # Resolve the primary group
+            RUN_AS_GROUP=`groups $RUN_AS_USER | awk '{print $3}' | tail -1`
+            if [ "X$RUN_AS_GROUP" = "X" ]
+            then
+                RUN_AS_GROUP=$RUN_AS_USER
+            fi
+            chown $RUN_AS_USER:$RUN_AS_GROUP "$PIDDIR"
         fi
 
         # Still want to change users, recurse.  This means that the user will only be
