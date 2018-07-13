@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.io.FilenameUtils;
 
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.model.ClasspathElement;
@@ -465,20 +466,39 @@ public class Platform
 
         if ( envSetupFileName != null )
         {
+            String targetPlatformBinFolder = convertPathSeparators( binFolder );
             if ( isWindows )
             {
-                String envScriptPath = "\"%BASEDIR%\\" + binFolder + "\\" + envSetupFileName + ".bat\"";
+                String envScriptPath = "\"%BASEDIR%\\" + targetPlatformBinFolder + "\\" + envSetupFileName + ".bat\"";
 
                 envSetup = "if exist " + envScriptPath + " call " + envScriptPath;
             }
             else
             {
-                String envScriptPath = "\"$BASEDIR\"/" + binFolder + "/" + envSetupFileName;
+                String envScriptPath = "\"$BASEDIR\"/" + targetPlatformBinFolder + "/" + envSetupFileName;
                 envSetup = "[ -f " + envScriptPath + " ] && . " + envScriptPath;
             }
         }
 
         return envSetup;
+    }
+
+    /**
+     * Converts path separators (slashes) into the target platform format.
+     *
+     * @param path Input path (system-independent)
+     * @return Path with separators converted into the target platform format.
+     */
+    public String convertPathSeparators( String path )
+    {
+        if ( isWindows )
+        {
+            return FilenameUtils.separatorsToWindows( path );
+        }
+        else
+        {
+            return FilenameUtils.separatorsToUnix( path );
+        }
     }
 
     // -----------------------------------------------------------------------

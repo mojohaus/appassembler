@@ -1,4 +1,22 @@
-#LICENSE_HEADER#
+@REM ----------------------------------------------------------------------------
+@REM  Copyright 2001-2006 The Apache Software Foundation.
+@REM
+@REM  Licensed under the Apache License, Version 2.0 (the "License");
+@REM  you may not use this file except in compliance with the License.
+@REM  You may obtain a copy of the License at
+@REM
+@REM       http://www.apache.org/licenses/LICENSE-2.0
+@REM
+@REM  Unless required by applicable law or agreed to in writing, software
+@REM  distributed under the License is distributed on an "AS IS" BASIS,
+@REM  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+@REM  See the License for the specific language governing permissions and
+@REM  limitations under the License.
+@REM ----------------------------------------------------------------------------
+@REM
+@REM   Copyright (c) 2001-2006 The Apache Software Foundation.  All rights
+@REM   reserved.
+
 @echo off
 
 set ERROR_CODE=0
@@ -37,26 +55,26 @@ goto Win9xApp
 :Win9xGetScriptDir
 set SAVEDIR=%CD%
 %0\
-cd %0\#BIN_BASE_RELATIVE_PATH#\.. 
+cd %0\..\..\..\.. 
 set BASEDIR=%CD%
 cd %SAVEDIR%
 set SAVE_DIR=
 goto repoSetup
 
 :WinNTGetScriptDir
-set BASEDIR=%~dp0\#BIN_BASE_RELATIVE_PATH#
+set BASEDIR=%~dp0\..\..\..
 
 :repoSetup
 set REPO=
-#ENV_SETUP#
+if exist "%BASEDIR%\nested\bin\dir\setup.bat" call "%BASEDIR%\nested\bin\dir\setup.bat"
 
-if "%JAVACMD%"=="" set JAVACMD=#JAVA_BINARY#
+if "%JAVACMD%"=="" set JAVACMD=java
 
-if "%REPO%"=="" set REPO=%BASEDIR%\#REPO#
+if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
-set CLASSPATH=#CLASSPATH#
+set CLASSPATH=
 
-set ENDORSED_DIR=#ENDORSED_DIR#
+set ENDORSED_DIR=
 if NOT "%ENDORSED_DIR%" == "" set CLASSPATH="%BASEDIR%"\%ENDORSED_DIR%\*;%CLASSPATH%
 
 if NOT "%CLASSPATH_PREFIX%" == "" set CLASSPATH=%CLASSPATH_PREFIX%;%CLASSPATH%
@@ -64,7 +82,7 @@ if NOT "%CLASSPATH_PREFIX%" == "" set CLASSPATH=%CLASSPATH_PREFIX%;%CLASSPATH%
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-%JAVACMD% %JAVA_OPTS% #EXTRA_JVM_ARGUMENTS# -classpath %CLASSPATH% -Dapp.name="#APP_NAME#" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" #MAINCLASS# #APP_ARGUMENTS#%CMD_LINE_ARGS%
+%JAVACMD% %JAVA_OPTS% Yo dude -classpath %CLASSPATH% -Dapp.name="nestedbindir-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" foo.Bar %CMD_LINE_ARGS%
 if %ERRORLEVEL% NEQ 0 goto error
 goto end
 

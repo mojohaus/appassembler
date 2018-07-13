@@ -177,7 +177,9 @@ public class DefaultScriptGenerator
         {
             in = getScriptTemplate( platformName, daemon );
 
-            InputStreamReader reader = new InputStreamReader( getScriptTemplate( platformName, daemon ), "UTF-8" );
+            InputStreamReader reader = new InputStreamReader( in, "UTF-8" );
+            File binDir = new File( outputDirectory, binFolder );
+            String binToBaseDirRelativePath = binDir.toPath().relativize( outputDirectory.toPath() ).toString();
 
             Map<Object, Object> context = new HashMap<Object, Object>();
             context.put( "MAINCLASS", daemon.getMainClass() );
@@ -187,6 +189,7 @@ public class DefaultScriptGenerator
             context.put( "ENV_SETUP", platform.getEnvSetup( daemon, binFolder ) );
             context.put( "REPO", daemon.getRepositoryName() );
             context.put( "LICENSE_HEADER", getLicenseHeader( platform, daemon ) );
+            context.put( "BIN_BASE_RELATIVE_PATH", platform.convertPathSeparators( binToBaseDirRelativePath ) );
 
             if ( daemon.getEndorsedDir() != null )
             {
@@ -241,7 +244,6 @@ public class DefaultScriptGenerator
                 programName = daemon.getId();
             }
 
-            File binDir = new File( outputDirectory, binFolder );
             FileUtils.forceMkdir( binDir );
             binFile = new File( binDir, programName + platform.getBinFileExtension() );
             if ( Platform.UNIX_NAME.equals( platformName ) && binFile.exists() )
