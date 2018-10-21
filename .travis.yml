@@ -1,6 +1,6 @@
 language: java
 jdk:
-    - openjdk7
+  - openjdk7
   - oraclejdk8
 # We can skip the installation
 # step, everything must run without
