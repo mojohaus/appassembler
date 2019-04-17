@@ -76,21 +76,6 @@ public class AssembleMojo
     private File assembleDirectory;
 
     /**
-     * The file extensions to use for bin files. The file extensions are stored in a Map that uses the platform name as
-     * key. To change the file extension for Unix bin files to ".sh" use this configuration:
-     *
-     * <pre>
-     *          &lt;binFileExtensions&gt;
-     *            &lt;unix&gt;.sh&lt;/unix&gt;
-     *          &lt;/binFileExtensions&gt;
-     * </pre>
-     *
-     * @since 1.1
-     */
-    @Parameter
-    protected Map<String, String> binFileExtensions;
-
-    /**
      * Define the name of binary folder.
      *
      * @since 1.2
@@ -579,11 +564,8 @@ public class AssembleMojo
         return extraJvmArguments;
     }
 
-    /**
-     * Set the extensions for bin files for the supported platforms. The values are taken from the Mojo's
-     * <code>binFileExtensions</code> parameter.
-     */
-    private void setBinFileExtensions()
+    @Override
+    protected void setBinFileExtensions()
         throws MojoFailureException
     {
         if ( binFileExtensions != null )
@@ -597,15 +579,7 @@ public class AssembleMojo
                 }
                 else
                 {
-                    try
-                    {
-                        Platform platform = Platform.getInstance( platformName );
-                        platform.setBinFileExtension( binFileExtensions.get( platformName ) );
-                    }
-                    catch ( DaemonGeneratorException e )
-                    {
-                        getLog().warn( "Unable to set the bin file extension for " + platformName, e );
-                    }
+                    super.setBinFileExtensions();
                 }
             }
         }

@@ -28,6 +28,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -41,7 +42,9 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.apache.maven.shared.filtering.MavenResourcesExecution;
 import org.apache.maven.shared.filtering.MavenResourcesFiltering;
+import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorException;
 import org.codehaus.mojo.appassembler.daemon.DaemonGeneratorService;
+import org.codehaus.mojo.appassembler.daemon.script.Platform;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
@@ -236,6 +239,21 @@ public abstract class AbstractScriptGeneratorMojo
     @Parameter( property = "tempDirectory" )
     protected String tempDirectory;
 
+    /**
+     * The file extensions to use for bin files. The file extensions are stored in a Map that uses the platform name as
+     * key. To change the file extension for Unix bin files to ".sh" use this configuration:
+     *
+     * <pre>
+     *          &lt;binFileExtensions&gt;
+     *            &lt;unix&gt;.sh&lt;/unix&gt;
+     *          &lt;/binFileExtensions&gt;
+     * </pre>
+     *
+     * @since 1.1 for {@link AssembleMojo} and 2.0.0 for {@link GenerateDaemonsMojo}
+     */
+    @Parameter
+    protected Map<String, String> binFileExtensions;
+
     // -----------------------------------------------------------------------
     // Components
     // -----------------------------------------------------------------------
@@ -378,6 +396,31 @@ public abstract class AbstractScriptGeneratorMojo
 
             // install the project's artifact in the new repository
             installArtifact( projectArtifact, artifactRepository );
+        }
+    }
+
+    /**
+     * Set the extensions for bin files for the supported platforms. The values are taken from the Mojo's
+     * <code>binFileExtensions</code> parameter.
+     */
+    protected void setBinFileExtensions()
+            throws MojoFailureException
+    {
+        if ( binFileExtensions != null )
+        {
+            for ( String platformName : binFileExtensions.keySet() )
+            {
+
+                try
+                {
+                    Platform platform = Platform.getInstance( platformName );
+                    platform.setBinFileExtension( binFileExtensions.get( platformName ) );
+                }
+                catch ( DaemonGeneratorException e )
+                {
+                    getLog().warn( "Unable to set the bin file extension for " + platformName, e );
+                }
+            }
         }
     }
 }
