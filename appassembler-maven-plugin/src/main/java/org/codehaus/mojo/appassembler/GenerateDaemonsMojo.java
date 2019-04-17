@@ -150,6 +150,9 @@ public class GenerateDaemonsMojo
                 + " combination with repositoryLayout flat." );
         }
 
+        // Set the extensions for bin files for the different platforms
+        setBinFileExtensions();
+
         if ( preClean )
         {
             removeDirectory( target );
@@ -330,7 +333,7 @@ public class GenerateDaemonsMojo
         return modelDaemon;
     }
 
-    private List<org.codehaus.mojo.appassembler.model.GeneratorConfiguration> convertGeneratorConfigurations( List<GeneratorConfiguration> generatorConfigurations )
+    private List<org.codehaus.mojo.appassembler.model.GeneratorConfiguration> convertGeneratorConfigurations(List<GeneratorConfiguration> generatorConfigurations )
     {
         List<org.codehaus.mojo.appassembler.model.GeneratorConfiguration> value =
             new ArrayList<org.codehaus.mojo.appassembler.model.GeneratorConfiguration>( generatorConfigurations.size() );
