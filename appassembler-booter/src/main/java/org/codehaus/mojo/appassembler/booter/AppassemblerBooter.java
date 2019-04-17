@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -35,6 +37,8 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -42,6 +46,9 @@ import org.codehaus.mojo.appassembler.model.ClasspathElement;
 import org.codehaus.mojo.appassembler.model.Daemon;
 import org.codehaus.mojo.appassembler.model.JvmSettings;
 import org.codehaus.mojo.appassembler.model.io.stax.AppassemblerModelStaxReader;
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.InterpolationFilterReader;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Reads the appassembler manifest file from the repo, and executes the specified main class.
@@ -223,7 +230,7 @@ public class AppassemblerBooter
             arguments.addAll( Arrays.asList( args ) );
         }
 
-        String[] commandLineArgs = (String[]) arguments.toArray( new String[arguments.size()] );
+        String[] commandLineArgs = interpolateArguments((String[])arguments.toArray( new String[arguments.size()] ));
 
         // -----------------------------------------------------------------------
         // Setup environment
@@ -236,6 +243,46 @@ public class AppassemblerBooter
         // -----------------------------------------------------------------------
 
         main.invoke( null, new Object[] { commandLineArgs } );
+    }
+
+    private static String[] interpolateArguments(String[] arguments) {
+        if (arguments == null) {
+            return null;
+        }
+
+        for (int i = 0; i < arguments.length; i++) {
+            arguments[i] = interpolateBaseDirAndRepo(arguments[i]);
+        }
+        return arguments;
+    }
+
+    private static String interpolateBaseDirAndRepo( String content )
+    {
+        StringReader sr = new StringReader( content );
+        StringWriter result = new StringWriter();
+
+        Map<Object, Object> context = new HashMap<Object, Object>();
+
+        final String baseDir = System.getProperty( "basedir", System.getProperty( "app.home" ) );
+        if ( baseDir != null && baseDir.length() > 0) {
+            context.put( "BASEDIR", StringUtils.quoteAndEscape(baseDir, '"') );
+        }
+
+        final String repo = System.getProperty( "app.repo" );
+        if ( repo != null && repo.length() > 0 ) {
+            context.put("REPO", StringUtils.quoteAndEscape(repo, '"'));
+        }
+
+        InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( sr, context, "@", "@" );
+        try
+        {
+            IOUtil.copy( interpolationFilterReader, result );
+        }
+        catch ( IOException e )
+        {
+            // shouldn't happen...
+        }
+        return result.toString();
     }
 
     // -----------------------------------------------------------------------
