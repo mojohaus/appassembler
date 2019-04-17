@@ -90,6 +90,17 @@ public class GenerateDaemonsMojo
     private File target;
 
     /**
+     * When set to true different platforms
+     * will be output to their own directory (named by platform)
+     * within the target directory.
+     * When set to false, all platforms are output to the same target directory.
+     *
+     * @Since 2.0.0
+     */
+    @Parameter(defaultValue = "true")
+    private boolean separateTargetPlatforms;
+
+    /**
      * When enable, name wrapper configuration file as wrapper-${daemon.id}.conf
      *
      * @since 1.3
@@ -237,7 +248,12 @@ public class GenerateDaemonsMojo
 
             for ( String platform : daemon.getPlatforms() )
             {
-                File output = new File( target, platform );
+                final File output;
+                if  ( separateTargetPlatforms ) {
+                    output = new File(target, platform);
+                } else {
+                    output = target;
+                }
 
                 DaemonGenerationRequest request = new DaemonGenerationRequest();
 
