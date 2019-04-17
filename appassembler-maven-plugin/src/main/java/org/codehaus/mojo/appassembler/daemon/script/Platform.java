@@ -382,7 +382,7 @@ public class Platform
         vmArgs = addJvmSetting( "-Xss", jvmSettings.getMaxStackSize(), vmArgs );
 
         vmArgs += arrayToString( convertArguments( jvmSettings.getExtraArguments() ), "" );
-        vmArgs += arrayToString( jvmSettings.getSystemProperties(), "-D" );
+        vmArgs += arrayToString( convertArguments( jvmSettings.getSystemProperties() ), "-D" );
 
         return vmArgs.trim();
     }
