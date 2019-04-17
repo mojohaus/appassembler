@@ -1,0 +1,29 @@
+#LICENSE_HEADER#
+
+$baseDir = split-path -parent split-path -parent $MyInvocation.MyCommand.Definition
+
+#ENV_SETUP#
+
+if (-not (Test-Path env:JAVACMD) -Or ( $env:JAVACMD -eq "" )) {
+    $javaCmd=#JAVA_BINARY#
+} else {
+    $javaCmd=$env:JAVACMD
+}
+
+if (-not (Test-Path env:REPO) -Or ( $env:REPO -eq "" )) {
+    $repo=$env:BASEDIR + "\" + #REPO#
+} else {
+    $repo=$env:REPO
+}
+
+$classPath=#CLASSPATH#
+
+if ((Test-Path env:ENDORSED_DIR) -Or ( $env:ENDORSED_DIR -ne "")) {
+    $classPath = $env:BASEDIR + "\" + $env:ENDORSED_DIR + "\*;" + $classPath;
+}
+
+if ((Test-Path env:CLASSPATH_PREFIX) -Or ( $env:CLASSPATH_PREFIX -ne "")) {
+    $classPath = $env:CLASSPATH_PREFIX + "";" + $classPath;
+}
+
+iex $javaCmd $env:JAVA_OPTS #EXTRA_JVM_ARGUMENTS# -classpath $classPath -Dapp.name="#APP_NAME#" -Dapp.repo="$repo" -Dapp.home="$baseDir" -Dbasedir="$baseDir" #MAINCLASS# #APP_ARGUMENTS#$args
