@@ -92,20 +92,24 @@ public abstract class AbstractBooterDaemonGenerator
 
         Daemon booterDaemon = new Daemon();
         booterDaemon.setId( daemon.getId() );
-        booterDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
-        booterDaemon.setLicenseHeaderFile( daemon.getLicenseHeaderFile() );
-        booterDaemon.setModelEncoding( daemon.getModelEncoding() );
+        booterDaemon.setName( daemon.getId() );
+        booterDaemon.setLongName( daemon.getId() );
         // TODO: replace with org.codehaus.mojo.appassembler.booter.AppassemblerBooter.class.getName() and test - trygve
         booterDaemon.setMainClass( "org.codehaus.mojo.appassembler.booter.AppassemblerBooter" );
-        booterDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
-
+        Classpath classpath = new Classpath();
+        booterDaemon.setClasspath( classpath );
+        booterDaemon.setConfigurationDirectory( daemon.getConfigurationDirectory() );
         booterDaemon.setJvmSettings( jvmSettings );
+        booterDaemon.setEnvironmentSetupFileName( daemon.getEnvironmentSetupFileName() );
+        booterDaemon.setShowConsoleWindow( daemon.isShowConsoleWindow() );
+        booterDaemon.setRepositoryName( daemon.getRepositoryName() );
+        booterDaemon.setLicenseHeaderFile( daemon.getLicenseHeaderFile() );
         booterDaemon.setEndorsedDir( daemon.getEndorsedDir() );
+        booterDaemon.setModelEncoding( daemon.getModelEncoding() );
 
         MavenProject project = request.getMavenProject();
 
-        Classpath classpath = new Classpath();
-        booterDaemon.setClasspath( classpath );
+
         classpath.addDirectory( createDirectory( "etc" ) );
         classpath.addDependency( DependencyFactory.create( project,
                                                            "org.codehaus.mojo.appassembler:appassembler-booter",
