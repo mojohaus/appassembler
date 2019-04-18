@@ -62,7 +62,7 @@ set SAVE_DIR=
 goto repoSetup
 
 :WinNTGetScriptDir
-set BASEDIR=%~dp0\..
+for %%i in ("%~dp0..") do set "BASEDIR=%%~fi"
 
 :repoSetup
 set REPO=
