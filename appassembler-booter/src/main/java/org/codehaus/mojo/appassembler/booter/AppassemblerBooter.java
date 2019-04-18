@@ -128,6 +128,9 @@ public class AppassemblerBooter
     {
         List<URL> classpathUrls = new ArrayList<URL>();
 
+        StringBuilder appClassPath = new StringBuilder();
+        boolean firstAppClassPathElement = true;
+
         for ( ClasspathElement element : config.getAllClasspathElements() )
         {
             File artifact = new File( repoDir, element.getRelativePath() );
@@ -138,7 +141,16 @@ public class AppassemblerBooter
             }
 
             classpathUrls.add( artifact.toURL() );
+
+            if (firstAppClassPathElement) {
+                firstAppClassPathElement = false;
+            } else {
+                appClassPath.append(File.pathSeparator);
+            }
+            appClassPath.append(artifact.getAbsolutePath());
         }
+
+        System.setProperty("app.class.path", appClassPath.toString());
 
         URL[] urls = (URL[]) classpathUrls.toArray( new URL[classpathUrls.size()] );
 
