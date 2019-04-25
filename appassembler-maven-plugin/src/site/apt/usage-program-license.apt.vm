@@ -37,7 +37,7 @@ License Header
   the generated scripts contain a default license header like the following:
  
 +--------------------------
-#!/bin/sh
+#!/usr/bin/env sh
 # ----------------------------------------------------------------------------
 #  Copyright 2001-2006 The Apache Software Foundation.
 #

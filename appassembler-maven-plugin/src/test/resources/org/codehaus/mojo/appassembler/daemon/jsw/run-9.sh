@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/usr/bin/env sh
 
 #
 # Copyright (c) 1999, 2006 Tanuki Software Inc.
