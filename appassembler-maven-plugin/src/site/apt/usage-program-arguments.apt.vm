@@ -64,7 +64,7 @@ Program Arguments
   Based on the above configuration your generated script will look like this (only an excerpt):
 
 +--------------------------
-#!/bin/sh
+#!/usr/bin/env sh
 .
 .
 exec "$JAVACMD" $JAVA_OPTS \

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 @LICENSE_HEADER@
 
 # resolve links - $0 may be a softlink

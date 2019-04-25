@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 export DAEMONDIR=`dirname $0`
 export DAEMONDIR=`(cd "$DAEMONDIR"; pwd)`

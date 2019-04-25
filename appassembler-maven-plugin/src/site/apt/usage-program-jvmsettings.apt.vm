@@ -59,7 +59,7 @@ JVM Settings
   The generated script (in this case Unix) will look like the following (license header removed):
 
 +--------------------------
-#!/bin/sh
+#!/usr/bin/env sh
 ..
 ..
 BASEDIR=`dirname $0`/..
