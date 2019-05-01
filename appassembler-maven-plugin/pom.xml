@@ -379,6 +379,9 @@
                     <goal>clean</goal>
                     <goal>test</goal>
                   </goals>
+                  <properties>
+                    <https.protocols>${https.protocols}</https.protocols>
+                  </properties>
                 </configuration>
               </execution>
             </executions>
