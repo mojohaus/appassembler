@@ -21,3 +21,21 @@ Supported platforms:
  * Windows NT (Windows 9x is NOT supported)
  * Java Service Wrapper (JSW)
 
+## Contributing
+
+The first step is to create an appropriate [issue][issues]. Describe the
+problem/idea you have and create an appropriate pull request.
+
+Furthermore please get your commit message look like this:
+
+```
+Fixed #IssueNumber - Head line of the issue
+ o Optional explanations if needed
+```
+
+Squash your pull request into a single commit to make
+the later history easier to read. Apart from that
+please check that all tests are working.
+
+
+[issues]: https://github.com/mojohaus/appassembler/issues
