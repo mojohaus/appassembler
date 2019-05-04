@@ -373,7 +373,7 @@ public abstract class AbstractScriptGeneratorMojo
 
             for ( Artifact artifact : artifacts )
             {
-                installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName );
+                installArtifact( artifact, artifactRepository, this.useTimestampInSnapshotFileName, true );
             }
 
             // install the project's artifact in the new repository

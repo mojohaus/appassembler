@@ -26,6 +26,7 @@ package org.codehaus.mojo.appassembler;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -96,6 +97,15 @@ public abstract class AbstractAppAssemblerMojo
      */
     @Parameter( defaultValue = "false" )
     protected boolean preClean;
+
+    /**
+     * If set to {@code true}, overwrites existing dependencies in the repository. If set to {@code false},
+     * it will check if the dependency is already present in the repository prior copying to it.
+     *
+     * @since 2.0.1
+     */
+    @Parameter( defaultValue = "true" )
+    protected boolean overwriteDependencies;
 
     // -----------------------------------------------------------------------
     // Read-only parameters
@@ -169,10 +179,11 @@ public abstract class AbstractAppAssemblerMojo
      * @param artifact The artifact to install.
      * @param artifactRepository The repository where to install.
      * @param useTimestampInSnapshotFileName Using timestamp for SNAPSHOT's.
+     * @param overwriteExistingArtifacts Set to {@code false} to avoid overwriting existing artifacts.
      * @throws MojoExecutionException
      */
     protected void installArtifact( Artifact artifact, ArtifactRepository artifactRepository,
-                                    boolean useTimestampInSnapshotFileName )
+                                    boolean useTimestampInSnapshotFileName, boolean overwriteExistingArtifacts )
         throws MojoExecutionException
     {
         if ( artifact != null && artifact.getFile() != null )
@@ -206,13 +217,28 @@ public abstract class AbstractAppAssemblerMojo
                         String fileName = MappingUtils.evaluateFileNameMapping( outputFileNameMapping, artifact );
                         destination = new File( destination.getParent(), fileName );
                     }
-                    // Sometimes target/classes is in the artifact list and copyFile() would fail.
-                    // Need to ignore this condition
-                    FileUtils.copyFile( source, destination );
+
+                    if ( overwriteExistingArtifacts )
+                    {
+	                    // Sometimes target/classes is in the artifact list and copyFile() would fail.
+	                    // Need to ignore this condition
+	                    FileUtils.copyFile( source, destination );
+	                    getLog().info( "Installing artifact " + source.getPath() + " to " + destination );
+                    }
+                    else
+                    {
+                    	if ( !Files.exists( destination.toPath() ) )
+	                    {
+	                		FileUtils.copyFile( source, destination );
+	                    }
+                    	else
+                    	{
+                    		destination.setLastModified(System.currentTimeMillis()); //'touches' the file
+                    	}
+
+                    	getLog().info( "Skiped installing artifact " + source.getPath() + " to " + destination + ". File already exists.");
+                    }
                 }
-
-                getLog().info( "Installing artifact " + source.getPath() + " to " + destination );
-
             }
             catch ( IOException e )
             {
@@ -235,7 +261,7 @@ public abstract class AbstractAppAssemblerMojo
     protected void installArtifact( Artifact artifact, ArtifactRepository artifactRepository )
         throws MojoExecutionException
     {
-        installArtifact( artifact, artifactRepository, true );
+        installArtifact( artifact, artifactRepository, true, true );
     }
 
 
