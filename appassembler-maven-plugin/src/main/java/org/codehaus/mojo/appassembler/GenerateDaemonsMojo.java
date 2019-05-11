@@ -45,7 +45,6 @@ import org.codehaus.plexus.util.StringUtils;
  * Generates JSW based daemon wrappers.
  *
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 @Mojo( name = "generate-daemons", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true )
 public class GenerateDaemonsMojo

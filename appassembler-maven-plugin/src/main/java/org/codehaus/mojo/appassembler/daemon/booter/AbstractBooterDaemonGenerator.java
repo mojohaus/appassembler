@@ -42,7 +42,6 @@ import org.codehaus.mojo.appassembler.util.DependencyFactory;
  * {@link WindowsBooterDaemonGenerator}.
  *
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public abstract class AbstractBooterDaemonGenerator
     extends AbstactScriptDaemonGenerator

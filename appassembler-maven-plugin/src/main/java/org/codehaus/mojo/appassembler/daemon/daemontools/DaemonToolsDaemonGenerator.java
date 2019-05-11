@@ -45,7 +45,6 @@ import org.codehaus.plexus.util.InterpolationFilterReader;
 
 /**
  * @author Andrew Williams
- * @version $Id$
  * @plexus.component role-hint="daemontools"
  */
 public class DaemonToolsDaemonGenerator

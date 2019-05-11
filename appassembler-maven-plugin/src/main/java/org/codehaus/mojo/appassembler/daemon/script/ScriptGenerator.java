@@ -31,7 +31,6 @@ import org.codehaus.mojo.appassembler.model.Daemon;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public interface ScriptGenerator
 {

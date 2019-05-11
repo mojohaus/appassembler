@@ -59,7 +59,6 @@ import org.codehaus.plexus.util.StringUtils;
  * Assembles the artifacts and generates bin scripts for the configured applications
  *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
- * @version $Id$
  */
 @Mojo( name = "assemble", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true )
 public class AssembleMojo

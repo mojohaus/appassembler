@@ -50,7 +50,6 @@ import org.codehaus.plexus.util.InterpolationFilterReader;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  * @plexus.component
  */
 public class DefaultScriptGenerator

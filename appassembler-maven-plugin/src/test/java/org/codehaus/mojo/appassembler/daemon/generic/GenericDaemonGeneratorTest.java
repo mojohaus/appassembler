@@ -30,7 +30,6 @@ import org.w3c.dom.Document;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public class GenericDaemonGeneratorTest
     extends AbstractDaemonGeneratorTest

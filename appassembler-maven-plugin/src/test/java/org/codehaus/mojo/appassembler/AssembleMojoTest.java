@@ -26,7 +26,6 @@ import junit.framework.TestCase;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public class AssembleMojoTest
     extends TestCase

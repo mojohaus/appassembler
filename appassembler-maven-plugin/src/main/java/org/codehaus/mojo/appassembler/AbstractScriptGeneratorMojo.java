@@ -52,7 +52,6 @@ import org.codehaus.plexus.util.FileUtils;
  * single class. A first step of hopefully merging the two into one some day.
  *
  * @author Dennis Lundberg
- * @version $Id$
  */
 public abstract class AbstractScriptGeneratorMojo
     extends AbstractAppAssemblerMojo

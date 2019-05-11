@@ -26,7 +26,6 @@ package org.codehaus.mojo.appassembler.daemon;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public class DaemonGeneratorException
     extends Exception

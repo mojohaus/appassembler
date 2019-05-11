@@ -54,7 +54,6 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
  * version - if that could generate a flat layout and exclude JARs, it may be a suitable replacement.
  *
  * @author <a href="mailto:kristian.nordal@gmail.com">Kristian Nordal</a>
- * @version $Id$
  */
 @Mojo( name = "create-repository", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.RUNTIME, threadSafe = true )
 public class CreateRepositoryMojo
