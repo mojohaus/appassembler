@@ -169,7 +169,7 @@ public abstract class AbstractAppAssemblerMojo
      * @param artifact The artifact to install.
      * @param artifactRepository The repository where to install.
      * @param useTimestampInSnapshotFileName Using timestamp for SNAPSHOT's.
-     * @throws MojoExecutionException
+     * @throws MojoExecutionException in case of an error.
      */
     protected void installArtifact( Artifact artifact, ArtifactRepository artifactRepository,
                                     boolean useTimestampInSnapshotFileName )
@@ -228,9 +228,9 @@ public abstract class AbstractAppAssemblerMojo
     /**
      * Copy artifact to another repository.
      *
-     * @param artifact
-     * @param artifactRepository
-     * @throws MojoExecutionException
+     * @param artifact {@link Artifact}
+     * @param artifactRepository {@link ArtifactRepository}
+     * @throws MojoExecutionException in case of an error.
      */
     protected void installArtifact( Artifact artifact, ArtifactRepository artifactRepository )
         throws MojoExecutionException

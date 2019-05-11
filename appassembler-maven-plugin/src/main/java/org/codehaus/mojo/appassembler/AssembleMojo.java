@@ -217,8 +217,8 @@ public class AssembleMojo
      * calling from Maven.
      *
      * @see org.apache.maven.plugin.AbstractMojo#execute()
-     * @throws {@link MojoExecutionException}
-     * @throws {@link MojoFailureException}
+     * @throws MojoExecutionException in case of an error.
+     * @throws MojoFailureException in case of an error.
      */
     public void execute()
         throws MojoExecutionException, MojoFailureException

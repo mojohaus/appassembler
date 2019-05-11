@@ -29,7 +29,6 @@ import org.codehaus.mojo.appassembler.model.Daemon;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public interface DaemonMerger
 {
@@ -41,10 +40,10 @@ public interface DaemonMerger
     /**
      * Merge two Daemons into a single one.
      *
-     * @param dominant
-     * @param recessive
+     * @param dominant {@link Daemon}
+     * @param recessive {@link Daemon}
      * @return The merged Daemon instance.
-     * @throws DaemonGeneratorException
+     * @throws DaemonGeneratorException in case of an error.
      */
     Daemon mergeDaemons( Daemon dominant, Daemon recessive )
         throws DaemonGeneratorException;

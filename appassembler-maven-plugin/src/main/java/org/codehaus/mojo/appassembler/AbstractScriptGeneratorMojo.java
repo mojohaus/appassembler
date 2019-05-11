@@ -402,6 +402,7 @@ public abstract class AbstractScriptGeneratorMojo
     /**
      * Set the extensions for bin files for the supported platforms. The values are taken from the Mojo's
      * <code>binFileExtensions</code> parameter.
+     * @throws  MojoFailureException in case of an error.
      */
     protected void setBinFileExtensions()
             throws MojoFailureException

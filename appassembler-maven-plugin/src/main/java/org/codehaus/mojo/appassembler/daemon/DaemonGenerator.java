@@ -26,7 +26,6 @@ package org.codehaus.mojo.appassembler.daemon;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public interface DaemonGenerator
 {
@@ -37,7 +36,7 @@ public interface DaemonGenerator
 
     /**
      * @param generationRequest The request to which is used for the Daemon.
-     * @throws DaemonGeneratorException
+     * @throws DaemonGeneratorException in case of an error.
      */
     void generate( DaemonGenerationRequest generationRequest )
         throws DaemonGeneratorException;

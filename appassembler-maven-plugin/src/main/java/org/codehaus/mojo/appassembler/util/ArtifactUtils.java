@@ -40,9 +40,9 @@ public final class ArtifactUtils
      * get relative path the copied artifact using base version. This is mainly use to SNAPSHOT instead of timestamp in
      * the file name
      *
-     * @param artifactRepositoryLayout
-     * @param artifact
-     * @return
+     * @param artifactRepositoryLayout {@link ArtifactRepositoryLayout}
+     * @param artifact {@link Artifact}
+     * @return The base version.
      */
     public static String pathBaseVersionOf( ArtifactRepositoryLayout artifactRepositoryLayout, Artifact artifact )
     {

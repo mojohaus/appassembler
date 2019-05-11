@@ -30,10 +30,9 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
- * @todo test could be improved - there are other conditions like
+ * TODO: test could be improved - there are other conditions like
  *       "check if extra properties can override those from template"
- * @todo reading POM/model should not be necessary?
+ * TODO: reading POM/model should not be necessary?
  */
 public class JavaServiceWrapperDaemonGeneratorTest
     extends AbstractDaemonGeneratorTest

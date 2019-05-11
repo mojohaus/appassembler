@@ -49,6 +49,10 @@ public class DependencyFactory
     
     /**
      * Used by GenericDaemonGenerator.
+     * @param artifact {@link Artifact}
+     * @param layout {@link ArtifactRepositoryLayout}
+     * @param outputFileNameMapping The name mapping.
+     * @return the dependency.
      */
     public static Dependency create( Artifact artifact, ArtifactRepositoryLayout layout, String outputFileNameMapping )
     {
@@ -84,9 +88,14 @@ public class DependencyFactory
 
     /**
      * Used by AssembleMojo and JavaServiceWrapperDaemonGenerator.
+     * @param artifact {@link Artifact}
+     * @param layout {@link ArtifactRepositoryLayout}
+     * @param useTimestampInSnapshotFileName timestamp or not.
+     * @param outputFileNameMapping The name mapping.
+     * @return the dependency.
      */
-    public static Dependency create( Artifact artifact, ArtifactRepositoryLayout layout,
-                                     boolean useTimestampInSnapshotFileName, String outputFileNameMapping )
+    public static Dependency create(Artifact artifact, ArtifactRepositoryLayout layout,
+                                    boolean useTimestampInSnapshotFileName, String outputFileNameMapping)
     {
         Dependency dependency = create( artifact, layout, outputFileNameMapping );
 
@@ -100,6 +109,11 @@ public class DependencyFactory
 
     /**
      * Used by AbstractBooterDaemonGenerator.
+     * @param project {@link MavenProject}
+     * @param id The id.
+     * @param layout {@link ArtifactRepositoryLayout}
+     * @param outputFileNameMapping The name mapping.
+     * @return the dependency.
      */
     public static Dependency create( MavenProject project, String id, ArtifactRepositoryLayout layout,
                                      String outputFileNameMapping )

@@ -56,7 +56,7 @@ public class GeneratorConfiguration
     /**
      * Set the generator.
      *
-     * @param generator
+     * @param generator The generator.
      */
     public void setGenerator( String generator )
     {

@@ -47,7 +47,6 @@ import org.codehaus.plexus.util.StringUtils;
 
 /**
  * @author <a href="mailto:trygve.laugstol@objectware.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public class Platform
 {
@@ -455,6 +454,7 @@ public class Platform
      * Get the environment setup file.
      *
      * @param daemon The instance of the Daemon for which this is beeing produced.
+     * @param binFolder The binary folder.
      * @return The created string which contains the path to the setup file.
      */
     public String getEnvSetup( Daemon daemon, String binFolder )
@@ -528,7 +528,7 @@ public class Platform
     /**
      * ShowConsole window.
      *
-     * @param daemon
+     * @param daemon {@link Daemon}
      * @return true yes false otherwise.
      */
     public boolean isShowConsoleWindow( Daemon daemon )

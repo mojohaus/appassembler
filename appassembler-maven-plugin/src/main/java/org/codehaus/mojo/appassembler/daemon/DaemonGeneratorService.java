@@ -32,7 +32,6 @@ import org.codehaus.mojo.appassembler.model.Daemon;
 
 /**
  * @author <a href="mailto:trygvis@inamo.no">Trygve Laugst&oslash;l</a>
- * @version $Id$
  */
 public interface DaemonGeneratorService
 {
@@ -61,7 +60,7 @@ public interface DaemonGeneratorService
     /**
      * @param daemon The daemon to validate
      * @param descriptor An optional file reference that will be used in the exception messages.
-     * @throws DaemonGeneratorException
+     * @throws DaemonGeneratorException in case of an error.
      */
     void validateDaemon( Daemon daemon, File descriptor )
         throws DaemonGeneratorException;

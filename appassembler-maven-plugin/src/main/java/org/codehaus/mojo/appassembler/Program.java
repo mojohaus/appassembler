@@ -134,7 +134,7 @@ public class Program
     /**
      * Set the id.
      *
-     * @param id
+     * @param id The id.
      */
     public void setId( String id )
     {
