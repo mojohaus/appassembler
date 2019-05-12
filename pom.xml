@@ -197,6 +197,19 @@
 
   <build>
     <defaultGoal>install</defaultGoal>
+    <!--
+     ! This part should be made part of mojo-parent
+    -->
+    <plugins>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+            <arguments>${arguments}</arguments>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+          </configuration>
+      </plugin>
+    </plugins>
     <pluginManagement>
       <plugins>
         <plugin>
