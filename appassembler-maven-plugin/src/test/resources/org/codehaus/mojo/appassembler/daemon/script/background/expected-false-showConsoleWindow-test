@@ -44,6 +44,7 @@ cygwin=false;
 darwin=false;
 case "`uname`" in
   CYGWIN*) cygwin=true ;;
+  MINGW*) cygwin=true ;;
   Darwin*) darwin=true
            if [ -z "$JAVA_VERSION" ] ; then
              JAVA_VERSION="CurrentJDK"
