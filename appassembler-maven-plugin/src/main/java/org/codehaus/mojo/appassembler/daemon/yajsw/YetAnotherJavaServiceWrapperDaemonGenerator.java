@@ -91,13 +91,13 @@ public class YetAnotherJavaServiceWrapperDaemonGenerator
     private static List<String> BAT_SCRIPTS = new ArrayList<String>()
     {
         {
-              add("installService.bat");
-              add("runConsole.bat");
-              add("startService.bat");
-              add("stopService.bat");
-              add("uninstallService.bat");
-              add("setenv.bat");
-              add("wrapper.bat");
+            add("installService.bat");
+            add("runConsole.bat");
+            add("startService.bat");
+            add("stopService.bat");
+            add("uninstallService.bat");
+            add("setenv.bat");
+            add("wrapper.bat");
         }
     };
 
@@ -136,15 +136,10 @@ public class YetAnotherJavaServiceWrapperDaemonGenerator
     public void generate( DaemonGenerationRequest request ) throws DaemonGeneratorException
     {
         Daemon daemon = request.getDaemon();
-
         File outputDirectory = new File( request.getOutputDirectory(), daemon.getId() );
-
         writeWrapperConfFile(outputDirectory, daemon, request);
-
         writeScripts(outputDirectory);
         writeLibraries(outputDirectory);
-
-
     }
 
     private void writeWrapperConfFile(File outputDirectory, Daemon daemon, DaemonGenerationRequest request) throws DaemonGeneratorException
