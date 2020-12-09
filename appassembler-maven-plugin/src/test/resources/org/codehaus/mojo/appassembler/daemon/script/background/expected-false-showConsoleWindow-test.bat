@@ -68,7 +68,7 @@ for %%i in ("%~dp0..") do set "BASEDIR=%%~fi"
 set REPO=
 if exist "%BASEDIR%\bin\setup.bat" call "%BASEDIR%\bin\setup.bat"
 
-if "%JAVACMD%"=="" set JAVACMD=start /min javaw
+if "%JAVACMD%"=="" set JAVACMD=start javaw
 
 if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
