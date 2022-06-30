@@ -82,20 +82,24 @@
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-model</artifactId>
       <version>${maven.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
-      <artifactId>maven-project</artifactId>
+      <artifactId>maven-core</artifactId>
       <version>${maven.version}</version>
+      <scope>provided</scope>
     </dependency>
     <!-- This must come after maven-project, or else weird component lookup failures occur during test phase -->
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-filtering</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -107,6 +111,7 @@
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-artifact</artifactId>
       <version>${maven.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
@@ -401,7 +406,6 @@
     <profile>
       <id>grid</id>
       <properties>
-        <invokerPluginVersion>1.6-SNAPSHOT</invokerPluginVersion>
         <itParallelThreads>1</itParallelThreads>
       </properties>
       <pluginRepositories>
@@ -422,14 +426,13 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-invoker-plugin</artifactId>
-            <version>${invokerPluginVersion}</version>
+            <version>3.2.2</version>
             <configuration>
               <parallelThreads>${itParallelThreads}</parallelThreads>
             </configuration>
           </plugin>
           <plugin>
             <artifactId>maven-enforcer-plugin</artifactId>
-            <version>1.0</version>
             <executions>
               <execution>
                 <id>mojo-enforcer-rules</id>
