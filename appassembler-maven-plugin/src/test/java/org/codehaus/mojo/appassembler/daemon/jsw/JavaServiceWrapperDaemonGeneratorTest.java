@@ -37,6 +37,7 @@ import org.codehaus.plexus.util.StringUtils;
 public class JavaServiceWrapperDaemonGeneratorTest
     extends AbstractDaemonGeneratorTest
 {
+
     public void testGenerationWithAllInfoInDescriptor()
         throws Exception
     {

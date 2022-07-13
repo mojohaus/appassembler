@@ -42,6 +42,7 @@
     <its>*</its>
     <threadCount>2</threadCount>
     <maven.version>2.2.1</maven.version>
+    <yajsw.lib>yajsw-stable-12.14</yajsw.lib>
   </properties>
 
   <prerequisites>
@@ -172,6 +173,24 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>com.googlecode.maven-download-plugin</groupId>
+        <artifactId>download-maven-plugin</artifactId>
+        <version>1.2.0</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <configuration>
+              <url>https://netix.dl.sourceforge.net/project/yajsw/yajsw/${yajsw.lib}/${yajsw.lib}.zip</url>
+              <outputDirectory>${project.build.directory}/dependency/yajsw-binaries</outputDirectory>
+              <unpack>true</unpack>
+            </configuration>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
@@ -250,6 +269,44 @@
         <targetPath>org/codehaus/mojo/appassembler/daemon/jsw/bin</targetPath>
         <includes>
           <include>wrapper-*</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>target/dependency/yajsw-binaries/${yajsw.lib}/bat</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/yajsw/bat</targetPath>
+      </resource>
+      <resource>
+        <directory>target/dependency/yajsw-binaries/${yajsw.lib}/bin</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/yajsw/bin</targetPath>
+      </resource>
+      <resource>
+        <directory>target/dependency/yajsw-binaries/${yajsw.lib}/scripts</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/yajsw/scripts</targetPath>
+        <includes>
+          <include>trayMessage.gv</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>target/dependency/yajsw-binaries/${yajsw.lib}/templates</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/yajsw/templates</targetPath>
+      </resource>
+      <resource>
+        <directory>target/dependency/yajsw-binaries/${yajsw.lib}/bin</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/yajsw/bin</targetPath>
+      </resource>
+      <resource>
+        <directory>target/dependency/yajsw-binaries/${yajsw.lib}/conf</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/yajsw/conf</targetPath>
+      </resource>
+      <resource>
+        <directory>target/dependency/yajsw-binaries/${yajsw.lib}/lib</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/yajsw/lib</targetPath>
+      </resource>
+      <resource>
+        <directory>target/dependency/yajsw-binaries/${yajsw.lib}/</directory>
+        <targetPath>org/codehaus/mojo/appassembler/daemon/yajsw/</targetPath>
+        <includes>
+          <include>*.jar</include>
         </includes>
       </resource>
       <resource>
