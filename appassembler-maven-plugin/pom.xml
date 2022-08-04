@@ -401,7 +401,7 @@
     <profile>
       <id>grid</id>
       <properties>
-        <invokerPluginVersion>1.6-SNAPSHOT</invokerPluginVersion>
+        <invokerPluginVersion>3.3.0</invokerPluginVersion>
         <itParallelThreads>1</itParallelThreads>
       </properties>
       <pluginRepositories>
