@@ -1,3 +1,5 @@
+
+
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -21,26 +23,10 @@ on: [push, pull_request]
 
 jobs:
   build:
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-        java: [8, 11, 17]
-        jdk: [temurin, zulu]
-      fail-fast: false
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: ${{ matrix.jdk }}
-          java-version: ${{ matrix.java }}
-          cache: 'maven'
-
-      - name: Build with Maven
-        run: mvn verify -e -B -V -P run-its javadoc:javadoc site site:stage
+    name: Verify
+    uses: apache/maven-gh-actions-shared/.github/workflows/maven-verify.yml@v3
+    with:
+      jdk-matrix: ["8"]
+      ff-jdk: "8"
+      ff-maven: "3.8.6"                     # Maven version for fail-fast-build
+      maven-matrix: '[ "3.2.5", "3.8.6" ]'  # Maven versions matrix for verify builds
