@@ -78,7 +78,7 @@ goto endInit
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-%JAVACMD% %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath %CLASSPATH_PREFIX%;%CLASSPATH% -Dapp.name="app" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.booter.AppassemblerBooter %CMD_LINE_ARGS%
+"%JAVACMD%" %JAVA_OPTS% %EXTRA_JVM_ARGUMENTS% -classpath "%CLASSPATH_PREFIX%";"%CLASSPATH%" -Dapp.name="app" -Dapp.repo="%REPO%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.booter.AppassemblerBooter %CMD_LINE_ARGS%
 if ERRORLEVEL 1 goto error
 goto end
 
