@@ -82,7 +82,7 @@ if NOT "%CLASSPATH_PREFIX%" == "" set CLASSPATH=%CLASSPATH_PREFIX%;%CLASSPATH%
 @REM Reaching here means variables are defined and arguments have been captured
 :endInit
 
-%JAVACMD% %JAVA_OPTS% Yo dude xyz="%REPO%" -classpath %CLASSPATH% -Dapp.name="repo-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" foo.Bar %CMD_LINE_ARGS%
+%JAVACMD% Yo dude xyz="%REPO%" %JAVA_OPTS% -classpath %CLASSPATH% -Dapp.name="repo-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" foo.Bar %CMD_LINE_ARGS%
 if %ERRORLEVEL% NEQ 0 goto error
 goto end
 

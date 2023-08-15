@@ -117,7 +117,7 @@ if $cygwin; then
   [ -n "$REPO" ] && REPO=`cygpath --path --windows "$REPO"`
 fi
 
-exec "$JAVACMD" $JAVA_OPTS Yo dude \
+exec "$JAVACMD" Yo dude $JAVA_OPTS \
   -classpath "$CLASSPATH" \
   -Dapp.name="test" \
   -Dapp.pid="$$" \
