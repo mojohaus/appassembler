@@ -55,7 +55,7 @@ goto Win9xApp
 :Win9xGetScriptDir
 set SAVEDIR=%CD%
 %0\
-cd %0\..\.. 
+cd %0\..\..
 set BASEDIR=%CD%
 cd %SAVEDIR%
 set SAVE_DIR=
@@ -71,7 +71,7 @@ if "%JAVACMD%"=="" set JAVACMD=java
 
 if "%REPO%"=="" set REPO=%BASEDIR%\repo
 
-set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org\codehaus\mojo\appassembler\appassembler-booter\@appassembler.version@\appassembler-booter-@appassembler.version@.jar;"%REPO%"\org\codehaus\mojo\appassembler\appassembler-model\@appassembler.version@\appassembler-model-@appassembler.version@.jar;"%REPO%"\org\codehaus\plexus\plexus-utils\1.1\plexus-utils-1.1.jar;"%REPO%"\stax\stax-api\1.0.1\stax-api-1.0.1.jar;"%REPO%"\stax\stax\1.1.1-dev\stax-1.1.1-dev.jar
+set CLASSPATH="%BASEDIR%"\etc;"%REPO%"\org\codehaus\mojo\appassembler\appassembler-booter\@appassembler.version@\appassembler-booter-@appassembler.version@.jar;"%REPO%"\org\codehaus\mojo\appassembler\appassembler-model\@appassembler.version@\appassembler-model-@appassembler.version@.jar;"%REPO%"\org\codehaus\plexus\plexus-utils\1.1\plexus-utils-1.1.jar;"%REPO%"\stax\stax-api\1.0.1\stax-api-1.0.1.jar;"%REPO%"\stax\stax\1.1.2-dev\stax-1.1.2-dev.jar
 set EXTRA_JVM_ARGUMENTS=-Xms345 -Xmx234 -Xss321 -splash:niceImage.png -Dfoo=bar -Dbar=foo
 goto endInit
 

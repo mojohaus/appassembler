@@ -91,7 +91,7 @@ then
   REPO="$BASEDIR"/repo
 fi
 
-CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler/appassembler-booter/@appassembler.version@/appassembler-booter-@appassembler.version@.jar:"$REPO"/org/codehaus/mojo/appassembler/appassembler-model/@appassembler.version@/appassembler-model-@appassembler.version@.jar:"$REPO"/org/codehaus/plexus/plexus-utils/1.1/plexus-utils-1.1.jar:"$REPO"/stax/stax-api/1.0.1/stax-api-1.0.1.jar:"$REPO"/stax/stax/1.1.1-dev/stax-1.1.1-dev.jar
+CLASSPATH=$CLASSPATH_PREFIX:"$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler/appassembler-booter/@appassembler.version@/appassembler-booter-@appassembler.version@.jar:"$REPO"/org/codehaus/mojo/appassembler/appassembler-model/@appassembler.version@/appassembler-model-@appassembler.version@.jar:"$REPO"/org/codehaus/plexus/plexus-utils/1.1/plexus-utils-1.1.jar:"$REPO"/stax/stax-api/1.0.1/stax-api-1.0.1.jar:"$REPO"/stax/stax/1.1.2-dev/stax-1.1.2-dev.jar
 EXTRA_JVM_ARGUMENTS="-Xms345 -Xmx234 -Xss321 -splash:niceImage.png -Dfoo=bar -Dbar=foo"
 
 # For Cygwin, switch paths to Windows format before running java

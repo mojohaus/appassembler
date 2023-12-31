@@ -49,13 +49,13 @@ def getProjectVersion() {
    def allDependencies = pom.dependencies;
 
    def dependencies = allDependencies.dependency
-   
+
    def appassemblerModule = dependencies.find {
        item -> item.groupId.equals("org.codehaus.mojo.appassembler") && item.artifactId.equals("appassembler-model");
    }
-   
+
    return appassemblerModule.version;
-}           
+}
 
 def projectVersion = getProjectVersion();
 
@@ -65,9 +65,9 @@ def unix_line = [
     '"\$REPO"/org/codehaus/mojo/appassembler/appassembler-booter/' + projectVersion + '/appassembler-booter-' + projectVersion + '.jar',
     '"\$REPO"/stax/stax-api/1.0.1/stax-api-1.0.1.jar',
     '"\$REPO"/org/codehaus/mojo/appassembler/appassembler-model/' + projectVersion + '/appassembler-model-' + projectVersion + '.jar',
-    '"\$REPO"/net/java/dev/stax-utils/stax-utils/20060502/stax-utils-20060502.jar',
-    '"\$REPO"/stax/stax/1.1.1-dev/stax-1.1.1-dev.jar', 
-    '"\$REPO"/junit/junit/3.8.1/junit-3.8.1.jar', 
+    '"\$REPO"/net/java/dev/stax-utils/stax-utils/20070216/stax-utils-20070216.jar',
+    '"\$REPO"/stax/stax/1.1.2-dev/stax-1.1.2-dev.jar',
+    '"\$REPO"/junit/junit/3.8.1/junit-3.8.1.jar',
     '"\$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/shellDaemonGeneratorTest/1.0-SNAPSHOT/shellDaemonGeneratorTest-1.0-SNAPSHOT.jar',
 ]
 
@@ -80,14 +80,14 @@ unix_line.each {
 }
 
 def windows_line = [
-    'set CLASSPATH="%BASEDIR%"\\etc', 
-    '"%REPO%"\\org\\codehaus\\plexus\\plexus-utils\\1.1\\plexus-utils-1.1.jar', 
-    "\"%REPO%\"\\org\\codehaus\\mojo\\appassembler\\appassembler-booter\\${projectVersion}\\appassembler-booter-${projectVersion}.jar", 
+    'set CLASSPATH="%BASEDIR%"\\etc',
+    '"%REPO%"\\org\\codehaus\\plexus\\plexus-utils\\1.1\\plexus-utils-1.1.jar',
+    "\"%REPO%\"\\org\\codehaus\\mojo\\appassembler\\appassembler-booter\\${projectVersion}\\appassembler-booter-${projectVersion}.jar",
     '"%REPO%"\\stax\\stax-api\\1.0.1\\stax-api-1.0.1.jar',
     "\"%REPO%\"\\org\\codehaus\\mojo\\appassembler\\appassembler-model\\${projectVersion}\\appassembler-model-${projectVersion}.jar",
-    '"%REPO%"\\net\\java\\dev\\stax-utils\\stax-utils\\20060502\\stax-utils-20060502.jar',
-    '"%REPO%"\\stax\\stax\\1.1.1-dev\\stax-1.1.1-dev.jar', 
-    '"%REPO%"\\junit\\junit\\3.8.1\\junit-3.8.1.jar', 
+    '"%REPO%"\\net\\java\\dev\\stax-utils\\stax-utils\\20070216\\stax-utils-20070216.jar',
+    '"%REPO%"\\stax\\stax\\1.1.2-dev\\stax-1.1.2-dev.jar',
+    '"%REPO%"\\junit\\junit\\3.8.1\\junit-3.8.1.jar',
     '"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\shellDaemonGeneratorTest\\1.0-SNAPSHOT\\shellDaemonGeneratorTest-1.0-SNAPSHOT.jar',
 ]
 

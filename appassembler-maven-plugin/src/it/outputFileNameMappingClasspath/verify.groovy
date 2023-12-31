@@ -49,31 +49,31 @@ def getProjectVersion() {
    def allDependencies = pom.dependencies;
 
    def dependencies = allDependencies.dependency
-   
+
    def appassemblerModule = dependencies.find {
        item -> item.groupId.equals("org.codehaus.mojo.appassembler") && item.artifactId.equals("appassembler-model");
    }
-   
+
    return appassemblerModule.version;
-}           
+}
 
 def projectVersion = getProjectVersion();
 
 def filesInRepository = [
  "junit/junit/3.8.1/junit.jar",
- "net/java/dev/stax-utils/stax-utils/20060502/stax-utils.jar",
+ "net/java/dev/stax-utils/stax-utils/20070216/stax-utils.jar",
  "org/codehaus/mojo/appassembler/appassembler-booter/${projectVersion}/appassembler-booter.jar",
  "org/codehaus/mojo/appassembler/appassembler-model/${projectVersion}/appassembler-model.jar",
  "org/codehaus/mojo/appassembler-maven-plugin/it/mappasm-71-3/1.0-SNAPSHOT/mappasm-71-3.jar",
  "org/codehaus/plexus/plexus-utils/1.1/plexus-utils.jar",
- "stax/stax/1.1.1-dev/stax.jar",
+ "stax/stax/1.1.2-dev/stax.jar",
  "stax/stax-api/1.0.1/stax-api.jar",
 ]
 
 println "---> Checking files in repository."
 
 filesInRepository.each {
-  fileInRepository -> 
+  fileInRepository ->
     print "Checking file " + fileInRepository + " in repository..."
     def fileToCheck = new File( repoFolder, fileInRepository);
     if (!fileToCheck.canRead()) {

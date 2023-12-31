@@ -50,7 +50,7 @@ The 'Booter' Mechanism
 +--------------------------
 
   The structure under <<target/appassembler/repo>> looks like this and contains
-  all dependencies you have defined in your project plus the defined dependency 
+  all dependencies you have defined in your project plus the defined dependency
   to the <appassembler-booter> artifact.
 
 +--------------------------
@@ -65,8 +65,8 @@ The 'Booter' Mechanism
     |       `-- dev
     |           `-- stax-utils
     |               `-- stax-utils
-    |                   `-- 20060502
-    |                       `-- stax-utils-20060502.jar
+    |                   `-- 20070216
+    |                       `-- stax-utils-20070216.jar
     |-- org
     |   `-- codehaus
     |       |-- mojo
@@ -87,8 +87,8 @@ The 'Booter' Mechanism
     |                   `-- plexus-utils-1.5.6.jar
     `-- stax
         |-- stax
-        |   `-- 1.1.1-dev
-        |       `-- stax-1.1.1-dev.jar
+        |   `-- 1.1.2-dev
+        |       `-- stax-1.1.2-dev.jar
         `-- stax-api
             `-- 1.0.1
                 `-- stax-api-1.0.1.jar
@@ -99,7 +99,7 @@ The 'Booter' Mechanism
   The <<booter-unix/bin/my-server>> script is the unix script for running your application whereas
   the <<booter-windows/bin/my-server.bat>> script is the Windows script.
   The <<booter-unix/etc/my-server-xml>> file contains all dependencies which is later been read
-  by the booter mechanism to start your application. 
+  by the booter mechanism to start your application.
 
 +--------------------------
 .
@@ -123,12 +123,12 @@ The 'Booter' Mechanism
 
 +--------------------------
 
-  The structures under <<etc/myserver/lib>> is created based on the current 
+  The structures under <<etc/myserver/lib>> is created based on the current
   inflexibility of the appassembler-plugin (might be fixed in the future).
 
   And finally you would like to have a running example which can be looked at
-  the {{{./usage-booter-running.html}How to get an running application?}} 
-  section. 
+  the {{{./usage-booter-running.html}How to get an running application?}}
+  section.
 
    []
 

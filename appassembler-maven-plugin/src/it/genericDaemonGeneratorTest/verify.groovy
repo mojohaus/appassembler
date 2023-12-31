@@ -41,13 +41,13 @@ def getProjectVersion() {
    def allDependencies = pom.dependencies;
 
    def dependencies = allDependencies.dependency
-   
+
    def appassemblerModule = dependencies.find {
        item -> item.groupId.equals("org.codehaus.mojo.appassembler") && item.artifactId.equals("appassembler-model");
    }
-   
+
    return appassemblerModule.version;
-}           
+}
 
 def projectVersion = getProjectVersion();
 
@@ -84,8 +84,8 @@ t.checkExistenceAndContentOfAFile(wrapperConfFile, [
     'wrapper.java.classpath.3=%REPO_DIR%/appassembler-model-' + projectVersion + '.jar',
     'wrapper.java.classpath.4=%REPO_DIR%/plexus-utils-3.2.0.jar',
     'wrapper.java.classpath.5=%REPO_DIR%/stax-api-1.0.1.jar',
-    'wrapper.java.classpath.6=%REPO_DIR%/stax-utils-20060502.jar',
-    'wrapper.java.classpath.7=%REPO_DIR%/stax-1.1.1-dev.jar',
+    'wrapper.java.classpath.6=%REPO_DIR%/stax-utils-20070216.jar',
+    'wrapper.java.classpath.7=%REPO_DIR%/stax-1.1.2-dev.jar',
     'wrapper.java.classpath.8=%REPO_DIR%/junit-3.8.1.jar',
 ])
 
