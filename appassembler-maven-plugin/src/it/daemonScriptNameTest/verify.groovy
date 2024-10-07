@@ -35,12 +35,16 @@ class CheckFolder {
     // Check the existence of the generated unix script
     def unixScriptFile = new File( fileBinFolder, "executable" );
     def windowsScriptFile = new File( fileBinFolder, "executable.bat" );
+    def windowsPsScriptFile = new File( fileBinFolder, "executable.ps" );
 
     if (unixScriptFile.exists()) {
       throw new FileNotFoundException("The file " + unixScriptFile + " does not exist.");
     }
     if (windowsScriptFile.exists()) {
       throw new FileNotFoundException("The file " + windowsScriptFile + " does not exist.");
+    }
+    if (windowsPsScriptFile.exists()) {
+      throw new FileNotFoundException("The file " + windowsPsScriptFile + " does not exist.");
     }
   }
 }
