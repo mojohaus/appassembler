@@ -277,12 +277,12 @@ public class AppassemblerBooter
 
         final String baseDir = System.getProperty( "basedir", System.getProperty( "app.home" ) );
         if ( baseDir != null && baseDir.length() > 0) {
-            context.put( "BASEDIR", StringUtils.quoteAndEscape(baseDir, '"') );
+            context.put( "BASEDIR", baseDir );
         }
 
         final String repo = System.getProperty( "app.repo" );
         if ( repo != null && repo.length() > 0 ) {
-            context.put("REPO", StringUtils.quoteAndEscape(repo, '"'));
+            context.put("REPO", repo);
         }
 
         InterpolationFilterReader interpolationFilterReader = new InterpolationFilterReader( sr, context, "@", "@" );
@@ -294,6 +294,7 @@ public class AppassemblerBooter
         {
             // shouldn't happen...
         }
+
         return result.toString();
     }
 
