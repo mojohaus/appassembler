@@ -117,7 +117,7 @@ if $cygwin; then
   [ -n "$REPO" ] && REPO=`cygpath --path --windows "$REPO"`
 fi
 
-exec "$JAVACMD" $JAVA_OPTS Yo dude xyz="$BASEDIR" \
+exec "$JAVACMD" Yo dude xyz="$BASEDIR" $JAVA_OPTS \
   -classpath "$CLASSPATH" \
   -Dapp.name="basedir-test" \
   -Dapp.pid="$$" \

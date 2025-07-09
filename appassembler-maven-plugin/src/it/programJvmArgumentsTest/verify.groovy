@@ -35,7 +35,7 @@ def scriptfile_program_01_test = new File( fileBinFolder, 'program-01-test');
 
 t.checkExistenceAndContentOfAFile(scriptfile_program_01_test, [
     'CLASSPATH="$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/programJvmArguments-test/1.0-SNAPSHOT/programJvmArguments-test-1.0-SNAPSHOT.jar',
-    'exec "$JAVACMD" $JAVA_OPTS "--port 1" "--option 2" \\',
+    'exec "$JAVACMD" "--port 1" "--option 2" $JAVA_OPTS \\',
     '  -classpath "$CLASSPATH" \\',
     '  -Dapp.name="program-01-test" \\',
     '  -Dapp.pid="$$" \\',
@@ -50,14 +50,14 @@ def scriptfile_program_01_test_bat = new File( fileBinFolder, 'program-01-test.b
 
 t.checkExistenceAndContentOfAFile(scriptfile_program_01_test_bat, [
     'set CLASSPATH="%BASEDIR%"\\etc;"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\programJvmArguments-test\\1.0-SNAPSHOT\\programJvmArguments-test-1.0-SNAPSHOT.jar',
-    '%JAVACMD% %JAVA_OPTS% "--port 1" "--option 2" -classpath %CLASSPATH% -Dapp.name="program-01-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 %CMD_LINE_ARGS%',
+    '%JAVACMD% "--port 1" "--option 2" %JAVA_OPTS% -classpath %CLASSPATH% -Dapp.name="program-01-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld arg1 arg2 %CMD_LINE_ARGS%',
 ]);
 
 def scriptfile_program_02_test = new File( fileBinFolder, 'program-02-test');
 
 t.checkExistenceAndContentOfAFile(scriptfile_program_02_test, [
     'CLASSPATH="$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/programJvmArguments-test/1.0-SNAPSHOT/programJvmArguments-test-1.0-SNAPSHOT.jar',
-    'exec "$JAVACMD" $JAVA_OPTS -Xms20M -Xmx256G \\',
+    'exec "$JAVACMD" -Xms20M -Xmx256G $JAVA_OPTS \\',
     '  -classpath "$CLASSPATH" \\',
     '  -Dapp.name="program-02-test" \\',
     '  -Dapp.pid="$$" \\',
@@ -73,7 +73,7 @@ def scriptfile_program_02_test_bat = new File( fileBinFolder, 'program-02-test.b
 
 t.checkExistenceAndContentOfAFile(scriptfile_program_02_test_bat, [
     'set CLASSPATH="%BASEDIR%"\\etc;"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\programJvmArguments-test\\1.0-SNAPSHOT\\programJvmArguments-test-1.0-SNAPSHOT.jar',
-    '%JAVACMD% %JAVA_OPTS% -Xms20M -Xmx256G -classpath %CLASSPATH% -Dapp.name="program-02-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld test-environment %CMD_LINE_ARGS%',
+    '%JAVACMD% -Xms20M -Xmx256G %JAVA_OPTS% -classpath %CLASSPATH% -Dapp.name="program-02-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld test-environment %CMD_LINE_ARGS%',
 ]);
 
 
@@ -82,7 +82,7 @@ def scriptfile_program_03_test = new File( fileBinFolder, 'program-03-test');
 
 t.checkExistenceAndContentOfAFile(scriptfile_program_03_test, [
     'CLASSPATH="$BASEDIR"/etc:"$REPO"/org/codehaus/mojo/appassembler-maven-plugin/it/programJvmArguments-test/1.0-SNAPSHOT/programJvmArguments-test-1.0-SNAPSHOT.jar',
-    'exec "$JAVACMD" $JAVA_OPTS -Xms20m -Xmx256m -Xss128m -Dtest=false -Dlog4j.properties=false -Danton=2345 -Dberta="xaz" \\',
+    'exec "$JAVACMD" -Xms20m -Xmx256m -Xss128m -Dtest=false -Dlog4j.properties=false -Danton=2345 -Dberta="xaz" $JAVA_OPTS \\',
     '  -classpath "$CLASSPATH" \\',
     '  -Dapp.name="program-03-test" \\',
     '  -Dapp.pid="$$" \\',
@@ -98,7 +98,7 @@ def scriptfile_program_03_test_bat = new File( fileBinFolder, 'program-03-test.b
 
 t.checkExistenceAndContentOfAFile(scriptfile_program_03_test_bat, [
     'set CLASSPATH="%BASEDIR%"\\etc;"%REPO%"\\org\\codehaus\\mojo\\appassembler-maven-plugin\\it\\programJvmArguments-test\\1.0-SNAPSHOT\\programJvmArguments-test-1.0-SNAPSHOT.jar',
-    '%JAVACMD% %JAVA_OPTS% -Xms20m -Xmx256m -Xss128m -Dtest=false -Dlog4j.properties=false -Danton=2345 -Dberta="xaz" -classpath %CLASSPATH% -Dapp.name="program-03-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld test-environment %CMD_LINE_ARGS%',
+    '%JAVACMD% -Xms20m -Xmx256m -Xss128m -Dtest=false -Dlog4j.properties=false -Danton=2345 -Dberta="xaz" %JAVA_OPTS% -classpath %CLASSPATH% -Dapp.name="program-03-test" -Dapp.repo="%REPO%" -Dapp.home="%BASEDIR%" -Dbasedir="%BASEDIR%" org.codehaus.mojo.appassembler.example.helloworld.HelloWorld test-environment %CMD_LINE_ARGS%',
 ]);
 
 
