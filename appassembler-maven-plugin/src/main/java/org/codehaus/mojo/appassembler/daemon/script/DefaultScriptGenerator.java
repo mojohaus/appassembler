@@ -203,7 +203,7 @@ public class DefaultScriptGenerator
             }
             else
             {
-                context.put( "JAVA_BINARY", "start /min javaw" );
+                context.put( "JAVA_BINARY", "start javaw" );
                 context.put( "UNIX_BACKGROUND", " &" );
             }
 
