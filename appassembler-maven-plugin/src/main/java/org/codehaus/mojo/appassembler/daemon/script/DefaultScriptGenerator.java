@@ -323,7 +323,19 @@ public class DefaultScriptGenerator
             }
             else
             {
-                is = getClass().getResourceAsStream( platformName + "BinTemplate" );
+                String scriptTemplatePrefix = platformName;
+                while (true) {
+                    int idx = scriptTemplatePrefix.indexOf('-');
+                    if (idx == -1 || scriptTemplatePrefix.length() < 2) {
+                        break;
+                    }
+
+                    scriptTemplatePrefix = ( scriptTemplatePrefix.substring( 0, idx )
+                            + Character.toUpperCase( scriptTemplatePrefix.charAt( idx + 1 ) )
+                            + scriptTemplatePrefix.substring( idx + 2 ) );
+                }
+
+                is = getClass().getResourceAsStream( scriptTemplatePrefix + "BinTemplate" );
                 if ( is == null )
                 {
                     throw new DaemonGeneratorException( "Unable to load internal template resource: " + platformName

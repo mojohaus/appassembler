@@ -60,6 +60,11 @@ public class Platform
      */
     public static final String WINDOWS_NAME = "windows";
 
+    /**
+     * Windows Powershell Platform name
+     */
+    public static final String WINDOWS_PS_NAME = "windows-ps";
+
     private static final Map<String, Platform> ALL_PLATFORMS;
 
     private static final String DEFAULT_UNIX_BIN_FILE_EXTENSION = "";
@@ -72,6 +77,10 @@ public class Platform
 
     private boolean isWindows;
 
+    private boolean isPowerShell;
+
+    private String commentPrefix;
+
     // -----------------------------------------------------------------------
     // Static
     // -----------------------------------------------------------------------
@@ -79,8 +88,9 @@ public class Platform
     static
     {
         ALL_PLATFORMS = new HashMap<String, Platform>();
-        addPlatform( new Platform( UNIX_NAME, false, DEFAULT_UNIX_BIN_FILE_EXTENSION ) );
-        addPlatform( new Platform( WINDOWS_NAME, true, DEFAULT_WINDOWS_BIN_FILE_EXTENSION ) );
+        addPlatform( new Platform( UNIX_NAME, false, false, DEFAULT_UNIX_BIN_FILE_EXTENSION, "# " ) );
+        addPlatform( new Platform( WINDOWS_NAME, true, false, DEFAULT_WINDOWS_BIN_FILE_EXTENSION, "@REM " ) );
+        addPlatform( new Platform( WINDOWS_PS_NAME, true, true, ".ps1", "# " ) );
     }
 
     private static Platform addPlatform( Platform platform )
@@ -192,13 +202,17 @@ public class Platform
     //
     // -----------------------------------------------------------------------
 
-    private Platform( String name, boolean isWindows, String binFileExtension )
+    private Platform( String name, boolean isWindows, boolean isPowerShell, String binFileExtension, String commentPrefix )
     {
         this.name = name;
 
         this.isWindows = isWindows;
 
+        this.isPowerShell = isPowerShell;
+
         this.binFileExtension = binFileExtension;
+
+        this.commentPrefix = commentPrefix;
     }
 
     // -----------------------------------------------------------------------
@@ -260,7 +274,7 @@ public class Platform
      */
     public String getCommentPrefix()
     {
-        return isWindows ? "@REM " : "# ";
+        return commentPrefix ;
     }
 
     public String getNewLine()
@@ -467,9 +481,12 @@ public class Platform
         {
             if ( isWindows )
             {
-                String envScriptPath = "\"%BASEDIR%\\" + binFolder + "\\" + envSetupFileName + ".bat\"";
-
-                envSetup = "if exist " + envScriptPath + " call " + envScriptPath;
+                if ( isPowerShell ) {
+                    envSetup = "$setupScript = $PSScriptRoot + \"\\" + envSetupFileName + ".ps1\"; if (Test-Path $setupScript ) { &$setupScript }";
+                } else {
+                    String envScriptPath = "\"%BASEDIR%\\" + binFolder + "\\" + envSetupFileName + ".bat\"";
+                    envSetup = "if exist " + envScriptPath + " call " + envScriptPath;
+                }
             }
             else
             {
