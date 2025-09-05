@@ -99,7 +99,7 @@ if $cygwin; then
   [ -n "$REPO" ] && REPO=`cygpath --path --windows "$REPO"`
 fi
 
-exec "$JAVACMD" $JAVA_OPTS @EXTRA_JVM_ARGUMENTS@ \
+exec "$JAVACMD" @EXTRA_JVM_ARGUMENTS@ $JAVA_OPTS \
   -classpath "$CLASSPATH" \
   -Dapp.name="@APP_NAME@" \
   -Dapp.pid="$$" \
